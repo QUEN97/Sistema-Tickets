@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('producto_zona', function (Blueprint $table) {
+        Schema::create('compra_detalles', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('compra_id');
             $table->unsignedBigInteger('producto_id');
-            $table->unsignedBigInteger('zona_id');
-
-            $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
-            $table->foreign('zona_id')->references('id')->on('zonas')->onDelete('cascade');
+            $table->string('prioridad',100);
+            $table->integer('cantidad');
             $table->timestamps();
+            $table->foreign('compra_id')->references('id')->on('compras')->onDelete('cascade');
+            $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('producto_zona');
+        Schema::dropIfExists('compra_detalle');
     }
 };

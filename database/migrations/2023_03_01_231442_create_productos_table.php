@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 250);
+            $table->string('name', 10000);
             $table->string('product_photo_path', 2048)->nullable();
             $table->unsignedBigInteger('categoria_id');
-            $table->string('unidad', 15);
-            $table->float('precio', 8, 2);
-            $table->unsignedBigInteger('stock');
+            $table->unsignedBigInteger('marca_id');
+            $table->string('unidad', 250);
+            $table->string('modelo',250);
             $table->enum('status',['Activo','Inactivo'])->default('Activo');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('categoria_id')->references('id')->on('categorias');
+            $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('cascade');
+            $table->foreign('marca_id')->references('id')->on('marcas')->onDelete('cascade');
         });
     }
 

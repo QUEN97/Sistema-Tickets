@@ -61,11 +61,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post("/deleteestacion-permanently", [EstacionController::class, "delete_permanently"])->name('deleteestacion_permanently');
 
     //Categorias
-    Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias');
-    Route::delete('/categorias{categoria}', [CategoriaController::class, 'destroy'])->name('categorias.destroy');
-    Route::get("/trashedcategorias", [CategoriaController::class, "trashed_categorias"])->name('categorias.trashed');
-    Route::post("/restorecategoria", [CategoriaController::class, "do_restore"])->name('categoria_restore');
-    Route::post("/deletecategoria-permanently", [CategoriaController::class, "delete_permanently"])->name('deletecategoria_permanently');
+    Route::controller(CategoriaController::class)->group(function(){
+    Route::get('/categorias','index')->name('categorias');
+    Route::delete('/categorias{categoria}','destroy')->name('categorias.destroy');
+    Route::get("/trashedcategorias","trashed_categorias")->name('categorias.trashed');
+    Route::post("/restorecategoria","do_restore")->name('categoria_restore');
+    Route::post("/deletecategoria-permanently","delete_permanently")->name('deletecategoria_permanently');
+    Route::get('/marcas','marcas')->name('marcas');
+    });
 
     //Productos
     Route::get('/productos', [ProductoController::class, 'index'])->name('productos');
@@ -138,10 +141,20 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/tickets/editar{id}','editar')->name('tck.editar');
         Route::delete('/tickets{id}', 'removeArch')->name('tck.destroy');
         Route::get('/tickets/tarea{id}','tarea')->name('tck.tarea');
+        Route::get('/tickets/requisicion{id}','compra')->name('tck.compra');
     });
 
     Route::controller(TareaController::class)->group(function(){
         Route::get('/tareas','home')->name('tareas');
-        // Route::get('/requisiciones/{id}','edit')->name('req.edit');
+    });
+    //requisiciones
+    Route::controller(TicketController::class)->group(function(){
+        Route::get('/tickets','home')->name('tickets');
+        Route::get('/tickets/requisicion{id}','compra')->name('tck.compra');
+    });
+    //requisiciones (apartado)
+    Route::controller(RequisicionController::class)->group(function(){
+        Route::get('/requisiciones','home')->name('requisiciones');
+        Route::get('/requisiciones/{id}','edit')->name('req.edit');
     });
 });

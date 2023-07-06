@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->timestamp('cerrado')->nullable();
+        Schema::create('marcas', function (Blueprint $table) {
+            $table->id();
+            $table->string('name',100);
+            $table->enum('status',['Activo','Inactivo'])->default('Activo');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->dropIfExists('cerrado');
-        });
+        Schema::dropIfExists('marcas');
     }
 };
