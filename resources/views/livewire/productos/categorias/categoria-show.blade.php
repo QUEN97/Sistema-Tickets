@@ -28,10 +28,6 @@
                                 <span class="text-xs">{{ $this->productos }}</span>
                             </div>
                             <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Proveedores:</span>
-                                <span class="text-xs"> {{ $this->proveedores }}</span>
-                            </div>
-                            <div class="w-1/3 px-2">
                                 <span class="text-gray-700">Status:</span>
                                 <span class="text-xs">
                                     @if ($status = 'Activo')
@@ -80,51 +76,6 @@
                                             </td>
                                             <td class="border px-4 py-2">
                                                 <span class="text-xs">@if ($producto->flag_trash == 0)
-                                                    <i
-                                                        class="text-green-500"></i>
-                                                    {{ __('En Sistema') }}
-                                                @else
-                                                    <i
-                                                        class="text-red-500"></i>
-                                                    {{ __('En Papelera') }}
-                                                @endif</span>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td class="border px-4 py-2" colspan="3">Sin datos.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </details>
-                    </div>
-                @endif
-                <br>
-                @if ($proveedores_tabla->isnotEmpty())
-                    <div class="border rounded-lg overflow-hidden">
-                        <details>
-                            <summary class="bg-gray-100 py-2 px-4 cursor-pointer">Click para mostrar/ocultar
-                                Proveedores en esta Categoria</summary>
-                            <table class="table-auto w-full">
-                                <thead>
-                                    <tr>
-                                        <th class="px-4 py-2">Proveedor</th>
-                                        <th class="px-4 py-2">RFC</th>
-                                        <th class="px-4 py-2">Disponibilidad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($proveedores_tabla as $provee)
-                                        <tr>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs"> {{ $provee->titulo_proveedor }}</span>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs"> {{ $provee->rfc_proveedor }}</span>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs">@if ($provee->flag_trash == 0)
                                                     <i
                                                         class="text-green-500"></i>
                                                     {{ __('En Sistema') }}
