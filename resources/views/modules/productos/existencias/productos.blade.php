@@ -52,16 +52,7 @@
                             Unidad</th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                            Precio</th>
-                        <th
-                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
                             Status</th>
-                        <th
-                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                            Stock</th>
-                        <th
-                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                            Zona</th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
                             Fecha de Registro</th>
@@ -111,12 +102,6 @@
                             <td
                                 class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Precio</span>
-                                ${{ number_format($producto->precio, 2) }}
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Status</span>
                                 @if ($producto->status == 'Activo')
                                     <span
@@ -125,24 +110,6 @@
                                     <span
                                         class="rounded bg-red-200 py-1 px-3 text-xs text-red-500 font-bold">{{ $producto->status }}</span>
                                 @endif
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Stock</span>
-                                {{ number_format($producto->stock, 0, ',') }}
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Zona</span>
-                                <div class="tooltip text-xs">Zonas: {{ $producto->name }}
-                                    <span class="tooltiptext">
-                                        @foreach ($producto->zonas as $zona)
-                                            {{ $zona->name }} -
-                                        @endforeach
-                                    </span>
-                                </div>
                             </td>
                             <td
                                 class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">

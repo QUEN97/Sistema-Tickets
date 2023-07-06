@@ -68,6 +68,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post("/restorecategoria","do_restore")->name('categoria_restore');
     Route::post("/deletecategoria-permanently","delete_permanently")->name('deletecategoria_permanently');
     Route::get('/marcas','marcas')->name('marcas');
+    Route::get("/trashedmarcas", "trashed_marcas")->name('marcas.trashed');
+    Route::post("/restoremarca", "do_restoreM")->name('marca_restore');
+    Route::post("/deletemarca-permanently", "delete_permanentlyM")->name('deletemarca_permanently');
     });
 
     //Productos

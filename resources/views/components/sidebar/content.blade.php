@@ -6,7 +6,7 @@
     $produc = 'hidden';
     
     $sistem = 'hidden';
-
+    
     $tck = 'hidden';
     
     foreach ($valid as $permis) {
@@ -31,28 +31,64 @@
         </x-slot>
     </x-sidebar.link>
 
-        {{-- Tickets --}}
-        <div class="{{ $modul }}">
-            <x-sidebar.dropdown title="Tickets" :active="Str::startsWith(
-                request()
-                    ->route()
-                    ->uri(),
-                'buttons',
-            )">
-                <x-slot name="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
-                      </svg>
-                </x-slot>
-    
-                <x-sidebar.sublink title="Listado" href="{{ route('tickets') }}" :active="request()->routeIs('tickets')" />
-                        <x-sidebar.sublink title="Tareas" href="{{ route('tareas') }}" :active="request()->routeIs('tareas')" />
-                        <x-sidebar.sublink title="Fallas" href="{{ route('fallas') }}" :active="request()->routeIs('fallas')" />
-                        <x-sidebar.sublink title="Servicios" href="{{ route('servicios') }}" :active="request()->routeIs('servicios')" />
-                        <x-sidebar.sublink title="Prioridades" href="{{ route('prioridades') }}" :active="request()->routeIs('prioridades')" />
-                        <x-sidebar.sublink title="Tipos" href="{{ route('tipos') }}" :active="request()->routeIs('tipos')" />
-            </x-sidebar.dropdown>
-        </div>
+    {{-- Tickets --}}
+    <div class="{{ $modul }}">
+        <x-sidebar.dropdown title="Tickets" :active="Str::startsWith(
+            request()
+                ->route()
+                ->uri(),
+            'buttons',
+        )">
+            <x-slot name="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                </svg>
+            </x-slot>
+
+            <x-sidebar.sublink title="Listado" href="{{ route('tickets') }}" :active="request()->routeIs('tickets')" />
+            <x-sidebar.sublink title="Tareas" href="{{ route('tareas') }}" :active="request()->routeIs('tareas')" />
+            <x-sidebar.sublink title="Fallas" href="{{ route('fallas') }}" :active="request()->routeIs('fallas')" />
+            <x-sidebar.sublink title="Servicios" href="{{ route('servicios') }}" :active="request()->routeIs('servicios')" />
+            <x-sidebar.sublink title="Prioridades" href="{{ route('prioridades') }}" :active="request()->routeIs('prioridades')" />
+            <x-sidebar.sublink title="Tipos" href="{{ route('tipos') }}" :active="request()->routeIs('tipos')" />
+        </x-sidebar.dropdown>
+    </div>
+
+    {{-- Productos --}}
+    <div class="{{ $produc }}">
+        <x-sidebar.dropdown title="Compras" :active="Str::startsWith(
+            request()
+                ->route()
+                ->uri(),
+            'buttons',
+        )">
+            <x-slot name="icon">
+                <svg class="flex-shrink-0 w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z">
+                    </path>
+                </svg>
+                {{-- <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" /> --}}
+            </x-slot>
+            @foreach ($valid as $item)
+                @if ($item->pivot->panel_id == 8 && $item->pivot->re == 1)
+                    <x-sidebar.sublink title="Solicitudes" href="#" :active="request()->routeIs('#')" />
+                @endif
+                @if ($item->pivot->panel_id == 9 && $item->pivot->re == 1)
+                    <x-sidebar.sublink title="Categorías" href="{{ route('categorias') }}" :active="request()->routeIs('categorias')" />
+                @endif
+                @if ($item->pivot->panel_id == 8 && $item->pivot->re == 1)
+                    <x-sidebar.sublink title="Marcas" href="{{ route('marcas') }}" :active="request()->routeIs('marcas')" />
+                @endif
+                @if ($item->pivot->panel_id == 8 && $item->pivot->re == 1)
+                    <x-sidebar.sublink title="Productos" href="{{ route('productos') }}" :active="request()->routeIs('productos')" />
+                @endif
+            @endforeach
+        </x-sidebar.dropdown>
+    </div>
 
     {{-- Modúlos --}}
     <div class="{{ $modul }}">
@@ -97,44 +133,8 @@
         </x-sidebar.dropdown>
     </div>
 
-    {{-- Productos --}}
-    <div class="{{ $produc }}">
-        <x-sidebar.dropdown title="Compras" :active="Str::startsWith(
-            request()
-                ->route()
-                ->uri(),
-            'buttons',
-        )">
-            <x-slot name="icon">
-                <svg class="flex-shrink-0 w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5"
-                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z">
-                    </path>
-                </svg>
-                {{-- <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" /> --}}
-            </x-slot>
-            @foreach ($valid as $item)
-                @if ($item->pivot->panel_id == 8 && $item->pivot->re == 1)
-                    <x-sidebar.sublink title="Solicitudes" href="#" :active="request()->routeIs('#')" />
-                @endif
-                @if ($item->pivot->panel_id == 9 && $item->pivot->re == 1)
-                    <x-sidebar.sublink title="Categorías" href="{{ route('categorias') }}" :active="request()->routeIs('categorias')" />
-                @endif
-                @if ($item->pivot->panel_id == 8 && $item->pivot->re == 1)
-                    <x-sidebar.sublink title="Productos" href="{{ route('productos') }}" :active="request()->routeIs('productos')" />
-                @endif
-            @endforeach
-        </x-sidebar.dropdown>
-    </div>
-
     {{-- Sistema --}}
-    <x-sidebar.dropdown title="Sistema" :active="Str::startsWith(
-        request()
-            ->route()
-            ->uri(),
-        'buttons',
-    )">
+    <x-sidebar.dropdown title="Sistema" :active="Str::startsWith(request() ->route()->uri(), 'buttons',)">
         <x-slot name="icon">
             {{-- <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" /> --}}
             <svg class="flex-shrink-0 w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5"
