@@ -8,7 +8,7 @@
         <meta name="author" content="" />
         <link rel="shortcut icon" href="{{ asset('img/logo/faviconnew.png') }}" type="image/x-icon">
         <title>419 Error - FullGas</title>
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -36,11 +36,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-white">Copyright &copy; FullGas </div>
-                            <div>
-                                <a style="text-decoration: none" class="text-white" href="{{route('policy.show')}}">Privacy Policy |</a>
-                                &middot;
-                                <a style="text-decoration: none" class="text-white" href="{{route('terms.show')}}">Terms &amp; Conditions</a>
-                            </div>
                         </div>
                     </div>
                 </footer>
