@@ -52,13 +52,13 @@
                                         <tr>
                                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                 <div class="flex justify-center items-center">
-                                                    @if ($producto->archivo_path == null)
+                                                    @if ($producto->product_photo_path == null)
                                                     <img class="w-full h-full rounded-full" style="width: 100px;"
                                                         src="{{ asset('storage/product-photos/imagedefault.jpg') }}"
                                                         alt="Imagen" />
                                                 @else
                                                     <img class="w-full h-full rounded-full" style="width: 100px;"
-                                                        src="{{ asset('storage/' . $$producto->archivo_path) }}"
+                                                        src="{{ asset('storage/' . $producto->product_photo_path) }}"
                                                         alt="Imagen" />
                                                 @endif
                                                 </div>

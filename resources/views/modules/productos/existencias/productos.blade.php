@@ -91,7 +91,7 @@
                                 class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Categoria</span>
-                                {{ $producto->categoria->name }}
+                                {{ $producto->categoria->name}}
                             </td>
                             <td
                                 class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
@@ -121,10 +121,15 @@
                                 class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
-                                <div class="grid grid-cols-2">
+                                <div class="flex gap-2">
                                     <div>
                                         @if ($valid->pivot->ed == 1)
-                                            @livewire('productos.existencias.producto-edit', ['producto_id' => $producto->id])
+                                            @livewire('productos.existencias.show-producto', ['productoID' => $producto->id])
+                                        @endif
+                                    </div> 
+                                    <div>
+                                        @if ($valid->pivot->ed == 1)
+                                            @livewire('productos.existencias.producto-edit', ['productoID' => $producto->id])
                                         @endif
                                     </div>
                                     <div>

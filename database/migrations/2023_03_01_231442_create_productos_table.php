@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('product_photo_path', 2048)->nullable();
             $table->unsignedBigInteger('categoria_id');
             $table->unsignedBigInteger('marca_id');
+            $table->string('descripcion',1000);
             $table->string('unidad', 250);
             $table->string('modelo',250);
             $table->enum('status',['Activo','Inactivo'])->default('Activo');
