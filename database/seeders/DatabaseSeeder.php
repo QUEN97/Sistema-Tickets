@@ -864,9 +864,17 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
         ]);
 
+        DB::table('marcas')->insert([
+            'name' => 'Logitech',
+            'status' => 'Activo',
+            'created_at' => now(),
+        ]);
+
         DB::table('productos')->insert([
             'name' => 'MousePad',
             'categoria_id' => 1,
+            'marca_id' => 1,
+            'modelo' => 'Modelo1',
             'unidad' => 'Pieza',
             'status' => 'Activo',
             'created_at' => now(),

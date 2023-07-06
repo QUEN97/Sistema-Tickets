@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('ticket_id');
             $table->string('titulo_correo',250);
             $table->string('solucion',500);
-            $table->string('problema',10000);
+            $table->string('problema',1000);
             $table->string('documento')->nullable();
-            $table->string('com_rev',10000)->nullable();
+            $table->string('com_rev',1000)->nullable();
             $table->string('status',50);
             $table->timestamps();
             $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
