@@ -8,6 +8,5 @@
             @livewire('tickets.new-ticket')
         </div>
     </x-slot>
-    @livewire('tickets.tickets')
-
+        @livewire('tickets.tickets')
 </x-app-layout>

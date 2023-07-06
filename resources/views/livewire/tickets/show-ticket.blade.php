@@ -138,16 +138,8 @@
                 </div>
             @else
                 <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="max-w-[100px]  icon icon-tabler icon-tabler-folder-off" viewBox="0 0 24 24"
-                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M8 4h1l3 3h7a2 2 0 0 1 2 2v8m-2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 1.189 -1.829">
-                        </path>
-                        <path d="M3 3l18 18"></path>
-                    </svg>
-                    <span class="text-xl">No se encontraron Evidencias</span>
+                    <img src="{{ asset('img/logo/emptystate.svg') }}" style="width: 500px" alt="Buzón Vacío">
+                    <span class="">No se encontraron evidencias.</span>
                 </div>
             @endif
         @endif

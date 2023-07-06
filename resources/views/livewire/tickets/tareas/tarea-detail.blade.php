@@ -26,13 +26,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-6 space-y-6">
-                        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                           {{ $tarea->asunto }}
-                        </p>
-                        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            {{ $tarea->mensaje }}
-                        </p>
+                    <div class="p-6 space-y-6 max-h-[320px] overflow-y-auto">
+                        <div>
+                            {{ __('Asunto') }}
+                            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                {{ $tarea->asunto }}
+                             </p>
+                        </div>
+                        <div>
+                            {{ __('Descripción') }}
+                            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                {{ $tarea->mensaje }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             @endif

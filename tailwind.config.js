@@ -20,13 +20,9 @@ module.exports = {
 
             colors: {
                 dark: {
-                    // 'eval-0': '#CBE4DE',
-                    // 'eval-1': '#2C3333',
-                    // 'eval-2': '#2E4F4F',
-                    // 'eval-3': '#0E8388',
-                    'eval-0': '#1e293b',
+                    'eval-0': '#CBE4DE',
                     'eval-1': '#2C3333',
-                    'eval-2': '#334155',
+                    'eval-2': '#2E4F4F',
                     'eval-3': '#0E8388',
                 },
                 cyan: colors.cyan,
