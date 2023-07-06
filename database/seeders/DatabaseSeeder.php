@@ -851,7 +851,7 @@ class DatabaseSeeder extends Seeder
 
 
         DB::table('estacions')->insert([
-            'name' => 'Estacion Inicio',
+            'name' => 'Estacion  Prueba',
             'zona_id' => 1,
             'num_estacion' => 1,
             'status' => 'Activo',
@@ -859,17 +859,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('categorias')->insert([
-            'name' => 'Limpieza',
+            'name' => 'Productos (Genéricos)',
             'status' => 'Activo',
             'created_at' => now(),
         ]);
 
         DB::table('productos')->insert([
-            'name' => 'Ácido Muriático',
+            'name' => 'MousePad',
             'categoria_id' => 1,
             'unidad' => 'Pieza',
-            'precio' => 10.00,
-            'stock' => 1,
             'status' => 'Activo',
             'created_at' => now(),
         ]);
