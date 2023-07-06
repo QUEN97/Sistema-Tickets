@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Compra;
+use App\Models\Estacion;
+use App\Models\Ticket;
+use App\Models\UserArea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RequisicionController extends Controller
 {
