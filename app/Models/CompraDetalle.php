@@ -11,6 +11,6 @@ class CompraDetalle extends Model
     use HasFactory;
 
     public function producto():BelongsTo{
-        return $this->belongsTo(TckProducto::class,'producto_id');
+        return $this->belongsTo(Producto::class,'producto_id');
     }
 }
