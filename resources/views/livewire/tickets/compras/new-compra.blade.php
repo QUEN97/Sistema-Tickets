@@ -93,7 +93,7 @@
                                 <label for="{{$pr->name}}" class="break-all text-start w-full border-2 py-1 px-2 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
                                     <div class="flex justify-center items-center">
                                         <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                            <img src="{{ asset('storage/' . $pr->archivo_path) }}" alt="" class="w-full">
+                                            <img src="{{ asset('storage/' . $pr->product_photo_path) }}" alt="" class="w-full">
                                         </figure>
                                     </div>
                                     {{$pr->name}}

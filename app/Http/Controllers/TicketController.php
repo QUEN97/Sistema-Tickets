@@ -46,4 +46,8 @@ class TicketController extends Controller
         $tareas = Tarea::where('ticket_id', $ticketID)->paginate(5);
         return view('modules.tickets.tareas.index',compact('ticketID','tck','tareas'));
     }
+    public function compra($request){
+        $ticketID=$request;
+        return view('modules.tickets.compras.compras',compact('ticketID'));
+    }
 }

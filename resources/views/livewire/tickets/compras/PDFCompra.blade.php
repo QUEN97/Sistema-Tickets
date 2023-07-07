@@ -99,7 +99,7 @@
                 </th>
                 <th class="text-left text-dark">
                     <h4>
-                        {{ __('REQUISICIÓN DE ').strtoupper($clase->name) }}
+                        {{ __('REQUISICIÓN DE ').strtoupper($categoria->name) }}
                     </h4>
                 </th>
                 <th class="text-right text-dark">
