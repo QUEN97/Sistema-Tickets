@@ -11,6 +11,7 @@ use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PrioridadController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\RequisicionController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\TicketController;

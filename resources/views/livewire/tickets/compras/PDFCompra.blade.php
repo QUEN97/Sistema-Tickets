@@ -99,7 +99,7 @@
                 </th>
                 <th class="text-left text-dark">
                     <h4>
-                        {{ __('REQUISICIÓN DE ').strtoupper($categoria->name) }}
+                        {{ __('REQUISICIÓN DE ').mb_strtoupper($categoria->name) }}
                     </h4>
                 </th>
                 <th class="text-right text-dark">
@@ -200,7 +200,7 @@
                             {{ $item->producto->id }}
                         </td>
                         <td>
-                            <img src="{{ public_path('storage/' . $item->producto->archivo_path) }}" alt="" style="width: 60px">
+                            <img src="{{ public_path('storage/' . $item->producto->product_photo_path) }}" alt="" style="width: 60px">
                         </td>
                         <td class="text-left text-dark">
                             {{ $item->producto->name }}

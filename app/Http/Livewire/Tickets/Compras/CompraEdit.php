@@ -151,6 +151,6 @@ class CompraEdit extends Component
         }
         
         //dd($this->carrito);
-        return view('livewire.tickets.compras.compra-edit',compact('clases','compra'));
+        return view('livewire.tickets.compras.compra-edit',compact('categorias','compra'));
     }
 }
