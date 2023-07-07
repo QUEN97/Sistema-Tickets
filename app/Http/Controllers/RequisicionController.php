@@ -18,14 +18,14 @@ class RequisicionController extends Controller
                 $q->where('user_id',$user->id)
                     ->orWhere('solicitante_id',$user->id);
             })->pluck('id');
-            $compras=Compra::whereIn('ticket_id',$tck)->paginate(10);
+            $compras=Compra::whereIn('ticket_id',$tck)->paginate(5);
         }
         //listado para supervisores
         if($user->permiso_id==2){
             $gerentes=Estacion::where('supervisor_id',$user->id)->pluck('user_id');
             $gerentes->push($user->id);
             $tck=Ticket::whereIn('solicitante_id',$gerentes)->pluck('id');
-            $compras=Compra::whereIn('ticket_id',$tck)->paginate(10);
+            $compras=Compra::whereIn('ticket_id',$tck)->paginate(5);
         }
         //listado para jefes de area
         if($user->permiso_id==7){
@@ -34,11 +34,11 @@ class RequisicionController extends Controller
                 $q->whereIn('user_id',$personal)
                     ->orWhereIn('solicitante_id',$personal);
             })->pluck('id');
-            $compras=Compra::whereIn('ticket_id',$tck)->paginate(10);
+            $compras=Compra::whereIn('ticket_id',$tck)->paginate(5);
         }
         //todos los tickets cuando sea admin o compras
         if(in_array($user->permiso_id,[1,4])){
-            $compras=Compra::orderBy('id', 'DESC')->paginate(10);
+            $compras=Compra::orderBy('id', 'DESC')->paginate(5);
         }
         return view('modules.tickets.compras.compras-list',compact('compras'));
     }
