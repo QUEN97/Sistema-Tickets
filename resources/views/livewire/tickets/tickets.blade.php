@@ -138,6 +138,7 @@
                             <span class="tooltiptext">Editar</span>
                         </a>
                         @livewire('tickets.compras.show-compras',['ticketID'=>$tck->id])
+                        
                         @if (Auth::user()->permiso_id == 1 && $tck->status == 'Cerrado')
                             @livewire('tickets.unlock-ticket', ['ticketID' => $tck->id])
                         @endif

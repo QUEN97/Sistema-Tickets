@@ -75,7 +75,7 @@
                                                 <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                     <div class="flex justify-center items-center">
                                                         <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                            <img src="{{ asset('storage/' . $producto->producto->archivo_path) }}" alt="" class="w-full">
+                                                            <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}" alt="" class="w-full">
                                                         </figure>
                                                     </div>
                                                 </th>

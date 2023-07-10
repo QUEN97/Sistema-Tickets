@@ -37,15 +37,15 @@
                                 <div class="p-5 relative max-w-[18rem] border rounded-md shadow-md dark:bg-slate-700 dark:border-slate-700">
                                     @if ($antigArch->mime_type == "image/png" || $antigArch->mime_type == "image/jpg" || $antigArch->mime_type == "image/jpeg" 
                                                             || $antigArch->mime_type == "image/webp")
-                                        <a href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank" data-lightbox="imagenes-edit-{{ $antigArch->repuesto_id }}" data-title="{{ $antigArch->nombre_archivo }}"
+                                        <a href="{{ asset('storage/'.$antigArch->product_photo_path) }}" target="_blank" data-lightbox="imagenes-edit-{{ $antigArch->repuesto_id }}" data-title="{{ $antigArch->nombre_archivo }}"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
                                             <figure class="d-inline-block max-w-[160px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para visualizar" data-bs-placement="top">
-                                                <img class="w-full" src="{{ asset('storage/'.$antigArch->archivo_path) }}">
+                                                <img class="w-full" src="{{ asset('storage/'.$antigArch->product_photo_path) }}">
                                                 <p class="break-all">{{ $antigArch->nombre_archivo }}</p>
                                             </figure>
                                         </a>
                                     @elseif ($antigArch->mime_type == "application/pdf")
-                                        <a href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
+                                        <a href="{{ asset('storage/'.$antigArch->product_photo_path) }}" target="_blank"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
                                             <figure class="d-inline-block max-w-[160px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
                                                 <img class="w-100" src="{{ asset('img/icons/pdf.png') }}">
@@ -53,7 +53,7 @@
                                             </figure>
                                         </a>
                                     @elseif ($antigArch->mime_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-                                        <a  href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
+                                        <a  href="{{ asset('storage/'.$antigArch->product_photo_path) }}" target="_blank"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
                                             <figure class="d-inline-block max-w-[160px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
                                                 <img class="w-100" src="{{ asset('img/icons/word-2019.svg') }}">
@@ -95,7 +95,7 @@
                     @foreach ($compra->productos as $key =>$pr)
                         <div class=" border flex flex-wrap gap-1 rounded-md justify-center items-center p-2 shadow-md max-w-[18rem] relative dark:bg-slate-700 dark:border-slate-700">
                             <figure class=" w-28 h-28 rounded-full flex justify-center items-center overflow-hidden">
-                                <img src="{{asset('storage/'.$pr->producto->archivo_path )}}" alt="" class="w-full">
+                                <img src="{{asset('storage/'.$pr->producto->product_photo_path )}}" alt="" class="w-full">
                             </figure>
                             <div>
                                 <div>{{$pr->producto->name}}</div>
@@ -193,7 +193,7 @@
                                     <label for="{{$pr->name}}" class="break-all text-start w-full border-2 py-1 px-2 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
                                         <div class="flex justify-center items-center">
                                             <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                <img src="{{ asset('storage/' . $pr->archivo_path) }}" alt="" class="w-full">
+                                                <img src="{{ asset('storage/' . $pr->product_photo_path) }}" alt="" class="w-full">
                                             </figure>
                                         </div>
                                         {{$pr->name}}

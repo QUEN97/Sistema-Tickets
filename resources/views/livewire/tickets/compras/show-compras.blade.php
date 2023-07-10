@@ -1,7 +1,7 @@
 <div class="col-md-4 col-sm-6 col-6 d-flex justify-content-end justify-content-md-end justify-content-sm-end">
     <div class="">
-        <button wire:click="$set('modal',true)" class="tooltip">
-            <svg class="w-6 h-6 text-gray-400 hover:text-indigo-500 transition duration-300" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-bag" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <button wire:click="$set('modal',true)" class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip">
+            <svg class="w-6 h-6 hover:text-yellow-400" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-bag" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z"></path>
                 <path d="M9 11v-5a3 3 0 0 1 6 0v5"></path>
@@ -57,7 +57,7 @@
                                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                 <div class="flex justify-center items-center">
                                                     <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                        <img src="{{ asset('storage/' . $producto->producto->archivo_path) }}" alt="" class="w-full">
+                                                        <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}" alt="" class="w-full">
                                                     </figure>
                                                 </div>
                                             </th>

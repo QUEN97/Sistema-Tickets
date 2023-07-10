@@ -60,6 +60,8 @@ class EditTicket extends Component
         $tck->asunto=$this->asunto;
         $tck->mensaje=$this->mensaje;
         $tck->status=$this->status;
+        $tck->created_at=$this->creado;
+        $tck->fecha_cierre=$this->vence;
         $tck->save();
         if ($tck->status !== 'Cerrado') {
             $tck->status = $this->status;
