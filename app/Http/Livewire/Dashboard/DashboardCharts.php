@@ -74,11 +74,11 @@ class DashboardCharts extends Component
 
         $userId = Auth::id();
         $prioridades = DB::table('tickets')
-        ->where(function ($query) use ($userId) {
-            if ($userId !== 1) {
-                $query->where('user_id', $userId);
-            }
-        })
+            ->where(function ($query) use ($userId) {
+                if ($userId !== 1) {
+                    $query->where('user_id', $userId);
+                }
+            })
             ->join('fallas', 'tickets.falla_id', 'fallas.id')
             ->join('prioridades', 'fallas.prioridad_id', 'prioridades.id')
             ->whereMonth('tickets.created_at', Carbon::now()->month)
@@ -92,7 +92,6 @@ class DashboardCharts extends Component
         foreach ($prioridades as $prioridad) {
             $labelsP[] = $prioridad->prioridad;
         }
-
         $chartTicketsPrioridad->setType('donut')
             ->setTitle('Total Tickets por Prioridad')
             ->setSubtitle('Mes en curso')
