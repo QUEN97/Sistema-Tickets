@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Dashboard;
 
+use App\Models\Ticket;
 use Livewire\Component;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -12,71 +14,91 @@ class DashboardCharts extends Component
 
     public function render()
     {
-        $valid = Auth::user()->permiso->panels->where('id', 13)->first();
+        $user = Auth::user();
 
-        $chartRepuestos= new LarapexChart();
-        $chartPR= new LarapexChart();
-        $chartSol=new LarapexChart();
-        
-        $labelsR=[];
-        //$datosR=[];
-        $labelsPR=[];
-        $datosSol=[];
-        $labelSol=[];
+        $chartTickets = new LarapexChart();
+        $chartTicketsAsignados = new LarapexChart();
+        $chartTicketsPrioridad = new LarapexChart();
 
-        $esta = DB::table('repuestos')
-        ->join('estacions', 'repuestos.estacion_id','estacions.id')
-        ->join('productos', 'repuestos.producto_id','productos.id')
-        ->selectRaw('count(repuestos.producto_id) as products, estacions.name as estacion')
-        ->where('repuestos.flag_trash', 0)
-        ->groupBy('estacion')->orderBy('products', 'desc')->take(5)->get();
+        $labelsT = [];
+        $labelsA = [];
+        $labelsP = [];
 
-        foreach($esta as $es){
-            $labelsR[]=$es->estacion;
+        $estaciones = DB::table('tickets')
+            ->join('users', 'tickets.solicitante_id', 'users.id')
+            ->where('users.permiso_id', 3)
+            ->whereMonth('tickets.created_at', Carbon::now()->month)
+            ->selectRaw('count(tickets.user_id) as tcks, users.name as estacion')
+            ->groupBy('estacion')
+            ->orderBy('tcks', 'desc')
+            ->orderBy('tickets.created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        foreach ($estaciones as $estacion) {
+            $labelsT[] = $estacion->estacion;
         }
-        $chartRepuestos->setType('pie')
-        ->setTitle('Repuestos por Estación')
-        ->setSubtitle('Top 5 que más solicitan repuestos.')
-        ->setDataset($esta->pluck('products'))
-        ->setLabels($labelsR);
 
+        $chartTickets->setType('area')
+            ->setTitle('Tickets por Estación')
+            ->setSubtitle('Top 5 del Mes ')
+            ->setXAxis($labelsT)
+            ->setDataset([[
+                'name' => 'Tickets',
+                'data' => $estaciones->pluck('tcks')
+            ]])
+            ->setHeight(320)
+            ->setColors(['#FF0049']);
 
-        $datPR=DB::table('repuestos')
-        ->join('estacions', 'repuestos.estacion_id','estacions.id')
-        ->join('productos', 'repuestos.producto_id','productos.id')
-        ->selectRaw('count(repuestos.producto_id) as cant, productos.name')
-        ->where('repuestos.flag_trash', 0)->groupBy('name')->orderBy('cant', 'desc')->take(5)->get();
+        $asignados = DB::table('tickets')
+            ->join('users', 'tickets.user_id', 'users.id')
+            ->where('users.permiso_id', 5)
+            ->whereMonth('tickets.created_at', Carbon::now()->month)
+            ->selectRaw('count(tickets.user_id) as tcks, users.name as nombre')
+            ->groupBy('nombre')
+            ->orderBy('tcks', 'desc')
+            ->orderBy('tickets.created_at', 'desc')
+            ->take(5)
+            ->get();
 
-        foreach($datPR as $pr){
-            $labelsPR[]=$pr->name;
+        foreach ($asignados as $asignado) {
+            $labelsA[] = $asignado->nombre;
         }
-        $chartPR->setTitle('Repuestos Solicitados')
-        ->setSubtitle('Top 5 de Repuestos más solicitados')        
-        ->setType('bar')->setXAxis($labelsPR)->setGrid(true)->setDataset([[
-            'name'  => 'Ventas',
-            'data'  =>  $datPR->pluck('cant')
-          ]])
-        ->setColors(['#FF8F00'])
-        ->setHeight(320);
 
-        $sol = DB::table('solicituds')
-        ->join('estacions', 'solicituds.estacion_id', '=', 'estacions.id')
-        ->selectRaw('count(solicituds.estacion_id) as solicitudes, estacions.name as estacion')
-        ->where('solicituds.deleted_at', null)->groupBy('estacion')->orderBy('solicitudes', 'desc')->take(5)->get();
-        
-        foreach ($sol as $s){
-            $labelSol[] = $s->estacion;
+        $chartTicketsAsignados->setType('pie')
+            ->setTitle('Tickets Asignados por Usuario')
+            ->setSubtitle('Top 5 del Mes')
+            ->setDataset($asignados->pluck('tcks'))
+            ->setLabels($labelsA);
+
+
+        $userId = Auth::id();
+        $prioridades = DB::table('tickets')
+        ->where(function ($query) use ($userId) {
+            if ($userId !== 1) {
+                $query->where('user_id', $userId);
+            }
+        })
+            ->join('fallas', 'tickets.falla_id', 'fallas.id')
+            ->join('prioridades', 'fallas.prioridad_id', 'prioridades.id')
+            ->whereMonth('tickets.created_at', Carbon::now()->month)
+            ->selectRaw('count(tickets.user_id) as tcks, prioridades.name as prioridad')
+            ->groupBy('falla_id', 'prioridad')
+            ->orderBy('tcks', 'desc')
+            ->orderBy('tickets.created_at', 'desc')
+            ->get();
+
+
+        foreach ($prioridades as $prioridad) {
+            $labelsP[] = $prioridad->prioridad;
         }
-        $chartSol->setType('area')
-        ->setTitle('Solicitudes por estacion')
-        ->setSubtitle('Top 5 Estaciones con mayor número de solicitudes')
-        ->setXAxis($labelSol)
-        ->setDataset([[
-            'name' => 'Prueba',
-            'data' =>$sol->pluck('solicitudes')]])
-        ->setHeight(320)
-        ->setColors(['#FF0049']);
 
-        return view('livewire.dashboard.dashboard-charts',compact('chartRepuestos','esta','chartPR','sol','chartSol'));
+        $chartTicketsPrioridad->setType('donut')
+            ->setTitle('Total Tickets por Prioridad')
+            ->setSubtitle('Mes en curso')
+            ->setDataset($prioridades->pluck('tcks'))
+            ->setLabels($labelsP);
+
+        return view('livewire.dashboard.dashboard-charts', compact('chartTickets', 'chartTicketsAsignados', 'chartTicketsPrioridad'));
     }
 }

@@ -46,10 +46,10 @@
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm{{ $errors->has('supervisor') ? 'is-invalid' : '' }}"
                             name="supervisor" required aria-required="true">
                             @if ($this->isSuper == null)
-                                <option hidden value="" selected>Seleccionar
+                                <option  value="" hidden >Seleccionar
                                     Supervisor</option>
                             @else
-                                <option hidden value="" selected>Seleccionar
+                                <option hidden value="" >Seleccionar
                                     Supervisor</option>
                                 @foreach ($this->isSuper as $supervisorl)
                                     <option value="{{ $supervisorl->id }}"

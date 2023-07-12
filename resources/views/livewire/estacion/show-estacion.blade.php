@@ -54,56 +54,6 @@
                         </div>
                     </div>
                 </div>
-                @if ($estaciones->productos->isnotEmpty())
-                    <div class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
-                        <details>
-                            <summary class="bg-gray-100 py-2 px-4 cursor-pointer">Click para mostrar/ocultar
-                                Productos en Almacén</summary>
-                            <table class="table-auto w-full">
-                                <thead>
-                                    <tr>
-                                        <th class="px-4 py-2">Nombre</th>
-                                        <th class="px-4 py-2">Categoria</th>
-                                        <th class="px-4 py-2">Unidad</th>
-                                        <th class="px-4 py-2">Stock</th>
-                                        <th class="px-4 py-2">Disponibilidad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($estaciones->productos as $produc)
-                                        <tr>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs"> {{ $produc->name }}</span>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs"> {{ $produc->categoria->name }}</span>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs">{{ $produc->unidad }}</span>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs"> {{ $produc->pivot->stock }}</span>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs">
-                                                    @if ($produc->pivot->flag_trash == 0)
-                                                    <span class="text-xs">{{ __('En Sistema') }}</span>
-                                                @else
-                                                    <span class="text-xs">{{ __('En Papelera') }}</span>
-                                                @endif
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td class="border px-4 py-2" colspan="5">Sin datos.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </details>
-                    </div>
-                @endif
                 <div class="px-6 pt-4 pb-2">
                     <span class="text-indigo-500 font-bold">Zona:</span>
                     <span

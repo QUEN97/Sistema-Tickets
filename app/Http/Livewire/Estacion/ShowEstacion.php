@@ -47,14 +47,6 @@ class ShowEstacion extends Component
             $this->supervisor = "Sin Supervisor en esta Estación";
         }
 
-        $this->productos = $estacion->productos->count();
-
-        if ($this->productos != 0) {
-            $this->producto = $this->productos;
-        } else {
-            $this->producto = "Sin Producto en esta Estación";
-        }
-
         $this->status = $estacion->status;
 
         $this->ShowgEstacion=true;
