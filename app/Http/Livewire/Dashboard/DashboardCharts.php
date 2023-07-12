@@ -76,7 +76,8 @@ class DashboardCharts extends Component
         $prioridades = DB::table('tickets')
             ->where(function ($query) use ($userId) {
                 if ($userId !== 1) {
-                    $query->where('user_id', $userId);
+                    $query->where('user_id', $userId)
+                    ->orWhere('solicitante_id',$userId);
                 }
             })
             ->join('fallas', 'tickets.falla_id', 'fallas.id')

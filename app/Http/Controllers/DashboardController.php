@@ -60,7 +60,8 @@ class DashboardController extends Controller
             ->where('status', 'Abierto')
             ->where(function ($query) use ($userId) {
                 if ($userId !== 1) {
-                    $query->where('user_id', $userId);
+                    $query->where('user_id', $userId)
+                    ->orWhere('solicitante_id',$userId);
                 }
             })
             ->whereMonth('created_at', $mesActual)
@@ -72,7 +73,8 @@ class DashboardController extends Controller
             ->where('status', 'En proceso')
             ->where(function ($query) use ($userId) {
                 if ($userId !== 1) {
-                    $query->where('user_id', $userId);
+                    $query->where('user_id', $userId)
+                    ->orWhere('solicitante_id',$userId);
                 }
             })
             ->whereMonth('created_at', $mesActual)
@@ -83,7 +85,8 @@ class DashboardController extends Controller
             ->where('status', 'Cerrado')
             ->where(function ($query) use ($userId) {
                 if ($userId !== 1) {
-                    $query->where('user_id', $userId);
+                    $query->where('user_id', $userId)
+                    ->orWhere('solicitante_id',$userId);
                 }
             })
             ->whereMonth('created_at', $mesActual)
