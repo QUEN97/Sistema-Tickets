@@ -35,6 +35,9 @@ class NewTarea extends Component
         if ($ticket->status === 'Abierto') {
             Alert::warning('Ticket Abierto', 'No se puede crear una tarea para un ticket abierto.');
             return redirect()->route('tck.tarea', ['id' => $ticket->id]); //para redirigir a la pestaña del ticket que se crea la tarea
+        }elseif($ticket->status === 'Cerrado'){// por si admin intenta crear una tarea con ticket cerrado
+            Alert::warning('Ticket Cerrado', 'No se puede crear una tarea para un ticket cerrado.');
+            return redirect()->route('tck.tarea', ['id' => $ticket->id]);
         }
 
         // Crear la tarea
