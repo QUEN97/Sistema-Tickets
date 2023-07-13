@@ -4,20 +4,18 @@
     </div>
     <div class="flex gap-2 justify-evenly ">
 
-        @if (Auth::user()->permiso_id == 1)
-            <div class="mb-4">
-                <x-label value="{{ __('Agente') }}" for="user_signado" />
-                <select wire:model="user_asignado" id="user_asignado"
-                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+        <div class="mb-4">
+            <x-label value="{{ __('Agente') }}" for="user_signado" />
+            <select wire:model="user_asignado" id="user_asignado"
+                class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                     dark:focus:ring-offset-dark-eval-1 w-full"">
-                    <option value="">Seleccionar agente</option>
-                    @foreach ($agentes as $agente)
-                        <option value="{{ $agente->id }}">{{ $agente->name }}</option>
-                    @endforeach
-                </select>
-                <x-input-error for="user_asignado"></x-input-error>
-            </div>
-        @endif
+                <option value="">Seleccionar agente</option>
+                @foreach ($agentes as $agente)
+                    <option value="{{ $agente->id }}">{{ $agente->name }}</option>
+                @endforeach
+            </select>
+            <x-input-error for="user_asignado"></x-input-error>
+        </div>
 
         <div class="mb-4">
             <x-label value="{{ __('Asunto') }}" for="asunto" />

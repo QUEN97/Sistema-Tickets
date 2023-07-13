@@ -24,42 +24,65 @@ class NewTicket extends Component
         $asignado, $creador, $cierre, $asunto, $mensaje, //Se definen varias propiedades públicas para almacenar los datos del ticket, como el área, servicio, falla, asunto, mensaje, etc.
         $evidencias = [], $urlArchi, $modal = false;
 
-     public function mount()
-     {
-         $this->closeExpiredTickets();
-     }
+    public function mount()
+    {
+        $this->closeExpiredTickets();
+    }
 
     public function updatedArea($id)
     { //El método updatedArea() se ejecuta cuando se actualiza el área seleccionada y carga los servicios correspondientes a esa área.
-        $this->servicios = Areas::find($id)->servicios;
+        $this->servicios = Servicio::where('area_id', $id)->get();
+        $this->fallas = [];
+        $this->personal = [];
     }
     public function updatedServicio($id)
     { //El método updatedServicio() se ejecuta cuando se actualiza el servicio seleccionado y carga las fallas correspondientes a ese servicio.
-        $this->fallas = Servicio::find($id)->fallas;
+        $this->fallas = Falla::where('servicio_id', $id)->get();
+        $this->personal = [];
     }
     public function updatedFalla()
     { //El método updatedFalla() se ejecuta cuando se actualiza la falla seleccionada y carga el personal asignado correspondiente a esa área.
         $this->personal = Areas::find($this->area)->users;
     }
+
+    //función para encontrar el agente con menor cant. de tcks asignados el día de hoy
+    public function agenteDisponible(){
+        $desocupado=[];
+        $disponible=[];
+        foreach ($this->personal as $key=> $personal){
+            $desocupado[$key]['id']=$personal->id;
+            /* $desocupado[$key]['name']=$personal->name; */
+            $desocupado[$key]['cant']=$personal->ticketsHoy->count();
+        }
+        $disponible=$desocupado[0];
+        foreach($desocupado as $pos){
+            if($pos['cant']<$disponible['cant']){
+                $disponible=$pos;
+            }
+        }
+        //dd($disponible);
+        return $disponible['id'];
+    }
+
     public function addTicket()
     { //El método addTicket() se ejecuta cuando se envía el formulario para agregar un nuevo ticket. 
         $this->validate([ //Valida los campos requeridos y crea un nuevo registro de ticket en la base de datos.
             'area' => ['required', 'not_in:0'],
-            'departamento' => ['required', 'not_in:0'],
             'servicio' => ['required', 'not_in:0'],
             'falla' => ['required', 'not_in:0'],
-            'asignado' => ['required', 'not_in:0'],
+            // 'asignado' => ['required', 'not_in:0'],
             'asunto' => ['required'],
             'mensaje' => ['required'],
         ], [
             'area.required' => 'Seleccione un área',
-            'departamento.required' => 'Seleccione un departamento',
             'servicio.required' => 'Seleccione un servicio',
             'falla.required' => 'Seleccione una falla',
-            'asignado.required' => 'Seleccione un agente del área',
+            // 'asignado.required' => 'Seleccione un agente del área',
             'asunto.required' => 'El asunto es requerido',
             'mensaje.required' => 'Ingrese los detalles del problema',
         ]);
+
+        $this->asignado=$this->agenteDisponible();
 
         $ticket = new Ticket();
         $ticket->falla_id = $this->falla;
@@ -84,41 +107,40 @@ class NewTicket extends Component
                 $archivo->save();
             }
         }
+
         Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); //Finalmente, se muestra una alerta de éxito y se redirige a la página de tickets.
         return redirect()->route('tickets');
     }
 
+    protected function closeExpiredTickets()
+    {
+        $tickets = Ticket::whereNotNull('fecha_cierre')
+            ->where('status', '<>', 'Cerrado')
+            ->where('fecha_cierre', '<=', Carbon::now())
+            ->get();
+
+
+        foreach ($tickets as $ticket) {
+            DB::beginTransaction();
+
+            try {
+                $ticket->status = 'Cerrado';
+                $ticket->save();
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+            }
+        }
+
+        return Response::json(['success' => true]);
+    }
+
     public function render()
     {
-        $departamentos = Departamento::all();
-        $areas = $this->departamento ? Departamento::find($this->departamento)->areas : collect([]);
+        $areas = Areas::where('status', 'Activo')->get();
         return view('livewire.tickets.new-ticket', [
-            'departamentos' => $departamentos,
             'areas' => $areas,
         ]);
     }
-
-     protected function closeExpiredTickets()
-     {
-         $tickets = Ticket::whereNotNull('fecha_cierre')
-             ->where('status', '<>', 'Cerrado')
-             ->where('fecha_cierre', '<=', Carbon::now())
-             ->get();
-
-
-         foreach ($tickets as $ticket) {
-             DB::beginTransaction();
-
-             try {
-                 $ticket->status = 'Cerrado';
-                 $ticket->save();
-
-                 DB::commit();
-             } catch (\Exception $e) {
-                 DB::rollBack();
-             }
-         }
-
-         return Response::json(['success' => true]);
-     }
 }

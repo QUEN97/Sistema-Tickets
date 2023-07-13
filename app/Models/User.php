@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -97,5 +99,13 @@ class User extends Authenticatable
 
     public function region(){
         return $this->belongsTo(Region::class);
+    }
+
+    public function tickets():HasMany{
+        return $this->hasMany(Ticket::class);
+    }
+    public function ticketsHoy(){
+        $fecha=Carbon::now()->format('Y-m-d');
+        return $this->hasMany(Ticket::class)->whereBetween('created_at',[$fecha.' 00:00:00',$fecha.' 23:59:00']);
     }
 }

@@ -24,16 +24,27 @@ class Comentarios extends Component
             'status.required' => 'Seleccione el status',
             'mensaje.required' => 'Ingrese el contenido del comentario'
         ]);
+        
         try{
             $reg=new Comentario();
             $reg->ticket_id=$this->ticketID;
             $reg->user_id=Auth::user()->id;
             $reg->comentario=$this->mensaje;
             $reg->save();
-            $tck->status=$this->status;
+
+            if ($tck->status != 'Cerrado' && Auth::user()->permiso_id != 1) {
+                $tareasPendientes = $tck->tareas->where('status', '!=', 'Cerrado');
+                if ($tareasPendientes->isNotEmpty()) {
+                    Alert::warning('Tareas Pendientes', 'No es posible cerrar el ticket debido a que existen tareas pendientes.');
+                    return redirect()->route('tickets');
+                }
+            }
+    
+            $tck->status = $this->status;
             $tck->save();
+    
             if ($tck->status == 'Cerrado') {
-                $tck->cerrado  = now();
+                $tck->cerrado = now();
                 $tck->save();
             }
 
@@ -54,9 +65,9 @@ class Comentarios extends Component
         catch(Exception $e){
             Alert::error('ERROR',$e->getMessage());
         }
-        
         return redirect()->route('tickets');
     }
+
     public function removeCom(Comentario $dato){
         foreach($dato->archivos as $archivo){
             $archivo->delete();

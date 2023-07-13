@@ -50,6 +50,7 @@
     </div>
 
     <div class="mt-4 bg-white dark:bg-dark-eval-1 text-gray-800 p-4 rounded-md shadow-lg">
+        <span class="bg-gray-400 p-1 rounded-md text-white text-bold">Evidencias: </span>
         {{-- Evidencias en BD --}}
         <div class="max-h-[150px] overflow-auto">
             @if ($evidenciaArc)

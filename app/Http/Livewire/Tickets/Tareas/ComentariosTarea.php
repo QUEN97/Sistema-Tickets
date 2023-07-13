@@ -29,8 +29,13 @@ class ComentariosTarea extends Component
             $reg->comentario=$this->mensaje;
             $reg->save();
             $tarea->status=$this->status;
-
             $tarea->save();
+            if ($tarea->status == 'Cerrado') {
+                $tarea->fecha_cierre  = now();
+                $tarea->save();
+            }
+
+            Alert::success('Tarea Actualizada', 'Se ha actualizado la información de la tarea');
         }
         catch(Exception $e){
             Alert::error('ERROR',$e->getMessage());
