@@ -38,6 +38,7 @@ class Comentarios extends Component
             $reg->ticket_id=$this->ticketID;
             $reg->user_id=Auth::user()->id;
             $reg->comentario=$this->mensaje;
+            $reg->statustck=$this->status;
             $reg->save();
     
             $tck->status = $this->status;
