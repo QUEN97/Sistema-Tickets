@@ -29,7 +29,12 @@ class NewTarea extends Component
             'asunto' => 'required',
             'mensaje' => 'required',
             'user_asignado' => 'required|exists:users,id',
-        ]);
+        ],
+    [
+        'asunto.required'=>'El campo Asunto es Obligatorio.',
+        'mensaje.required'=>'El campo Descripción es Obligatorio',
+        'user_asignado.required'=>'El campo Agente es Obligatorio'
+    ]);
 
         $ticket = Ticket::find($this->ticketID); // Obtener el ticket correspondiente
         if ($ticket->status === 'Abierto') {

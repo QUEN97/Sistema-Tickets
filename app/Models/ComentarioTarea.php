@@ -15,4 +15,8 @@ class ComentarioTarea extends Model
     public function usuario():BelongsTo{
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function tarea():BelongsTo{
+        return $this->belongsTo(Tarea::class);
+    }
 }
