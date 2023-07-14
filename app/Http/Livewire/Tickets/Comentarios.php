@@ -66,7 +66,7 @@ class Comentarios extends Component
         catch(Exception $e){
             Alert::error('ERROR',$e->getMessage());
         }
-        return redirect()->route('tickets');
+        return redirect()->route('tck.ver', ['id' => $tck->id]); //para redirigir a la pestaña del ticket que se crea el comentario
     }
 
     public function removeCom(Comentario $dato){
