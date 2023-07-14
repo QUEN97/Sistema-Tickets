@@ -45,7 +45,7 @@ class ComentariosTarea extends Component
             Alert::error('ERROR',$e->getMessage());
         }
         
-        return redirect()->route('tck.tarea', ['id' => $ticketId]); //para redirigir a la pestaña del ticket que se crea la tarea
+        return redirect()->route('tck.tarea', ['id' => $ticketId]); //para redirigir a la pestaña del ticket que se crea el comentario de la tarea
     }
     public function removeCom(ComentarioTarea $dato){
         $dato->delete();
