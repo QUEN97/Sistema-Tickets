@@ -20,4 +20,7 @@ class Comentario extends Model
     public function archivos():HasMany {
         return $this->hasMany(ArchivosComentario::class);
     }
+    public function tickets():HasMany{
+        return $this->hasMany(Comentario::class,'ticket_id');
+    }
 }

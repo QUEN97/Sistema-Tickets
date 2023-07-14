@@ -44,34 +44,9 @@
                 <x-input-error for="evidencias"></x-input-error>
 
                 <!-- Progress Bar -->
-                <div wire:loading wire:target="evidencias"></div>
-                <div class="progress" x-show="isUploading" id="archivoRemis">
-                    <div class="relative pt-1">
-                        <div class="flex mb-2 items-center justify-between">
-                            <div>
-                                <span
-                                    class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200">
-                                    Subiendo...
-                                </span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-xs font-semibold inline-block text-red-300">
-                                    50%
-                                </span>
-                            </div>
-                        </div>
-                        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-300">
-                            <div style="width: 10%"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
-                            </div>
-                            <div style="width: 15%"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-600">
-                            </div>
-                            <div style="width: 25%"
-                                class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-700">
-                            </div>
-                        </div>
-                    </div>
+                <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 mb-2 dark:bg-gray-700">
+                    <div class="bg-red-600 h-2.5 rounded-full dark:bg-red-500 transition-[width] duration-500"
+                        x-bind:style="`width:${progress}%`"></div>
                 </div>
             </div>
         </x-slot>

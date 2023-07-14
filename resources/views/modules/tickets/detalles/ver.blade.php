@@ -66,8 +66,10 @@
                                 src="{{ asset('img/logo/blank-profile-picture-973460_1280.webp') }}" alt="username" />
                             <div class="w-full pb-2">
                                 <div class="flex justify-between">
-                                    <span
+                                    <div class="flex">
+                                        <span
                                         class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $comentario->usuario->name }}</span>
+                                    </div>
                                     <span
                                         class="block ml-2 text-xs text-gray-600 dark:text-white">{{ $comentario->created_at->format('M d, Y H:i a') }}</span>
                                 </div>
