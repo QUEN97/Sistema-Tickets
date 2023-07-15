@@ -7,13 +7,15 @@
             <div>
                 <x-label value="{{ __('Creado') }}" for="creado" />
                 <x-input wire:model.defer="creado" type="datetime-local" name="creado" id="creado"
-                    class="border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700" />
+                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
                 <x-input-error for="asunto"></x-input-error>
             </div>
             <div>
                 <x-label value="{{ __('Vencimiento') }}" for="vence" />
                 <x-input wire:model.defer="vence" type="datetime-local" name="vence" id="vence"
-                    class="border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700" />
+                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
                 <x-input-error for="asunto"></x-input-error>
             </div>
         </div>
@@ -21,7 +23,8 @@
             <div class="text-center mb-2">
                 <x-label value="{{ __('Cerrado') }}" for="cerrado" />
                 <x-input wire:model.defer="cerrado" type="datetime-local" name="cerrado" id="cerrado"
-                    class="border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700" />
+                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
                 <x-input-error for="asunto"></x-input-error>
             </div>
         @endif
@@ -113,7 +116,8 @@
         <div class="flex flex-wrap gap-2 ">
             <div class="w-full">
                 <x-label value="{{ __('Asunto') }}" for="asunto" />
-                <x-input wire:model.defer="asunto" type="text" name="asunto" id="asunto" class="w-full" required
+                <x-input wire:model.defer="asunto" type="text" name="asunto" id="asunto" class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" required
                     autofocus autocomplete="asunto" />
                 <x-input-error for="asunto"></x-input-error>
             </div>

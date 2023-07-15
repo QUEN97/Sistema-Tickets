@@ -17,28 +17,48 @@ use RealRashid\SweetAlert\Facades\Alert;
 class NewCompra extends Component
 {
     use WithFileUploads;
-    public $ticketID,$w=0,$step=1;
+    public $ticketID,$w=0,$w2=0,$step=1;
     //variables del formulario
     public $titulo,$problema,$solucion,$evidencias=[],$urlArchi,$categoria,$productos,$carrito=[],$search;
     //funciones para controlar el formulario con Steps
     public function nextStep(){
-        $this->validate([
-            'titulo' => ['required'],
-            'problema' => ['required'],
-            'solucion' => ['required'],
-            'evidencias' => ['required'],
-        ],[
-            'titulo.required' => 'Ingrese un título',
-            'problema.required' => 'Describa el problema',
-            'solucion.required' => 'Ingrese la soución',
-            'evidencias.required' => 'Cargue sus evidencias'
-        ]);
-        $this->w=100;
-        $this->step=2;
+        if($this->step==1){
+            $this->validate([
+                'titulo' => ['required'],
+                'problema' => ['required'],
+                'solucion' => ['required'],
+                'evidencias' => ['required'],
+            ],[
+                'titulo.required' => 'Ingrese un título',
+                'problema.required' => 'Describa el problema',
+                'solucion.required' => 'Ingrese la soución',
+                'evidencias.required' => 'Cargue sus evidencias'
+            ]);
+            $this->w=100;
+        }else{
+            //limpiamos el carrito en caso que haya lugares con id=false
+            $this->carrito=array_filter($this->carrito,function($element){
+                if($element['id']!=false){
+                    return $element;
+                }
+            });
+            $this->validate([
+                'carrito' => ['required'],
+            ],[
+                'carrito.required' => 'Seleccione un producto'
+            ]);
+            $this->w2=100;
+        }
+       
+        $this->step++;
     }
     public function previusStep(){
-        $this->w=0;
-        $this->step=1;
+        $this->step--;
+        if($this->step==1){
+            $this->w=0;
+        }else{
+            $this->w2=0;
+        }
     }
     //-------------------------------//
 
@@ -60,11 +80,11 @@ class NewCompra extends Component
     public function addCompra(){
         //dd($this->carrito);
         //eliminamos elementos cuando el id sea falso,no exista el id,la prioridad o la cantidad
-        $this->carrito=array_filter($this->carrito,function($element){
-                if(count($element)==3 && $element['id']!=false){
-                    return $element;
-                }
-        });
+        // $this->carrito=array_filter($this->carrito,function($element){
+        //         if(count($element)==3 && $element['id']!=false){
+        //             return $element;
+        //         }
+        // });
         $this->validate([
             'carrito' => ['required'],
             'carrito.*.prioridad' => ['required'],

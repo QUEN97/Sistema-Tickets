@@ -52,15 +52,17 @@
     <div class="mt-4 bg-white dark:bg-dark-eval-1 text-gray-800 p-4 rounded-md shadow-lg">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-3">
             <span
-            class="inline-flex items-center p-1 text-sm font-medium text-center text-white bg-gray-400 rounded-lg">
-            Comentarios
-            <span
-                class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                {{ $comentarios->count() }}
+                class="inline-flex items-center p-1 text-sm font-medium text-center text-white bg-gray-400 rounded-lg">
+                Comentarios
+                <span
+                    class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                    {{ $comentarios->count() }}
+                </span>
             </span>
-        </span>
             <div>
-                @livewire('tickets.comentarios', ['ticketID' => $tck->id])
+                @if ($tck->status != 'Cerrado')
+                    @livewire('tickets.comentarios', ['ticketID' => $tck->id])
+                @endif
             </div>
         </div>
         @if ($comentarios->count() > 0)
@@ -231,7 +233,7 @@
 
                                     </div>
                                     <span
-                                        class="block ml-2 text-xs text-gray-600 dark:text-white">{{ $comentario->created_at->format('M d, Y H:i a') }}</span>
+                                        class="block ml-2 text-xs text-gray-600 dark:text-white">{{ $comentario->created_at->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}</span>
                                 </div>
                                 <span
                                     class="block ml-2 text-sm text-gray-600 dark:text-white">{{ $comentario->comentario }}</span>

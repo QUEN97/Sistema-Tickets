@@ -6,14 +6,16 @@
         <div class="w-full">
             <x-label value="{{ __('Asunto') }}" for="asunto" />
             <x-input wire:model="asunto" type="text" name="asunto" disabled id="asunto"
-                class="w-full border-gray-300 dark:bg-slate-800 dark:border-gray-700" required autofocus
+                class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" required autofocus
                 autocomplete="asunto" />
             <x-input-error for="asunto"></x-input-error>
         </div>
         <div class="w-full">
             <x-label value="{{ __('Descripción') }}" for="mensaje" />
             <textarea wire:model="mensaje" disabled
-                class="resize-none w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('mensaje') ? 'is-invalid' : '' }} resize-none"
+                class="resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('mensaje') ? 'is-invalid' : '' }} "
                 name="mensaje" required autofocus autocomplete="mensaje">
             </textarea>
             <x-input-error for="mensaje"></x-input-error>
@@ -24,7 +26,7 @@
     <div class="max-h-[150px] overflow-auto">
         @if ($evidenciaArc)
             @if ($evidenciaArc->count() > 0)
-                <label class="flex justify-center gap-3 items-center text-white bg-amber-600 p-1">
+                <label class="flex justify-center gap-3 items-center text-white bg-pink-600 p-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16"
                         viewBox="0 0 576 512">
                         <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->

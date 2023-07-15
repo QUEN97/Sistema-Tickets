@@ -4,7 +4,7 @@
             <div class="flex gap-1 flex-col">
                 <x-label value="{{ __('Filtro') }}" for="status" />
                 <select name="status" id="status"
-                    class="text-sm border-gray-200 rounded-md dark:bg-dark-eval-0 dark:text-black">
+                    class="text-sm rounded-md dark:bg-dark-eval-0 dark:text-white">
                     <option hidden value="" selected>Todos</option>
                     <option value="Abierto">Abierto</option>
                     <option value="En proceso">En proceso</option>
@@ -14,12 +14,12 @@
             <div class="flex gap-1 flex-col">
                 <x-label value="{{ __('Fecha inicial') }}" for="fechaIn" />
                 <input type="date" name="start" id="fechaIn"
-                    class="text-sm border-gray-200 rounded-md dark:bg-dark-eval-0 dark:text-black" />
+                    class="text-sm rounded-md dark:bg-dark-eval-0 dark:text-white" />
             </div>
             <div class="flex gap-1 flex-col">
                 <x-label value="{{ __('Fecha final') }}" for="sfechaEnd" />
                 <input type="date" name="end" id="fechaEnd"
-                    class="text-sm border-gray-200 rounded-md dark:bg-dark-eval-0 dark:text-black" />
+                    class="text-sm rounded-md dark:bg-dark-eval-0 dark:text-white" />
             </div>
             <button type="submit"
                 class="bg-gray-300 p-1 w-8 h-8 flex justify-center items-center rounded dark:bg-dark-eval-3 dark:text-white">
@@ -34,7 +34,7 @@
                         Search
                     </label>
                     <input type="search" name="tck"
-                        class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md  dark:bg-dark-eval-0 dark:text-black"
+                        class="block w-full p-3 pl-10 text-sm rounded-md  dark:bg-dark-eval-0 dark:text-white"
                         placeholder="Buscar Ticket..." />
                 </form>
             </div>
@@ -43,9 +43,9 @@
     </div>
     <div class="flex flex-wrap gap-2 justify-evenly ">
         @foreach ($tickets as $tck)
-            <div @if ($tck->status == 'Abierto') class="shadow-lg group container border  border-green-500 rounded-md bg-white  w-[200px] flex justify-center items-center  mx-left content-div" @endif
-                @if ($tck->status == 'En proceso') class="shadow-lg group container border  border-yellow-500 rounded-md bg-white  w-[200px] flex justify-center items-center  mx-left content-div" @endif
-                @if ($tck->status == 'Cerrado') class="shadow-lg group container border  border-gray-500 rounded-md bg-white  w-[200px] flex justify-center items-center  mx-left content-div" @endif
+            <div @if ($tck->status == 'Abierto') class="shadow-lg group container border  border-green-500 rounded-md bg-white  w-[200px]  flex justify-center items-center  mx-left content-div" @endif
+                @if ($tck->status == 'En proceso') class="shadow-lg group container border  border-yellow-500 rounded-md bg-white  w-[200px]  flex justify-center items-center  mx-left content-div" @endif
+                @if ($tck->status == 'Cerrado') class="shadow-lg group container border  border-gray-500 rounded-md bg-white  w-[200px]  flex justify-center items-center  mx-left content-div" @endif
                 wire:key="ticket-{{ $tck->id }}" x-data="{ closed: false }" x-show="!closed">
                 <div>
                     <div class="w-full image-cover rounded-t-md ">
@@ -127,6 +127,7 @@
                             <span class="tooltiptext">Tareas</span>
                         </a>
                         {{-- Editar Ticket --}}
+                        @if (Auth::user()->permiso_id == 1 )
                         <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
                             href="{{ route('tck.editar', $tck->id) }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -137,8 +138,11 @@
                             </svg>
                             <span class="tooltiptext">Editar</span>
                         </a>
+                        @endif
+                        {{-- Requisiciones --}}
                         @livewire('tickets.compras.show-compras',['ticketID'=>$tck->id])
                         
+                        {{-- Abrir Ticket Rapido - Solo Administradores --}}
                         @if (Auth::user()->permiso_id == 1 && $tck->status == 'Cerrado')
                             @livewire('tickets.unlock-ticket', ['ticketID' => $tck->id])
                         @endif

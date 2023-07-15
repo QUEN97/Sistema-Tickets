@@ -55,7 +55,7 @@
         <div class="max-h-[150px] overflow-auto">
             @if ($evidenciaArc)
                 @if ($evidenciaArc->count() > 0)
-                    <label class="flex justify-center gap-3 items-center text-white bg-amber-600 p-1">
+                    <label class="flex justify-center gap-3 items-center text-white bg-pink-600 p-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16"
                             viewBox="0 0 576 512">
                             <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->

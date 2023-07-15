@@ -49,7 +49,7 @@ class ProductoEdit extends Component
         $dato->marca_id=$this->marca;
         if($this->imagen !=null){
             $this->urlImg=$this->imagen->store('tck/productos', 'public');
-            Storage::disk('public')->delete($dato->archivo_path);
+            Storage::disk('public')->delete($dato->product_photo_path);
             $dato->archivo_path=$this->urlImg;
         }
         $dato->save();

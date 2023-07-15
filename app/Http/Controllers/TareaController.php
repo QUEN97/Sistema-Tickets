@@ -8,22 +8,39 @@ use Illuminate\Http\Request;
 
 class TareaController extends Controller
 {
+    public $filterSoli;
+    public $agentes;
     public function home(Request $request)
     {
-        $usuario=User::where('name', 'LIKE', '%' . $request->s . '%')->get();
-        $tareas = Tarea::where('status', '!=', 'Cerrado')
-            ->where(function ($query) use ($request, $usuario) {
-                if (($s = $request->s) && ($usuario->count() == 0)) {
-                    $query->orWhere('id', 'LIKE', '%' . $s . '%')
-                        ->orWhere('asunto', 'LIKE', '%' . $s . '%')
-                        ->get();
-                } else {
-                    $query->whereIn('user_asignado', (User::where('name', 'LIKE', '%' . $s . '%')->pluck('id')))
-                        ->orWhereIn('user_id', (User::where('name', 'LIKE', '%' . $s . '%')->pluck('id')))
-                        ->get();
-                }
-            })->select('*')->orderBy('id', 'desc')->orderBy('fecha_cierre', 'desc')->paginate(8)->withQueryString();
+        $this->filterSoli = $request->input('filterSoli') == 'Agentes' ? null : $request->input('filterSoli');
 
-        return view('modules.tickets.tareas.tareas-list', compact('tareas'));
+        $agentes = User::where('status', 'Activo')->where('permiso_id',5)->get();
+        $usuario=User::where('name', 'LIKE', '%' . $request->search . '%')->get();
+
+        $tareasList = Tarea::where('status', '!=', 'Cerrado')
+            ->where(function ($query) use ($request, $usuario) {
+                $search = $request->input('search');
+                if ($search && $usuario->count() === 0) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('ticket_id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%')
+                        ->orWhere('asunto', 'LIKE', '%' . $search . '%');
+                } else {
+                    $query->whereIn('user_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
+                }
+            })
+            ->when($this->filterSoli, function ($query) {
+                $query->where('user_id', $this->filterSoli);
+            })
+            ->orderBy('id', 'desc')
+            ->orderBy('fecha_cierre', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        if ($request->has('filter') && $request->input('filter') != '') {
+            $filterSoli = $request->input('filter');
+            $tareasList = $tareasList->where('user_id', $filterSoli);
+        }
+        return view('modules.tickets.tareas.tareas-list', compact('tareasList','agentes'));
     }
 }

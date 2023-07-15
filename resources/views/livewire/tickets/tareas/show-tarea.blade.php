@@ -19,19 +19,19 @@
             <div class="flex gap-2 justify-center content-center">
                 <div class=" bg-white shadow-lg dark:bg-dark-eval-0 p-2 rounded-md max-h-[100px] overflow-y-auto" style="min-width: 300px; max-width: 300px;">
                     <ul class="list-style:none">
-                        <li><div class="bg-gray-400 p-1 rounded-md text-white text-bold">Ticket </div> #{{ $this->idticket }}</li>
-                        <li> <div class="bg-gray-400 p-1 rounded-md text-white text-bold">Vence: </div> {{ $this->vencetck }}</li>
-                        <li> <div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Cliente : </div> {{ $this->solicitatck }}</li>
-                        <li><div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Asunto : </div>  {{ $this->asuntotck }}</li>
-                        <li><div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Descripción : </div> {{ $this->mensajetck }}</li>
+                        <li class="text-black dark:text-white"><div class="bg-gray-400 p-1 rounded-md text-white text-bold">Ticket </div> #{{ $this->idticket }}</li>
+                        <li class="text-black dark:text-white"> <div class="bg-gray-400 p-1 rounded-md text-white text-bold">Vence: </div> {{ $this->vencetck }}</li>
+                        <li class="text-black dark:text-white"> <div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Cliente : </div> {{ $this->solicitatck }}</li>
+                        <li class="text-black dark:text-white"><div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Asunto : </div>  {{ $this->asuntotck }}</li>
+                        <li class="text-black dark:text-white"><div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Descripción : </div> {{ $this->mensajetck }}</li>
                     </ul>
                 </div>
                 <div class="bg-white shadow-lg dark:bg-dark-eval-0 p-2 rounded-md max-h-[100px] overflow-y-auto" style="min-width: 300px; max-width: 300px;">
                     <ul class="list-style:none">
-                        <li><div class="bg-gray-400 p-1 rounded-md text-white text-bold">Tarea </div>  # {{ $this->tareaID }}</li>
-                        <li> <div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Agente : </div> {{ $this->user_asignado }}</li>
-                        <li><div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Asunto : </div> {{ $this->asunto }}</li>
-                        <li><div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Descripción : </div> {{ $this->mensaje }}</li>
+                        <li class="text-black dark:text-white"><div class="bg-gray-400 p-1 rounded-md text-white text-bold">Tarea </div>  # {{ $this->tareaID }}</li>
+                        <li class="text-black dark:text-white"> <div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Agente : </div> {{ $this->user_asignado }}</li>
+                        <li class="text-black dark:text-white"><div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Asunto : </div> {{ $this->asunto }}</li>
+                        <li class="text-black dark:text-white"><div class="bg-gray-400 p-1 rounded-md text-white text-bold"> Descripción : </div> {{ $this->mensaje }}</li>
                     </ul>
                 </div>
             </div>

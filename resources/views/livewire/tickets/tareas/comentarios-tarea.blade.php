@@ -3,7 +3,8 @@
         <div>
             <x-label value="{{ __('Status de la tarea') }}" for="status" />
             <select wire:model="status" name="status" id="status"
-                class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
+                class=" border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1">
                 <option hidden value="" selected>Seleccionar status</option>
                 <option value="En Proceso">En Proceso</option>
                 <option value="Cerrado">Cerrado</option>
@@ -13,7 +14,8 @@
         <div>
             <x-label value="{{ __('Descripción') }}" for="mensaje" />
             <textarea wire:model="mensaje"
-                class="resize-none w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('mensaje') ? 'is-invalid' : '' }}"
+                class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1 resize-none{{ $errors->has('mensaje') ? 'is-invalid' : '' }}"
                 name="mensaje" required autofocus autocomplete="mensaje">
                     </textarea>
             <x-input-error for="mensaje"></x-input-error>

@@ -44,7 +44,7 @@
             @endif
         </x-slot>
         <x-slot name="footer">
-            <x-secondary-button class="mr-2" wire:click="$toogle('modal')" wire:loading.attr="disabled">
+            <x-secondary-button class="mr-2" wire:click="$set('modal',false)" wire:loading.attr="disabled">
                 Cerrar
             </x-secondary-button>
         </x-slot>

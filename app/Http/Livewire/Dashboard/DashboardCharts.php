@@ -19,10 +19,12 @@ class DashboardCharts extends Component
         $chartTickets = new LarapexChart();
         $chartTicketsAsignados = new LarapexChart();
         $chartTicketsPrioridad = new LarapexChart();
+        $chartTicketsStatus = new LarapexChart();
 
         $labelsT = [];
         $labelsA = [];
         $labelsP = [];
+        $labelsE = [];
 
         $estaciones = DB::table('tickets')
             ->join('users', 'tickets.solicitante_id', 'users.id')
@@ -48,7 +50,7 @@ class DashboardCharts extends Component
                 'data' => $estaciones->pluck('tcks')
             ]])
             ->setHeight(320)
-            ->setColors(['#FF0049']);
+            ->setColors(['#1bf242']);
 
         $asignados = DB::table('tickets')
             ->join('users', 'tickets.user_id', 'users.id')
@@ -65,7 +67,7 @@ class DashboardCharts extends Component
             $labelsA[] = $asignado->nombre;
         }
 
-        $chartTicketsAsignados->setType('pie')
+        $chartTicketsAsignados->setType('donut')
             ->setTitle('Tickets Asignados por Usuario')
             ->setSubtitle('Top 5 del Mes')
             ->setDataset($asignados->pluck('tcks'))
@@ -77,7 +79,7 @@ class DashboardCharts extends Component
             ->where(function ($query) use ($userId) {
                 if ($userId !== 1) {
                     $query->where('user_id', $userId)
-                    ->orWhere('solicitante_id',$userId);
+                        ->orWhere('solicitante_id', $userId);
                 }
             })
             ->join('fallas', 'tickets.falla_id', 'fallas.id')
@@ -93,12 +95,40 @@ class DashboardCharts extends Component
         foreach ($prioridades as $prioridad) {
             $labelsP[] = $prioridad->prioridad;
         }
-        $chartTicketsPrioridad->setType('donut')
-            ->setTitle('Total Tickets por Prioridad')
-            ->setSubtitle('Mes en curso')
-            ->setDataset($prioridades->pluck('tcks'))
-            ->setLabels($labelsP);
+        $chartTicketsPrioridad->setTitle('Total Tickets Por Prioridad')
+            ->setSubtitle('Mes en Curso')
+            ->setType('bar')->setXAxis($labelsP)->setGrid(true)->setDataset([[
+                'name'  => 'Tickets',
+                'data'  =>  $prioridades->pluck('tcks')
+            ]])
+            ->setColors(['#e81388'])
+            ->setHeight(320);
 
-        return view('livewire.dashboard.dashboard-charts', compact('chartTickets', 'chartTicketsAsignados', 'chartTicketsPrioridad'));
+        $userId = Auth::id();
+        $estados = DB::table('tickets')
+            ->where(function ($query) use ($userId) {
+                if ($userId !== 1) {
+                    $query->where('user_id', $userId)
+                        ->orWhere('solicitante_id', $userId);
+                }
+            })
+            ->whereMonth('tickets.created_at', Carbon::now()->month)
+            ->selectRaw('count(tickets.user_id) as tcks, tickets.status as nombre')
+            ->groupBy('nombre')
+            ->orderBy('tcks', 'desc')
+            ->orderBy('tickets.created_at', 'desc')
+            ->get();
+
+        foreach ($estados as $estado) {
+            $labelsE[] = $estado->nombre;
+        }
+
+        $chartTicketsStatus->setType('pie')
+            ->setTitle('Tickets por Status')
+            ->setSubtitle('Mes en Curso')
+            ->setDataset($estados->pluck('tcks'))
+            ->setLabels($labelsE);
+
+        return view('livewire.dashboard.dashboard-charts', compact('chartTickets', 'chartTicketsAsignados', 'chartTicketsPrioridad', 'chartTicketsStatus'));
     }
 }

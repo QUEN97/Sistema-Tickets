@@ -20,7 +20,7 @@
                         <x-label value="{{ __('Agente') }}" for="user_asignado" />
                         <select wire:model="user_asignado" id="user_asignado"
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                    dark:focus:ring-offset-dark-eval-1 w-full"">
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1"">
                             <option value="">Seleccionar agente</option>
                             @foreach ($agentes as $agente)
                                 <option value="{{ $agente->id }}">{{ $agente->name }}</option>
@@ -33,14 +33,14 @@
                         <x-label value="{{ __('Asunto') }}" for="asunto" />
                         <input type="text" wire:model="asunto" id="asunto"
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                            dark:focus:ring-offset-dark-eval-1 w-full"">
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1">
                         <x-input-error for="asunto"></x-input-error>
                     </div>
                     <div class="mb-4">
                         <x-label value="{{ __('Descripción') }}" for="mensaje" />
                         <textarea wire:model="mensaje" id="mensaje"
-                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md resize-none shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                            dark:focus:ring-offset-dark-eval-1 w-full""></textarea>
+                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1 resize-none"></textarea>
                         <x-input-error for="mensaje"></x-input-error>
                     </div>
                     <div class="mb-4">

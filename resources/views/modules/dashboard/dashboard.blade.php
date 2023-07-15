@@ -2,9 +2,9 @@
     @section('title', 'Dashboard')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight bg-black text-white dark:bg-dark-eval-3 p-2 rounded-lg">
+            <div class="text-xl font-semibold leading-tight bg-black text-center text-white dark:bg-dark-eval-3 p-2 rounded-lg">
                 {{ $greeting }}
-            </h2>
+            </div>
 
             @if ($valid->pivot->wr == 1)
                 @livewire('dashboard.generate-reporte')
@@ -17,7 +17,7 @@
                 <div class="flex flex-wrap justify-center gap-5">
                     <div class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-5 xxl:col-span-5">
                         <!-- Status Abierto-->
-                        <div class="bg-white rounded-xl p-4 shadow-xl ">
+                        <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl ">
                             <div class="flex flex-col justify-center items-center">
                                 <img src="{{ asset('img/icons/Imagen1.png') }}" class="w-full h-40 rounded-lg" />
                             </div>
@@ -25,11 +25,11 @@
                             <p class="font-semibold text-sm text-gray-400">
                             <div class="border rounded-lg overflow-hidden">
                                 <details>
-                                    <summary class="bg-gray-100 py-2 px-4 cursor-pointer text-center">Mostrar/ocultar
+                                    <summary class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 cursor-pointer text-center">Mostrar/ocultar
                                     </summary>
                                     <table
-                                        class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
-                                        <thead class="bg-gray-50">
+                                        class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-white">
+                                        <thead class="bg-gray-50 dark:bg-dark-eval-2">
                                             <tr>
                                                 <th
                                                     class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
@@ -43,13 +43,13 @@
                                             @forelse($ultimosAbiertos as $open)
                                                 <tr>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3 text-gray-800  dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
                                                         {{ $open->id }}
                                                     </td>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800  border border-b block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3 text-gray-800  dark:text-white border border-b block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                                         <div style="display: flex; justify-content: center;">
@@ -92,8 +92,8 @@
                         <!-- End Card List -->
                     </div>
                     <div class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-5 xxl:col-span-5">
-                        <!-- Start Card List -->
-                        <div class="bg-white rounded-xl p-4 shadow-xl mt-">
+                        <!-- Status En Proceso -->
+                        <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl mt-">
                             <div class="flex flex-col justify-center items-center">
                                 <img src="{{ asset('img/icons/Imagen3.png') }}" class="w-full h-40 rounded-lg" />
                             </div>
@@ -101,11 +101,11 @@
                             <p class="font-semibold text-sm text-gray-400">
                             <div class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
                                 <details>
-                                    <summary class="bg-gray-100 py-2 px-4 ">Mostrar/ocultar
+                                    <summary class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 ">Mostrar/ocultar
                                     </summary>
                                     <table
                                         class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
-                                        <thead class="bg-gray-50">
+                                        <thead class="bg-gray-50 dark:bg-dark-eval-2">
                                             <tr>
                                                 <th
                                                     class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
@@ -119,13 +119,13 @@
                                             @forelse($ultimosEnProceso as $process)
                                                 <tr>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3 text-gray-800 dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
                                                         {{ $process->id }}
                                                     </td>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800  border border-b block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3 text-gray-800 dark:text-white border border-b block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                                             <div style="display: flex; justify-content: center;">
@@ -169,7 +169,7 @@
                     </div>
                     <div class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-5 xxl:col-span-5">
                         <!-- Start Card List -->
-                        <div class="bg-white rounded-xl p-4 shadow-xl ">
+                        <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl ">
                             <div class="flex flex-col justify-center items-center">
                                 <img src="{{ asset('img/icons/Imagen2.png') }}" class="w-full h-40 rounded-lg" />
                             </div>
@@ -177,11 +177,11 @@
                             <p class="font-semibold text-sm text-gray-400">
                             <div class="border rounded-lg overflow-hidden ">
                                 <details>
-                                    <summary class="bg-gray-100 py-2 px-4 cursor-pointer text-center">Mostrar/ocultar
+                                    <summary class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 cursor-pointer text-center">Mostrar/ocultar
                                     </summary>
                                     <table
                                         class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
-                                        <thead class="bg-gray-50">
+                                        <thead class="bg-gray-50 dark:bg-dark-eval-2">
                                             <tr>
                                                 <th
                                                     class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
@@ -195,13 +195,13 @@
                                             @forelse($ultimosCerrados as $closed)
                                                 <tr>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3 text-gray-800 dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
                                                         {{ $closed->id }}
                                                     </td>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800  border border-b block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3 text-gray-800 dark:text-white  border border-b block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                                             <div style="display: flex; justify-content: center;">
