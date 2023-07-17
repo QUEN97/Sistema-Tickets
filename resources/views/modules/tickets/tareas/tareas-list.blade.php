@@ -11,7 +11,7 @@
         <div class="flex gap-1 flex-col">
             <form action="{{ route('tareas') }}" method="GET">
                 <div class="flex">
-                    @if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 4)
+                    
                         <div class="relative mr-4">
                             <label for="filter" class="sr-only">Filtrar por agente</label>
                             <select name="filter" id="filter"
@@ -32,7 +32,6 @@
                                 </svg>
                             </div>
                         </div>
-                    @endif
                     <div class="relative">
                         <label for="search" class="sr-only">Buscar</label>
                         <input type="text" name="search" id="search"

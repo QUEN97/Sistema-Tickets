@@ -46,18 +46,19 @@ class NewTicket extends Component
     }
 
     //función para encontrar el agente con menor cant. de tcks asignados el día de hoy
-    public function agenteDisponible(){
-        $desocupado=[];
-        $disponible=[];
-        foreach ($this->personal as $key=> $personal){
-            $desocupado[$key]['id']=$personal->id;
+    public function agenteDisponible()
+    {
+        $desocupado = [];
+        $disponible = [];
+        foreach ($this->personal as $key => $personal) {
+            $desocupado[$key]['id'] = $personal->id;
             /* $desocupado[$key]['name']=$personal->name; */
-            $desocupado[$key]['cant']=$personal->ticketsHoy->count();
+            $desocupado[$key]['cant'] = $personal->ticketsHoy->count();
         }
-        $disponible=$desocupado[0];
-        foreach($desocupado as $pos){
-            if($pos['cant']<$disponible['cant']){
-                $disponible=$pos;
+        $disponible = $desocupado[0];
+        foreach ($desocupado as $pos) {
+            if ($pos['cant'] < $disponible['cant']) {
+                $disponible = $pos;
             }
         }
         //dd($disponible);
@@ -82,7 +83,7 @@ class NewTicket extends Component
             'mensaje.required' => 'Ingrese los detalles del problema',
         ]);
 
-        $this->asignado=$this->agenteDisponible();
+        $this->asignado = $this->agenteDisponible();
 
         $ticket = new Ticket();
         $ticket->falla_id = $this->falla;
@@ -121,16 +122,18 @@ class NewTicket extends Component
 
 
         foreach ($tickets as $ticket) {
-            DB::beginTransaction();
+            // if ($ticket->status !== 'En proceso') { Descomentar para evitar que ticket se cierre aun con status En Proceso.
+                DB::beginTransaction();
 
-            try {
-                $ticket->status = 'Cerrado';
-                $ticket->save();
+                try {
+                    $ticket->status = 'Cerrado';
+                    $ticket->save();
 
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollBack();
-            }
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                }
+            //} Descomentar para evitar que ticket se cierre aun con status En Proceso.
         }
 
         return Response::json(['success' => true]);

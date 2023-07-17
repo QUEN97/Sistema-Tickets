@@ -25,6 +25,9 @@
     <!--Select 2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/toastr.css') }}">
+    <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css" />
+
     @livewireStyles
 
     <!--JQuery-->
@@ -95,6 +98,15 @@
     @livewireScripts
 
     @stack('scripts')
+
+    <script src="{{ asset('js/toast.js') }}"></script>
+    <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
+
+    @if ($cantidadTicketsProximosVencer > 0 )
+        <script type="text/javascript">
+            toastr.warning("EXISTEN {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS  A VENCER")
+        </script>
+    @endif
 
 </body>
 
