@@ -202,7 +202,7 @@
                     @endforeach
                 </tbody>
             </table>
-            {{-- {{ $tareasList->links() }} --}}
+            {{ $tareasList->links() }}
         @else
             <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
                 <<img src="{{ asset('img/logo/emptystate.svg') }}" style="max-width: 5000px" alt="Buzón Vacío">
