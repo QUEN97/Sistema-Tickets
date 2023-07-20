@@ -2,25 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Areas;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 
 class ServicioController extends Controller
 {
+    public $filterSoli;
+    public $areas;
+
     public function home(Request $request)
     {
-        // $tipos=Tipo::where('status','Activo')->select('*')->paginate(5);
-        $list = Servicio::where([
-            ['name', '!=', Null],
-            [function ($query) use ($request) {
-                if (($s = $request->s)) {
-                    $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                        ->get();
+        // $list = Servicio::where([
+        //     ['name', '!=', Null],
+        //     [function ($query) use ($request) {
+        //         if (($s = $request->s)) {
+        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
+        //                 ->get();
+        //         }
+        //     }]
+        // ])->paginate(10);
+        $this->filterSoli = $request->input('filterSoli') == 'Todos' ? null : $request->input('filterSoli');
+
+        $areas = Areas::where('status', 'Activo')->where('departamento_id',1)->whereNotIn('id',[1,2,6])->get();
+        $area=Areas::where('name', 'LIKE', '%' . $request->search . '%')->get();
+
+        $list = Servicio::where('status','Activo')
+            ->where(function ($query) use ($request, $area) {
+                $search = $request->input('search');
+                if ($search && $area->count() === 0) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%');
+                } else {
+                    $query->whereIn('area_id', Areas::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
                 }
-            }]
-        ])->paginate(10);
+            })
+            ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request){
+                $filterSoli = $request->input('filter');
+                $query->where('area_id', $filterSoli);
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
         $trashed = Servicio::onlyTrashed()->count();
-        return view('modules.servicios.servicios', compact('list', 'trashed'));
+        return view('modules.servicios.servicios', compact('list', 'trashed','areas'));
     }
 
 
