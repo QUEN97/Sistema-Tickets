@@ -102,7 +102,8 @@ class DashboardCharts extends Component
                 'data'  =>  $prioridades->pluck('tcks')
             ]])
             ->setColors(['#e81388'])
-            ->setHeight(320);
+            ->setHeight(320)
+            ->setToolbar(true);
 
         $userId = Auth::id();
         $estados = DB::table('tickets')
