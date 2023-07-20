@@ -3,7 +3,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('AREAS') }}
+                {{ __('ÁREAS') }}
             </h2>
            <div>
                 @livewire('areas.new-area')
@@ -41,7 +41,10 @@
                             ID
                         </th>
                         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                            Nombre del área
+                            Área
+                        </th>
+                        <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                            Departamento
                         </th>
                         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             Status
@@ -76,6 +79,14 @@
                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
                                     <span class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
+                                        Departamento
+                                    </span>
+                                    {{$area->departamento->name}}
+                                </div>
+                            </th>
+                            <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
+                                <div class="w-full flex justify-center gap-2">
+                                    <span class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
                                         Status
                                     </span>
                                     @if ($area->status == 'Activo')
@@ -97,7 +108,7 @@
                                     <span class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
                                         Status
                                     </span>
-                                    {{$area->created_at}}
+                                    {{$area->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a')}}
                                 </div>
                             </th>
                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DashboardController;
@@ -151,14 +152,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::controller(TareaController::class)->group(function(){
         Route::get('/tareas','home')->name('tareas');
     });
-    //requisiciones
-    Route::controller(TicketController::class)->group(function(){
-        Route::get('/tickets','home')->name('tickets');
-        Route::get('/tickets/requisicion{id}','compra')->name('tck.compra');
-    });
     //requisiciones (apartado)
     Route::controller(RequisicionController::class)->group(function(){
         Route::get('/requisiciones','home')->name('requisiciones');
+        Route::get('/requisiciones/{id}','edit')->name('req.edit');
+    });
+
+    //rAlmácenes (apartado)
+    Route::controller(AlmacenController::class)->group(function(){
+        Route::get('/almacenes','home')->name('almacenes');
         Route::get('/requisiciones/{id}','edit')->name('req.edit');
     });
 });

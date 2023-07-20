@@ -25,6 +25,7 @@
     <!--Select 2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    {{-- Toast --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/toastr.css') }}">
     <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 
@@ -34,7 +35,7 @@
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
-        <!--Select 2 -->
+    <!--Select 2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Scripts -->
@@ -43,7 +44,6 @@
 </head>
 
 <body class="font-sans antialiased text-gray-900 dark:text-gray-200">
-
     {{-- <script type="text/javascript">
         $(document).ready(function () {
             //Deshabilitar click derecho mouse
@@ -74,7 +74,7 @@
                 <!-- Page Heading -->
                 @if (isset($header))
                     <header>
-                        <div class="px-4 py-6 mx-auto max-w-7xl w-full sm:px-6 lg:px-8">
+                        <div class="px-4 py-6 mx-auto max-w-7xl w-full sm:px-6 lg:px-8 bg-white dark:bg-dark-eval-1">
                             {{ $header }}
                         </div>
                     </header>
@@ -94,15 +94,15 @@
     @stack('modals')
 
     @include('sweetalert::alert') {{-- llamado a las propiedades de Sweet Alert --}}
-    
+
     @livewireScripts
 
     @stack('scripts')
 
+    {{-- Toast --}}
     <script src="{{ asset('js/toast.js') }}"></script>
     <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
-
-    @if ($cantidadTicketsProximosVencer > 0 )
+    @if ($cantidadTicketsProximosVencer > 0)
         <script type="text/javascript">
             toastr.warning("EXISTEN {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS  A VENCER")
         </script>

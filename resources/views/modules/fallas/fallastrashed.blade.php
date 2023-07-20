@@ -28,8 +28,7 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                                @if (count($trashed) > 0)
-                                    @foreach ($trashed as $falla)
+                                    @forelse ($trashed as $falla)
                                         <tr
                                             class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
                                             <td
@@ -94,8 +93,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
-                                @else
+                                    @empty
                                     <tr>
                                         <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static"
                                             colspan="4">
@@ -105,7 +103,7 @@
                                             {{ __('No hay fallas eliminadas') }}
                                         </td>
                                     </tr>
-                                @endif
+                                @endforelse
                             </tbody>
                         </table>
                         <div class="mt-2 ml-2 mb-2">

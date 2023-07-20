@@ -115,7 +115,7 @@
                                 class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Fecha</span>
-                                {{ $producto->created_at }}
+                                {{ $producto->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
                             </td>
                             <td
                                 class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">

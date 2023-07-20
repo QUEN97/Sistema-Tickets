@@ -45,7 +45,7 @@
                     <div class="flex items-center mt-3">
                         {{-- <p class="mr-2 text-lg font-semibold text-gray-900 dark:text-white">$20.00</p> --}}
                         {{-- <p class="text-base  font-medium text-gray-500 line-through dark:text-gray-300">$25.00</p> --}}
-                        <p class="ml-auto font-medium text-xs text-gray-500">{{ $item->created_at }}</p>
+                        <p class="ml-auto font-medium text-xs text-gray-500">{{ $item->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}</p>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
                             <div class="flex items-center mt-3">
                                 {{-- <p class="mr-2 text-lg font-semibold text-gray-900 dark:text-white">$20.00</p> --}}
                                 {{-- <p class="text-base  font-medium text-gray-500 line-through dark:text-gray-300">$25.00</p> --}}
-                                <p class="ml-auto font-medium text-xs text-gray-500 dark:text-white">{{ $item->created_at }}</p>
+                                <p class="ml-auto font-medium text-xs text-gray-500 dark:text-white">{{ $item->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}</p>
                             </div>
                         </div>
                     </div>

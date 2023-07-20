@@ -20,7 +20,7 @@ class ProductoController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(5);
+        ])->paginate(10) ->withQueryString();
         $trashed = Producto::onlyTrashed()->count();
         return view('modules.productos.existencias.productos',compact('productos','trashed','valid'));
     }

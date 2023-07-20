@@ -60,7 +60,7 @@
                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
                                     <span class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
-                                        ID
+                                        Id
                                     </span>
                                     {{$region->id}}
                                 </div>
@@ -68,7 +68,7 @@
                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
                                     <span class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
-                                        Nombre del área
+                                        Región
                                     </span>
                                     {{$region->name}}
                                 </div>
@@ -95,9 +95,9 @@
                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
                                     <span class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
-                                        Status
+                                        Fecha
                                     </span>
-                                    {{$region->created_at}}
+                                    {{$region->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a')}}
                                 </div>
                             </th>
                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">

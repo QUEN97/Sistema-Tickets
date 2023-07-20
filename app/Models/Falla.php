@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,13 @@ class Falla extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected function name():Attribute
+    {
+        return Attribute::make(
+            set:fn(string $value)=> mb_strtoupper($value),
+);
+}
     
     public function servicio():BelongsTo{
         return $this->belongsTo(Servicio::class);

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AlmacenController extends Controller
 {
-    public function index()
+    public function home()
     {
         $user = Auth::user();
         $this->valid = Auth::user()->permiso->panels->where('id', 2)->first();

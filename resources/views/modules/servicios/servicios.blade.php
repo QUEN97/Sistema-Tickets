@@ -107,7 +107,7 @@
                                     <span class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
                                         Status
                                     </span>
-                                    {{$servicio->created_at}}
+                                    {{$servicio->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a')}}
                                 </div>
                             </th>
                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">

@@ -59,14 +59,14 @@ class ShowZona extends Component
         // }
 
         // $this->produ = $zona->productos->count();
-        $this->produ = Producto::join('producto_zona as pz', 'productos.id', 'pz.producto_id')->where('pz.zona_id', $this->zona_show_id)
-        ->select('productos.*')->count();
-        // dd($this->produ->get());
-        if ($this->produ != 0) {
-            $this->prods = $this->produ;
-        } else {
-            $this->prods = "Sin Productos en esta Zona.";
-        }
+        // $this->produ = Producto::join('producto_zona as pz', 'productos.id', 'pz.producto_id')->where('pz.zona_id', $this->zona_show_id)
+        // ->select('productos.*')->count();
+        // // dd($this->produ->get());
+        // if ($this->produ != 0) {
+        //     $this->prods = $this->produ;
+        // } else {
+        //     $this->prods = "Sin Productos en esta Zona.";
+        // }
 
         if (Auth::user()->permiso_id == 2) {
             $this->estaciones = $zona->estacions->where('supervisor_id', Auth::user()->id)->count();
@@ -95,8 +95,8 @@ class ShowZona extends Component
 
         $this->isSuper = Estacion::where('zona_id', $this->zona_show_id)->where('supervisor_id', Auth::user()->id)->get();
 
-        $this->productos = Producto::join('producto_zona as pz', 'productos.id', 'pz.producto_id')->where('pz.zona_id', $this->zona_show_id)
-        ->select('productos.*')->get();
+        // $this->productos = Producto::join('producto_zona as pz', 'productos.id', 'pz.producto_id')->where('pz.zona_id', $this->zona_show_id)
+        // ->select('productos.*')->get();
 
         return view('livewire.zonas.show-zona');
     }

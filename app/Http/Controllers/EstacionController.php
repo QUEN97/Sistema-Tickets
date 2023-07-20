@@ -28,7 +28,7 @@ class EstacionController extends Controller
                             ->get();
                     }
                 }]
-            ])->paginate(5);
+            ])->paginate(10) ->withQueryString();
         }
         if($user->permiso_id==2){
             $estaciones = Estacion::where([
@@ -39,7 +39,7 @@ class EstacionController extends Controller
                             ->get();
                     }
                 }]
-            ])->where('supervisor_id',$user->id)->paginate(5);
+            ])->where('supervisor_id',$user->id)->paginate(10) ->withQueryString();
         }
         if($user->permiso_id==3){
             $estaciones = Estacion::where([

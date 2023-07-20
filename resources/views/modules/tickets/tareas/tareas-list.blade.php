@@ -121,7 +121,7 @@
                                         class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
                                         Fecha creación
                                     </span>
-                                    {{ $tarea->created_at }}
+                                    {{ $tarea->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
                                 </div>
                             </th>
                             <th

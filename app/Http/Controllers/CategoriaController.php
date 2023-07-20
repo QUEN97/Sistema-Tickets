@@ -26,7 +26,7 @@ class CategoriaController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(5);
+        ])->paginate(10) ->withQueryString();
         $trashed = Categoria::onlyTrashed()->count();
         return view ('modules.productos.categorias.categorias', compact('categorias','trashed','valid'));
     }

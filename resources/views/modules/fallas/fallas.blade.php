@@ -12,8 +12,7 @@
     </x-slot>
     <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <div class="grid grid-cols-2 mb-2 mt-2">
-            <div class="ml-2">
-                <form action="{{ route('fallas') }}" method="GET">
+            <div class="ml-2"><form action="{{ route('fallas') }}" method="GET">
                     <label for="search" class="sr-only">
                         Search
                     </label>
@@ -121,7 +120,7 @@
                     @endforeach
                 </tbody>
             </table>
-            {{$fallas->links()}}
+             {{$fallas->links()}}
         @else
             <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="max-w-[200px] bi bi-x-circle" viewBox="0 0 16 16">

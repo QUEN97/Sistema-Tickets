@@ -20,7 +20,7 @@ class UserActivity
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            $expiresAt = Carbon::now()->addMinutes(1); /* Mantiene al usuario online por 1 minuto, tras desconectarse */
+            $expiresAt = Carbon::now()->addSeconds(5); /* Mantiene al usuario online por 1 minuto, tras desconectarse */
             Cache::put('user-is-online-' . Auth::user()->id, true, $expiresAt);
 
             /* Última vez */

@@ -16,7 +16,7 @@ class RegionController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(5);
+        ])->paginate(10) ->withQueryString();
         $trashed = Region::onlyTrashed()->count();
         return view('modules.regiones.regiones',compact('regiones','trashed'));
     }

@@ -16,7 +16,6 @@ class TableVersiones extends Component
         //         dd($vue->pivot->subdescripcionversions);
         //     }
         // }
-
         return view('livewire.sistema.versiones.table-versiones');
     }
 }

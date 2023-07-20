@@ -17,7 +17,7 @@ class DepartamentoController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(5);
+        ])->paginate(10) ->withQueryString();
         $trashed = Departamento::onlyTrashed()->count();
         return view('modules.departamentos.departamentos',compact('deptos','trashed'));
     }

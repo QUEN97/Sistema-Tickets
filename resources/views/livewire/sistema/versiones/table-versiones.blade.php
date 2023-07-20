@@ -127,7 +127,7 @@
             
             {{-- <hr class="h-px my-8 bg-gray-400 border-0 dark:bg-gray-700"> --}}
             <p class="mb-0 text-end">
-                {{ $versi->created_format }}
+                {{ $versi->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
             </p>
         </div>
     @endforeach

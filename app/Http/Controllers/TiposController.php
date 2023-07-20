@@ -18,7 +18,7 @@ class TiposController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(5);
+        ])->paginate(10) ->withQueryString();
         $trashed = Tipo::onlyTrashed()->count();
         return view('modules.tipos.tipos',compact('tipos','trashed'));
     }

@@ -16,7 +16,7 @@ class AreaController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(5);
+        ])->paginate(10) ->withQueryString();
         $trashed = Areas::onlyTrashed()->count();
         return view('modules.areas.areas',compact('areas','trashed'));
     }

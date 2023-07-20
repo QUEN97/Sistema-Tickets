@@ -42,118 +42,126 @@
                         </div>
                     </div>
 
-                    <div class="mt-2">
-                        <table class="border-collapse  bg-white text-center text-sm text-gray-500">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Panel</th>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Leer</th>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Escribir</th>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Editar</th>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Eliminar</th>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Ver Más </th>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Ver Papelera</th>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Restaurar Papelera</th>
-                                    <th
-                                        class="p-2 text-xs uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                        Ver Más Papelera
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-light">
-
-                                @foreach ($permission as $permissio)
+                    <div class="border rounded-lg  max-h-[320px] overflow-auto dark:border-gray-700">
+                        <details>
+                            <summary
+                                class="bg-gray-100 py-2 px-4 cursor-pointer dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                Click para mostrar/ocultar Permisos</summary>
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <td>
-                                            {{ $permissio->titulo_panel }}
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="">
-                                                <input name="leer[{{ $permissio->id }}]" value="1"
-                                                    id="leer.{{ $permissio->id }}" type="checkbox"
-                                                    class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-success checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-success checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                                                    @foreach ($perm as $item)
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Panel</th>
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Leer</th>
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Escribir</th>
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Editar</th>
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Eliminar</th>
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Ver Más </th>
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Ver Papelera</th>
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Restaurar Papelera</th>
+                                        <th
+                                            class="font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                            Ver Más Papelera
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-light">
+                                    @foreach ($permission as $permissio)
+                                        <tr>
+                                            <td>
+                                                {{ $permissio->titulo_panel }}
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="">
+                                                    <input name="leer[{{ $permissio->id }}]" value="1"
+                                                        id="leer.{{ $permissio->id }}" type="checkbox"
+                                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        @foreach ($perm as $item)
                                                 @if ($item->panel_id == $permissio->id)
                                                     @if ($item->re == 1)
                                                         {{ 'checked' }}
                                                     @endif    
                                                 @endif @endforeach>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="">
-                                                <input name="crear[{{ $permissio->id }}]" value="1"
-                                                    id="crear.{{ $permissio->id }}" type="checkbox"
-                                                    class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                                                    @foreach ($perm as $item)
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="">
+                                                    <input name="crear[{{ $permissio->id }}]" value="1"
+                                                        id="crear.{{ $permissio->id }}" type="checkbox"
+                                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                       
+                                                        @foreach ($perm as $item)
                                                 @if ($item->panel_id == $permissio->id)
                                                     @if ($item->wr == 1)
                                                         {{ 'checked' }}
                                                     @endif    
                                                 @endif @endforeach>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="">
-                                                <input name="editar[{{ $permissio->id }}]" value="1"
-                                                    id="editar.{{ $permissio->id }}" type="checkbox"
-                                                    class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                                                    @foreach ($perm as $item)
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="">
+                                                    <input name="editar[{{ $permissio->id }}]" value="1"
+                                                        id="editar.{{ $permissio->id }}" type="checkbox"
+                                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                       
+                                                        @foreach ($perm as $item)
                                                 @if ($item->panel_id == $permissio->id)
                                                     @if ($item->ed == 1)
                                                         {{ 'checked' }}
                                                     @endif    
                                                 @endif @endforeach>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="">
-                                                <input name="eliminar[{{ $permissio->id }}]" type="checkbox"
-                                                    value="1" id="eliminar.{{ $permissio->id }}"
-                                                    class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                                                    @foreach ($perm as $item)
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="">
+                                                    <input name="eliminar[{{ $permissio->id }}]" type="checkbox"
+                                                    class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        value="1" id="eliminar.{{ $permissio->id }}"
+                                                       
+                                                        @foreach ($perm as $item)
                                                 @if ($item->panel_id == $permissio->id)
                                                     @if ($item->de == 1)
                                                         {{ 'checked' }}
                                                     @endif    
                                                 @endif @endforeach>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="">
-                                                <input name="vermas[{{ $permissio->id }}]" type="checkbox"
-                                                    value="1" id="vermas.{{ $permissio->id }}"
-                                                    class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                                                    @foreach ($perm as $item)
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="">
+                                                    <input name="vermas[{{ $permissio->id }}]" type="checkbox"
+                                                    class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        value="1" id="vermas.{{ $permissio->id }}"
+                                                       
+                                                        @foreach ($perm as $item)
                                                 @if ($item->panel_id == $permissio->id)
                                                     @if ($item->vermas == 1)
                                                         {{ 'checked' }}
                                                     @endif    
                                                 @endif @endforeach>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="">
-                                                <input name="verpap[{{ $permissio->id }}]" type="checkbox"
-                                                    value="1" id="verpap.{{ $permissio->id }}"
-                                                    class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                                                    @foreach ($perm as $item)
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="">
+                                                    <input name="verpap[{{ $permissio->id }}]" type="checkbox"
+                                                    class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        value="1" id="verpap.{{ $permissio->id }}"
+                                                       
+                                                        @foreach ($perm as $item)
                                                 @if ($item->panel_id == $permissio->id)
                                                     @if ($item->verpap == 1 && $item->panel_id != 4)
                                                         {{ 'checked' }}
@@ -161,14 +169,15 @@
                                                         {{ 'disabled' }}
                                                     @endif    
                                                 @endif @endforeach>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="">
-                                                <input name="restpap[{{ $permissio->id }}]" type="checkbox"
-                                                    value="1" id="restpap.{{ $permissio->id }}"
-                                                    class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                                                    @foreach ($perm as $item)
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="">
+                                                    <input name="restpap[{{ $permissio->id }}]" type="checkbox"
+                                                    class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        value="1" id="restpap.{{ $permissio->id }}"
+                                                       
+                                                        @foreach ($perm as $item)
                                                 @if ($item->panel_id == $permissio->id)
                                                     @if ($item->restpap == 1 && $item->panel_id != 4)
                                                         {{ 'checked' }}
@@ -176,14 +185,15 @@
                                                         {{ 'disabled' }}
                                                     @endif
                                                 @endif @endforeach>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="">
-                                                <input name="vermaspap[{{ $permissio->id }}]" type="checkbox"
-                                                    value="1" id="vermaspap.{{ $permissio->id }}"
-                                                    class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                                                    @foreach ($perm as $item)
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="">
+                                                    <input name="vermaspap[{{ $permissio->id }}]" type="checkbox"
+                                                    class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        value="1" id="vermaspap.{{ $permissio->id }}"
+                                                       
+                                                        @foreach ($perm as $item)
                                                 @if ($item->panel_id == $permissio->id)
                                                     @if ($item->vermaspap == 1 && $item->panel_id != 4)
                                                         {{ 'checked' }}
@@ -191,15 +201,17 @@
                                                         {{ 'disabled' }}
                                                     @endif    
                                                 @endif @endforeach>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </details>
                     </div>
                     <div class="text-center mt-3">
-                        <button type="submit" class="mr-2 bg-green-500 p-2 text-white font-bold  rounded-md" wire:click="AsignarPermiso({{ $permiso_asig_id }})">
+                        <button type="submit" class="mr-2 bg-green-500 p-2 text-white font-bold  rounded-md"
+                            wire:click="AsignarPermiso({{ $permiso_asig_id }})">
                             Aceptar
                         </button>
                     </div>
@@ -208,14 +220,9 @@
         </x-slot>
 
         <x-slot name="footer" class="hidden">
-            {{-- <button type="submit" class="mr-2 bg-green-500 p-2 text-white font-bold  rounded-md"
-                wire:click="AsignarPermiso({{ $permiso_asig_id }})" wire:loading.attr="disabled">
-                Aceptar
-            </button>
-
             <x-secondary-button wire:click="$toggle('AsigPermiso')" wire:loading.attr="disabled">
                 Cancelar
-            </x-secondary-button> --}}
+            </x-secondary-button> 
         </x-slot>
     </x-dialog-modal>
 </div>

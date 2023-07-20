@@ -18,7 +18,7 @@ class ServicioController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(5);
+        ])->paginate(10);
         $trashed = Servicio::onlyTrashed()->count();
         return view('modules.servicios.servicios', compact('list', 'trashed'));
     }

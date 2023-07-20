@@ -31,10 +31,10 @@
                                 <span class="text-gray-700">Estaciones: </span>
                                 <span class="text-xs">{{ $this->estacions }}</span>
                             </div>
-                            <div class="w-1/3 px-2">
+                            {{-- <div class="w-1/3 px-2">
                                 <span class="text-gray-700">Productos:</span>
                                 <span class="text-xs">{{ $this->prods }}</span>
-                            </div>
+                            </div> --}}
                             <div class="w-1/3 px-2">
                                 <span class="text-gray-700">Status:</span>
                                 <span class="text-xs">{{ $this->status }}</span>
@@ -212,7 +212,7 @@
                         </div>
                     @endif
                 </div>
-                <br>
+                {{-- <br>
                 <div>
                     @if ($productos->isnotEmpty())
                         <div class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
@@ -264,7 +264,7 @@
                             </details>
                         </div>
                     @endif
-                </div>
+                </div> --}}
             </div>
         </x-slot>
 

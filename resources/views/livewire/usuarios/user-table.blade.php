@@ -25,7 +25,7 @@
                 @endif
             </div>
         </div>
-        <table class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
+        <table  class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
             <thead class="bg-gray-50">
                 <tr>
                 <tr>
@@ -120,8 +120,11 @@
                                         </span>
                                     </span>
                                     <br>
-                                    {{-- <span class="dark:text-gray-400">
-                                        {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span> --}}
+                                    @if ($user->last_seen)
+                                    <span class="dark:text-gray-400 text-xs">
+                                      Últ. vez:  {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
+                                    </span> 
+                                    @endif
                                 @endif
                             </td>
                             <td
@@ -232,8 +235,8 @@
                                         </span>
                                     </span>
                                     <br>
-                                    {{-- <span class="dark:text-gray-400">
-                                        {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span> --}}
+                                     <span class="dark:text-gray-400">
+                                        {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span> 
                                 @endif
                             </td>
                             <td
@@ -275,12 +278,12 @@
                 @endif
             </tbody>
         </table>
-        <div class="mt-2 mr-2 mb-2">
+        {{-- <div class="mt-2 mr-2 mb-2">
             @if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
                 {{ $users->appends($_GET)->links() }}
             @elseif(Auth::user()->permiso_id == 2)
                 {{ $isSupervi->appends($_GET)->links() }}
             @endif
-        </div>
+        </div> --}}
     </div>
 </div>

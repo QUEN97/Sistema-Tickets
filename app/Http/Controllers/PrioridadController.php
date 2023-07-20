@@ -17,7 +17,7 @@ class PrioridadController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(5);
+        ])->paginate(10);
         $trashed = Prioridad::onlyTrashed()->count();
         return view('modules.prioridades.prioridades',compact('prioridades','trashed'));
     }
