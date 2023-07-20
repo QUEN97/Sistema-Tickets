@@ -14,43 +14,52 @@
             <div class="flex flex-wrap gap-3 justify-evenly items-center">
                 <div>
                     <x-label value="{{ __('Nombre de la falla') }}" for="name" />
-                    <x-input wire:model="name" type="text" name="name"
-                        id="name" required autofocus autocomplete="name" />
+                    <x-input wire:model="name" type="text" name="name" id="name" required autofocus
+                        autocomplete="name" />
                     <x-input-error for="name"></x-input-error>
                 </div>
                 <div>
-                    <x-label value="{{ __('Servicio requerido') }}" for="serviio"/>
+                    <x-label value="{{ __('Servicio requerido') }}" for="serviio" />
                     <select wire:model="servicio" name="servicio" id="servicio"
                         class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
                         <option hidden value="" selected>Seleccionar servicio</option>
                         @foreach ($servicios as $servicio)
-                            <option value="{{$servicio->id}}">{{$servicio->name}}</option>
+                            <option value="{{ $servicio->id }}">{{ $servicio->name }}</option>
                         @endforeach
                     </select>
                     <x-input-error for="servicio"></x-input-error>
                 </div>
                 <div>
-                    <x-label value="{{ __('Prioridad') }}" for="prioridad"/>
+                    <x-label value="{{ __('Tipo') }}" for="tipo" />
+                    <select wire:model="tipo" name="tipo" id="tipo"
+                        class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
+                        <option hidden value="" selected>Seleccionar tipo</option>
+                        @foreach ($tipos as $tipo)
+                            <option value="{{ $tipo->id }}">
+                                {{ $tipo->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error for="tipo"></x-input-error>
+                </div>
+                @if ($prioridades)
+                <div>
+                    <x-label value="{{ __('Prioridad') }}" for="prioridad" />
                     <select wire:model="prioridad" name="prioridad" id="prioridad"
                         class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
                         <option hidden value="" selected>Seleccionar Prioridad</option>
-                        @foreach ($tipos as $tipo)
-                            @if ($tipo->prioridad->count() > 0)
-                                <optgroup label="{{$tipo->name}}">
-                                    @foreach ($tipo->prioridad as $prioridad)
-                                        <option value="{{$prioridad->id}}">
-                                            {{$prioridad->name}} - {{$prioridad->tiempo}}
-                                            {{$prioridad->riempo >1 ? 'hrs' : 'hr' }}
-                                        </option>
-                                    @endforeach
-                                </optgroup>
-                            @endif
+                        @foreach ($prioridades as $prioridad)
+                            <option value="{{ $prioridad->id }}">
+                                {{ $prioridad->name }} - {{ $prioridad->tiempo }}
+                                {{ $prioridad->tiempo > 1 ? 'hrs' : 'hr' }}
+                            </option>
                         @endforeach
                     </select>
                     <x-input-error for="prioridad"></x-input-error>
-                </div> 
+                </div>
+                @endif
             </div>
-            
+
         </x-slot>
 
         <x-slot name="footer" class="d-none">

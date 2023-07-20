@@ -13,17 +13,19 @@ class Falla extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected function name():Attribute
+    protected function name(): Attribute
     {
         return Attribute::make(
-            set:fn(string $value)=> mb_strtoupper($value),
-);
-}
-    
-    public function servicio():BelongsTo{
+            set: fn (string $value) => mb_strtoupper($value),
+        );
+    }
+
+    public function servicio(): BelongsTo
+    {
         return $this->belongsTo(Servicio::class);
     }
-    public function prioridad():BelongsTo{
+    public function prioridad(): BelongsTo
+    {
         return $this->belongsTo(Prioridad::class);
     }
 }
