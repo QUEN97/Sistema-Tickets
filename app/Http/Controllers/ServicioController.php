@@ -27,8 +27,7 @@ class ServicioController extends Controller
         $areas = Areas::where('status', 'Activo')->where('departamento_id',1)->whereNotIn('id',[1,2,6])->get();
         $area=Areas::where('name', 'LIKE', '%' . $request->search . '%')->get();
 
-        $list = Servicio::where('status','Activo')
-            ->where(function ($query) use ($request, $area) {
+        $list = Servicio::where(function ($query) use ($request, $area) {
                 $search = $request->input('search');
                 if ($search && $area->count() === 0) {
                     $query->where('id', 'LIKE', '%' . $search . '%')

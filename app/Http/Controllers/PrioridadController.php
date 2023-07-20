@@ -27,8 +27,7 @@ class PrioridadController extends Controller
         $tipos = Tipo::where('status', 'Activo')->get();
         $tipo=Tipo::where('name', 'LIKE', '%' . $request->search . '%')->get();
 
-        $prioridades = Prioridad::where('status','Activo')
-            ->where(function ($query) use ($request, $tipo) {
+        $prioridades = Prioridad::where(function ($query) use ($request, $tipo) {
                 $search = $request->input('search');
                 if ($search && $tipo->count() === 0) {
                     $query->where('id', 'LIKE', '%' . $search . '%')

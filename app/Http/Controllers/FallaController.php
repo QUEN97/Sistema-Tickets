@@ -28,8 +28,7 @@ class FallaController extends Controller
         $servicio=Servicio::where('name', 'LIKE', '%' . $request->search . '%')->get();
         $prioridad=Prioridad::where('name', 'LIKE', '%' . $request->search . '%')->get();
 
-        $fallas = Falla::where('status','Activo')
-            ->where(function ($query) use ($request, $servicio, $prioridad) {
+        $fallas = Falla::where(function ($query) use ($request, $servicio, $prioridad) {
                 $search = $request->input('search');
                 if ($search && $servicio->count() === 0 && $prioridad->count() === 0) {
                     $query->where('id', 'LIKE', '%' . $search . '%')

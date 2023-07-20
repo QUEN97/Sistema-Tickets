@@ -17,8 +17,7 @@ class TareaController extends Controller
         $agentes = User::where('status', 'Activo')->where('permiso_id',5)->get();
         $usuario=User::where('name', 'LIKE', '%' . $request->search . '%')->get();
 
-        $tareasList = Tarea::where('status', '!=', 'Cerrado')
-            ->where(function ($query) use ($request, $usuario) {
+        $tareasList = Tarea::where(function ($query) use ($request, $usuario) {
                 $search = $request->input('search');
                 if ($search && $usuario->count() === 0) {
                     $query->where('id', 'LIKE', '%' . $search . '%')
