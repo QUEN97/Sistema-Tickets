@@ -16,7 +16,7 @@ class FallaController extends Controller
                         ->get();
                 }
             }]
-        ])->paginate(10) ->withQueryString();
+        ])->orderBy('created_at','desc')->paginate(10) ->withQueryString();
         $trashed = Falla::onlyTrashed()->count();
         return view('modules.fallas.fallas',compact('fallas','trashed'));
     }
