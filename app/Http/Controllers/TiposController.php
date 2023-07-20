@@ -9,16 +9,27 @@ use Illuminate\Support\Facades\Auth;
 class TiposController extends Controller
 {
     public function home(Request $request){
-        // $tipos=Tipo::where('status','Activo')->select('*')->paginate(5);
-        $tipos = Tipo::where([
-            ['name', '!=', Null],
-            [function ($query) use ($request) {
-                if (($s = $request->s)) {
-                    $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                        ->get();
-                }
-            }]
-        ])->paginate(10) ->withQueryString();
+        // $tipos = Tipo::where([
+        //     ['name', '!=', Null],
+        //     [function ($query) use ($request) {
+        //         if (($s = $request->s)) {
+        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
+        //                 ->get();
+        //         }
+        //     }]
+        // ])->paginate(10) ->withQueryString();
+
+        $tipos = Tipo::where(function ($query) use ($request) {
+                $search = $request->input('search');
+                if ($search) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%');
+                } 
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
         $trashed = Tipo::onlyTrashed()->count();
         return view('modules.tipos.tipos',compact('tipos','trashed'));
     }
