@@ -11,26 +11,58 @@
         </div>
     </x-slot>
     <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        <div class="grid grid-cols-2 mb-2 mt-2">
-            <div class="ml-2">
-                <form action="{{ route('prioridades') }}" method="GET">
-                    <label for="search" class="sr-only">
-                        Search
-                    </label>
-                    <input type="text" name="s"
-                        class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-gray-400"
-                        placeholder="Buscar..." />
-                </form>
-            </div>
-            <div class="mr-2">
-                    <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
-                        href="{{ route('prioridades.trashed') }}">
-                        Eliminados
-                        <span
-                            class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                            {{ $trashed }} 
-                        </span>
-                    </a>
+        <div class="flex gap-1 flex-col">
+            <form action="{{ route('prioridades') }}" method="GET">
+                <div class="flex">
+                    <div class="relative mr-4">
+                        <label for="filter" class="sr-only">Filtrar por tipo</label>
+                        <select name="filter" id="filter"
+                            class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white">
+                            <option value="">Tipos</option>
+                            @foreach ($tipos as $tipo)
+                                <option value="{{ $tipo->id }}"
+                                    {{ request('filter') == $tipo->id ? 'selected' : '' }}>{{ $tipo->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="absolute top-0 left-0 mt-3 ml-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M6 8H2a2 2 0 00-2 2v12a2 2 0 002 2h4a2 2 0 002-2V10a2 2 0 00-2-2zm0 0V4a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h12m-6 0a2 2 0 00-2 2v8a2 2 0 002 2h4a2 2 0 002-2v-8a2 2 0 00-2-2h-4a2 2 0 00-2 2z"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label for="search" class="sr-only">Buscar</label>
+                        <input type="text" name="search" id="search"
+                            class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white"
+                            placeholder="Buscar..." value="{{ request('search') }}">
+                        <div class="absolute top-0 left-0 mt-3 ml-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.5 9a6.5 6.5 0 10-13 0 6.5 6.5 0 0013 0z" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"></path>
+                                <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
+                    
+                </div>
+            </form>
+            <div class="">
+                <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
+                    href="{{ route('prioridades.trashed') }}">
+                    Eliminados
+                    <span
+                        class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                        {{ $trashed }}
+                    </span>
+                </a>
             </div>
         </div>
         @if ($prioridades->count()>0)
