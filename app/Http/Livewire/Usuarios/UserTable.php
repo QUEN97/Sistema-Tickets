@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Usuarios;
 
+use App\Models\Departamento;
+use App\Models\Permiso;
 use App\Models\User;
 use App\Models\Zona;
 use Livewire\Component;
@@ -22,20 +24,44 @@ class UserTable extends Component
 
         $zonas = Zona::where('status', 'Activo')->get();
 
-        $users = User::where([
-            ['name', '!=', Null],
-            [function ($query) use ($request) {
-                if (($s = $request->s)) {
-                    $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                        ->orWhere('email', 'LIKE', '%' . $s . '%')
-                        ->get();
+        // $users = User::where([
+        //     ['name', '!=', Null],
+        //     [function ($query) use ($request) {
+        //         if (($s = $request->s)) {
+        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
+        //                 ->orWhere('email', 'LIKE', '%' . $s . '%')
+        //                 ->get();
+        //         }
+        //     }]
+        // ])->where('id','!=',1)->paginate(5); //ocultamos el usuario desarrollo para tener acceso seguro al sistema
+        //                                                     //->with(['zonas']) eliminado por duplicacion de archivos y no permitia el search
+
+        $this->filterSoli = $request->input('filterSoli') == 'Todos' ? null : $request->input('filterSoli');
+
+        $permisos = Permiso::all();
+        $permiso=Permiso::where('titulo_permiso', 'LIKE', '%' . $request->search . '%')->get();
+//dd($permisos);
+        $users = User::where(function ($query) use ($request, $permiso) {
+                $search = $request->input('search');
+                if ($search && $permiso->count() === 0) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('email', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%');
+                } else {
+                    $query->whereIn('permiso_id', Permiso::where('titulo_permiso', 'LIKE', '%' . $search . '%')->pluck('id'));
                 }
-            }]
-        ])->where('id','!=',1)->paginate(5); //ocultamos el usuario desarrollo para tener acceso seguro al sistema
-                                                            //->with(['zonas']) eliminado por duplicacion de archivos y no permitia el search
+            })
+            ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request){
+                $filterSoli = $request->input('filter');
+                $query->where('permiso_id', $filterSoli);
+            })->where('id','!=',1)
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
         $trashed = User::onlyTrashed()->count();
 
-        return view('livewire.usuarios.user-table', compact('zonas','users','trashed','isSupervi'));
+        return view('livewire.usuarios.user-table', compact('zonas','users','trashed','isSupervi','permisos'));
     }
 }

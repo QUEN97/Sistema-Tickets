@@ -8,15 +8,26 @@ use Illuminate\Http\Request;
 class RegionController extends Controller
 {
     public function home(Request $request){
-        $regiones = Region::where([
-            ['name', '!=', Null],
-            [function ($query) use ($request) {
-                if (($s = $request->s)) {
-                    $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                        ->get();
-                }
-            }]
-        ])->paginate(10) ->withQueryString();
+        // $regiones = Region::where([
+        //     ['name', '!=', Null],
+        //     [function ($query) use ($request) {
+        //         if (($s = $request->s)) {
+        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
+        //                 ->get();
+        //         }
+        //     }]
+        // ])->paginate(10) ->withQueryString();
+        $regiones = Region::where(function ($query) use ($request) {
+                $search = $request->input('search');
+                if ($search) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%');
+                } 
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
         $trashed = Region::onlyTrashed()->count();
         return view('modules.regiones.regiones',compact('regiones','trashed'));
     }

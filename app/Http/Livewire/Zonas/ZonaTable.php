@@ -18,15 +18,27 @@ class ZonaTable extends Component
         
         $zonasSups = $user->zonas;
 
-         $zonas = Zona::where([
-             ['name', '!=', Null],
-             [function ($query) use ($request) {
-                 if (($s = $request->s)) {
-                     $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                         ->get();
-                 }
-             }]
-         ])->paginate(5);
+        //  $zonas = Zona::where([
+        //      ['name', '!=', Null],
+        //      [function ($query) use ($request) {
+        //          if (($s = $request->s)) {
+        //              $query->orWhere('name', 'LIKE', '%' . $s . '%')
+        //                  ->get();
+        //          }
+        //      }]
+        //  ])->paginate(5);
+        
+        $zonas = Zona::where(function ($query) use ($request) {
+                $search = $request->input('search');
+                if ($search) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%');
+                }
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
       
         $trashed = Zona::onlyTrashed()->count();
         return view('livewire.zonas.zona-table',[

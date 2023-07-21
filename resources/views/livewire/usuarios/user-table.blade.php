@@ -1,31 +1,62 @@
 <div
     class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
     <div class="w-full">
-        <div class="grid grid-cols-2 mb-2 mt-2">
-            <div class="ml-2">
-                <form action="{{ route('users') }}" method="GET">
-                    <label for="search" class="sr-only">
-                        Search
-                    </label>
-                    <input type="text" name="s"
-                        class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md dark:bg-dark-eval-0 dark:border-gray-700 dark:text-black"
-                        placeholder="Buscar..." />
-                </form>
-            </div>
-            <div class="mr-2">
-                @if ($valid->pivot->de == 1)
-                    <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3"
-                        href="{{ route('users.trashed') }}">
-                        Eliminados
-                        <span
-                            class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                            {{ $trashed }}
-                        </span>
-                    </a>
-                @endif
+        <div class="flex gap-1 flex-col">
+            <form action="{{ route('users') }}" method="GET">
+                <div class="flex">
+                    <div class="relative mr-4">
+                        <label for="filter" class="sr-only">Filtrar por departamento</label>
+                        <select name="filter" id="filter"
+                            class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white">
+                            <option value="">Todos</option>
+                                @foreach ($permisos as $permiso)
+                                    <option value="{{ $permiso->id }}"
+                                        {{ request('filter') == $permiso->id ? 'selected' : '' }}>{{ $permiso->titulo_permiso }}
+                                    </option>
+                                @endforeach
+                        </select>
+                        <div class="absolute top-0 left-0 mt-3 ml-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M6 8H2a2 2 0 00-2 2v12a2 2 0 002 2h4a2 2 0 002-2V10a2 2 0 00-2-2zm0 0V4a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h12m-6 0a2 2 0 00-2 2v8a2 2 0 002 2h4a2 2 0 002-2v-8a2 2 0 00-2-2h-4a2 2 0 00-2 2z"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label for="search" class="sr-only">Buscar</label>
+                        <input type="text" name="search" id="search"
+                            class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white"
+                            placeholder="Buscar..." value="{{ request('search') }}">
+                        <div class="absolute top-0 left-0 mt-3 ml-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.5 9a6.5 6.5 0 10-13 0 6.5 6.5 0 0013 0z" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"></path>
+                                <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
+
+                </div>
+            </form>
+            <div class="mb-2">
+                <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
+                    href="{{ route('users.trashed') }}">
+                    Eliminados
+                    <span
+                        class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                        {{ $trashed }}
+                    </span>
+                </a>
             </div>
         </div>
-        <table  class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
+        <table
+            class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
             <thead class="bg-gray-50">
                 <tr>
                 <tr>
@@ -74,7 +105,7 @@
                                 class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Zonas</span>
-                                    @if ($user->zonas->count() > 0)
+                                @if ($user->zonas->count() > 0)
                                     @foreach ($user->zonas as $zona)
                                         <span
                                             class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600  dark:bg-red-900 dark:text-red-300">
@@ -83,10 +114,10 @@
                                     @endforeach
                                 @else
                                     @foreach ($user->areas as $area)
-                                    <span
-                                        class="inline-flex items-center gap-1 rounded-full bg-sky-600 px-2 py-1 text-xs font-semibold text-white">
-                                        {{ $area->name }}
-                                    </span>
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-sky-600 px-2 py-1 text-xs font-semibold text-white">
+                                            {{ $area->name }}
+                                        </span>
                                     @endforeach
                                 @endif
                             </td>
@@ -121,9 +152,9 @@
                                     </span>
                                     <br>
                                     @if ($user->last_seen)
-                                    <span class="dark:text-gray-400 text-xs">
-                                      Últ. vez:  {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
-                                    </span> 
+                                        <span class="dark:text-gray-400 text-xs">
+                                            Últ. vez: {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
+                                        </span>
                                     @endif
                                 @endif
                             </td>
@@ -183,8 +214,10 @@
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Nombre</span>
                                 <div class="text-sm">
-                                    <div class="font-medium text-gray-700 dark:text-gray-400">{{ $user->name }}</div>
-                                    <div class="text-gray-400 dark:ttext-gray-400">{{ $user->permiso->titulo_permiso }}
+                                    <div class="font-medium text-gray-700 dark:text-gray-400">{{ $user->name }}
+                                    </div>
+                                    <div class="text-gray-400 dark:ttext-gray-400">
+                                        {{ $user->permiso->titulo_permiso }}
                                     </div>
                                 </div>
                             </td>
@@ -235,8 +268,8 @@
                                         </span>
                                     </span>
                                     <br>
-                                     <span class="dark:text-gray-400">
-                                        {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span> 
+                                    <span class="dark:text-gray-400">
+                                        {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
                                 @endif
                             </td>
                             <td
@@ -284,6 +317,6 @@
             @elseif(Auth::user()->permiso_id == 2)
                 {{ $isSupervi->appends($_GET)->links() }}
             @endif
-        </div> 
+        </div>
     </div>
 </div>
