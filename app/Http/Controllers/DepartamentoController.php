@@ -9,15 +9,26 @@ use RealRashid\SweetAlert\Facades\Alert;
 class DepartamentoController extends Controller
 {
     public function home(Request $request){
-        $deptos = Departamento::where([
-            ['name', '!=', Null],
-            [function ($query) use ($request) {
-                if (($s = $request->s)) {
-                    $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                        ->get();
-                }
-            }]
-        ])->paginate(10) ->withQueryString();
+        // $deptos = Departamento::where([
+        //     ['name', '!=', Null],
+        //     [function ($query) use ($request) {
+        //         if (($s = $request->s)) {
+        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
+        //                 ->get();
+        //         }
+        //     }]
+        // ])->paginate(10) ->withQueryString();
+        $deptos = Departamento::where(function ($query) use ($request) {
+                $search = $request->input('search');
+                if ($search) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%');
+                } 
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
         $trashed = Departamento::onlyTrashed()->count();
         return view('modules.departamentos.departamentos',compact('deptos','trashed'));
     }
