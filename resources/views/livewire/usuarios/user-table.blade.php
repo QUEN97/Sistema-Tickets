@@ -278,12 +278,12 @@
                 @endif
             </tbody>
         </table>
-        {{-- <div class="mt-2 mr-2 mb-2">
+        <div class="mt-2 mr-2 mb-2">
             @if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
                 {{ $users->appends($_GET)->links() }}
             @elseif(Auth::user()->permiso_id == 2)
                 {{ $isSupervi->appends($_GET)->links() }}
             @endif
-        </div> --}}
+        </div> 
     </div>
 </div>
