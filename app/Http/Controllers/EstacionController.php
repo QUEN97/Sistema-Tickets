@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estacion;
+use App\Models\User;
 use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class EstacionController extends Controller
 {
+    public $filterSoli;
+    public $zonas;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,19 +20,43 @@ class EstacionController extends Controller
      */
     public function index(Request $request)
     {
-        $zonas = Zona::all();
-        $estaciones;
         $user=Auth::user();
         if($user->permiso_id==1 || $user->permiso_id==4){
-            $estaciones = Estacion::where([
-                ['name', '!=', Null],
-                [function ($query) use ($request) {
-                    if (($s = $request->s)) {
-                        $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                            ->get();
-                    }
-                }]
-            ])->paginate(10) ->withQueryString();
+            // $estaciones = Estacion::where([
+            //     ['name', '!=', Null],
+            //     [function ($query) use ($request) {
+            //         if (($s = $request->s)) {
+            //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
+            //                 ->get();
+            //         }
+            //     }]
+            // ])->paginate(10) ->withQueryString();
+        $this->filterSoli = $request->input('filterSoli') == 'Todos' ? null : $request->input('filterSoli');
+
+        $zonas = Zona::where('status', 'Activo')->get();
+        $zona=Zona::where('name', 'LIKE', '%' . $request->search . '%')->get();
+        $usuario=User::where('name', 'LIKE', '%' . $request->search . '%')->get();
+
+        $estaciones = Estacion::where(function ($query) use ($request, $zona, $usuario) {
+                $search = $request->input('search');
+                if ($search && $zona->count() === 0 && $usuario->count() === 0) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('num_estacion', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%');
+                } else {
+                    $query->whereIn('zona_id', Zona::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
+                    ->orWhereIn('user_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
+                    ->orWhereIn('supervisor_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
+                }
+            })
+            ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request){
+                $filterSoli = $request->input('filter');
+                $query->where('zona_id', $filterSoli);
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
         }
         if($user->permiso_id==2){
             $estaciones = Estacion::where([

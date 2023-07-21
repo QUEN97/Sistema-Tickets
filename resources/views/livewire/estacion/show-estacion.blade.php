@@ -21,6 +21,7 @@
                 {{-- <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> --}}
                 <div class="px-6 py-4">
                     <div class="font-bold text-xl mb-2 text-black">{{ $this->titulo_estacion }}</div>
+                    <div class="font-bold text-sm mb-2 text-black">({{ $this->numero }})</div>
                     <div class="px-2">
                         <div class="flex -mx-2 bg-indigo-300 p-2 rounded-md">
                             <div class="w-1/3 px-2">
