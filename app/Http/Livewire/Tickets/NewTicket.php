@@ -67,11 +67,14 @@ class NewTicket extends Component
 
     public function addTicket()
     { //El método addTicket() se ejecuta cuando se envía el formulario para agregar un nuevo ticket. 
+
+        $dia=Carbon::now(); //Obtenemos el dia actual
+
         $this->validate([ //Valida los campos requeridos y crea un nuevo registro de ticket en la base de datos.
             'area' => ['required', 'not_in:0'],
             'servicio' => ['required', 'not_in:0'],
             'falla' => ['required', 'not_in:0'],
-            // 'asignado' => ['required', 'not_in:0'],
+            // 'asignado' => ['required', 'not_in:0'], //retiramos la validación para que el sistema no marque error ya que se asigna en automatico con la funcion agenteDisponible()
             'asunto' => ['required'],
             'mensaje' => ['required'],
         ], [
@@ -93,8 +96,24 @@ class NewTicket extends Component
         $ticket->mensaje = $this->mensaje;
         $ticket->save();
         $cierre = Carbon::create($ticket->created_at);
-        $ticket->fecha_cierre = $cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
-        $ticket->save();
+         //asignamos fecha de cierre si estamos dentro del horario laboral
+         if($dia->dayOfWeek>0){//0=domingo
+            $inicio=Carbon::today()->addHour(9);
+            $dia->dayOfWeek==6? $limite=Carbon::today()->addHour(13)
+            : $limite=Carbon::today()->addHour(18)->addMinutes(30);
+            if($dia->greaterThanOrEqualTo($inicio) && $dia->lessThanOrEqualTo($limite)){
+                $ticket->fecha_cierre=$cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
+                $ticket->save();
+            }/* elseif($dia->dayOfWeek==6 && $dia->greaterThanOrEqualTo($limite)){
+                dd('es sabado después de la 1');
+            } */else{
+                $ticket->status='Por abrir';
+                $ticket->save();
+            }
+        }else{//si es domingo
+            $ticket->status='Por abrir';
+            $ticket->save();
+        }
 
         if (count($this->evidencias) > 0) { //Si se adjuntan evidencias (archivos), se almacenan en la carpeta pública y se crea un registro en la tabla ArchivosTicket.
             foreach ($this->evidencias as $lue) {
@@ -141,7 +160,7 @@ class NewTicket extends Component
 
     public function render()
     {
-        $areas = Areas::where('status', 'Activo')->get();
+        $areas = Areas::where('status', 'Activo')->where('departamento_id',1)->whereNotIn('id',[1,2,6])->get();
         return view('livewire.tickets.new-ticket', [
             'areas' => $areas,
         ]);

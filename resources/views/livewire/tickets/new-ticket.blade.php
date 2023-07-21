@@ -1,9 +1,8 @@
 <div class="col-md-4 col-sm-6 col-6 d-flex justify-content-end justify-content-md-end justify-content-sm-end">
     <div class="">
         <x-button wire:click="$set('modal',true)" class="dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700">
-            <i class="fa-solid fa-plus"></i>
             {{ __('Añadir Ticket') }}
-            </x-jet-button>
+            </x-button>
     </div>
 
     <x-dialog-modal wire:model="modal" id="modalRepuesto" class="flex items-center">

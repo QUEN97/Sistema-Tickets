@@ -5,8 +5,20 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('TICKETS') }}
             </h2>
-            @livewire('tickets.new-ticket')
+            <div class="flex flex-wrap gap-2">
+                @if ($pendientes > 0 && Auth::user()->permiso_id == 1)
+                    <a href="{{ route('tck.abierto') }}"
+                        class="rounded-md px-2 py-1 flex justify-center items-center bg-sky-700 hover:bg-sky-800 transition duration-300">
+                        Tickets por abrir
+                        <div class="mx-1 rounded-full bg-white text-black w-7 h-7 flex justify-center items-center">
+                            {{ $pendientes }}
+                        </div>
+                    </a>
+                @endif
+
+                @livewire('tickets.new-ticket')
+            </div>
         </div>
     </x-slot>
-        @livewire('tickets.tickets')
+    @livewire('tickets.tickets')
 </x-app-layout>

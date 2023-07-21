@@ -15,6 +15,7 @@ class DashboardCharts extends Component
     public function render()
     {
         $user = Auth::user();
+        $currentMonth = Carbon::now()->monthName;
 
         $chartTickets = new LarapexChart();
         $chartTicketsAsignados = new LarapexChart();
@@ -43,14 +44,15 @@ class DashboardCharts extends Component
 
         $chartTickets->setType('area')
             ->setTitle('Tickets por Estación')
-            ->setSubtitle('Top 5 del Mes ')
+            ->setSubtitle('Top 5 del Mes ' . ' - ' . $currentMonth)
             ->setXAxis($labelsT)
             ->setDataset([[
                 'name' => 'Tickets',
                 'data' => $estaciones->pluck('tcks')
             ]])
             ->setHeight(320)
-            ->setColors(['#1bf242']);
+            ->setColors(['#1bf242'])
+            ->setToolbar(true);
 
         $asignados = DB::table('tickets')
             ->join('users', 'tickets.user_id', 'users.id')
@@ -69,9 +71,10 @@ class DashboardCharts extends Component
 
         $chartTicketsAsignados->setType('donut')
             ->setTitle('Tickets Asignados por Usuario')
-            ->setSubtitle('Top 5 del Mes')
+            ->setSubtitle('Top 5 del Mes' . ' - ' . $currentMonth)
             ->setDataset($asignados->pluck('tcks'))
-            ->setLabels($labelsA);
+            ->setLabels($labelsA)
+            ->setToolbar(true);
 
 
         $userId = Auth::id();
@@ -84,22 +87,22 @@ class DashboardCharts extends Component
             })
             ->join('fallas', 'tickets.falla_id', 'fallas.id')
             ->join('prioridades', 'fallas.prioridad_id', 'prioridades.id')
+            ->join('tipos','prioridades.tipo_id','tipos.id')
             ->whereMonth('tickets.created_at', Carbon::now()->month)
-            ->selectRaw('count(tickets.user_id) as tcks, prioridades.name as prioridad')
-            ->groupBy('falla_id', 'prioridad')
+            ->selectRaw('count(tickets.user_id) as tcks, prioridades.name as prioridad, tipos.name as tipo')
+            ->groupBy('falla_id', 'prioridad', 'tipo')
             ->orderBy('tcks', 'desc')
             ->orderBy('tickets.created_at', 'desc')
             ->get();
-
-
+            
         foreach ($prioridades as $prioridad) {
-            $labelsP[] = $prioridad->prioridad;
+            $labelsP[] = $prioridad->tipo . ' - ' . $prioridad->prioridad;
         }
         $chartTicketsPrioridad->setTitle('Total Tickets Por Prioridad')
-            ->setSubtitle('Mes en Curso')
+            ->setSubtitle('Mes en Curso' . ' - ' . $currentMonth)
             ->setType('bar')->setXAxis($labelsP)->setGrid(true)->setDataset([[
                 'name'  => 'Tickets',
-                'data'  =>  $prioridades->pluck('tcks')
+                'data'  =>  $prioridades->pluck('tcks')->toArray()
             ]])
             ->setColors(['#e81388'])
             ->setHeight(320)
@@ -126,9 +129,10 @@ class DashboardCharts extends Component
 
         $chartTicketsStatus->setType('pie')
             ->setTitle('Tickets por Status')
-            ->setSubtitle('Mes en Curso')
+            ->setSubtitle('Mes en Curso' . ' - ' . $currentMonth)
             ->setDataset($estados->pluck('tcks'))
-            ->setLabels($labelsE);
+            ->setLabels($labelsE)
+            ->setToolbar(true);
 
         return view('livewire.dashboard.dashboard-charts', compact('chartTickets', 'chartTicketsAsignados', 'chartTicketsPrioridad', 'chartTicketsStatus'));
     }

@@ -17,7 +17,12 @@ class TicketController extends Controller
 
 
     public function home(){
-        return view('modules.tickets.index');
+        $pendientes=Ticket::where('status','Por abrir')->count();
+        return view('modules.tickets.index',compact('pendientes'));
+    }
+
+    public function pendientes(){
+        return view('modules.tickets.abiertos');
     }
 
     public function ver($request){
