@@ -99,7 +99,7 @@
                         </span>
 
                     </div>
-                    <div class="pt-8 text-center">
+                    <div class="flex gap-1 pt-8 text-center">
                         {{-- @livewire('tickets.edit-ticket', ['ticketID' => $tck->id]) --}}
                         {{-- @livewire('tickets.show-ticket', ['ticketID' => $tck->id]) --}}
                         {{-- @livewire('tickets.comentarios', ['ticketID' => $tck->id]) --}}
