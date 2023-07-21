@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoriaController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -18,15 +19,26 @@ class CategoriaController extends Controller
     {
         $valid = Auth::user()->permiso->panels->where('id', 9)->first();
 
-        $categorias = Categoria::where([
-            ['name', '!=', Null],
-            [function ($query) use ($request) {
-                if (($s = $request->s)) {
-                    $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                        ->get();
-                }
-            }]
-        ])->paginate(10) ->withQueryString();
+        // $categorias = Categoria::where([
+        //     ['name', '!=', Null],
+        //     [function ($query) use ($request) {
+        //         if (($s = $request->s)) {
+        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
+        //                 ->get();
+        //         }
+        //     }]
+        // ])->paginate(10) ->withQueryString();
+        $categorias = Categoria::where(function ($query) use ($request) {
+            $search = $request->input('search');
+            if ($search) {
+                $query->where('id', 'LIKE', '%' . $search . '%')
+                    ->orWhere('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('status', 'LIKE', '%' . $search . '%');
+            } 
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10)
+        ->withQueryString();
         $trashed = Categoria::onlyTrashed()->count();
         return view ('modules.productos.categorias.categorias', compact('categorias','trashed','valid'));
     }
@@ -68,15 +80,27 @@ public function delete_permanently()
 }
 
 public function marcas(Request $request){
-    $marcas = Marca::where([
-        ['name', '!=', Null],
-        [function ($query) use ($request) {
-            if (($s = $request->s)) {
-                $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                    ->get();
-            }
-        }]
-    ])->paginate(5)->withQueryString();
+    // $marcas = Marca::where([
+    //     ['name', '!=', Null],
+    //     [function ($query) use ($request) {
+    //         if (($s = $request->s)) {
+    //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
+    //                 ->get();
+    //         }
+    //     }]
+    // ])->paginate(5)->withQueryString();
+
+        $marcas = Marca::where(function ($query) use ($request) {
+                $search = $request->input('search');
+                if ($search) {
+                    $query->where('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', 'LIKE', '%' . $search . '%');
+                } 
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
     $trashed = Marca::onlyTrashed()->count();
     return view('modules.productos.marcas.index',compact('marcas','trashed'));
 }
