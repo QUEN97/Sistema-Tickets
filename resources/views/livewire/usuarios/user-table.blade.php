@@ -268,8 +268,11 @@
                                         </span>
                                     </span>
                                     <br>
-                                    <span class="dark:text-gray-400">
-                                        {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</span>
+                                    @if ($user->last_seen)
+                                        <span class="dark:text-gray-400 text-xs">
+                                            Últ. vez: {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
+                                        </span>
+                                    @endif
                                 @endif
                             </td>
                             <td

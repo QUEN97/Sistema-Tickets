@@ -34,7 +34,7 @@ class Tickets extends Component
         $user=Auth::user();
         $usuario=User::where('name', 'LIKE', '%' . $request->tck . '%')->get();
         //lista del personal
-        if($user->permiso_id != 1 && $user->permiso_id !=2){
+        if($user->permiso_id != 1 && $user->permiso_id !=2 && $user->permiso_id !=7){
             if (isset($request->start) && isset($request->end) && $request->start!=null && $request->end!=null) {
                 if (isset($request->status) && $request->status!=null) {
                     $tickets=Ticket::where('status',$request->status)
@@ -51,7 +51,7 @@ class Tickets extends Component
                         }
                     })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10);
                 } else {
-                    $tickets=Ticket::where('status','!=','Cerrado')
+                    $tickets=Ticket::wherewhere([['status','!=','Cerrado'],['status','!=','Por abrir']])
                     ->where(fn ($query)=>
                         $query->where('solicitante_id',$user->id)
                             ->orWhere('user_id',$user->id)
@@ -80,7 +80,7 @@ class Tickets extends Component
                     }
                 })->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8)->withQueryString();
             }else {
-                $tickets=Ticket::where('status','!=','Cerrado')
+                $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
                 ->where(fn ($query)=>
                     $query->where('solicitante_id',$user->id)
                         ->orWhere('user_id',$user->id)
@@ -173,7 +173,7 @@ class Tickets extends Component
                         }
                     })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->select('*')->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10);
                 } else {
-                    $tickets=Ticket::where('status','!=','Cerrado')
+                    $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                 $query->orWhere('id', 'LIKE', '%' . $tck . '%')
@@ -200,7 +200,7 @@ class Tickets extends Component
                 })->select('*')->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8)->withQueryString();
             }
             else{
-                $tickets=Ticket::where('status','!=','Cerrado')
+                $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
                 ->where(function ($query) use ($request,$usuario) {
                     if (($tck = $request->tck) && ($usuario->count() == 0)) {
                             $query->orWhere('id', 'LIKE', '%' . $tck . '%')

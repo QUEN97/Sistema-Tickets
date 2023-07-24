@@ -109,6 +109,8 @@
                         En proceso</option>
                     <option value="Cerrado" @if ($status == 'Cerrado') {{ 'selected' }} @endif>
                         Cerrado</option>
+                        <option value="Por abrir" @if ($status == 'Por abrir') {{ 'selected' }} @endif>
+                            Por abrir</option>
                 </select>
                 <x-input-error for="status"></x-input-error>
             </div>

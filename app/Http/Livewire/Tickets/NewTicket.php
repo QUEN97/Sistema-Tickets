@@ -9,6 +9,7 @@ use App\Models\Falla;
 use App\Models\Servicio;
 use App\Models\Ticket;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -51,24 +52,35 @@ class NewTicket extends Component
         $desocupado = [];
         $disponible = [];
         foreach ($this->personal as $key => $personal) {
-            $desocupado[$key]['id'] = $personal->id;
-            /* $desocupado[$key]['name']=$personal->name; */
-            $desocupado[$key]['cant'] = $personal->ticketsHoy->count();
-        }
-        $disponible = $desocupado[0];
-        foreach ($desocupado as $pos) {
-            if ($pos['cant'] < $disponible['cant']) {
-                $disponible = $pos;
+            if ($personal->status === 'Activo') { // Revisa el status del usuario
+                $desocupado[$key]['id'] = $personal->id;
+                $desocupado[$key]['cant'] = $personal->ticketsHoy->count();
             }
         }
-        //dd($disponible);
-        return $disponible['id'];
+        if (empty($this->personal)) {
+            // Devuelve un mensaje de error si no hay agentes activos disponibles
+            Alert::warning('Atención', "No hay agentes disponibles, favor de intentar más tarde");
+        } else {
+            // Ordena los agentes según la cantidad de tickets manejados hoy
+            usort($desocupado, function ($a, $b) {
+                return $a['cant'] <=> $b['cant'];
+            });
+
+            // Compruebe si el array $desocupado no está vacía antes de acceder a sus elementos
+            if (isset($desocupado[0])) {
+                $disponible = $desocupado[0];
+                return $disponible['id'];
+            } else {
+                // Manejar la situación donde $desocupado está vacío (no hay agentes disponibles)
+                Alert::warning('Atención', "No hay agentes disponibles, favor de intentar más tarde");
+            }
+        }
     }
 
     public function addTicket()
     { //El método addTicket() se ejecuta cuando se envía el formulario para agregar un nuevo ticket. 
 
-        $dia=Carbon::now(); //Obtenemos el dia actual
+        $dia = Carbon::now(); //Obtenemos el dia actual
 
         $this->validate([ //Valida los campos requeridos y crea un nuevo registro de ticket en la base de datos.
             'area' => ['required', 'not_in:0'],
@@ -87,6 +99,9 @@ class NewTicket extends Component
         ]);
 
         $this->asignado = $this->agenteDisponible();
+        if ($this->asignado === null) {
+            return redirect()->route('tickets');
+        }
 
         $ticket = new Ticket();
         $ticket->falla_id = $this->falla;
@@ -96,22 +111,22 @@ class NewTicket extends Component
         $ticket->mensaje = $this->mensaje;
         $ticket->save();
         $cierre = Carbon::create($ticket->created_at);
-         //asignamos fecha de cierre si estamos dentro del horario laboral
-         if($dia->dayOfWeek>0){//0=domingo
-            $inicio=Carbon::today()->addHour(9);
-            $dia->dayOfWeek==6? $limite=Carbon::today()->addHour(13)
-            : $limite=Carbon::today()->addHour(18)->addMinutes(30);
-            if($dia->greaterThanOrEqualTo($inicio) && $dia->lessThanOrEqualTo($limite)){
-                $ticket->fecha_cierre=$cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
+        //asignamos fecha de cierre si estamos dentro del horario laboral
+        if ($dia->dayOfWeek > 0) { //0=domingo
+            $inicio = Carbon::today()->addHour(9);
+            $dia->dayOfWeek == 6 ? $limite = Carbon::today()->addHour(13)
+                : $limite = Carbon::today()->addHour(18)->addMinutes(30);
+            if ($dia->greaterThanOrEqualTo($inicio) && $dia->lessThanOrEqualTo($limite)) {
+                $ticket->fecha_cierre = $cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
                 $ticket->save();
             }/* elseif($dia->dayOfWeek==6 && $dia->greaterThanOrEqualTo($limite)){
                 dd('es sabado después de la 1');
-            } */else{
-                $ticket->status='Por abrir';
+            } */ else {
+                $ticket->status = 'Por abrir';
                 $ticket->save();
             }
-        }else{//si es domingo
-            $ticket->status='Por abrir';
+        } else { //si es domingo
+            $ticket->status = 'Por abrir';
             $ticket->save();
         }
 
@@ -142,16 +157,16 @@ class NewTicket extends Component
 
         foreach ($tickets as $ticket) {
             // if ($ticket->status !== 'En proceso') { Descomentar para evitar que ticket se cierre aun con status En Proceso.
-                DB::beginTransaction();
+            DB::beginTransaction();
 
-                try {
-                    $ticket->status = 'Cerrado';
-                    $ticket->save();
+            try {
+                $ticket->status = 'Cerrado';
+                $ticket->save();
 
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollBack();
-                }
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+            }
             //} Descomentar para evitar que ticket se cierre aun con status En Proceso.
         }
 
@@ -160,7 +175,7 @@ class NewTicket extends Component
 
     public function render()
     {
-        $areas = Areas::where('status', 'Activo')->where('departamento_id',1)->whereNotIn('id',[1,2,6])->get();
+        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [1, 2, 6])->get();
         return view('livewire.tickets.new-ticket', [
             'areas' => $areas,
         ]);

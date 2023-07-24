@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->unsignedBigInteger('permiso_id');
             $table->unsignedBigInteger('region_id')->nullable();
-            $table->enum('status',['Activo','Inactivo'])->default('Activo');
+            $table->enum('status',['Activo','Vacaciones','Hora Comida','En Viaje','Inactivo'])->default('Activo');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

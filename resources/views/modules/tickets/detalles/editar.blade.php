@@ -19,6 +19,10 @@
                         <span class="bg-gray-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
                         </span>
+                        @elseif ($tck->status == 'Por abrir')
+                        <span class="bg-indigo-400 p-1 rounded-md text-white">
+                            {{ $tck->status }}
+                        </span>
                     @endif
                 </li>
                 <li class="mb-2"><strong class="dark:text-white">Cliente:</strong>

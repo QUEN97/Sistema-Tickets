@@ -9,90 +9,116 @@
                 placeholder="Buscar..." />
         </form>
     </div>
-    <div class="flex flex-wrap gap-2 justify-evenly">
-        
-        
+    <div class="flex flex-wrap gap-2 justify-evenly ">
         @foreach ($tickets as $tck)
+            <div @if ($tck->status == 'Abierto') class="shadow-lg group container border  border-green-500 rounded-md bg-white  w-[200px]  flex justify-center items-center  mx-left content-div" @endif
+                @if ($tck->status == 'En proceso') class="shadow-lg group container border  border-yellow-500 rounded-md bg-white  w-[200px]  flex justify-center items-center  mx-left content-div" @endif
+                @if ($tck->status == 'Cerrado' || $tck->status == 'Por abrir') class="shadow-lg group container border  border-gray-500 rounded-md bg-white  w-[200px]  flex justify-center items-center  mx-left content-div" @endif
+                wire:key="ticket-{{ $tck->id }}" x-data="{ closed: false }" x-show="!closed">
+                <div>
+                    <div class="w-full image-cover rounded-t-md ">
+                        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                            <div class="text-black">#{{ $tck->id }}</div>
+                            <div @if ($tck->status == 'Abierto') class=" p-2 m-2 w-18 h-18 text-center bg-green-500 dark:bg-dark-eval-3 rounded-full  text-white float-right fd-cl group-hover:opacity-25" @endif
+                                @if ($tck->status == 'En proceso') class="p-2 m-2 w-18 h-18 text-center bg-yellow-500 dark:bg-dark-eval-3 rounded-full  text-white float-right fd-cl group-hover:opacity-25" @endif
+                                @if ($tck->status == 'Cerrado' || $tck->status == 'Por abrir') class="p-2 m-2 w-18 h-18 text-center bg-gray-500 dark:bg-dark-eval-3 rounded-full  text-white float-right fd-cl group-hover:opacity-25" @endif>
+                                <span class="text-xs tracking-wide  font-bold font-sans"> {{ $tck->status }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-6 px-2 bg-white dark:bg-dark-eval-2 rounded-md fd-cl group-hover:opacity-25">
+                        <span
+                            class="block text-lg text-gray-800 dark:text-white font-bold tracking-wide text-center">{{ $tck->falla->name }}</span>
+                        <span class="sr-only">Falla del ticket</span>
+                        <span class="block text-gray-600 text-sm">
 
-        <div 
-        @if ($tck->status=="Abierto")
-            class=" group/buttons border-2 border-green-500 dark:border-green-700 rounded-md flex flex-col justify-between gap-1 w-[200px] pb-3 "
-        @endif
-        @if ($tck->status=="En proceso")
-            class=" group/buttons border-2 border-amber-600 rounded-md flex flex-col justify-between gap-1 w-[200px] pb-3 "
-        @else
-            class=" group/buttons border-2 rounded-md flex flex-col justify-between gap-1 w-[200px] pb-3 "
-        @endif
-       >
-            <div class="flex justify-between py-1">
-                <div class=" px-1">
-                    #{{$tck->id}}
+                            <div class="text-center text-black"> {{-- Quien solicita el ticket --}}
+                                <p class="bg-blue-200 rounded-md p-1"> {{ $tck->cliente->name }}</p>
+                            </div>
+
+                            @if (Auth::user()->permiso_id == 1)
+                                <div class="text-center text-black dark:text-white font-bold">
+                                    {{ $tck->agente->name }}
+                                </div>
+                            @endif
+
+                            <div class="text-center">
+                                <p class="text-black dark:text-white">Vencimiento:</p> {{-- Fecha de vencimiento del ticket --}}
+                                <p class="bg-gray-300 rounded-md p-1">{{ $tck->fecha_cierre }}</p>
+                            </div>
+                            @if ($tck->status == 'Cerrado' && $tck->cerrado != null)
+                                <div class="text-center">
+                                    <p class="text-black dark:text-white">Cerrado:</p> {{-- Fecha de cierre del ticket --}}
+                                    <p class="bg-gray-300 rounded-md p-1">{{ $tck->cerrado }}</p>
+                                </div>
+                            @endif
+                        </span>
+                    </div>
                 </div>
-                <div 
-                @if ($tck->status=="Abierto")
-                    class="bg-green-500 text-white p-1 dark:bg-green-700"
-                @endif
-                @if ($tck->status=="En proceso")
-                    class="bg-amber-600 text-white p-1"
-                @endif
-                @if ($tck->status=="Cerrado" || $tck->status=="Por abrir")
-                    class="bg-gray-400 text-white p-1"
-                @endif
-                >
-                    {{$tck->status}}
-                </div>
-            </div>
-            <div class=" text-center font-bold text-2xl">
-                <h2>{{$tck->falla->name}}</h2>
-            </div>
-            <div class="text-center">
-                {{$tck->cliente->name}}
-            </div>
-            @if (Auth::user()->permiso_id==1)
-                <div class="text-center">
-                    <p>Agente asignado:</p>
-                    {{$tck->agente->name}}
-                </div>
-            @endif
-            <div class="text-center mb-1">
-                
-                <span 
-                @if ($tck->falla->prioridad->name=="Bajo")
-                    class="bg-green-500 text-white p-1 rounded w-auto dark:bg-green-700"
-                @endif
-                @if ($tck->falla->prioridad->name=="Medio")
-                    class="bg-blue-700 text-white p-1 rounded w-auto"
-                @endif
-                @if ($tck->falla->prioridad->name=="Alto")
-                    class="bg-amber-600 text-white p-1 rounded w-auto"
-                @endif
-                @if ($tck->falla->prioridad->name=="Crítico")
-                    class="bg-purple-700 text-white p-1 rounded w-auto"
-                @endif
-                @if ($tck->falla->prioridad->name=="Alto Crítico")
-                    class="bg-red-700 text-white p-1 rounded w-auto"
-                @endif>
-                
-                    {{$tck->falla->prioridad->name}}
-                </span>
-                
-            </div>
-            <div class=" h-8 relative overflow-hidden">
-                <div class="flex flex-wrap gap-2 px-2 justify-center items-center min-[720px]:absolute min-[720px]:top-full min-[720px]:group-hover/buttons:top-0 transition-[top] duration-300">
-                    @if ($tck->status!='Cerrado')    
-                        @if (Auth::user()->permiso_id==1)  
-                            @livewire('tickets.edit-ticket',['ticketID'=>$tck->id])
-                        {{-- @else
-                            @livewire('tickets.show-ticket',['ticketID'=>$tck->id]) --}}
+                <div class="absolute opacity-0 fd-sh group-hover:opacity-100">
+                    <div class="pt6 text-center">
+                        <span
+                            @if ($tck->falla->prioridad->name == 'Bajo') class="bg-green-400 text-white p-1 rounded w-auto" @endif
+                            @if ($tck->falla->prioridad->name == 'Medio') class="bg-yellow-400 text-white p-1 rounded w-auto" @endif
+                            @if ($tck->falla->prioridad->name == 'Alto') class="bg-orange-400 text-white p-1 rounded w-auto" @endif
+                            @if ($tck->falla->prioridad->name == 'Crítico') class="bg-red-400 text-white p-1 rounded w-auto" @endif
+                            @if ($tck->falla->prioridad->name == 'Alto Crítico') class="bg-red-700 text-white p-1 rounded w-auto" @endif>
+                            {{ $tck->falla->prioridad->name }}
+                        </span>
+
+                    </div>
+                    <div class="flex gap-1 pt-8 text-center">
+
+                        {{-- Editar Ticket --}}
+                        @if (Auth::user()->permiso_id == 1)
+                            <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
+                                href="{{ route('tck.editar', $tck->id) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="w-6 h-6 text-black hover:text-blue-600 dark:text-white">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                </svg>
+                                <span class="tooltiptext">Editar</span>
+                            </a>
+                            @livewire('tickets.reasignar', ['ticketID' => $tck->id])
                         @endif
-                    @endif
-                        @livewire('tickets.unlock-ticket',['ticketID'=>$tck->id])
-                        @livewire('tickets.reasignar',['ticketID'=>$tck->id])
+
+                        {{-- Abrir Ticket Rapido - Solo Administradores --}}
+                        @if (Auth::user()->permiso_id == 1 )
+                            @livewire('tickets.unlock-ticket', ['ticketID' => $tck->id])
+                        @endif
+
+                    </div>
                 </div>
             </div>
-            
-        </div>
-        
+            <style>
+                .content-div {
+                    background-image: url('storage/product-photos/ticket.png');
+                    background-repeat: no-repeat;
+                    background-size: 198px;
+                    background-position: center;
+                }
+
+                .content-div:hover {
+                    background-image:
+                        linear-gradient(to right,
+                            rgba(73, 72, 72, 0.658), hsla(0, 1%, 48%, 0.712)),
+                        url('storage/product-photos/ticket.png');
+                }
+
+                .image-cover {
+                    height: 260px;
+                }
+
+                .content-div:hover .fd-cl {
+                    opacity: 0.25;
+                }
+
+                .content-div:hover .fd-sh {
+                    opacity: 1;
+                }
+            </style>
         @endforeach
     </div>
     

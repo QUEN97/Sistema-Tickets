@@ -58,19 +58,19 @@
                         <x-input-error for="role"></x-input-error>
                     </div>
                     @if ($areau)
-                    <div class="mb-3 col-6">
-                        <x-label value="{{ __('Area') }}" />
-                        <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
-                            @foreach ($areas as $tag)
-                                <div class="flex items-center">
-                                    <input type="checkbox" wire:model="areasUpdate" value="{{ $tag->id }}"
-                                        name="names[]" id="{{ $tag->name }}" multiple>
-                                    <label for="{{ $tag->name }}">{{ $tag->name }}</label>
-                                </div>
-                            @endforeach
+                        <div class="mb-3 col-6">
+                            <x-label value="{{ __('Area') }}" />
+                            <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
+                                @foreach ($areas as $tag)
+                                    <div class="flex items-center">
+                                        <input type="checkbox" wire:model="areasUpdate" value="{{ $tag->id }}"
+                                            name="names[]" id="{{ $tag->name }}" multiple>
+                                        <label for="{{ $tag->name }}">{{ $tag->name }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <x-input-error for="area"></x-input-error>
                         </div>
-                        <x-input-error for="area"></x-input-error>
-                    </div>
                     @endif
                     @if ($zonau)
                         <div class="mb-3 col-6">
@@ -111,6 +111,10 @@
                             <option hidden value="">Seleccionar Status</option>
                             <option value="Activo" @if ($status == 'Activo') {{ 'selected' }} @endif>
                                 Activo</option>
+                            <option value="Hora Comida" @if ($status == 'Hora Comida') {{ 'selected' }} @endif>
+                                Hora Comida</option>
+                            <option value="En Viaje" @if ($status == 'En Viaje') {{ 'selected' }} @endif>
+                                En Viaje</option>
                             <option value="Inactivo" @if ($status == 'Inactivo') {{ 'selected' }} @endif>
                                 Inactivo</option>
                         </select>

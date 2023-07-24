@@ -22,6 +22,7 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
     use SoftDeletes;
 
+
     /**
      * The attributes that are mass assignable.
      *

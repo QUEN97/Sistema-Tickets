@@ -1,19 +1,25 @@
 <x-app-layout>
-    @section('title','Perfil')
+    @section('title', 'Perfil')
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight">
-            {{ __('AJUSTES DE PERFIL') }}
-        </h2>
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <h3 class="text-xl font-bold">
+                {{ __('AJUSTES DE PERFIL') }}
+            </h3>
+            @if (Auth::user()->permiso_id === 5)
+                @livewire('usuarios.user-status')
+            @endif
+        </div>
     </x-slot>
 
     <div class="grid gap-8">
+
         @if (Laravel\Fortify\Features::canUpdateProfileInformation())
             @livewire('profile.update-profile-information-form')
         @endif
 
         @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
             @livewire('profile.update-password-form')
-        @endif 
+        @endif
 
         {{-- @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
             @livewire('profile.two-factor-authentication-form')

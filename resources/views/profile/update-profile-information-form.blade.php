@@ -76,7 +76,7 @@
                 <x-input-error for="photo" class="mt-2" />
             </div>
         @endif
-
+        
         <div>
             <!-- Rol Asignado -->
             <div class="col-span-6 sm:col-span-4 mb-2">

@@ -147,6 +147,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::delete('/tickets{id}', 'removeArch')->name('tck.destroy');
         Route::get('/tickets/tarea{id}','tarea')->name('tck.tarea');
         Route::get('/tickets/requisicion{id}','compra')->name('tck.compra');
+        Route::get('/ticktes/pendientes','pendientes')->name('tck.abierto');
     });
 
     Route::controller(TareaController::class)->group(function(){

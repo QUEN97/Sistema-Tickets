@@ -16,6 +16,10 @@ class Reasignar extends Component
         $this->asignado=$ticket->user_id;
     }
     public function changeAgente(Ticket $tck){
+        if ($tck->status === "Cerrado") {
+            Alert::error('Ticket Cerrado', 'El ticket #'.$this->ticketID.' está cerrado y no se puede reasignar.');
+            return redirect()->route('tickets');
+        }
         $tck->user_id=$this->asignado;
         $tck->save();
         Alert::success('Ticket Reasignado','El ticket #'.$this->ticketID.' ha sido actualizado');
