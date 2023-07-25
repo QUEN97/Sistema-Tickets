@@ -4,20 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Departamento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class DepartamentoController extends Controller
 {
     public function home(Request $request){
-        // $deptos = Departamento::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->paginate(10) ->withQueryString();
+        $valid = Auth::user()->permiso->panels->where('id', 7)->first();
+
         $deptos = Departamento::where(function ($query) use ($request) {
                 $search = $request->input('search');
                 if ($search) {

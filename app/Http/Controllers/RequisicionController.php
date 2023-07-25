@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class RequisicionController extends Controller
 {
     public function home(){
+        $valid = Auth::user()->permiso->panels->where('id', 4)->first();
         $user=Auth::user();
         if(!in_array($user->permiso_id,[1,2,4,7])){
             $tck=Ticket::where(function($q)use($user){
@@ -40,7 +41,7 @@ class RequisicionController extends Controller
         if(in_array($user->permiso_id,[1,4])){
             $compras=Compra::orderBy('id', 'DESC')->paginate(10) ->withQueryString();
         }
-        return view('modules.tickets.compras.compras-list',compact('compras'));
+        return view('modules.tickets.compras.compras-list',compact('compras','valid'));
     }
     public function edit($id){
         $compraID=$id;

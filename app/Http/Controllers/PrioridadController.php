@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prioridad;
 use App\Models\Tipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PrioridadController extends Controller
 {
@@ -12,16 +13,7 @@ class PrioridadController extends Controller
     public $tipos;
 
     public function home(Request $request){
-        // $prioridades = Prioridad::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //             ->orWhere('tiempo', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->paginate(10);
+        $valid = Auth::user()->permiso->panels->where('id', 17)->first();
         $this->filterSoli = $request->input('filterSoli') == 'Tipos' ? null : $request->input('filterSoli');
 
         $tipos = Tipo::where('status', 'Activo')->get();
@@ -46,7 +38,7 @@ class PrioridadController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Prioridad::onlyTrashed()->count();
-        return view('modules.prioridades.prioridades',compact('prioridades','trashed','tipos'));
+        return view('modules.prioridades.prioridades',compact('prioridades','trashed','tipos','valid'));
     }
 
 

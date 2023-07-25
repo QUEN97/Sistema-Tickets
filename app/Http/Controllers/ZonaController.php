@@ -15,12 +15,12 @@ class ZonaController extends Controller
      */
     public function index(Request $request)
     {
-        $this->valid = Auth::user()->permiso->panels->where('id', 6)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 12)->first();
 
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.zonas.zonas', ['val' => $this->valid]);
-        } elseif ($this->valid->pivot->re == 1) {
-            return view('modules.zonas.zonas', ['val' => $this->valid]);
+            return view('modules.zonas.zonas', ['val' => $valid]);
+        } elseif ($valid->pivot->re == 1) {
+            return view('modules.zonas.zonas', ['val' => $valid]);
         } else {
             return redirect()->route('dashboard');
         }
@@ -29,7 +29,7 @@ class ZonaController extends Controller
   
     public function trashed_zonas()
     {
-        $valid = Auth::user()->permiso->panels->where('id', 6)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 12)->first();
 
         $trashed = Zona::onlyTrashed()->orderBy("id", "desc")->paginate();
 

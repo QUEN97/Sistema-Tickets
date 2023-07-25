@@ -9,16 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class TiposController extends Controller
 {
     public function home(Request $request){
-        // $tipos = Tipo::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->paginate(10) ->withQueryString();
-
+        $valid = Auth::user()->permiso->panels->where('id', 19)->first();
         $tipos = Tipo::where(function ($query) use ($request) {
                 $search = $request->input('search');
                 if ($search) {
@@ -31,7 +22,7 @@ class TiposController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Tipo::onlyTrashed()->count();
-        return view('modules.tipos.tipos',compact('tipos','trashed'));
+        return view('modules.tipos.tipos',compact('tipos','trashed','valid'));
     }
 
 

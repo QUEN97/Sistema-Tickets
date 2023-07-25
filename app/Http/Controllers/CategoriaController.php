@@ -17,17 +17,8 @@ class CategoriaController extends Controller
      */
     public function index(Request $request)
     {
-        $valid = Auth::user()->permiso->panels->where('id', 9)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 13)->first();
 
-        // $categorias = Categoria::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->paginate(10) ->withQueryString();
         $categorias = Categoria::where(function ($query) use ($request) {
             $search = $request->input('search');
             if ($search) {

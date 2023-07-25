@@ -5,8 +5,8 @@
             <h3 class="text-xl font-bold">
                 {{ __('AJUSTES DE PERFIL') }}
             </h3>
-            @if (Auth::user()->permiso_id === 5)
-                @livewire('usuarios.user-status')
+            @if (Auth::user()->permiso_id == 5)
+                @livewire('usuarios.user-status') 
             @endif
         </div>
     </x-slot>

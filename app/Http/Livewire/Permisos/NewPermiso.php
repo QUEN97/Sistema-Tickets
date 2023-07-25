@@ -49,7 +49,7 @@ class NewPermiso extends Component
         DB::transaction(function (){
             $ultid = Permiso::latest('id')->first();
 
-            for ($i = 1; $i <= 13; $i++) { 
+            for ($i = 1; $i <= 21; $i++) { 
                 PanelPermiso::create([
                     'permiso_id' => $ultid->id,
                     'panel_id' => $i,

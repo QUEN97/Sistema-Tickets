@@ -10,6 +10,7 @@ use App\Models\Servicio;
 use App\Models\Tarea;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
@@ -17,8 +18,9 @@ class TicketController extends Controller
 
 
     public function home(){
+        $valid = Auth::user()->permiso->panels->where('id', 2)->first();
         $pendientes=Ticket::where('status','Por abrir')->count();
-        return view('modules.tickets.index',compact('pendientes'));
+        return view('modules.tickets.index',compact('pendientes','valid'));
     }
 
     public function pendientes(){

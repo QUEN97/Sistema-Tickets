@@ -24,12 +24,12 @@ class UserController extends Controller
         // ])->with(['zonas'])->first()->paginate(5);
 
         // $trashed = User::onlyTrashed()->count();
-        $this->valid = Auth::user()->permiso->panels->where('id', 4)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 11)->first();
 
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.usuarios.usuarios', ['val' => $this->valid]);
-        } elseif ($this->valid->pivot->re == 1) {
-            return view('modules.usuarios.usuarios', ['val' => $this->valid]);
+            return view('modules.usuarios.usuarios', ['val' => $valid]);
+        } elseif ($valid->pivot->re == 1) {
+            return view('modules.usuarios.usuarios', ['val' => $valid]);
         } else {
             return redirect()->route('dashboard');
         }
@@ -44,7 +44,7 @@ class UserController extends Controller
     public function trashed_users()
     {
 
-        $valid = Auth::user()->permiso->panels->where('id', 4 )->first();
+        $valid = Auth::user()->permiso->panels->where('id', 11 )->first();
         $trashed = User::onlyTrashed()->orderBy("id", "desc")->paginate();
 
         return view("modules.usuarios.usertrashed", [

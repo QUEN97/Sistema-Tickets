@@ -15,17 +15,8 @@ class ProductoController extends Controller
 
     public function index(Request $request)
     {
-        $valid = Auth::user()->permiso->panels->where('id', 8)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 15)->first();
 
-        // $productos = Producto::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->paginate(10) ->withQueryString();
         $this->filterSoli = $request->input('filterSoli') == 'Todos' ? null : $request->input('filterSoli');
 
         $categos = Categoria::where('status', 'Activo')->get();

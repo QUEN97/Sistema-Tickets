@@ -6,6 +6,7 @@ use App\Models\Falla;
 use App\Models\Prioridad;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FallaController extends Controller
 {
@@ -13,15 +14,7 @@ class FallaController extends Controller
     public $agentes;
 
     public function home(Request $request){
-        // $fallas = Falla::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->orderBy('id','desc')->paginate(10) ->withQueryString();
+        $valid = Auth::user()->permiso->panels->where('id', 16)->first();
         $this->filterSoli = $request->input('filterSoli') == 'Servicios' ? null : $request->input('filterSoli');
 
         $servicios = Servicio::where('status', 'Activo')->get();
@@ -47,7 +40,7 @@ class FallaController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Falla::onlyTrashed()->count();
-        return view('modules.fallas.fallas',compact('fallas','trashed','servicios'));
+        return view('modules.fallas.fallas',compact('fallas','trashed','servicios','valid'));
     }
 
 

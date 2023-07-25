@@ -11,12 +11,12 @@ class AlmacenController extends Controller
     public function home()
     {
         $user = Auth::user();
-        $this->valid = Auth::user()->permiso->panels->where('id', 2)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 5)->first();
 
         if (Auth::user()->permiso->id == 1) {
-        return view('modules.almacenes.index', ['val' => $this->valid, 'user' => $user]);
-    } elseif ($this->valid->pivot->re == 1) {
-        return view('modules.almacenes.index', ['val' => $this->valid, 'user' => $user]);
+        return view('modules.almacenes.index', ['val' => $valid, 'user' => $user]);
+    } elseif ($valid->pivot->re == 1) {
+        return view('modules.almacenes.index', ['val' => $valid, 'user' => $user]);
     }else {
         return redirect()->route('dashboard');
     }

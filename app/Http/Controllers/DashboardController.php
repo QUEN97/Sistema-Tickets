@@ -18,7 +18,7 @@ class DashboardController extends Controller
 {
     public function data()
     {
-        $valid = Auth::user()->permiso->panels->where('id', 13)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 1)->first();
 
         date_default_timezone_set('America/Mexico_City'); // Cambiar a la zona horaria requerida
         $hour = Carbon::now()->format('H'); //Hora

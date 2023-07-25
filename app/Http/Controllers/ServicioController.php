@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Areas;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServicioController extends Controller
 {
@@ -13,15 +14,8 @@ class ServicioController extends Controller
 
     public function home(Request $request)
     {
-        // $list = Servicio::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->paginate(10);
+        $valid = Auth::user()->permiso->panels->where('id', 18)->first();
+
         $this->filterSoli = $request->input('filterSoli') == 'Todos' ? null : $request->input('filterSoli');
 
         $areas = Areas::where('status', 'Activo')->where('departamento_id',1)->whereNotIn('id',[1,2,6])->get();
@@ -45,7 +39,7 @@ class ServicioController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Servicio::onlyTrashed()->count();
-        return view('modules.servicios.servicios', compact('list', 'trashed','areas'));
+        return view('modules.servicios.servicios', compact('list', 'trashed','areas','valid'));
     }
 
 

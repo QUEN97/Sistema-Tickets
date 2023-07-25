@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tarea;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TareaController extends Controller
 {
@@ -12,6 +13,8 @@ class TareaController extends Controller
     public $agentes;
     public function home(Request $request)
     {
+        $valid = Auth::user()->permiso->panels->where('id', 3)->first();
+
         $this->filterSoli = $request->input('filterSoli') == 'Agentes' ? null : $request->input('filterSoli');
 
         $agentes = User::where('status', 'Activo')->where('permiso_id',5)->get();
@@ -38,6 +41,6 @@ class TareaController extends Controller
             ->withQueryString();
 
         
-        return view('modules.tickets.tareas.tareas-list', compact('tareasList','agentes'));
+        return view('modules.tickets.tareas.tareas-list', compact('tareasList','agentes','valid'));
     }
 }

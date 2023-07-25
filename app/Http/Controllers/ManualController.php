@@ -9,12 +9,12 @@ class ManualController extends Controller
 {
     public function show()
     {
-        $this->valid = Auth::user()->permiso->panels->where('id', 10)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 20)->first();
         
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.sistema.manuales.index', ['val' => $this->valid]);
-        } elseif ($this->valid->pivot->re == 1) {
-            return view('modules.sistema.manuales.index', ['val' => $this->valid]);
+            return view('modules.sistema.manuales.index', ['val' => $valid]);
+        } elseif ($valid->pivot->re == 1) {
+            return view('modules.sistema.manuales.index', ['val' => $valid]);
         } else {
             return redirect()->route('dashboard');
         }

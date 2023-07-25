@@ -4,19 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Region;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegionController extends Controller
 {
     public function home(Request $request){
-        // $regiones = Region::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->paginate(10) ->withQueryString();
+        $valid = Auth::user()->permiso->panels->where('id', 9)->first();
         $regiones = Region::where(function ($query) use ($request) {
                 $search = $request->input('search');
                 if ($search) {
@@ -29,7 +22,7 @@ class RegionController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Region::onlyTrashed()->count();
-        return view('modules.regiones.regiones',compact('regiones','trashed'));
+        return view('modules.regiones.regiones',compact('regiones','trashed','valid'));
     }
 
 

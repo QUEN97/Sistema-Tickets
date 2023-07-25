@@ -15,12 +15,12 @@ class PermisoController extends Controller
 {
     public function show()
     {
-        $this->valid = Auth::user()->permiso->panels->where('id', 5)->first();
+        $valid = Auth::user()->permiso->panels->where('id', 10)->first();
         
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.permisos.index', ['val' => $this->valid]);
-        } elseif ($this->valid->pivot->re == 1) {
-            return view('modules.permisos.index', ['val' => $this->valid]);
+            return view('modules.permisos.index', ['val' => $valid]);
+        } elseif ($valid->pivot->re == 1) {
+            return view('modules.permisos.index', ['val' => $valid]);
         } else {
             return redirect()->route('dashboard');
         }
@@ -50,7 +50,7 @@ class PermisoController extends Controller
             'descripcion' => Str::ucfirst($request->descripcion),
         ])->save();
 
-        for ($i=1; $i <= 13; $i++) { 
+        for ($i=1; $i <= 21; $i++) { 
             
             $permi = PanelPermiso::where('permiso_id', $id)->where('panel_id', $i)->first();
 
@@ -101,7 +101,7 @@ class PermisoController extends Controller
 
         $permiso = Permiso::where('id', $id)->first();
 
-        Alert::success('Permisos Actulizados', "Los Permisos del Rol". ' '.$permiso->titulo_permiso. ' '. "han sido actualizados en el sistema");
+        Alert::success('Permisos Actualizados', "Los Permisos del Rol". ' '.$permiso->titulo_permiso. ' '. "han sido actualizados en el sistema");
 
         return redirect()->route('roles');
     }

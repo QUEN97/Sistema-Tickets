@@ -29,54 +29,39 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
         ]);
 
-        DB::table('permisos')->insert([
-            'titulo_permiso' => 'Supervisor',
-            'descripcion' => 'Gestión/Control de Compras de Estaciones Asignadas',
-            'flag_trash' => 0,
-            'created_at' => now(),
-        ]);
 
-        DB::table('permisos')->insert([
-            'titulo_permiso' => 'Gerente',
-            'descripcion' => 'Solicitud de Compras',
-            'flag_trash' => 0,
-            'created_at' => now(),
-        ]);
-
-        DB::table('permisos')->insert([
-            'titulo_permiso' => 'Compras',
-            'descripcion' => 'Control de Compras y Productos del Sistema',
-            'flag_trash' => 0,
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Dashboard',
             'created_at' => now(),
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Solicitudes',
+            'titulo_panel' => 'Tickets',
             'created_at' => now(),
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Almacen',
+            'titulo_panel' => 'Tareas',
             'created_at' => now(),
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Repuestos',
+            'titulo_panel' => 'Compras',
             'created_at' => now(),
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Usuarios',
+            'titulo_panel' => 'Almacenes',
             'created_at' => now(),
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Roles',
+            'titulo_panel' => 'Áreas',
             'created_at' => now(),
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Zonas',
+            'titulo_panel' => 'Departamentos',
             'created_at' => now(),
         ]);
 
@@ -86,12 +71,57 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('panels')->insert([
+            'titulo_panel' => 'Regiones',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Roles',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Usuarios',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Zonas',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Categorías',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Marcas',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
             'titulo_panel' => 'Productos',
             'created_at' => now(),
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Categorias',
+            'titulo_panel' => 'Fallas',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Prioridades',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Servicios',
+            'created_at' => now(),
+        ]);
+
+        DB::table('panels')->insert([
+            'titulo_panel' => 'Tipos',
             'created_at' => now(),
         ]);
 
@@ -101,17 +131,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Proveedores',
+            'titulo_panel' => 'Versiones',
             'created_at' => now(),
         ]);
 
         DB::table('panels')->insert([
-            'titulo_panel' => 'Facturas',
-            'created_at' => now(),
-        ]);
-
-        DB::table('panels')->insert([
-            'titulo_panel' => 'Dashboard',
+            'titulo_panel' => 'Global',
             'created_at' => now(),
         ]);
 
@@ -286,6 +311,111 @@ class DatabaseSeeder extends Seeder
         DB::table('panel_permiso')->insert([
             'permiso_id' => 1,
             'panel_id' => 13,
+            'wr' => 1,
+            're' => 1,
+            'ed' => 1,
+            'de' => 1,
+            'vermas' => 1,
+            'verpap' => 1,
+            'restpap' => 1,
+            'vermaspap' => 1,
+            'created_at' => now(),
+        ]);
+
+        DB::table('panel_permiso')->insert([
+            'permiso_id' => 1,
+            'panel_id' => 14,
+            'wr' => 1,
+            're' => 1,
+            'ed' => 1,
+            'de' => 1,
+            'vermas' => 1,
+            'verpap' => 1,
+            'restpap' => 1,
+            'vermaspap' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('panel_permiso')->insert([
+            'permiso_id' => 1,
+            'panel_id' => 15,
+            'wr' => 1,
+            're' => 1,
+            'ed' => 1,
+            'de' => 1,
+            'vermas' => 1,
+            'verpap' => 1,
+            'restpap' => 1,
+            'vermaspap' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('panel_permiso')->insert([
+            'permiso_id' => 1,
+            'panel_id' => 16,
+            'wr' => 1,
+            're' => 1,
+            'ed' => 1,
+            'de' => 1,
+            'vermas' => 1,
+            'verpap' => 1,
+            'restpap' => 1,
+            'vermaspap' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('panel_permiso')->insert([
+            'permiso_id' => 1,
+            'panel_id' => 17,
+            'wr' => 1,
+            're' => 1,
+            'ed' => 1,
+            'de' => 1,
+            'vermas' => 1,
+            'verpap' => 1,
+            'restpap' => 1,
+            'vermaspap' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('panel_permiso')->insert([
+            'permiso_id' => 1,
+            'panel_id' => 18,
+            'wr' => 1,
+            're' => 1,
+            'ed' => 1,
+            'de' => 1,
+            'vermas' => 1,
+            'verpap' => 1,
+            'restpap' => 1,
+            'vermaspap' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('panel_permiso')->insert([
+            'permiso_id' => 1,
+            'panel_id' => 19,
+            'wr' => 1,
+            're' => 1,
+            'ed' => 1,
+            'de' => 1,
+            'vermas' => 1,
+            'verpap' => 1,
+            'restpap' => 1,
+            'vermaspap' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('panel_permiso')->insert([
+            'permiso_id' => 1,
+            'panel_id' => 20,
+            'wr' => 1,
+            're' => 1,
+            'ed' => 1,
+            'de' => 1,
+            'vermas' => 1,
+            'verpap' => 1,
+            'restpap' => 1,
+            'vermaspap' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('panel_permiso')->insert([
+            'permiso_id' => 1,
+            'panel_id' => 21,
             'wr' => 1,
             're' => 1,
             'ed' => 1,
@@ -298,542 +428,10 @@ class DatabaseSeeder extends Seeder
         ]);
         
 
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 1,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 2,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 3,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 4,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 5,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 6,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 7,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 8,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 9,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 10,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 11,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 12,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 2,
-            'panel_id' => 13,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 1,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 2,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 3,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 4,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 5,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 6,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 7,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 8,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 9,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 10,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 11,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 12,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 3,
-            'panel_id' => 13,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 1,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 2,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 3,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 4,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 5,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 6,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 7,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 8,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 9,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 10,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 11,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 12,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('panel_permiso')->insert([
-            'permiso_id' => 4,
-            'panel_id' => 13,
-            'wr' => 1,
-            're' => 1,
-            'ed' => 1,
-            'de' => 1,
-            'vermas' => 1,
-            'verpap' => 1,
-            'restpap' => 1,
-            'vermaspap' => 1,
-            'created_at' => now(),
-        ]);
+        
 
         DB::table('zonas')->insert([
-            'name' => 'Mérida 1',
+            'name' => 'MÉRIDA 1',
             'status' => 'Activo',
             'created_at' => now(),
         ]);

@@ -41,14 +41,12 @@ class AsignarPermiso extends Component
     public function AsignarPermiso($id, Request $request)
     {
         $this->validate([
-            'titulo_permiso' => ['required', 'string', 'max:250'],
-            'descripcion' => ['required', 'string', 'max:250'],
+            'titulo_permiso' => ['required', 'string'],
+            'descripcion' => ['required', 'string'],
         ],
         [
             'titulo_permiso.required' => 'El campo Nombre de Rol es obligatorio',
-            'titulo_permiso.max' => 'El campo Nombre de Rol no debe ser mayor a 250 caracteres',
             'descripcion.required' => 'El campo Descripción es obligatorio',
-            'descripcion.max' => 'El campo Descripción no debe ser mayor a 250 caracteres',
         ]);
 
         for ($i=1; $i <= count(Panel::all()); $i++) { 

@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Auth;
 class VersionController extends Controller
 {
     public function show()
-    {$this->valid = Auth::user()->permiso->panels->where('id', 10)->first();
+    {$valid = Auth::user()->permiso->panels->where('id', 21)->first();
         
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.sistema.versiones.index', ['val' => $this->valid]);
-        } elseif ($this->valid->pivot->re == 1) {
-            return view('modules.sistema.versiones.index', ['val' => $this->valid]);
+            return view('modules.sistema.versiones.index', ['val' => $valid]);
+        } elseif ($valid->pivot->re == 1) {
+            return view('modules.sistema.versiones.index', ['val' => $valid]);
         } else {
             return redirect()->route('dashboard');
         }
