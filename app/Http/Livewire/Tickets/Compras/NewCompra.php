@@ -6,8 +6,10 @@ use App\Models\ArchivosCompra;
 use App\Models\Categoria;
 use App\Models\Compra;
 use App\Models\CompraDetalle;
+use App\Models\CompraServicio;
 use App\Models\Marca;
 use App\Models\Producto;
+use App\Models\TckServicio;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -17,9 +19,9 @@ use RealRashid\SweetAlert\Facades\Alert;
 class NewCompra extends Component
 {
     use WithFileUploads;
-    public $ticketID,$w=0,$w2=0,$step=1;
+    public $ticketID,$w=0,$w2=0,$step=1,$tipo;
     //variables del formulario
-    public $titulo,$problema,$solucion,$evidencias=[],$urlArchi,$categoria,$productos,$carrito=[],$search;
+    public $titulo,$problema,$solucion,$evidencias=[],$urlArchi,$categoria,$productos,$servicios,$carrito=[],$search,$searchService;
     //funciones para controlar el formulario con Steps
     public function nextStep(){
         if($this->step==1){
@@ -61,10 +63,18 @@ class NewCompra extends Component
         }
     }
     //-------------------------------//
-
+    public function updatedTipo($val){
+        if($val=="Servicio"){
+            $this->servicios=TckServicio::all();
+        }
+        $this->carrito=[];
+    }
     public function updatedCategoria($id){
         $categoria=Categoria::find($id);
         $this->productos=$categoria->productos;
+    }
+    public function updatedSearchService($query){
+        $this->servicios=TckServicio::where('name','LIKE','%'.$query.'%')->get();
     }
     public function updatedSearch($query){
         $marca=Marca::where('name','LIKE','%'.$query.'%')->first();
@@ -114,14 +124,25 @@ class NewCompra extends Component
             $archivo->archivo_path=$this->urlArchi;
             $archivo->save();
         }
-        //guardamos productos de la compra
-        foreach($this->carrito as $p){
-            $cp=new CompraDetalle();
-            $cp->compra_id=$compra->id;
-            $cp->producto_id=$p['id'];
-            $cp->prioridad=$p['prioridad'];
-            $cp->cantidad=$p['cantidad'];
-            $cp->save();
+        //guardamos productos de la compra de acuerdo al tipo
+        if($this->tipo=="Producto"){
+            foreach($this->carrito as $p){
+                $cp=new CompraDetalle();
+                $cp->compra_id=$compra->id;
+                $cp->producto_id=$p['id'];
+                $cp->prioridad=$p['prioridad'];
+                $cp->cantidad=$p['cantidad'];
+                $cp->save();
+            }
+        }else{
+            foreach($this->carrito as $p){
+                $cp=new CompraServicio();
+                $cp->compra_id=$compra->id;
+                $cp->servicio_id=$p['id'];
+                $cp->prioridad=$p['prioridad'];
+                $cp->cantidad=$p['cantidad'];
+                $cp->save();
+            }
         }
         $this->PDF($compra);
         //dd($this->carrito);
@@ -129,7 +150,8 @@ class NewCompra extends Component
         return redirect()->route('tickets');
     }
     public function PDF($compra){
-        $categoria=Categoria::find($this->categoria);
+        $this->tipo=="Servicio"?$categoria="Servicio"
+        : $categoria=Categoria::find($this->categoria)->name;
         $compra=$compra;
         $nombre='R'.$compra->id.'-'.$compra->ticket->agente->name;
         $pdf=Pdf::loadView('livewire.tickets.compras.PDFCompra',compact('categoria','compra'))->output();

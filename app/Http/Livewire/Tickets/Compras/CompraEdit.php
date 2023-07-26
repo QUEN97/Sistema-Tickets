@@ -6,8 +6,10 @@ use App\Models\ArchivosCompra;
 use App\Models\Categoria;
 use App\Models\Compra;
 use App\Models\CompraDetalle;
+use App\Models\CompraServicio;
 use App\Models\Marca;
 use App\Models\Producto;
+use App\Models\TckServicio;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -17,11 +19,20 @@ use RealRashid\SweetAlert\Facades\Alert;
 class CompraEdit extends Component
 {
     use WithFileUploads;
-    public $compraID,$titulo,$problema,$solucion,$evidencias=[],$urlArchi,$categoria,$productos,$carrito=[],$newCarrito=[],$search;
+    public $compraID,$titulo,$problema,$solucion,$evidencias=[],$urlArchi,$categoria,$productos,$servicios,$carrito=[],$newCarrito=[],$search,$searchService;
+    public $tipo;
+    public function mount(){
+        $compra = Compra::find($this->compraID);
+        $compra->productos->count()>0? $this->tipo="prod"
+        : $this->tipo= "serv";
+    }
     public function updatedCategoria($id){
         $categoria=Categoria::find($id);
         $excluir=CompraDetalle::whereIn('id',array_column($this->carrito, 'id'))->pluck('producto_id');
         $this->productos=Producto::where('categoria_id',$categoria->id)->whereNotIn('id',$excluir)->get();
+    }
+    public function updatedSearchService($query){
+        $this->servicios=TckServicio::where('name','LIKE','%' .$query. '%')->get();
     }
     public function updatedSearch($query){
         $marca=Marca::where('name','LIKE','%'.$query.'%')->first();
@@ -39,7 +50,10 @@ class CompraEdit extends Component
         Storage::disk('public')->delete($archivo->archivo_path);
         $archivo->delete();
     }
-    public function deleteCarrito(CompraDetalle $pr){
+    public function deleteCarrito(CompraDetalle $id){
+        $this->tipo=='prod'
+        ?$pr=CompraDetalle::find($id)
+        :$pr=CompraServicio::find($id);
         $this->carrito=array_filter($this->carrito,function($element) use($pr){
             if($element['id']!=$pr->id){
                 return $element;
@@ -57,7 +71,7 @@ class CompraEdit extends Component
                 'evidencias.required'=>'Cargue sus evidencias'
             ]);
         }
-        if($compra->productos->count()==0){
+        if($compra->productos->count()==0 && $compra->servicios->count()==0){
             $this->newCarrito=array_filter($this->newCarrito,function($element){
                 if(count($element)==3 && $element['id']!=false){
                     return $element;
@@ -95,10 +109,18 @@ class CompraEdit extends Component
         //actualizamos los productos actuales de la requisicion
         //dd($this->carrito);
         if(count($this->carrito)>0){
-            foreach($this->carrito as $pr){
-                $producto=CompraDetalle::find($pr['id']);
-                $producto->cantidad=$pr['cantidad'];
-                $producto->save();
+            if ($this->tipo=='prod') {
+                foreach($this->carrito as $pr){
+                    $producto=CompraDetalle::find($pr['id']);
+                    $producto->cantidad=$pr['cantidad'];
+                    $producto->save();
+                }
+            } else {
+                foreach($this->carrito as $serv){
+                    $servicio=CompraServicio::find($serv['id']);
+                    $servicio->cantidad=$serv['cantidad'];
+                    $servicio->save();
+                }
             }
         }
         //guardamos las evidencias
@@ -114,13 +136,24 @@ class CompraEdit extends Component
             $archivo->save();
         }
         if (count($this->newCarrito)>0){
-            foreach($this->newCarrito as $p){
-                $cp=new CompraDetalle();
-                $cp->compra_id=$compra->id;
-                $cp->producto_id=$p['id'];
-                $cp->prioridad=$p['prioridad'];
-                $cp->cantidad=$p['cantidad'];
-                $cp->save();
+            if ($this->tipo=='prod') {
+                foreach($this->newCarrito as $p){
+                    $cp=new CompraDetalle();
+                    $cp->compra_id=$compra->id;
+                    $cp->producto_id=$p['id'];
+                    $cp->prioridad=$p['prioridad'];
+                    $cp->cantidad=$p['cantidad'];
+                    $cp->save();
+                }
+            } else {
+                foreach($this->newCarrito as $s){
+                    $cs=new CompraServicio();
+                    $cs->compra_id=$compra->id;
+                    $cs->servicio_id=$s['id'];
+                    $cs->prioridad=$s['prioridad'];
+                    $cs->cantidad=$s['cantidad'];
+                    $cs->save();
+                }
             }
         }
         $this->PDF($compra->id);
@@ -130,7 +163,9 @@ class CompraEdit extends Component
     public function PDF($id){
         $compra=Compra::find($id);
         //dd($compra->productos);
-        $categoria=$compra->productos->first()->producto->categoria;
+        $this->tipo=='prod'
+        ?$clase=$compra->productos->first()->producto->clase->name
+        :$clase="Servicio";
         $nombre='R'.$compra->id.'-'.$compra->ticket->agente->name;
         //eliminamos el PDF antiguo
         Storage::disk('public')->delete($compra->documento);
@@ -146,10 +181,15 @@ class CompraEdit extends Component
         $this->titulo=$compra->titulo_correo;
         $this->problema=$compra->problema;
         $this->solucion=$compra->solucion;
-        foreach($compra->productos as $key=>$value){
-            $this->carrito[$key]=['id'=>$value->id,'prioridad'=>$value->prioridad,'cantidad'=>$value->cantidad];
+        if($this->tipo=="prod"){
+            foreach($compra->productos as $key=>$value){
+                $this->carrito[$key]=['id'=>$value->id,'prioridad'=>$value->prioridad,'cantidad'=>$value->cantidad];
+            }
+        }else{
+            foreach($compra->servicios as $key=>$value){
+                $this->carrito[$key]=['id'=>$value->id,'prioridad'=>$value->prioridad,'cantidad'=>$value->cantidad];
+            }
         }
-        
         //dd($this->carrito);
         return view('livewire.tickets.compras.compra-edit',compact('categorias','compra'));
     }

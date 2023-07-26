@@ -171,6 +171,9 @@
                     @if ($item->pivot->panel_id == 13 && $item->pivot->re == 1)
                         <x-sidebar.sublink title="Categorías" href="{{ route('categorias') }}" :active="request()->routeIs('categorias')" />
                     @endif
+                    @if ($item->pivot->panel_id == 13 && $item->pivot->re == 1)
+                    <x-sidebar.sublink title="Servicios" href="{{ route('serviciosTCK') }}" :active="request()->routeIs('productosTCK')" />
+                @endif
                     @if ($item->pivot->panel_id == 14 && $item->pivot->re == 1)
                         <x-sidebar.sublink title="Marcas" href="{{ route('marcas') }}" :active="request()->routeIs('marcas')" />
                     @endif

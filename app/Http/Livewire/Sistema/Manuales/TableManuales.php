@@ -28,7 +28,7 @@ class TableManuales extends Component
     }
     public function render()
     {
-        $this->valid = Auth::user()->permiso->panels->where('id', 10)->first();
+        $this->valid = Auth::user()->permiso->panels->where('id', 20)->first();
 
         $this->manuals = Manual::where('flag_trash', 0)->get();
 

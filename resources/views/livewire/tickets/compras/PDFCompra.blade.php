@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,20 +76,23 @@
             border: 2px solid #8d0505;
             font-weight: bold;
         }
-        .motivo{
+
+        .motivo {
             margin: 4px;
             padding: 4px;
             font-size: 12px;
             border: 2px solid #CC0000;
             font-weight: bold;
         }
-        .motiv{
+
+        .motiv {
             background-color: #CC0000;
             color: #fff;
             padding: 2px;
         }
     </style>
 </head>
+
 <body>
 
     <table style="width: 100%">
@@ -99,11 +103,11 @@
                 </th>
                 <th class="text-left text-dark">
                     <h4>
-                        {{ __('REQUISICIÓN DE ').mb_strtoupper($categoria->name) }}
+                        {{ __('REQUISICIÓN DE ') . mb_strtoupper($categoria->name) }}
                     </h4>
                 </th>
                 <th class="text-right text-dark">
-                
+
                 </th>
             </tr>
         </thead>
@@ -128,7 +132,7 @@
                             {{ __('Fecha:') }}
                         </td>
                         <td class="text-center text-dark">
-                            {{$compra->created_at }}
+                            {{ $compra->created_at }}
                         </td>
                     </tr>
                     <tr>
@@ -136,7 +140,7 @@
                             {{ __('Agente:') }}
                         </td>
                         <td class="text-center text-dark">
-                            {{strtoupper($compra->ticket->agente->name)}}
+                            {{ strtoupper($compra->ticket->agente->name) }}
                         </td>
                     </tr>
                     <tr>
@@ -144,7 +148,7 @@
                             {{ __('Cliente:') }}
                         </td>
                         <td class="text-center text-dark">
-                            {{strtoupper($compra->ticket->cliente->name)}}
+                            {{ strtoupper($compra->ticket->cliente->name) }}
                         </td>
                     </tr>
                     {{-- <tr>
@@ -160,7 +164,7 @@
                             {{ __('Ticket') }}
                         </td>
                         <td class="text-center text-dark">
-                            {{$compra->ticket_id}}
+                            {{ $compra->ticket_id }}
                         </td>
                     </tr>
                 </tbody>
@@ -194,28 +198,54 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($compra->productos as $item)
-                    <tr>
-                        <td class="text-dark">
-                            {{ $item->producto->id }}
-                        </td>
-                        <td>
-                            <img src="{{ public_path('storage/' . $item->producto->product_photo_path) }}" alt="" style="width: 60px">
-                        </td>
-                        <td class="text-left text-dark">
-                            {{ $item->producto->name }}
-                        </td>
-                        <td class="text-dark">
-                            {{ $item->producto->unidad }}
-                        </td>
-                        <td class="text-dark">
-                            {{ $item->cantidad }}
-                        </td>
-                        <td class="text-dark">
-                            {{$item->prioridad}}
-                        </td>
-                    </tr>
-                @endforeach
+                @if ($compra->productos->count() > 0)
+                    @foreach ($compra->productos as $item)
+                        <tr>
+                            <td class="text-dark">
+                                {{ $item->producto->id }}
+                            </td>
+                            <td>
+                                <img src="{{ public_path('storage/' . $item->producto->product_photo_path) }}"
+                                    alt="" style="width: 60px">
+                            </td>
+                            <td class="text-left text-dark">
+                                {{ $item->producto->name }}
+                            </td>
+                            <td class="text-dark">
+                                {{ $item->producto->unidad }}
+                            </td>
+                            <td class="text-dark">
+                                {{ $item->cantidad }}
+                            </td>
+                            <td class="text-dark">
+                                {{ $item->prioridad }}
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    @foreach ($compra->servicios as $item)
+                        <tr>
+                            <td class="text-dark">
+                                {{ $item->servicio->id }}
+                            </td>
+                            <td>
+                                
+                            </td>
+                            <td class="text-left text-dark">
+                                {{ $item->servicio->name }}
+                            </td>
+                            <td class="text-dark">
+
+                            </td>
+                            <td class="text-dark">
+                                {{ $item->cantidad }}
+                            </td>
+                            <td class="text-dark">
+                                {{ $item->prioridad }}
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
     </div>
@@ -223,8 +253,9 @@
     <div>
         <label for="motivo" class="motiv">Observaciones</label>
         <div class="motivo">
-            {{$compra->problema}}
+            {{ $compra->problema }}
         </div>
     </div>
 </body>
+
 </html>

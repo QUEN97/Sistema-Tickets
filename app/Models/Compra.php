@@ -24,6 +24,10 @@ class Compra extends Model
     public function productos():HasMany{
         return $this->hasMany(CompraDetalle::class);
     }
+    public function servicios():HasMany
+    {
+        return $this->hasMany(CompraServicio::class);
+    }
     public function evidencias():HasMany{
         return $this->hasMany(ArchivosCompra::class);
     }

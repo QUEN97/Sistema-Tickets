@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Marca;
+use App\Models\TckServicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,15 +72,7 @@ public function delete_permanently()
 }
 
 public function marcas(Request $request){
-    // $marcas = Marca::where([
-    //     ['name', '!=', Null],
-    //     [function ($query) use ($request) {
-    //         if (($s = $request->s)) {
-    //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-    //                 ->get();
-    //         }
-    //     }]
-    // ])->paginate(5)->withQueryString();
+    $valid = Auth::user()->permiso->panels->where('id', 14)->first();
 
         $marcas = Marca::where(function ($query) use ($request) {
                 $search = $request->input('search');
@@ -93,7 +86,7 @@ public function marcas(Request $request){
             ->paginate(10)
             ->withQueryString();
     $trashed = Marca::onlyTrashed()->count();
-    return view('modules.productos.marcas.index',compact('marcas','trashed'));
+    return view('modules.productos.marcas.index',compact('marcas','trashed','valid'));
 }
 public function trashed_marcas()
     {
@@ -126,5 +119,10 @@ public function delete_permanentlyM()
  
     $marca->forceDelete();
     return redirect()->back();
+}
+
+public function servicios(){
+    $servicios=TckServicio::paginate(10);
+    return view('modules.productos.servicios.servicios',compact('servicios'));
 }
 }

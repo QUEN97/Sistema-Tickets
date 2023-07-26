@@ -73,6 +73,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get("/trashedmarcas", "trashed_marcas")->name('marcas.trashed');
     Route::post("/restoremarca", "do_restoreM")->name('marca_restore');
     Route::post("/deletemarca-permanently", "delete_permanentlyM")->name('deletemarca_permanently');
+    Route::get('/tck/servicios','servicios')->name('serviciosTCK');
     });
 
     //Productos
