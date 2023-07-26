@@ -1,6 +1,6 @@
 <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
     <div>
-        <ol class=flex items-center w-full mb-4 sm:mb-5">
+        <ol class="flex items-center w-full mb-4 sm:mb-5">
             <li class="flex w-full items-center text-white">
                 <div class="flex items-center justify-center w-10 h-10 bg-sky-700 rounded-full lg:h-12 lg:w-12  shrink-0">
                     1
@@ -73,115 +73,194 @@
             </div>
         </div>
     @elseif($step ==2)
-        <div class="flex flex-col gap-2">
-            <div class="flex flex-wrap gap-2 items-end">
-                <div>
-                    <x-label value="{{ __('Categoría') }}" />
-                    <select id="categoria" wire:model="categoria"
-                            class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700  {{ $errors->has('categoria') ? 'is-invalid' : '' }}" 
-                            name="categoria" required aria-required="true">
-                        <option hidden value="" selected>{{ __('Seleccionar categoría') }}</option>
-                        @foreach ($categorias as $categoria)
-                            <option value="{{$categoria->id}}">{{$categoria->name}}</option>
-                        @endforeach
-                    </select>
-                    <x-input-error for="categoria"></x-input-error>
-                </div>
-                @if ($productos)
+        <div class="flex justify-center gap-2">
+            <div>
+                <input wire:model="tipo" type="radio" name="tipo" id="Producto" value="Producto" class="peer/producto hidden">
+                <label for="Producto" class="cursor-pointer bg-gray-300 dark:bg-dark-eval-0 peer-checked/producto:bg-amber-600 hover:bg-amber-500 text-white px-3 py-1 rounded-md transition duration-300">
+                    Producto
+                </label>
+            </div>
+            <div>
+                <input wire:model="tipo" type="radio" name="tipo" id="Servicio" value="Servicio" class=" peer/producto hidden">
+                <label for="Servicio" class="cursor-pointer bg-gray-300 dark:bg-dark-eval-0 peer-checked/producto:bg-amber-600 hover:bg-amber-500 text-white px-3 py-1 rounded-md transition duration-300">
+                    Servicio
+                </label>
+            </div>
+        </div>
+        @if ($tipo == "Producto")    
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-wrap gap-2 items-end">
                     <div>
-                        <x-input wire:model="search" type="search" name="search"
-                            id="search" placeholder="Buscar..." required autofocus autocomplete="search" class="w-full"/>
+                        <x-label value="{{ __('Categoría de producto') }}" />
+                        <select id="clase" wire:model="clase"
+                                class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700  {{ $errors->has('clase') ? 'is-invalid' : '' }}" 
+                                name="clase" required aria-required="true">
+                            <option hidden value="" selected>{{ __('Seleccionar categoría') }}</option>
+                            @foreach ($categorias as $categoria)
+                                <option value="{{$categoria->id}}">{{$categoria->name}}</option>
+                            @endforeach
+                        </select>
+                        <x-input-error for="clase"></x-input-error>
                     </div>
-                @endif
+                    @if ($productos)
+                        <div>
+                            <x-input wire:model="search" type="search" name="search"
+                                id="search" placeholder="Buscar..." required autofocus autocomplete="search" class="w-full"/>
+                        </div>
+                    @endif
+                </div>
+                <x-input-error for="carrito"></x-input-error>
+                <div>
+                    @if ($productos)
+                        <div class="py-1 border-b-2 mb-2">
+                            <h2>Seleccione sus productos</h2>
+                        </div>
+                        <div class="flex flex-wrap gap-3 justify-center max-h-80 overflow-auto">
+                            @foreach ($productos as $key => $pr)
+                                <div class="flex flex-row items-center gap-0.5 relative max-w-[20rem]">
+                                    <input type="checkbox" wire:model="carrito.{{$key}}.id" value="{{$pr->id }}" name="carrito[]" id="{{$pr->name}}" class="peer absolute top-2 right-2">
+                                    <label for="{{$pr->name}}" class="break-all w-full text-center border-2 py-2 px-3 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
+                                        <div class="flex justify-center items-center">
+                                            <figure class="w-[8rem] h-[8rem] overflow-hidden rounded-full flex justify-center items-center">
+                                                <img src="{{ asset('storage/' . $pr->product_photo_path) }}" alt="" class="w-full">
+                                            </figure>
+                                        </div>
+                                        {{$pr->name}}
+                                        {{-- <div class="col-12 p-0">
+                                            <x-label value="{{ __('Prioridad') }}" />
+                                            <select wire:model="carrito.{{$key}}.prioridad"
+                                                    class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700 " 
+                                                    name="carrito.{{$key}}.prioridad" required aria-required="true">
+                                                    <option hidden value="" selected>{{ __('Seleccionar Prioridad') }}</option>
+                                                    <option value="Bajo">{{ __('Bajo') }}</option>
+                                                    <option value="Medio">{{ __('Medio') }}</option>
+                                                    <option value="Alto">{{ __('Alto') }}</option>
+                                                    <option value="Alto crítico">{{ __('Alto crítico') }}</option>
+                                            </select>
+                                            <x-input-error for="carrito.{{$key}}.prioridad"></x-input-error>
+                                        </div>
+                                        <div>
+                                            <x-label value="{{ __('Cantidad') }}" for="carrito.{{$key}}.cantidad" />
+                                            <x-input wire:model="carrito.{{$key}}.cantidad" type="number" name="carrito.{{$key}}.cantidad" min
+                                                id="carrito.{{$key}}.cantidad" required autofocus autocomplete="carrito.{{$key}}.cantidad" class="w-full"/>
+                                            <x-input-error for="carrito.{{$key}}.cantidad"></x-input-error>
+                                        </div> --}}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>    
+                    @endif
+                </div>
+            </div>
+        @elseif ($tipo == "Servicio")
+            <div>
+                <x-input wire:model.debounce.200ms="searchService" type="search" name="searchService"
+                    id="searchService" placeholder="Buscar..." required autofocus autocomplete="searchService" class="w-full"/>
             </div>
             <x-input-error for="carrito"></x-input-error>
             <div>
-                @if ($productos)
+                @if ($servicios)
                     <div class="py-1 border-b-2 mb-2">
-                        <h2>Seleccione sus productos</h2>
+                        <h2>Seleccione los servicios que requiere</h2>
                     </div>
-                    <div class="flex flex-wrap gap-3 justify-center max-h-80 overflow-auto">
-                        @foreach ($productos as $key => $pr)
-                            <div class="flex flex-row items-center gap-0.5 relative max-w-[20rem]">
-                                <input type="checkbox" wire:model="carrito.{{$key}}.id" value="{{$pr->id }}" name="carrito[]" id="{{$pr->name}}" class="peer absolute top-2 right-2">
+                    <div class="flex flex-wrap gap-3 justify-evenly max-h-80 overflow-auto">
+                        @foreach ($servicios as $key => $pr)
+                            <div class="flex flex-row items-center gap-0.5 relative ">
+                                <input type="checkbox" wire:model="carrito.{{$key}}.id" value="{{$pr->id }}" name="carrito[]" id="{{$pr->name}}" class="hidden peer absolute top-2 right-2">
                                 <label for="{{$pr->name}}" class="break-all w-full text-center border-2 py-2 px-3 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
-                                    <div class="flex justify-center items-center">
-                                        <figure class="w-[8rem] h-[8rem] overflow-hidden rounded-full flex justify-center items-center">
-                                            <img src="{{ asset('storage/' . $pr->product_photo_path) }}" alt="" class="w-full">
-                                        </figure>
-                                    </div>
-                                    {{$pr->name}}
-                                    {{-- <div class="col-12 p-0">
-                                        <x-label value="{{ __('Prioridad') }}" />
-                                        <select wire:model="carrito.{{$key}}.prioridad"
-                                                class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700 " 
-                                                name="carrito.{{$key}}.prioridad" required aria-required="true">
-                                                <option hidden value="" selected>{{ __('Seleccionar Prioridad') }}</option>
-                                                <option value="Bajo">{{ __('Bajo') }}</option>
-                                                <option value="Medio">{{ __('Medio') }}</option>
-                                                <option value="Alto">{{ __('Alto') }}</option>
-                                                <option value="Alto crítico">{{ __('Alto crítico') }}</option>
-                                        </select>
-                                        <x-input-error for="carrito.{{$key}}.prioridad"></x-input-error>
-                                    </div>
-                                    <div>
-                                        <x-label value="{{ __('Cantidad') }}" for="carrito.{{$key}}.cantidad" />
-                                        <x-input wire:model="carrito.{{$key}}.cantidad" type="number" name="carrito.{{$key}}.cantidad" min
-                                            id="carrito.{{$key}}.cantidad" required autofocus autocomplete="carrito.{{$key}}.cantidad" class="w-full"/>
-                                        <x-input-error for="carrito.{{$key}}.cantidad"></x-input-error>
-                                    </div> --}}
+                                    {{$pr->name}}               
                                 </label>
                             </div>
                         @endforeach
                     </div>    
                 @endif
             </div>
-        </div>
+        @endif
     @else
+    {{-- step #3 --}}
     <div class="flex flex-col gap-2">
         <div>
-            @if ($productos)
-                <div class="py-1 border-b-2 mb-2">
-                    <h2>Ingrese la información de sus productos</h2>
-                </div>
-                <div class="flex flex-wrap gap-2 justify-center max-h-80 overflow-auto">
-                    @foreach ($productos as $key => $pr)
-                        @foreach ($carrito as $produc)
-                            @if ($produc['id'] == $pr->id)
-                            <div class="flex flex-row items-center gap-0.5">
-                                <div class="break-all text-start w-full border-2 py-1 px-2 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
-                                    <x-input-error for="carrito.{{$key}}"></x-input-error>
-                                    <div class="flex justify-center items-center">
-                                        <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                            <img src="{{ asset('storage/' . $pr->product_photo_path) }}" alt="" class="w-full">
-                                        </figure>
-                                    </div>
-                                    {{$pr->name}}
-                                    <div class="col-12 p-0">
-                                        <x-label value="{{ __('Prioridad') }}" />
-                                        <select wire:model="carrito.{{$key}}.prioridad"
-                                                class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700 " 
-                                                name="carrito.{{$key}}.prioridad" required aria-required="true">
-                                                <option hidden value="" selected>{{ __('Seleccionar Prioridad') }}</option>
-                                                <option value="Bajo">{{ __('Bajo') }}</option>
-                                                <option value="Medio">{{ __('Medio') }}</option>
-                                                <option value="Alto">{{ __('Alto') }}</option>
-                                                <option value="Alto crítico">{{ __('Alto crítico') }}</option>
-                                        </select>
-                                        <x-input-error for="carrito.{{$key}}.prioridad"></x-input-error>
-                                    </div>
-                                    <div>
-                                        <x-label value="{{ __('Cantidad') }}" for="carrito.{{$key}}.cantidad" />
-                                        <x-input wire:model="carrito.{{$key}}.cantidad" type="number" name="carrito.{{$key}}.cantidad" min
-                                            id="carrito.{{$key}}.cantidad" required autofocus autocomplete="carrito.{{$key}}.cantidad" class="w-full"/>
-                                        <x-input-error for="carrito.{{$key}}.cantidad"></x-input-error>
+            @if ($tipo=="Producto")    
+                @if ($productos)
+                    <div class="py-1 border-b-2 mb-2">
+                        <h2>Ingrese la información de sus productos</h2>
+                    </div>
+                    <div class="flex flex-wrap gap-2 justify-center max-h-80 overflow-auto">
+                        @foreach ($productos as $key => $pr)
+                            @foreach ($carrito as $produc)
+                                @if ($produc['id'] == $pr->id)
+                                <div class="flex flex-row items-center gap-0.5">
+                                    <div class="break-all text-start w-full border-2 py-1 px-2 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
+                                        <x-input-error for="carrito.{{$key}}"></x-input-error>
+                                        <div class="flex justify-center items-center">
+                                            <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
+                                                <img src="{{ asset('storage/' . $pr->product_photo_path) }}" alt="" class="w-full">
+                                            </figure>
+                                        </div>
+                                        {{$pr->name}}
+                                        <div class="col-12 p-0">
+                                            <x-label value="{{ __('Prioridad') }}" />
+                                            <select wire:model="carrito.{{$key}}.prioridad"
+                                                    class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700 " 
+                                                    name="carrito.{{$key}}.prioridad" required aria-required="true">
+                                                    <option hidden value="" selected>{{ __('Seleccionar Prioridad') }}</option>
+                                                    <option value="Bajo">{{ __('Bajo') }}</option>
+                                                    <option value="Medio">{{ __('Medio') }}</option>
+                                                    <option value="Alto">{{ __('Alto') }}</option>
+                                                    <option value="Alto crítico">{{ __('Alto crítico') }}</option>
+                                            </select>
+                                            <x-input-error for="carrito.{{$key}}.prioridad"></x-input-error>
+                                        </div>
+                                        <div>
+                                            <x-label value="{{ __('Cantidad') }}" for="carrito.{{$key}}.cantidad" />
+                                            <x-input wire:model="carrito.{{$key}}.cantidad" type="number" name="carrito.{{$key}}.cantidad" min
+                                                id="carrito.{{$key}}.cantidad" required autofocus autocomplete="carrito.{{$key}}.cantidad" class="w-full"/>
+                                            <x-input-error for="carrito.{{$key}}.cantidad"></x-input-error>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            @endif
+                                @endif
+                            @endforeach
                         @endforeach
+                    </div>    
+                @endif
+            @elseif($tipo=="Servicio")
+            <div class="py-1 border-b-2 mb-2">
+                <h2>Complete la siguiente información</h2>
+            </div>
+            <div class="flex flex-wrap gap-2 justify-center max-h-80 overflow-auto">
+                @foreach ($servicios as $key => $pr)
+                    @foreach ($carrito as $produc)
+                        @if ($produc['id'] == $pr->id)
+                        <div class="flex flex-row items-center gap-0.5">
+                            <div class="break-all text-start w-full border-2 py-1 px-2 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
+                                <x-input-error for="carrito.{{$key}}"></x-input-error>
+                                <h2>{{$pr->name}}</h2>
+                                <div class="col-12 p-0">
+                                    <x-label value="{{ __('Prioridad') }}" />
+                                    <select wire:model="carrito.{{$key}}.prioridad"
+                                            class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700 " 
+                                            name="carrito.{{$key}}.prioridad" required aria-required="true">
+                                            <option hidden value="" selected>{{ __('Seleccionar Prioridad') }}</option>
+                                            <option value="Bajo">{{ __('Bajo') }}</option>
+                                            <option value="Medio">{{ __('Medio') }}</option>
+                                            <option value="Alto">{{ __('Alto') }}</option>
+                                            <option value="Alto crítico">{{ __('Alto crítico') }}</option>
+                                    </select>
+                                    <x-input-error for="carrito.{{$key}}.prioridad"></x-input-error>
+                                </div>
+                                <div>
+                                    <x-label value="{{ __('Cantidad') }}" for="carrito.{{$key}}.cantidad" />
+                                    <x-input wire:model="carrito.{{$key}}.cantidad" type="number" name="carrito.{{$key}}.cantidad" min
+                                        id="carrito.{{$key}}.cantidad" required autofocus autocomplete="carrito.{{$key}}.cantidad" class="w-full"/>
+                                    <x-input-error for="carrito.{{$key}}.cantidad"></x-input-error>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     @endforeach
-                </div>    
+                @endforeach
+            </div> 
             @endif
         </div>
     </div>
