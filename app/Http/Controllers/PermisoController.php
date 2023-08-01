@@ -50,7 +50,7 @@ class PermisoController extends Controller
             'descripcion' => Str::ucfirst($request->descripcion),
         ])->save();
 
-        for ($i=1; $i <= 21; $i++) { 
+        for ($i=1; $i <= 22; $i++) { 
             
             $permi = PanelPermiso::where('permiso_id', $id)->where('panel_id', $i)->first();
 

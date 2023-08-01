@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tickets\Tareas;
 
 use App\Models\Tarea;
 use App\Models\Ticket;
+use App\Models\User;
 use Exception;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -52,11 +53,12 @@ class EditTarea extends Component
     public function render()
     {
         $ticket = Ticket::find($this->ticketID);
-        $agentes = [];
+        // $agentes = [];
     
-        if ($ticket && $ticket->falla && $ticket->falla->servicio && $ticket->falla->servicio->area) {
-            $agentes = $ticket->falla->servicio->area->users;
-        }
+        // if ($ticket && $ticket->falla && $ticket->falla->servicio && $ticket->falla->servicio->area) {
+        //     $agentes = $ticket->falla->servicio->area->users;
+        // }
+        $agentes = User::where('status','Activo')->whereNotIn('permiso_id',[3,6])->get();
         return view('livewire.tickets.tareas.edit-tarea',compact('agentes'));
     }
 }

@@ -20,7 +20,7 @@
             }
         }
     
-        for ($i = 20; $i <= 21; $i++) {
+        for ($i = 20; $i <= 22; $i++) {
             if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
                 $sistema = 'block';
             }
@@ -171,7 +171,7 @@
                     @if ($item->pivot->panel_id == 13 && $item->pivot->re == 1)
                         <x-sidebar.sublink title="Categorías" href="{{ route('categorias') }}" :active="request()->routeIs('categorias')" />
                     @endif
-                    @if ($item->pivot->panel_id == 13 && $item->pivot->re == 1)
+                    @if ($item->pivot->panel_id == 22 && $item->pivot->re == 1)
                     <x-sidebar.sublink title="Servicios" href="{{ route('serviciosTCK') }}" :active="request()->routeIs('productosTCK')" />
                 @endif
                     @if ($item->pivot->panel_id == 14 && $item->pivot->re == 1)

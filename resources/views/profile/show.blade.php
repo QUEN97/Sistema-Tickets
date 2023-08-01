@@ -5,13 +5,21 @@
             <h3 class="text-xl font-bold">
                 {{ __('AJUSTES DE PERFIL') }}
             </h3>
-            @if (Auth::user()->permiso_id == 5)
-                @livewire('usuarios.user-status') 
-            @endif
         </div>
     </x-slot>
 
     <div class="grid gap-8">
+
+        @if (Auth::user()->permiso_id == 1)
+        <div class="grid grid-cols-2 space-x-2">
+            <div>
+                @livewire('sistema.meals.meal-schedule-create')
+            </div>
+            <div>
+                @livewire('sistema.meals.meal-asignment')
+            </div>
+        </div>
+        @endif
 
         @if (Laravel\Fortify\Features::canUpdateProfileInformation())
             @livewire('profile.update-profile-information-form')

@@ -70,7 +70,7 @@ class AsignarPermiso extends Component
     {
         //$this->permission = Permiso::where('id', $this->permiso_asig_id)->first();
 
-        $this->permission = Panel::all()->take(21);
+        $this->permission = Panel::all()->take(22);
 
         $this->perm = PanelPermiso::where('permiso_id', $this->permiso_asig_id)->get();
         

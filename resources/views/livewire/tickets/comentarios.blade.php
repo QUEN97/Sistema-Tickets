@@ -11,48 +11,50 @@
             {{ __('Comentarios') }}
         </x-slot>
         <x-slot name="content">
-            <div class="flex flex-wrap gap-3 justify-evenly items-center">
-                <div>
-                    <x-label value="{{ __('Status del ticket') }}" for="status"/>
-                    <select wire:model="status" name="status" id="status"
-                        class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
-                        <option hidden value="" selected>Seleccionar status</option>
-                        <option value="En proceso">En proceso</option>
-                        <option value="Cerrado">Cerrado</option>
-                    </select>
-                    <x-input-error for="status"></x-input-error>
+            @if ($tck->status != 'Cerrado')
+                <div class="flex flex-wrap gap-3 justify-evenly items-center">
+                    <div>
+                        <x-label value="{{ __('Status del ticket') }}" for="status" />
+                        <select wire:model="status" name="status" id="status"
+                            class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
+                            <option hidden value="" selected>Seleccionar status</option>
+                            <option value="Abierto">Abierto</option>
+                            <option value="En proceso">En proceso</option>
+                            <option value="Cerrado">Cerrado</option>
+                        </select>
+                        <x-input-error for="status"></x-input-error>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full">
-                <x-label value="{{ __('Mensaje') }}" for="mensaje" />
-                <textarea wire:model="mensaje"
+                <div class="w-full">
+                    <x-label value="{{ __('Mensaje') }}" for="mensaje" />
+                    <textarea wire:model="mensaje"
                         class="resize-none w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('mensaje') ? 'is-invalid' : '' }} resize-none"
                         name="mensaje" required autofocus autocomplete="mensaje">
                 </textarea>
-                <x-input-error for="mensaje"></x-input-error>
-            </div>
-            <div class="mb-3 col-12 w-full"
-                    x-data="{ isUploading: false, progress: 0 }"
-                    x-on:livewire-upload-start="isUploading = true"
-                    x-on:livewire-upload-finish="isUploading = false"
-                    x-on:livewire-upload-error="isUploading = false"
+                    <x-input-error for="mensaje"></x-input-error>
+                </div>
+                <div class="mb-3 col-12 w-full" x-data="{ isUploading: false, progress: 0 }" x-on:livewire-upload-start="isUploading = true"
+                    x-on:livewire-upload-finish="isUploading = false" x-on:livewire-upload-error="isUploading = false"
                     x-on:livewire-upload-progress="progress = $event.detail.progress">
 
-                <x-label value="{{ __('Evidencias') }}" class="border-b border-gray-400 w-full text-left mb-2"/>
-                <input type="file" wire:model="evidencias" class="flex flex-wrap file:text-sm file:font-semibold file:bg-blue-300 file:text-blue-700 hover:file:bg-blue-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0"
-                multiple name="evidencias" required autocomplete="evidencias" accept="image/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                <x-input-error for="evidencias"></x-input-error>
+                    <x-label value="{{ __('Evidencias') }}" class="border-b border-gray-400 w-full text-left mb-2" />
+                    <input type="file" wire:model="evidencias"
+                        class="flex flex-wrap file:text-sm file:font-semibold file:bg-blue-300 file:text-blue-700 hover:file:bg-blue-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0"
+                        multiple name="evidencias" required autocomplete="evidencias"
+                        accept="image/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                    <x-input-error for="evidencias"></x-input-error>
 
-                <!-- Progress Bar -->
-                <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 mb-2 dark:bg-gray-700">
-                    <div class="bg-red-600 h-2.5 rounded-full dark:bg-red-500 transition-[width] duration-500"
-                        x-bind:style="`width:${progress}%`"></div>
+                    <!-- Progress Bar -->
+                    <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 mb-2 dark:bg-gray-700">
+                        <div class="bg-red-600 h-2.5 rounded-full dark:bg-red-500 transition-[width] duration-500"
+                            x-bind:style="`width:${progress}%`"></div>
+                    </div>
                 </div>
-            </div>
+            @endif
         </x-slot>
 
         <x-slot name="footer" class="d-none">
-            <x-danger-button class="mr-2" wire:click="addCom({{$ticketID}})" wire:loading.attr="disabled">
+            <x-danger-button class="mr-2" wire:click="addCom({{ $ticketID }})" wire:loading.attr="disabled">
                 <div role="status" wire:loading wire:target="addCom">
                     <svg aria-hidden="true"
                         class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white"

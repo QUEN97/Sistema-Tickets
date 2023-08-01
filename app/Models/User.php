@@ -109,4 +109,5 @@ class User extends Authenticatable
         $fecha=Carbon::now()->format('Y-m-d');
         return $this->hasMany(Ticket::class)->whereBetween('created_at',[$fecha.' 00:00:00',$fecha.' 23:59:00']);
     }
+
 }

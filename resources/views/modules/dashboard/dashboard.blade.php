@@ -6,9 +6,12 @@
                 {{ $greeting }}
             </div>
 
-            @if ($valid->pivot->wr == 1)
+            {{-- @if ($valid->pivot->wr == 1)
                 @livewire('dashboard.generate-reporte')
-            @endif
+            @endif --}}
+            <div class="bg-gray-400 p-2 rounded-md font-bold text-white text-center">
+                {{ __('Sistema de Atención de Tickets Helpdesk') }}
+            </div>
         </div>
     </x-slot>
     <div class="flex flex-wrap justify-center items-center gap-3 py-3">

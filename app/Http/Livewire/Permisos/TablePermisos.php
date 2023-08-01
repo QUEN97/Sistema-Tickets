@@ -12,7 +12,7 @@ class TablePermisos extends Component
     {
         $this->permisos = Permiso::all();
 
-        $this->valid = Auth::user()->permiso->panels->where('id', 5)->first();
+        $this->valid = Auth::user()->permiso->panels->where('id', 10)->first();
         
         return view('livewire.permisos.table-permisos');
     }

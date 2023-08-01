@@ -15,7 +15,10 @@ class Comentarios extends Component
 {
     use WithFileUploads;
     public $ticketID,$status,$mensaje,$urlArchi,$evidencias=[],$statustck,$modal=false;
-    
+    public function mount(){
+        $tck=Ticket::find($this->ticketID);
+        $this->status=$tck->status;
+    }
     public function addCom(Ticket $tck){
         $this->validate([
             'status' => ['required','not_in:0'],
@@ -78,6 +81,7 @@ class Comentarios extends Component
     public function render()
     {
         // $comentarios=Comentario::where('ticket_id',$this->ticketID)->orderBy('id','desc')->get();
-        return view('livewire.tickets.comentarios');
+        $tck=Ticket::find($this->ticketID);
+        return view('livewire.tickets.comentarios', compact('tck'));
     }
 }

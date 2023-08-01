@@ -41,7 +41,7 @@ class ShowPermiso extends Component
     {
         //$this->permisos = Permiso::where('id', $this->permiso_show_id)->first();
 
-        $this->permisos = Panel::all()->take(21);
+        $this->permisos = Panel::all()->take(22);
 
         $this->perm = PanelPermiso::where('permiso_id', $this->permiso_show_id)->get();
 

@@ -36,7 +36,7 @@
                         </svg>
                     </button> --}}
                 </div>
-                <div class="flex justify-center py-3">
+                <div class="flex gap-2 ">
                     <div>
                         <x-label value="{{ __('Agente') }}" for="personal"/>
                         <select wire:model="asignado" name="personal" id="Reasignar-personal"
@@ -47,6 +47,14 @@
                             @endforeach
                         </select>
                         <x-input-error for="asignado"></x-input-error>
+                    </div>
+                    <div class="w-full">
+                        <x-label value="{{ __('Mensaje') }}" for="mensaje" />
+                        <textarea wire:model="mensaje"
+                            class="resize-none w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('mensaje') ? 'is-invalid' : '' }} resize-none"
+                            name="mensaje" required autofocus autocomplete="mensaje">
+                    </textarea>
+                        <x-input-error for="mensaje"></x-input-error>
                     </div>
                 </div>
                 <div name="footer" class="d-none text-right mt-1">

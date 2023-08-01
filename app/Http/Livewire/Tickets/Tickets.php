@@ -6,6 +6,7 @@ use App\Models\Estacion;
 use App\Models\Tarea;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Zona;
 use App\Models\UserArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

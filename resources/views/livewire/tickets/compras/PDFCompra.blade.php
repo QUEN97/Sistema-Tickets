@@ -103,7 +103,7 @@
                 </th>
                 <th class="text-left text-dark">
                     <h4>
-                        {{ __('REQUISICIÓN DE ') . mb_strtoupper($categoria->name) }}
+                        {{ __('REQUISICIÓN DE ') . mb_strtoupper($categoria) }}
                     </h4>
                 </th>
                 <th class="text-right text-dark">

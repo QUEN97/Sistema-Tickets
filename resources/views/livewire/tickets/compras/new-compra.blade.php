@@ -92,15 +92,15 @@
                 <div class="flex flex-wrap gap-2 items-end">
                     <div>
                         <x-label value="{{ __('Categoría de producto') }}" />
-                        <select id="clase" wire:model="clase"
-                                class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700  {{ $errors->has('clase') ? 'is-invalid' : '' }}" 
-                                name="clase" required aria-required="true">
+                        <select id="categoria" wire:model="categoria"
+                                class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700  {{ $errors->has('categoria') ? 'is-invalid' : '' }}" 
+                                name="categoria" required aria-required="true">
                             <option hidden value="" selected>{{ __('Seleccionar categoría') }}</option>
                             @foreach ($categorias as $categoria)
                                 <option value="{{$categoria->id}}">{{$categoria->name}}</option>
                             @endforeach
                         </select>
-                        <x-input-error for="clase"></x-input-error>
+                        <x-input-error for="categoria"></x-input-error>
                     </div>
                     @if ($productos)
                         <div>

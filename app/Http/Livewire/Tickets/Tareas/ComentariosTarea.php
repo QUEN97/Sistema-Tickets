@@ -13,7 +13,13 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ComentariosTarea extends Component
 {
-    public $tareaID, $tarea_id, $user_id, $comentario, $status, $mensaje, $tarea;
+    public $tareaID, $tarea_id, $user_id, 
+    $comentario, $status, $mensaje, $tarea, $statustarea;
+
+    public function mount(){
+        $tarea=Tarea::find($this->tareaID);
+        $this->status=$tarea->status;
+    }
 
     public function addCom(Tarea $tarea)
     {
@@ -30,6 +36,7 @@ class ComentariosTarea extends Component
             $reg->tarea_id = $this->tareaID;
             $reg->user_id = Auth::user()->id;
             $reg->comentario = $this->mensaje;
+            $reg->statustarea = $this->status;
             $reg->save();
             $tarea->status = $this->status;
             $tarea->save();

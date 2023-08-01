@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tarea_id');
             $table->unsignedBigInteger('user_id');
             $table->string('comentario',10000);
+            $table->string('statustarea');
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('tarea_id')->references('id')->on('tareas')->onDelete('cascade');
