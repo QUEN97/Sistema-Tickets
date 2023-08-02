@@ -97,12 +97,12 @@ class NewCompra extends Component
         // });
         $this->validate([
             'carrito' => ['required'],
-            'carrito.*.prioridad' => ['required'],
+            // 'carrito.*.prioridad' => ['required'],
             'carrito.*.id' => ['required'],
             'carrito.*.cantidad' => ['required','gt:0'],
         ],[
             'carrito.required' => 'Seleccione productos para la requisicicón',
-            'carrito.*.prioridad.required' => 'Seleccione la prioridad del producto',
+            // 'carrito.*.prioridad.required' => 'Seleccione la prioridad del producto',
             'carrito.*.cantidad.required' => 'La cantidad es requerida',
             'carrito.*.cantidad.gt' => 'La cantidad solicitada debe ser 1 o más'
         ]);
@@ -130,7 +130,7 @@ class NewCompra extends Component
                 $cp=new CompraDetalle();
                 $cp->compra_id=$compra->id;
                 $cp->producto_id=$p['id'];
-                $cp->prioridad=$p['prioridad'];
+                // $cp->prioridad=$p['prioridad'];
                 $cp->cantidad=$p['cantidad'];
                 $cp->save();
             }
@@ -139,7 +139,7 @@ class NewCompra extends Component
                 $cp=new CompraServicio();
                 $cp->compra_id=$compra->id;
                 $cp->servicio_id=$p['id'];
-                $cp->prioridad=$p['prioridad'];
+                // $cp->prioridad=$p['prioridad'];
                 $cp->cantidad=$p['cantidad'];
                 $cp->save();
             }

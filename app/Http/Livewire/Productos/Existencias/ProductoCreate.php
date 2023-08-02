@@ -23,6 +23,7 @@ class ProductoCreate extends Component
             'unidad' => ['required','not_in:0'],
             'imagen' =>['required'],
             'modelo' =>['required'],
+            'prioridad' => ['required','not_in:0'],
             'categoria' =>['required','not_in:0'],
             'marca' =>['required','not_in:0'],
         ],[
@@ -33,6 +34,7 @@ class ProductoCreate extends Component
             'modelo.required' => 'Ingrese el modelo del producto',
             'categoria.required' => 'Seleccione una categoría para el producto',
             'marca.required' => 'Seleccione la marca del producto',
+            'prioridad.required' => 'Seleccione una prioridad para el producto',
         ]);
         $this->urlImg=$this->imagen->store('tck/productos', 'public');
         $producto=new Producto();

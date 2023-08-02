@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('unidad', 250);
             $table->string('modelo',250);
             $table->enum('status',['Activo','Inactivo'])->default('Activo');
+            $table->string('prioridad',20);
             $table->softDeletes();
             $table->timestamps();
 

@@ -141,7 +141,7 @@ class CompraEdit extends Component
                     $cp=new CompraDetalle();
                     $cp->compra_id=$compra->id;
                     $cp->producto_id=$p['id'];
-                    $cp->prioridad=$p['prioridad'];
+                    // $cp->prioridad=$p['prioridad'];
                     $cp->cantidad=$p['cantidad'];
                     $cp->save();
                 }
@@ -150,7 +150,7 @@ class CompraEdit extends Component
                     $cs=new CompraServicio();
                     $cs->compra_id=$compra->id;
                     $cs->servicio_id=$s['id'];
-                    $cs->prioridad=$s['prioridad'];
+                    // $cs->prioridad=$s['prioridad'];
                     $cs->cantidad=$s['cantidad'];
                     $cs->save();
                 }

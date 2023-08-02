@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ShowProducto extends Component
 {
-    public $productoID,$name,$descripcion,$unidad,$modelo,$categoria,$marca,$imagen,$urlImg,$modal=false;
+    public $productoID,$name,$descripcion,$unidad,$modelo,$categoria,$marca,$prioridad,$imagen,$urlImg,$modal=false;
     public function showProducto(Producto $producto){
         $this->name=$producto->name;
         $this->imagen=$producto->product_photo_path;
@@ -16,6 +16,7 @@ class ShowProducto extends Component
         $this->modelo=$producto->modelo;
         $this->unidad=$producto->unidad;
         $this->descripcion=$producto->descripcion;
+        $this->prioridad=$producto->prioridad;
         $this->modal=true;
     }
     public function render()

@@ -162,7 +162,7 @@
                                                             </th>
                                                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                                 <div>
-                                                                    {{$producto->prioridad}}
+                                                                    {{$producto->producto->prioridad}}
                                                                 </div>
                                                             </th>
                                                         </tr>
@@ -180,7 +180,7 @@
                                                                 </th>
                                                                 <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                                     <div>
-                                                                        {{$servicio->prioridad}}
+                                                                        {{$servicio->servicio->prioridad}}
                                                                     </div>
                                                                 </th>
                                                             </tr>

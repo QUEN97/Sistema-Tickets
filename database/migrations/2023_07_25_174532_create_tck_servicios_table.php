@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',500);
             $table->text('descripcion');
+            $table->string('prioridad',20);
             $table->softDeletes();
             $table->timestamps();
         });

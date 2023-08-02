@@ -13,15 +13,18 @@ class NewServicio extends Component
         $this->validate([
             'name' =>['required'],
             'descripcion' =>['required'],
+            'prioridad' =>['required'],
         ],[
             'name.required' => 'Ingrese el nombre del servicio',
-            'descripcion.required' => 'Ingrese una descripción'
+            'descripcion.required' => 'Ingrese una descripción',
+            'prioridad.required' => 'Seleccione la prioridad',
         ]);
         $servicio=new TckServicio();
         $servicio->name=$this->name;
         $servicio->descripcion=$this->descripcion;
+        $servicio->prioridad=$this->prioridad;
         $servicio->save();
-        Alert::success('Nuevo servicio', 'EL servicio "'.mb_strtoupper($this->name).'" ha sido registrado');
+        Alert::success('Nuevo servicio', 'El servicio "'.mb_strtoupper($this->name).'" ha sido registrado');
         return redirect()->route('serviciosTCK');
     }
     public function render()

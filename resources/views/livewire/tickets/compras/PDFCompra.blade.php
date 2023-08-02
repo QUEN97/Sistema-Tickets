@@ -218,7 +218,7 @@
                                 {{ $item->cantidad }}
                             </td>
                             <td class="text-dark">
-                                {{ $item->prioridad }}
+                                {{ $item->producto->prioridad }}
                             </td>
                         </tr>
                     @endforeach
@@ -241,7 +241,7 @@
                                 {{ $item->cantidad }}
                             </td>
                             <td class="text-dark">
-                                {{ $item->prioridad }}
+                                {{ $item->servicio->prioridad }}
                             </td>
                         </tr>
                     @endforeach

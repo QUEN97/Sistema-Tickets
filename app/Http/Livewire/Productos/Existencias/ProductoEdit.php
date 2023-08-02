@@ -13,7 +13,7 @@ use Livewire\WithFileUploads;
 class ProductoEdit extends Component
 {
     use WithFileUploads;
-    public $productoID,$name,$descripcion,$unidad,$modelo,$categoria,$marca,$imagen,$urlImg,$modal=false;
+    public $productoID,$name,$descripcion,$unidad,$modelo,$categoria,$marca,$prioridad,$imagen,$urlImg,$modal=false;
 
     public function editProducto(Producto $dato){
         //dd($this->descripcion);
@@ -23,6 +23,7 @@ class ProductoEdit extends Component
         $this->modelo=$dato->modelo;
         $this->categoria=$dato->categoria_id;
         $this->marca=$dato->marca_id;
+        $this->prioridad=$dato->prioridad;
         $this->modal=true;
     }
     public function updateProducto(Producto $dato){
@@ -33,6 +34,7 @@ class ProductoEdit extends Component
             'modelo' =>['required'],
             'categoria' =>['required','not_in:0'],
             'marca' =>['required','not_in:0'],
+            'prioridad'=>['required','not_in:0'],
         ],[
             'name.required' => 'Ingrese el nombre del producto',
             'descripcion.required' =>'Ingrese la descripcion o las caracteristicas',
@@ -40,6 +42,7 @@ class ProductoEdit extends Component
             'modelo.required' => 'Ingrese el modelo del producto',
             'categoria.required' => 'Seleccione una categoría para el producto',
             'marca.required' => 'Seleccione la marca del producto',
+            'prioridad.required' => 'Seleccione la prioridad del producto',
         ]);
         $dato->name=$this->name;
         $dato->descripcion=$this->descripcion;
@@ -47,6 +50,7 @@ class ProductoEdit extends Component
         $dato->modelo=$this->modelo;
         $dato->categoria_id=$this->categoria;
         $dato->marca_id=$this->marca;
+        $dato->prioridad=$this->prioridad;
         if($this->imagen !=null){
             $this->urlImg=$this->imagen->store('tck/productos', 'public');
             Storage::disk('public')->delete($dato->product_photo_path);

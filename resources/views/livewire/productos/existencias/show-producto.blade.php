@@ -10,7 +10,28 @@
     </button>
     <x-dialog-modal wire:model="modal" class="flex items-center">
         <x-slot name="title">
-            {{ $name }}
+            <div class="flex flex-wrap gap-2 justify-center items-center">
+                <div>
+                    {{$name}}
+                </div>
+                <div @if ($prioridad=="Bajo")
+                    class="bg-green-400 text-white p-1 rounded w-auto"
+                    @endif
+                    @if ($prioridad=="Medio")
+                        class="bg-yellow-400 text-white p-1 rounded w-auto"
+                    @endif
+                    @if ($prioridad=="Alto")
+                        class="bg-orange-400 text-white p-1 rounded w-auto"
+                    @endif
+                    @if ($prioridad=="Crítico")
+                        class="bg-red-400 text-white p-1 rounded w-auto"
+                    @endif
+                    @if ($prioridad=="Alto Crítico")
+                        class="bg-red-700 text-white p-1 rounded w-auto"
+                    @endif>
+                    {{$prioridad}}
+                </div>
+            </div>
         </x-slot>
         <x-slot name="content" class="relative">
             <div class="flex flex-wrap gap-2 justify-center border-b p-2">
@@ -25,7 +46,7 @@
                 </figure>
                 <div class=" flex flex-wrap flex-col gap-2">
                     <div class="flex flex-wrap gap-1 items-center">
-                        <h2 class=" text-lg font-bold">Clase: </h2>
+                        <h2 class=" text-lg font-bold">Categoría: </h2>
                         <div>{{ $categoria }}</div>
                     </div>
                     <div class="flex flex-wrap gap-1 items-center">
