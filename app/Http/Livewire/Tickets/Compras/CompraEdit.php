@@ -32,7 +32,8 @@ class CompraEdit extends Component
         $this->productos=Producto::where('categoria_id',$categoria->id)->whereNotIn('id',$excluir)->get();
     }
     public function updatedSearchService($query){
-        $this->servicios=TckServicio::where('name','LIKE','%' .$query. '%')->get();
+        $excluir=CompraServicio::where('id',array_column($this->carrito, 'id'))->pluck('servicio_id');
+        $this->servicios=TckServicio::where('name','LIKE','%' .$query. '%')->whereNotIn('id',$excluir)->get();
     }
     public function updatedSearch($query){
         $marca=Marca::where('name','LIKE','%'.$query.'%')->first();
@@ -95,6 +96,7 @@ class CompraEdit extends Component
         $compra->titulo_correo = $this->titulo;
         $compra->problema = $this->problema;
         $compra->solucion = $this->solucion;
+        $compra->status="Solicitado";
         $compra->save();
         if($compra->productos->count()>0 && $this->categoria!=null){
             if($compra->productos->first()->producto->categoria_id != $this->categoria){

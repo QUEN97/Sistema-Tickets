@@ -9,7 +9,10 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ShowCompras extends Component
 {
-    public $ticketID,$modal=false;
+    public $ticketID,$compras,$modal=false;
+    public function mount(){
+        $this->compras=Compra::where('ticket_id',$this->ticketID)->orderBy('id', 'desc')->get();
+    }
     public function deleteCompra(Compra $compra){
         //dd($compra->evidencias);
         Storage::disk('public')->delete($compra->documento);
@@ -22,7 +25,6 @@ class ShowCompras extends Component
     }
     public function render()
     {
-        $compras=Compra::where('ticket_id',$this->ticketID)->orderBy('id', 'desc')->get();
-        return view('livewire.tickets.compras.show-compras',compact('compras'));
+        return view('livewire.tickets.compras.show-compras');
     }
 }

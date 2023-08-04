@@ -38,8 +38,8 @@ class RequisicionController extends Controller
             $compras=Compra::whereIn('ticket_id',$tck)->paginate(10) ->withQueryString();
         }
         //todos los tickets cuando sea admin o compras
-        if(in_array($user->permiso_id,[1,4])){
-            $compras=Compra::orderBy('id', 'DESC')->paginate(10) ->withQueryString();
+        if(in_array($user->permiso_id,[1,4]) || (isset($user->areas->first()->name) && $user->areas->first()->name=='Compras')){
+            $compras=Compra::orderBy('id', 'DESC')->paginate(10);
         }
         return view('modules.tickets.compras.compras-list',compact('compras','valid'));
     }

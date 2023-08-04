@@ -31,4 +31,8 @@ class Compra extends Model
     public function evidencias():HasMany{
         return $this->hasMany(ArchivosCompra::class);
     }
+    public function comentarios():HasMany
+    {
+        return $this->hasMany(ComentariosCompra::class)->orderBy('id','DESC');
+    }
 }
