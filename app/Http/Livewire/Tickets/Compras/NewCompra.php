@@ -10,6 +10,7 @@ use App\Models\CompraServicio;
 use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\TckServicio;
+use App\Models\Ticket;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -106,6 +107,16 @@ class NewCompra extends Component
             'carrito.*.cantidad.required' => 'La cantidad es requerida',
             'carrito.*.cantidad.gt' => 'La cantidad solicitada debe ser 1 o más'
         ]);
+
+        $ticket = Ticket::find($this->ticketID); // Obtener el ticket correspondiente
+        if ($ticket->status === 'Abierto') {
+            Alert::warning('Ticket Abierto', 'No se puede crear una requisicion para un ticket abierto.');
+            return redirect()->route('tickets');
+        }elseif($ticket->status === 'Cerrado'){// por si admin intenta crear una tarea con ticket cerrado
+            Alert::warning('Ticket Cerrado', 'No se puede crear una requisicion para un ticket cerrado.');
+            return redirect()->route('tickets');
+        }
+
         //guardamos compra
         $compra=new Compra();
         $compra->ticket_id=$this->ticketID;

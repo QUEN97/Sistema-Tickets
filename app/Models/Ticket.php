@@ -34,7 +34,7 @@ class Ticket extends Model
         return $this->hasMany(Tarea::class, 'ticket_id');
     }
     public function compras():HasMany{
-        return $this->hasMany(Compra::class);
+        return $this->hasMany(Compra::class, 'ticket_id');
     }
     public function comentarios():HasMany{
         return $this->hasMany(Comentario::class)->orderBy('id', 'DESC');

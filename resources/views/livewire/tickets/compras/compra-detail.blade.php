@@ -77,8 +77,8 @@
                             <p>{{$compra->solucion}}</p>
                         </div>
                     </div>
-                    @if ($compra->com_rev!=null)
-                        <div class='w-full rounded-lg border  max-h-[200px] overflow-auto dark:border-gray-700 flex items-center justify-center my-2' x-data="{ open: false }">
+                    @if ($compra->comentarios->count() > 0)
+                        <div class='w-full rounded-lg border overflow-auto dark:border-gray-700 flex items-center justify-center my-2' x-data="{ open: false }">
                             <div class='w-full '>
                                 <div @click="open = !open" class='flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-md'>
                                     <div class=' px-2 transform transition duration-300 ease-in-out' :class="{'rotate-90': open,'text-blue-500':open }">
@@ -90,18 +90,40 @@
                                         Clic para mostrar/ocultar observación
                                     </div>
                                 </div>
-                                <div class="w-full transform transition duration-300 ease-in-out"
+                                <div class="w-full transform transition duration-300 ease-in-out "
                                 x-cloak x-show="open" x-collapse x-collapse.duration.500ms >
-                                    <div>
-                                        <div class="w-full p-2">
-                                            <p>{{$compra->com_rev}}</p>
-                                        </div>
+                                    <div class="p-1 max-h-[200px] overflow-auto">
+                                        @foreach ($compra->comentarios as $comentario)
+                                        <div class="p-2 border-b border-gray-400">
+                                            <div class="w-full dark:border-gray-500 flex flex-wrap justify-between">
+                                                <div class="flex flex-col gap-2">
+                                                    <div class="flex flex-wrap gap-1 mb-1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512" fill="currentColor">
+                                                            <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/>
+                                                        </svg>
+                                                        <p>{{$comentario->usuario->name}}</p>
+                                                    </div>
+                                                    <p class="px-2 py-1 rounded-md break-all relative text-white  after:w-3 after:h-3 after:block after:absolute after:bottom-[97%] after:clip-path-polygon-[0%_0%,_0%_100%,_100%_100%] "
+                                                    @if ($comentario->user_id==Auth::user()->id)
+                                                        :class="'bg-blue-500 after:bg-blue-500 dark:bg-blue-600 after:dark:bg-blue-600'"
+                                                    @else
+                                                        :class="'bg-gray-400 dark:bg-slate-600 after:bg-gray-400 after:dark:bg-slate-600'"
+                                                    @endif>
+                                                        {{$comentario->comentario}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-end justify-end">
+                                                <p>{{$comentario->created_at}}</p>
+                                            </div>
+                                        </div>    
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endif
-                    <div class=" max-h-72 overflow-auto">
+                    <div class="overflow-auto">
                         <div class='w-full rounded-lg border dark:border-gray-700 flex items-center justify-center my-2' x-data="{ open: false }">
                             <div class='w-full '>
                                 <div @click="open = !open" class='flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-md'>
@@ -120,7 +142,7 @@
                                 </div>
                                 <div class="w-full transform transition duration-300 ease-in-out"
                                 x-cloak x-show="open" x-collapse x-collapse.duration.500ms >
-                                    <div>
+                                    <div class=" max-h-72 overflow-auto">
                                         <table class="w-full text-center">
                                             <thead>
                                                 <tr>
@@ -148,7 +170,7 @@
                                                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                                 <div class="flex justify-center items-center">
                                                                     <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                                        <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}" alt="" class="w-full">
+                                                                        <img src="{{ asset('storage/' . $producto->producto->archivo_path) }}" alt="" class="w-full">
                                                                     </figure>
                                                                 </div>
                                                             </th>

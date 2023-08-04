@@ -36,6 +36,14 @@ class Comentarios extends Component
             }
         }
 
+        if ($tck->status != 'Cerrado' && Auth::user()->permiso_id != 1) {
+            $requisPendientes = $tck->compras->where('status', '!=', 'Completado');
+            if ($requisPendientes->isNotEmpty() && $this->status == 'Completado') {
+                Alert::warning('Requisiciones Pendientes', 'No es posible cerrar el ticket debido a que existen requisiciones pendientes.');
+                return redirect()->route('tickets');
+            }
+        }
+
         try{
             $reg=new Comentario();
             $reg->ticket_id=$this->ticketID;

@@ -179,7 +179,7 @@ class NewTicket extends Component
 
     public function render()
     {
-        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [2, 6])->get();
+        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [1,2, 6])->get();
         return view('livewire.tickets.new-ticket', [
             'areas' => $areas,
         ]);

@@ -15,7 +15,7 @@ use Livewire\WithFileUploads;
 class ProductoCreate extends Component
 {
     use WithFileUploads;
-    public $name,$descripcion,$unidad,$modelo,$categoria,$marca,$imagen,$urlImg,$modal=false;
+    public $name,$descripcion,$unidad,$modelo,$categoria,$marca,$imagen,$urlImg,$modal=false,$prioridad;
     public function addProducto(){
         $this->validate([
             'name' =>['required'],
@@ -44,6 +44,7 @@ class ProductoCreate extends Component
         $producto->modelo=$this->modelo;
         $producto->categoria_id=$this->categoria;
         $producto->marca_id=$this->marca;
+        $producto->prioridad=$this->prioridad;
         $producto->product_photo_path=$this->urlImg;
         $producto->save();
         Alert::success('Nuevo Producto', "EL producto ha sido registrado en el sistema");
