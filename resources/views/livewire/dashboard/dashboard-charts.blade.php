@@ -2,26 +2,26 @@
 
     <div class="flex flex-wrap justify-center gap-5">
         @if (Auth::user()->permiso_id == 1)
-            <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl">
+            <div class="bg-white dark:bg-gray-500  rounded-xl p-4 shadow-xl">
                 {!! $chartTickets->container() !!}
             </div>
 
-            <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl flex items-center justify-center">
+            <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl flex items-center justify-center">
                 {!! $chartTicketsAsignados->container() !!}
             </div>
         @endif
 
-        <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl">
+        <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl">
             {!! $chartTicketsPrioridad->container() !!}
         </div>
 
-        <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl flex items-center justify-center">
             {!! $chartTicketsStatus->container() !!}
         </div>
-        <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl flex items-center justify-center">
             {!! $chartTicketsHora->container() !!}
         </div>
-        <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl flex items-center justify-center">
             {!! $chartTicketsDeptos->container() !!}
         </div>
     </div>

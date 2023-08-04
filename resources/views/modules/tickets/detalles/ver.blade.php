@@ -254,8 +254,9 @@
                 @endforeach
             </ul>
         @else
-            <div class="mt-2 p-4 " style="display: flex; justify-content: center;">
-                <img src="{{ asset('img/logo/emptystate.svg') }}" alt="Sin Comentarios">
+        <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
+                <img src="{{ asset('img/icons/Status update-amico.svg') }}" style="width: 350px" alt="Sin Comentarios">
+                <span>No se encontraron comentarios.</span>
             </div>
         @endif
     </div>

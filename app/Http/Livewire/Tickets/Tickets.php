@@ -16,20 +16,32 @@ use Carbon\Carbon;
 
 class Tickets extends Component
 {
-    public $c=0;
-    //use WithPagination;
-    //public $query="";
-    /* public function mount()
-    {
-        $this->tickets=Ticket::all();
-    } */
-    /* public function updatingQuery(){
-        $this->resetPage();
-    } */
+    public $c,$zonas,$orden;
+    public function mount(){
+        $this->c=session('view_tck');
+        session('orden_tck')?$this->orden=session('orden_tck'):$this->orden='desc';
+        $this->zonas=Zona::select('*')->orderBy('name', 'ASC')->get();
+        //$this->orden='desc';
+    }
+    //función para actualizar la variable se session, esta sirve para mantener el tipo de vista en el listado de tickets
+    public function changeView(){
+        //dd(session());
+        session(['view_tck' => !session('view_tck')]);
+        $this->c=session('view_tck');
+        return redirect(request()->header('Referer'));
+    }
+    public function changeOrden(){
+        if($this->orden=='desc'){
+            $this->orden='asc';
+        }else{
+            $this->orden='desc';
+        }
+        session(['orden_tck'=>$this->orden]);
+        return redirect(request()->header('Referer'));
+    }
     public function cargar(){
         $this->c++;
     }
-
     public function render(Request $request)
     {
         $user=Auth::user();
@@ -38,6 +50,76 @@ class Tickets extends Component
         if($user->permiso_id != 1 && $user->permiso_id !=2 && $user->permiso_id !=7){
             if (isset($request->start) && isset($request->end) && $request->start!=null && $request->end!=null) {
                 if (isset($request->status) && $request->status!=null) {
+                    if(isset($request->zona) && $request->zona!=null){
+                        $estaciones=Zona::find($request->zona)->estacions;
+                        $tickets=Ticket::where('status',$request->status)
+                            ->where(fn ($query)=>
+                                $query->where('solicitante_id',$user->id)
+                                    ->orWhere('user_id',$user->id)
+                                )
+                            ->where(function ($query) use ($estaciones) {
+                                $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                        ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                        ->get();
+                            })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }else{
+                            $tickets=Ticket::where('status',$request->status)
+                            ->where(fn ($query)=>
+                                $query->where('solicitante_id',$user->id)
+                                    ->orWhere('user_id',$user->id)
+                                )
+                            ->where(function ($query) use ($request,$usuario) {
+                                if (($tck = $request->tck) && ($usuario->count() == 0)) {
+                                    $query->orWhere('id', 'LIKE', '%' . $tck . '%')
+                                        ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                    }else{
+                                        $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                                }
+                            })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }
+                } else {
+                    if(isset($request->zona) && $request->zona!=null){
+                        $estaciones=Zona::find($request->zona)->estacions;
+                        $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
+                        ->where(fn ($query)=>
+                            $query->where('solicitante_id',$user->id)
+                                ->orWhere('user_id',$user->id)
+                            )
+                        ->where(function ($query) use ($estaciones) {
+                            $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                        ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                        ->get();
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }else{
+                        $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
+                        ->where(fn ($query)=>
+                            $query->where('solicitante_id',$user->id)
+                                ->orWhere('user_id',$user->id)
+                            )
+                        ->where(function ($query) use ($request,$usuario) {
+                            if (($tck = $request->tck) && ($usuario->count() == 0)) {
+                                $query->orWhere('id', 'LIKE', '%' . $tck . '%')
+                                    ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                }else{
+                                    $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                            }
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }
+                }
+            } elseif(isset($request->status) && $request->status!=null){
+                if(isset($request->zona) && $request->zona!=null){
+                    $estaciones=Zona::find($request->zona)->estacions;
+                    $tickets=Ticket::where('status',$request->status)
+                        ->where(fn ($query)=>
+                            $query->where('solicitante_id',$user->id)
+                                ->orWhere('user_id',$user->id)
+                            )
+                        ->where(function ($query) use ($estaciones) {
+                            $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                        ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                        ->get();
+                        })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                }else{
                     $tickets=Ticket::where('status',$request->status)
                     ->where(fn ($query)=>
                         $query->where('solicitante_id',$user->id)
@@ -50,9 +132,23 @@ class Tickets extends Component
                             }else{
                                 $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
                         }
-                    })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10);
-                } else {
-                    $tickets=Ticket::wherewhere([['status','!=','Cerrado'],['status','!=','Por abrir']])
+                    })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                }
+            }else {
+                if(isset($request->zona) && $request->zona!=null){
+                    $estaciones=Zona::find($request->zona)->estacions;
+                    $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
+                        ->where(fn ($query)=>
+                            $query->where('solicitante_id',$user->id)
+                                ->orWhere('user_id',$user->id)
+                            )
+                        ->where(function ($query) use ($estaciones) {
+                            $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                        ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                        ->get();
+                        })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                }else{
+                    $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
                     ->where(fn ($query)=>
                         $query->where('solicitante_id',$user->id)
                             ->orWhere('user_id',$user->id)
@@ -64,36 +160,8 @@ class Tickets extends Component
                             }else{
                                 $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
                         }
-                    })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10);
+                    })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
                 }
-            } elseif(isset($request->status) && $request->status!=null){
-                $tickets=Ticket::where('status',$request->status)
-                ->where(fn ($query)=>
-                    $query->where('solicitante_id',$user->id)
-                        ->orWhere('user_id',$user->id)
-                    )
-                ->where(function ($query) use ($request,$usuario) {
-                    if (($tck = $request->tck) && ($usuario->count() == 0)) {
-                        $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                            ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
-                        }else{
-                            $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
-                    }
-                })->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8)->withQueryString();
-            }else {
-                $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
-                ->where(fn ($query)=>
-                    $query->where('solicitante_id',$user->id)
-                        ->orWhere('user_id',$user->id)
-                    )
-                ->where(function ($query) use ($request,$usuario) {
-                    if (($tck = $request->tck) && ($usuario->count() == 0)) {
-                        $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                            ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
-                        }else{
-                            $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
-                    }
-                })->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8)->withQueryString();
             }
             
             
@@ -115,7 +183,7 @@ class Tickets extends Component
                                 ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
                         }
                     })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])
-                    ->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8);
+                    ->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
                 }else{
                     $tickets=Ticket::where('status','!=','Cerrado')->whereIn('solicitante_id',$gerentes)
                     ->where(function ($query) use ($request,$usuario) {
@@ -127,7 +195,7 @@ class Tickets extends Component
                                 ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
                         }
                     })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])
-                    ->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8)->withQueryString();
+                    ->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
                 }
                 
             } elseif(isset($request->status) && $request->status!=null) {
@@ -140,7 +208,7 @@ class Tickets extends Component
                                 $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
                                 ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
                         }
-                    })->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8);
+                    })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
             }else{
                 $tickets=Ticket::where('status','!=','Cerrado')->whereIn('solicitante_id',$gerentes)
                 ->where(function ($query) use ($request,$usuario) {
@@ -151,7 +219,7 @@ class Tickets extends Component
                             $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
                             ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
                     }
-                })->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8)->withQueryString();
+                })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
             }
             
             
@@ -163,83 +231,207 @@ class Tickets extends Component
             if(isset($request->start) && isset($request->end) && $request->start!=null && $request->end!=null){
                 //si se seleccionó un status para buscar en ese rango de fecha
                 if (isset($request->status) && $request->status!=null) {
+                    if(isset($request->zona) && $request->zona!=null){
+                        $estaciones=Zona::find($request->zona)->estacions;
+                        $tickets=Ticket::where('status',$request->status)
+                        ->where(function ($query) use ($estaciones) {
+                            $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                ->get();
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->select('*')->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }else{
+                        $tickets=Ticket::where('status',$request->status)
+                        ->where(function ($query) use ($request,$usuario) {
+                            if (($tck = $request->tck) && ($usuario->count() == 0)) {
+                                    $query->orWhere('id', 'LIKE', '%' . $tck . '%')
+                                    ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                }else{
+                                    $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
+                                    ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                            }
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->select('*')->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }
+                } else {
+                    if(isset($request->zona) && $request->zona!=null){
+                        $estaciones=Zona::find($request->zona)->estacions;
+                        $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
+                    ->where(function ($query) use ($estaciones) {
+                        $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                ->get();
+                    })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->select('*')->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }else{
+                        $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
+                        ->where(function ($query) use ($request,$usuario) {
+                            if (($tck = $request->tck) && ($usuario->count() == 0)) {
+                                    $query->orWhere('id', 'LIKE', '%' . $tck . '%')
+                                    ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                }else{
+                                    $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
+                                    ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                            }
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->select('*')->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }
+                }        
+            }
+            elseif(isset($request->status) && $request->status!=null){
+                if(isset($request->zona) && $request->zona!=null){
+                    $estaciones=Zona::find($request->zona)->estacions;
+                    $tickets=Ticket::where('status',$request->status)
+                    ->where(function ($query) use ($estaciones) {
+                        $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                ->get();
+                    })->select('*')->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                }else{
                     $tickets=Ticket::where('status',$request->status)
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                 $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                                ->get();                
                             }else{
                                 $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                                ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                                ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
+                                ->get();
                         }
-                    })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->select('*')->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10);
-                } else {
+                    })->select('*')->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                }
+            }
+            else{
+                if(isset($request->zona) && $request->zona!=null){
+                    $estaciones=Zona::find($request->zona)->estacions;
+                    $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
+                    ->where(function ($query) use ($estaciones) {
+                        $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                ->get();
+                    })->select('*')->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                }else{
                     $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                 $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                                ->get();                
                             }else{
                                 $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                                ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                                ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
+                                ->get();
                         }
-                    })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->select('*')->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10);
-                }        
-            }
-            elseif(isset($request->status) && $request->status!=null){
-                $tickets=Ticket::where('status',$request->status)
-                ->where(function ($query) use ($request,$usuario) {
-                    if (($tck = $request->tck) && ($usuario->count() == 0)) {
-                            $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                            ->orWhere('asunto', 'LIKE', '%' . $tck . '%')
-                            ->get();                
-                        }else{
-                            $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                            ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                            ->get();
-                    }
-                })->select('*')->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8)->withQueryString();
-            }
-            else{
-                $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])
-                ->where(function ($query) use ($request,$usuario) {
-                    if (($tck = $request->tck) && ($usuario->count() == 0)) {
-                            $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                            ->orWhere('asunto', 'LIKE', '%' . $tck . '%')
-                            ->get();                
-                        }else{
-                            $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                            ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                            ->get();
-                    }
-                })->select('*')->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(8)->withQueryString();
+                    })->select('*')->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                }
             }
         }
-         //lkistado para los jefes de áreas (multi zona)
-         if($user->permiso_id==7){
+        //lkistado para los jefes de áreas (multi zona)
+        if($user->permiso_id==7){
             $minions=UserArea::whereIn('area_id',$user->areas->pluck('id'))->pluck('user_id');
             //dd($minions);
             if (isset($request->start) && isset($request->end) && $request->start!=null && $request->end!=null) {
                 if(isset($request->status) && $request->status!=null){
+                    if(isset($request->zona) && $request->zona!=null){
+                        $estaciones=Zona::find($request->zona)->estacions;
+                        $tickets=Ticket::where('status',$request->status)->where(function($res) use ($minions){
+                            $res->whereIn('solicitante_id',$minions)
+                            ->orWhereIn('user_id',$minions);
+                        })
+                        ->where(function ($query) use ($estaciones) {
+                            $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                ->get();
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])
+                        ->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }else{
+                        $tickets=Ticket::where('status',$request->status)->where(function($res) use ($minions){
+                            $res->whereIn('solicitante_id',$minions)
+                            ->orWhereIn('user_id',$minions);
+                        })
+                        ->where(function ($query) use ($request,$usuario) {
+                            if (($tck = $request->tck) && ($usuario->count() == 0)) {
+                                    $query->orWhere('id', 'LIKE', '%' . $tck . '%')
+                                    ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                }else{
+                                    $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
+                                    ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                            }
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])
+                        ->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }
+                }else{
+                    if(isset($request->zona) && $request->zona!=null){
+                    $estaciones=Zona::find($request->zona)->estacions;
+                    $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])->where(function($res) use ($minions){
+                            $res->whereIn('solicitante_id',$minions)
+                            ->orWhereIn('user_id',$minions);
+                        })
+                        ->where(function ($query) use ($estaciones) {
+                            $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                ->get();
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])
+                        ->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }else{
+                        $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])->where(function($res) use ($minions){
+                            $res->whereIn('solicitante_id',$minions)
+                            ->orWhereIn('user_id',$minions);
+                        })
+                        ->where(function ($query) use ($request,$usuario) {
+                            if (($tck = $request->tck) && ($usuario->count() == 0)) {
+                                    $query->orWhere('id', 'LIKE', '%' . $tck . '%')
+                                    ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                }else{
+                                    $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
+                                    ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                            }
+                        })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])
+                        ->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }
+                }
+                
+            } elseif(isset($request->status) && $request->status!=null) {
+                if(isset($request->zona) && $request->zona!=null){
+                    $estaciones=Zona::find($request->zona)->estacions;
                     $tickets=Ticket::where('status',$request->status)->where(function($res) use ($minions){
                         $res->whereIn('solicitante_id',$minions)
                         ->orWhereIn('user_id',$minions);
                     })
-                    ->where(function ($query) use ($request,$usuario) {
-                        if (($tck = $request->tck) && ($usuario->count() == 0)) {
-                                $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
-                            }else{
-                                $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                                ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
-                        }
-                    })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])
-                    ->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    ->where(function ($query) use ($estaciones) {
+                        $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                ->get();
+                    })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                }else{
+                    $tickets=Ticket::where('status',$request->status)->where(function($res) use ($minions){
+                            $res->whereIn('solicitante_id',$minions)
+                            ->orWhereIn('user_id',$minions);
+                        })
+                        ->where(function ($query) use ($request,$usuario) {
+                            if (($tck = $request->tck) && ($usuario->count() == 0)) {
+                                    $query->orWhere('id', 'LIKE', '%' . $tck . '%')
+                                    ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                }else{
+                                    $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
+                                    ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
+                            }
+                        })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    }
+            }else{
+                if(isset($request->zona) && $request->zona!=null){
+                    $estaciones=Zona::find($request->zona)->estacions;
+                    $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])->where(function($res) use ($minions){
+                            $res->whereIn('solicitante_id',$minions)
+                            ->orWhereIn('user_id',$minions);
+                        })
+                    ->where(function ($query) use ($estaciones) {
+                        $query->whereIn('solicitante_id',($estaciones->pluck('user_id')))
+                                ->orWhereIn('solicitante_id',($estaciones->pluck('supervisor_id')))
+                                ->get();
+                    })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
                 }else{
                     $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])->where(function($res) use ($minions){
-                        $res->whereIn('solicitante_id',$minions)
-                        ->orWhereIn('user_id',$minions);
-                    })
+                            $res->whereIn('solicitante_id',$minions)
+                            ->orWhereIn('user_id',$minions);
+                        })
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                 $query->orWhere('id', 'LIKE', '%' . $tck . '%')
@@ -248,42 +440,13 @@ class Tickets extends Component
                                 $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
                                 ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
                         }
-                    })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])
-                    ->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
+                    })->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
                 }
-                
-            } elseif(isset($request->status) && $request->status!=null) {
-                $tickets=Ticket::where('status',$request->status)->where(function($res) use ($minions){
-                        $res->whereIn('solicitante_id',$minions)
-                        ->orWhereIn('user_id',$minions);
-                    })
-                    ->where(function ($query) use ($request,$usuario) {
-                        if (($tck = $request->tck) && ($usuario->count() == 0)) {
-                                $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
-                            }else{
-                                $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                                ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
-                        }
-                    })->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
-            }else{
-                $tickets=Ticket::where([['status','!=','Cerrado'],['status','!=','Por abrir']])->where(function($res) use ($minions){
-                        $res->whereIn('solicitante_id',$minions)
-                        ->orWhereIn('user_id',$minions);
-                    })
-                ->where(function ($query) use ($request,$usuario) {
-                    if (($tck = $request->tck) && ($usuario->count() == 0)) {
-                            $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                            ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
-                        }else{
-                            $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
-                            ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
-                    }
-                })->orderBy('id','desc')->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
             }
         //dd($tickets);
         }
         //dd($tickets);
+        //dd($request->zona);
         return view('livewire.tickets.tickets',compact('tickets'));
     }
 }

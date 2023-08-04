@@ -56,12 +56,11 @@ class MealAsignment extends Component
 
         // Validamos si el horario y el usuario ya estan asignados
         $existe = MealUsers::where([
-            'meal_id' => $meal->id,
             'user_id' => $user->id,
         ])->first();
 
         if ($existe) { //si ya existe no procede
-            Alert::warning('Atención', 'El usuario ya tiene asignado el horario que intentas asignar.');
+            Alert::warning('Atención', 'El usuario ya tiene un horario asignado.');
             return redirect()->route('profile.show'); 
         }
 

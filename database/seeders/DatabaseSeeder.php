@@ -474,6 +474,7 @@ class DatabaseSeeder extends Seeder
             'marca_id' => 1,
             'modelo' => 'Modelo1',
             'descripcion' => 'MousePad',
+            'prioridad' => 'Alto',
             'unidad' => 'Pieza',
             'status' => 'Activo',
             'created_at' => now(),

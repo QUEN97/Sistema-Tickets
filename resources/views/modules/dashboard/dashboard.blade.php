@@ -9,8 +9,8 @@
             {{-- @if ($valid->pivot->wr == 1)
                 @livewire('dashboard.generate-reporte')
             @endif --}}
-            <div class="bg-gray-400 p-2 rounded-md font-bold text-white text-center">
-                {{ __('Sistema de Atención de Tickets Helpdesk') }}
+            <div class="bg-gray-500 p-2 rounded-md font-bold text-white text-center">
+                {{ __('Sistema de Atención de Tickets (Helpdesk)') }}
             </div>
         </div>
     </x-slot>

@@ -31,3 +31,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
      enabledTransports: ['ws', 'wss'],
  });
 
+ window.Echo.private('ticket-channel')
+ .listen('.ticket-created', (data) => {
+     // Mostrar la notificación del nuevo ticket
+     const ticket = data.ticket;
+     alert(`Se ha creado un nuevo ticket: ${ticket.asunto}`);
+ });
+

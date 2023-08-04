@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Tickets;
 
+use App\Events\TicketCreated;
 use App\Models\ArchivosTicket;
 use App\Models\Areas;
 use App\Models\Departamento;
@@ -110,6 +111,9 @@ class NewTicket extends Component
         $ticket->asunto = $this->asunto;
         $ticket->mensaje = $this->mensaje;
         $ticket->save();
+
+        broadcast(new TicketCreated($ticket))->toOthers();
+
         $cierre = Carbon::create($ticket->created_at);
         //asignamos fecha de cierre si estamos dentro del horario laboral
         if ($dia->dayOfWeek > 0) { //0=domingo
@@ -175,7 +179,7 @@ class NewTicket extends Component
 
     public function render()
     {
-        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [1, 2, 6])->get();
+        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [2, 6])->get();
         return view('livewire.tickets.new-ticket', [
             'areas' => $areas,
         ]);

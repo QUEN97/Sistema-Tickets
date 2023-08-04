@@ -189,12 +189,10 @@
                         @endforeach
                     </div>
                 @else
-                    <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
-                        <p style="display: flex; justify-content: center;"><img
-                            src="{{ asset('img/logo/emptystate.svg') }}" style="width:500px;"
-                            alt="Buzón Vacío"></p>
-                            No se encontraron archivos.
-                    </div>
+                <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
+                    <img src="{{ asset('img/icons/Uploading-amico.svg') }}" style="width: 200px" alt="Buzón Vacío">
+                    <span>No se encontraron evidencias.</span>
+                </div>
                 @endif
             @endif
         </div>
