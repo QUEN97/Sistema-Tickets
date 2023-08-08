@@ -41,7 +41,7 @@
                     <input type="file" wire:model="evidencias"
                         class="flex flex-wrap file:text-sm file:font-semibold file:bg-blue-300 file:text-blue-700 hover:file:bg-blue-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0"
                         multiple name="evidencias" required autocomplete="evidencias"
-                        accept="image/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        accept="image/*, video/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                     <x-input-error for="evidencias"></x-input-error>
 
                     <!-- Progress Bar -->

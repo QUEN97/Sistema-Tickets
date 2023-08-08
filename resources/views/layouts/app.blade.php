@@ -74,7 +74,7 @@
                 <!-- Page Heading -->
                 @if (isset($header))
                     <header>
-                        <div class="px-4 py-6 mx-auto max-w-7xl w-full sm:px-6 lg:px-8 bg-white dark:bg-dark-eval-1">
+                        <div class="px-4 py-6 mx-auto max-w-7xl w-full sm:px-6 lg:px-8 bg-white dark:bg-dark-eval-1 overflow-visible">
                             {{ $header }}
                         </div>
                     </header>
