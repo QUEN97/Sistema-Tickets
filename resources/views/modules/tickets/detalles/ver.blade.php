@@ -222,7 +222,8 @@
                         <a
                             class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
                             <img class="object-cover w-10 h-10 rounded-full"
-                                src="{{ asset('img/logo/blank-profile-picture-973460_1280.webp') }}" alt="username" />
+                                src="{{ asset('img/logo/blank-profile-picture-973460_1280.webp') }}"
+                                alt="username" />
                             <div class="w-full pb-2">
                                 <div class="flex justify-between">
                                     <div class="flex">
@@ -254,8 +255,9 @@
                 @endforeach
             </ul>
         @else
-        <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
-                <img src="{{ asset('img/icons/Status update-amico.svg') }}" style="width: 350px" alt="Sin Comentarios">
+            <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
+                <img src="{{ asset('img/icons/Status update-amico.svg') }}" style="width: 350px"
+                    alt="Sin Comentarios">
                 <span>No se encontraron comentarios.</span>
             </div>
         @endif

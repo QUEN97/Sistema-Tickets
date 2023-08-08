@@ -9,14 +9,14 @@
                 <x-input wire:model.defer="creado" type="datetime-local" name="creado" id="creado"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                             dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
-                <x-input-error for="asunto"></x-input-error>
+                <x-input-error for="creado"></x-input-error>
             </div>
             <div>
                 <x-label value="{{ __('Vencimiento') }}" for="vence" />
                 <x-input wire:model.defer="vence" type="datetime-local" name="vence" id="vence"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                             dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
-                <x-input-error for="asunto"></x-input-error>
+                <x-input-error for="vence"></x-input-error>
             </div>
         </div>
         @if ($this->cerrado != NULL)
@@ -25,7 +25,7 @@
                 <x-input wire:model.defer="cerrado" type="datetime-local" name="cerrado" id="cerrado"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                             dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
-                <x-input-error for="asunto"></x-input-error>
+                <x-input-error for="cerrado"></x-input-error>
             </div>
         @endif
         <div class="flex  gap-2 justify-evenly items-center mb-2">

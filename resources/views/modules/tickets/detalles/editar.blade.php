@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', 'Ver Ticket')
+    @section('title', 'EditarTicket')
     <div class="flex flex-col sm:flex-row gap-2">
         <div class="bg-white dark:bg-dark-eval-3 text-gray-800 p-4 rounded-md shadow-lg mb-4 sm:mb-0">
             <ul class="list-style:none">
