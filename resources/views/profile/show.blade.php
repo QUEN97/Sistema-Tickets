@@ -3,7 +3,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h3 class="text-xl font-bold">
-                {{ __('AJUSTES DE PERFIL') }}
+                {{ __('AJUSTES') }}
             </h3>
         </div>
     </x-slot>
@@ -11,6 +11,9 @@
     <div class="grid gap-8">
 
         @if (Auth::user()->permiso_id == 1)
+        <div>
+            @livewire('sistema.holiday.holiday-component')
+        </div>
         <div class="grid grid-cols-2 space-x-2">
             <div>
                 @livewire('sistema.meals.meal-schedule-create')

@@ -7,6 +7,7 @@ use App\Models\ArchivosTicket;
 use App\Models\Areas;
 use App\Models\Departamento;
 use App\Models\Falla;
+use App\Models\Holiday;
 use App\Models\Servicio;
 use App\Models\Ticket;
 use Carbon\Carbon;
@@ -78,11 +79,19 @@ class NewTicket extends Component
         }
     }
 
+    private function esDiaFestivo($fecha)
+    {
+        // Retorna true si es un día festivo, false en caso contrario.
+        return Holiday::whereDate('date', $fecha->format('Y-m-d'))->exists();
+    }
+
+
     public function addTicket()
     { //El método addTicket() se ejecuta cuando se envía el formulario para agregar un nuevo ticket. 
 
         $dia = Carbon::now(); //Obtenemos el dia actual
-
+        $Festivo = $this->esDiaFestivo($dia);
+        
         $this->validate([ //Valida los campos requeridos y crea un nuevo registro de ticket en la base de datos.
             'area' => ['required', 'not_in:0'],
             'servicio' => ['required', 'not_in:0'],
@@ -133,6 +142,10 @@ class NewTicket extends Component
             $ticket->status = 'Por abrir';
             $ticket->save();
         }
+        if ($Festivo) {
+            $ticket->status = 'Por abrir';
+            $ticket->save();
+        }
 
         if (count($this->evidencias) > 0) { //Si se adjuntan evidencias (archivos), se almacenan en la carpeta pública y se crea un registro en la tabla ArchivosTicket.
             foreach ($this->evidencias as $lue) {
@@ -158,11 +171,8 @@ class NewTicket extends Component
             ->where('fecha_cierre', '<=', Carbon::now())
             ->get();
 
-
         foreach ($tickets as $ticket) {
-            // if ($ticket->status !== 'En proceso') { Descomentar para evitar que ticket se cierre aun con status En Proceso.
             DB::beginTransaction();
-
             try {
                 $ticket->status = 'Cerrado';
                 $ticket->save();
@@ -171,15 +181,13 @@ class NewTicket extends Component
             } catch (\Exception $e) {
                 DB::rollBack();
             }
-            //} Descomentar para evitar que ticket se cierre aun con status En Proceso.
         }
-
         return Response::json(['success' => true]);
     }
 
     public function render()
     {
-        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [1,2, 6])->get();
+        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [1, 2, 6])->get();
         return view('livewire.tickets.new-ticket', [
             'areas' => $areas,
         ]);
