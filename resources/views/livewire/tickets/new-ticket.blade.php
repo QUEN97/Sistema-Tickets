@@ -50,7 +50,7 @@
                 @if ($fallas)
                     <div>
                         <x-label value="{{ __('Falla') }}" for="falla" />
-                        <select wire:model="falla" name="falla" id="falla"
+                        <select wire:model="falla" name="falla" id="falla" style="width: 150px;"
                             class="rounded-md dark:bg-slate-800 dark:border-gray-700">
                             <option hidden value="" selected>Seleccionar falla</option>
                             @foreach ($fallas as $falla)

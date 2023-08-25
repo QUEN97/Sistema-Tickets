@@ -72,6 +72,7 @@ document.addEventListener('alpine:init', () => {
 })
 
 
+
 window.Alpine = Alpine
 
 Alpine.plugin(collapse)

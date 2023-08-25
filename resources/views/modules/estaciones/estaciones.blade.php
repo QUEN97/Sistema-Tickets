@@ -68,7 +68,7 @@
                     </a>
                 </div>
             </div>
-            <table class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
+            <table class="border-collapse w-full  bg-white text-center text-sm   dark:bg-dark-eval-0 dark:text-gray-400">
                 <thead class="bg-gray-50">
                     <tr>
                         <th
@@ -98,15 +98,15 @@
                     @forelse ($estaciones as $estacion)
                         <tr>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                                class="w-full lg:w-auto p-3  text-center border border-b block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
                                 <div class="text-sm">
-                                    <div class="font-medium text-gray-700 uppercase">{{ $estacion->name }}</div>
+                                    <div class="font-medium uppercase">{{ $estacion->name }}</div>
                                 </div>
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
+                                class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Gerente</span>
                                 @if ($estacion->user_id != 0 || $estacion->user_id != null)
@@ -134,7 +134,7 @@
                                 @endif
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
+                                class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Supervisor</span>
                                 @if ($estacion->supervisor_id != 0 || $estacion->supervisor_id != null)
@@ -162,7 +162,7 @@
                                 @endif
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
+                                class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Zona</span>
                                 @if ($estacion->zona->status == 'Inactivo')
@@ -185,13 +185,13 @@
                                 @endif
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
+                                class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Fecha</span>
                                 {{ $estacion->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
+                                class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Status</span>
                                 @if ($estacion->status == 'Activo')
@@ -203,7 +203,7 @@
                                 @endif
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+                                class="w-full lg:w-auto p-3  border border-b block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                 <div class="flex justify-end gap-4">

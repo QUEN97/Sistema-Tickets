@@ -2,16 +2,17 @@
 
 namespace App\Http\Livewire\Tickets;
 
-use App\Events\TicketCreated;
+use App\Events\NewNotification;
+use App\Events\NewTicketNotification;
 use App\Models\ArchivosTicket;
 use App\Models\Areas;
-use App\Models\Departamento;
 use App\Models\Falla;
 use App\Models\Holiday;
 use App\Models\Servicio;
 use App\Models\Ticket;
+use App\Models\User;
+use App\Notifications\TicketAsignadoNotificacion;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -78,20 +79,16 @@ class NewTicket extends Component
             }
         }
     }
-
+    // Retorna true si es un día festivo, false en caso contrario.
     private function esDiaFestivo($fecha)
     {
-        // Retorna true si es un día festivo, false en caso contrario.
         return Holiday::whereDate('date', $fecha->format('Y-m-d'))->exists();
     }
-
-
     public function addTicket()
     { //El método addTicket() se ejecuta cuando se envía el formulario para agregar un nuevo ticket. 
-
         $dia = Carbon::now(); //Obtenemos el dia actual
         $Festivo = $this->esDiaFestivo($dia);
-        
+
         $this->validate([ //Valida los campos requeridos y crea un nuevo registro de ticket en la base de datos.
             'area' => ['required', 'not_in:0'],
             'servicio' => ['required', 'not_in:0'],
@@ -121,8 +118,6 @@ class NewTicket extends Component
         $ticket->mensaje = $this->mensaje;
         $ticket->save();
 
-        broadcast(new TicketCreated($ticket))->toOthers();
-
         $cierre = Carbon::create($ticket->created_at);
         //asignamos fecha de cierre si estamos dentro del horario laboral
         if ($dia->dayOfWeek > 0) { //0=domingo
@@ -142,7 +137,7 @@ class NewTicket extends Component
             $ticket->status = 'Por abrir';
             $ticket->save();
         }
-        if ($Festivo) {
+        if ($Festivo) { //si es día festivo o inhábil
             $ticket->status = 'Por abrir';
             $ticket->save();
         }
@@ -159,6 +154,9 @@ class NewTicket extends Component
                 $archivo->save();
             }
         }
+        
+        $agent = User::find($this->asignado);
+        $agent->notify(new TicketAsignadoNotificacion($ticket));
 
         Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); //Finalmente, se muestra una alerta de éxito y se redirige a la página de tickets.
         return redirect()->route('tickets');
@@ -174,7 +172,7 @@ class NewTicket extends Component
         foreach ($tickets as $ticket) {
             DB::beginTransaction();
             try {
-                $ticket->status = 'Cerrado';
+                $ticket->status = 'Vencido';
                 $ticket->save();
 
                 DB::commit();
@@ -187,7 +185,7 @@ class NewTicket extends Component
 
     public function render()
     {
-        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [1, 2, 6])->get();
+        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [ 2, 6])->get();
         return view('livewire.tickets.new-ticket', [
             'areas' => $areas,
         ]);

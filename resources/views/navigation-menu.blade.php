@@ -1,9 +1,9 @@
 <nav aria-label="secondary" x-data="{ open: false }"
     class="sticky top-0 z-10 flex items-center justify-between px-4 py-4 sm:px-6 transition-transform duration-500 bg-white dark:bg-dark-eval-1"
-     {{-- :class="{
+    {{-- :class="{
         '-translate-y-full': scrollingDown,
         'translate-y-0': scrollingUp,
-    }"--}} >
+    }" --}}>
 
     <div class="flex items-center gap-3">
         <x-button type="button" class="md:hidden" iconOnly variant="secondary" srText="Toggle dark mode"
@@ -55,288 +55,136 @@
 
                 <div class="border-t border-gray-100 dark:border-gray-700"></div>
 
-                <div class="max-h-[320px] overflow-y-auto">
+                <div class="max-h-[320px] overflow-y-auto" wire:poll>
                     @forelse (Auth::user()->unreadNotifications as $item)
-                        @if ($item->type == 'App\Notifications\NotifiNewSolicitud')
-                            <x-dropdown-link href="{{ route('solicitudes') }}"
+                        {{-- Notif ticket asignado --}}
+                        @if ($item->type == 'App\Notifications\TicketAsignadoNotificacion')
+                            <x-dropdown-link href="{{ route('tickets') }}" wire:click="leerNoti({{ $item }})"
+                                class="mb-4">
+                                <svg class="w-4 h-4" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#6b7280"
+                                        d="m490.18 181.4l-44.13-44.13a20 20 0 0 0-27-1a30.81 30.81 0 0 1-41.68-1.6a30.81 30.81 0 0 1-1.6-41.67a20 20 0 0 0-1-27L330.6 21.82a19.91 19.91 0 0 0-28.13 0l-70.35 70.34a39.87 39.87 0 0 0-9.57 15.5a7.71 7.71 0 0 1-4.83 4.83a39.78 39.78 0 0 0-15.5 9.58l-180.4 180.4a19.91 19.91 0 0 0 0 28.13L66 374.73a20 20 0 0 0 27 1a30.69 30.69 0 0 1 43.28 43.28a20 20 0 0 0 1 27l44.13 44.13a19.91 19.91 0 0 0 28.13 0l180.4-180.4a39.82 39.82 0 0 0 9.58-15.49a7.69 7.69 0 0 1 4.84-4.84a39.84 39.84 0 0 0 15.49-9.57l70.34-70.35a19.91 19.91 0 0 0-.01-28.09Zm-228.37-29.65a16 16 0 0 1-22.63 0l-11.51-11.51a16 16 0 0 1 22.63-22.62l11.51 11.5a16 16 0 0 1 0 22.63Zm44 44a16 16 0 0 1-22.62 0l-11-11a16 16 0 1 1 22.63-22.63l11 11a16 16 0 0 1 .01 22.66Zm44 44a16 16 0 0 1-22.63 0l-11-11a16 16 0 0 1 22.63-22.62l11 11a16 16 0 0 1 .05 22.67Zm44.43 44.54a16 16 0 0 1-22.63 0l-11.44-11.5a16 16 0 1 1 22.68-22.57l11.45 11.49a16 16 0 0 1-.01 22.63Z" />
+                                </svg>
+                                <div class="text-sm">{{ __('Hola') }} "{{ $item->data['asignado'] }}",
+                                    {{ $item->data['cliente'] }}
+                                    {{ __('necesita tu apoyo con el ticket #') }}{{ $item->data['tckId'] }}
+                                    {{ $item->data['fecha'] }}</div>
+                            </x-dropdown-link>
+                            {{-- Notif cliente comenta ticket --}}
+                        @elseif ($item->type == 'App\Notifications\TicketAgenteComentarioNotification')
+                            <x-dropdown-link href="{{ route('tck.ver', ['id' => $item->data['tckId']]) }}"
+                                wire:click="leerNoti({{ $item }})" class="mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="w-4 h-4">
+                                    <path fill-rule="evenodd"
+                                        d="M10 3c-4.31 0-8 3.033-8 7 0 2.024.978 3.825 2.499 5.085a3.478 3.478 0 01-.522 1.756.75.75 0 00.584 1.143 5.976 5.976 0 003.936-1.108c.487.082.99.124 1.503.124 4.31 0 8-3.033 8-7s-3.69-7-8-7zm0 8a1 1 0 100-2 1 1 0 000 2zm-2-1a1 1 0 11-2 0 1 1 0 012 0zm5 1a1 1 0 100-2 1 1 0 000 2z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <div class="text-sm">{{ __('Hola') }} "{{ $item->data['asignado'] }}",
+                                    "{{ $item->data['cliente'] }}",
+                                    {{ __('ha realizado un nuevo comentario para el ticket #') }}{{ $item->data['tckId'] }}
+                                    {{ $item->data['fecha'] }}</div>
+                            </x-dropdown-link>
+                            {{-- Notif agente comenta ticket --}}
+                        @elseif ($item->type == 'App\Notifications\TicketClienteComentarioNotification')
+                            <x-dropdown-link href="{{ route('tck.ver', ['id' => $item->data['tckId']]) }}"
+                                wire:click="leerNoti({{ $item }})" class="mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="w-4 h-4">
+                                    <path fill-rule="evenodd"
+                                        d="M10 3c-4.31 0-8 3.033-8 7 0 2.024.978 3.825 2.499 5.085a3.478 3.478 0 01-.522 1.756.75.75 0 00.584 1.143 5.976 5.976 0 003.936-1.108c.487.082.99.124 1.503.124 4.31 0 8-3.033 8-7s-3.69-7-8-7zm0 8a1 1 0 100-2 1 1 0 000 2zm-2-1a1 1 0 11-2 0 1 1 0 012 0zm5 1a1 1 0 100-2 1 1 0 000 2z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <div class="text-sm">{{ __('Hola') }} "{{ $item->data['cliente'] }}",
+                                    "{{ $item->data['asignado'] }}",
+                                    {{ __('ha realizado un nuevo comentario para el ticket #') }}{{ $item->data['tckId'] }}
+                                    {{ $item->data['fecha'] }}</div>
+                            </x-dropdown-link>
+                            {{-- Notif Admin/Supervisor/Jefe de área commentan ticket --}}
+                        @elseif ($item->type == 'App\Notifications\TicketComentarioNotification')
+                            <x-dropdown-link href="{{ route('tck.ver', ['id' => $item->data['tckId']]) }}"
                                 wire:click="leerNoti({{ $item }})" class="mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="w-4 h-4">
                                     <path
-                                        d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                                        d="M3.505 2.365A41.369 41.369 0 019 2c1.863 0 3.697.124 5.495.365 1.247.167 2.18 1.108 2.435 2.268a4.45 4.45 0 00-.577-.069 43.141 43.141 0 00-4.706 0C9.229 4.696 7.5 6.727 7.5 8.998v2.24c0 1.413.67 2.735 1.76 3.562l-2.98 2.98A.75.75 0 015 17.25v-3.443c-.501-.048-1-.106-1.495-.172C2.033 13.438 1 12.162 1 10.72V5.28c0-1.441 1.033-2.717 2.505-2.914z" />
+                                    <path
+                                        d="M14 6c-.762 0-1.52.02-2.271.062C10.157 6.148 9 7.472 9 8.998v2.24c0 1.519 1.147 2.839 2.71 2.935.214.013.428.024.642.034.2.009.385.09.518.224l2.35 2.35a.75.75 0 001.28-.531v-2.07c1.453-.195 2.5-1.463 2.5-2.915V8.998c0-1.526-1.157-2.85-2.729-2.936A41.645 41.645 0 0014 6z" />
                                 </svg>
-                                <span
-                                    class="text-xs text-gray-800 hover:text-white">{{ __('El Supervisor' . ' ' . '"' . $item->data['supervisor'] . '"' . ' ' . 'ha creado una nueva solicitud de productos con ID #' . $item->data['soliciId'] . ' en la Estación' . ' ' . '"' . $item->data['estacion'] . '" ' . $item->data['fecha']) }}</span>
+                                @if ($item->data['permiTie'] == 1)
+                                    <div class="text-sm">{{ __('El usuario') }} "{{ $item->data['userEs'] }}",
+                                        {{ __('ha realizado un nuevo comentario para el ticket #') }}{{ $item->data['tckId'] }}
+                                        {{ $item->data['fecha'] }}</div>
+                                @elseif ($item->data['permiTie'] == 2)
+                                    <div class="text-sm">{{ __('El supervisor') }} "{{ $item->data['userEs'] }}",
+                                        {{ __('ha realizado un nuevo comentario para el ticket #') }}{{ $item->data['tckId'] }}
+                                        {{ $item->data['fecha'] }}</div>
+                                @elseif ($item->data['permiTie'] == 7)
+                                    <div class="text-sm">{{ __('El jefe de área') }} "{{ $item->data['userEs'] }}",
+                                        {{ __('ha realizado un nuevo comentario para el ticket #') }}{{ $item->data['tckId'] }}
+                                        {{ $item->data['fecha'] }}</div>
+                                @endif
                             </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiNewSolicitudGerente')
-                            <x-dropdown-link href="{{ route('solicitudes') }}"
+                            {{-- Notif si se reabrio el ticket --}}
+                        @elseif ($item->type == 'App\Notifications\TicketReAbiertoNotification')
+                            <x-dropdown-link href="{{ route('tck.ver', ['id' => $item->data['tckId']]) }}"
                                 wire:click="leerNoti({{ $item }})" class="mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="w-4 h-4">
-                                    <path
-                                        d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                                    <path fill-rule="evenodd"
+                                        d="M14.5 1A4.5 4.5 0 0010 5.5V9H3a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-1.5V5.5a3 3 0 116 0v2.75a.75.75 0 001.5 0V5.5A4.5 4.5 0 0014.5 1z"
+                                        clip-rule="evenodd" />
                                 </svg>
-                                {{ __('El Gerente " ' . (isset($item->data['gerente']) ? $item->data['gerente'] : null) . ' " ha creado una nueva solicitud de productos con ID #' . $item->data['soliciId'] . ' en la Estación "' . $item->data['estacion'] . ' " ' . $item->data['fecha']) }}
+                                <div class="text-sm">{{ __('El usuario') }} "{{ $item->data['userEs'] }}",
+                                    {{ __('ha Abierto nuevamente el ticket #') }}{{ $item->data['tckId'] }}
+                                    {{ $item->data['fecha'] }}</div>
                             </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiNewAdminSoli')
-                            <x-dropdown-link href="{{ route('solicitudes') }}"
+                        @elseif ($item->type == 'App\Notifications\TicketReasignadoNotification')
+                            <x-dropdown-link href="{{ route('tck.ver', ['id' => $item->data['tckId']]) }}"
                                 wire:click="leerNoti({{ $item }})" class="mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="w-4 h-4">
-                                    <path
-                                        d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                                    <path fill-rule="evenodd"
+                                        d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z"
+                                        clip-rule="evenodd" />
                                 </svg>
-                                {{ __('"' . $item->data['userEs'] . ' " ' . ' ' . 'ha creado una solicitud con id #' . $item->data['soliciId'] . '  ' . 'para la estacion' . ' ' . $item->data['estacion'] . $item->data['fecha']) }}
+                                <div class="text-sm">{{ _('Hola') }} "{{ $item->data['asignado'] }}",
+                                    {{ __('el usuario') }} "{{ $item->data['userEs'] }}"
+                                    {{ __('te ha reasignado el ticket #') }}{{ $item->data['tckId'] }}
+                                    {{ $item->data['fecha'] }}</div>
                             </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiEditSolicitud')
-                            <x-dropdown-link href="{{ route('solicitudes') }}"
+                        @elseif ($item->type == 'App\Notifications\TareaAsignadaNotification')
+                            <x-dropdown-link href="{{ route('tck.tarea', ['id' => $item->data['tckId']]) }}"
                                 wire:click="leerNoti({{ $item }})" class="mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="w-4 h-4">
-                                    <path
-                                        d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                                    <path fill-rule="evenodd"
+                                        d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z"
+                                        clip-rule="evenodd" />
                                 </svg>
-                                <span
-                                    class="text-xs text-gray-800 hover:text-white">{{ __('El Supervisor' . ' ' . '"' . $item->data['supervisor'] . '"' . ' ' . 'ha editado la solicitud' . ' ' . '#' . $item->data['soliNum'] . ' ' . 'en la Estación' . ' ' . '"' . $item->data['estacion'] . '"' . $item->data['fecha']) }}</span>
+                                <div class="text-sm">{{ _('Hola') }} "{{ $item->data['asignado'] }}",
+                                    {{ __('el usuario') }} "{{ $item->data['userEs'] }}"
+                                    {{ __('te ha creado la tarea #') }}{{ $item->data['tareaId'] }}
+                                    {{ __('en  el ticket #') }}{{ $item->data['tckId'] }}
+                                    {{ $item->data['fecha'] }}</div>
                             </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiEditAdminSoli')
-                            <x-dropdown-link href="{{ route('solicitudes') }}"
+                        @elseif ($item->type == 'App\Notifications\TareaComentarioNotification')
+                            <x-dropdown-link href="{{ route('tck.tarea', ['id' => $item->data['tckId']]) }}"
                                 wire:click="leerNoti({{ $item }})" class="mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="w-4 h-4">
-                                    <path
-                                        d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                                    <path fill-rule="evenodd"
+                                        d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z"
+                                        clip-rule="evenodd" />
                                 </svg>
-                                <span class="text-xs text-gray-800 hover:text-white">
-                                    {{ __('"' . $item->data['userEs'] . ' " ' . ' ' . 'ha editado la solicitud con id #' . $item->data['soliNum'] . '  ' . 'de la estacion' . ' ' . $item->data['estacion'] . ' ' . $item->data['fecha']) }}</span>
-                            </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiEditSolicitudGerente')
-                            <x-dropdown-link href="{{ route('solicitudes') }}"
-                                wire:click="leerNoti({{ $item }})" class="mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    class="w-4 h-4">
-                                    <path
-                                        d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
-                                </svg>
-                                {{ __('El Gerente' . ' ' . '"' . (isset($item->data['gerente']) ? $item->data['gerente'] : null) . '"' . ' ' . 'ha editado la solicitud' . ' ' . '#' . $item->data['soliNum'] . ' ' . 'en la Estación' . ' ' . '"' . $item->data['estacion'] . '"' . $item->data['fecha']) }}
-                            </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiNewAlmacenGerente')
-                            <div
-                                class="'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-red-700 hover:text-white focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out dark:focus:text-white dark:focus:bg-dark-eval-3 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-red-500">
-                                @if ($item->data['permiTie'] == 2)
-                                    @if ($item->data['entradaSalida'] == 'Traspaso')
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                            fill="currentColor" class="w-5 h-5">
-                                            <path fill-rule="evenodd"
-                                                d="M13.2 2.24a.75.75 0 00.04 1.06l2.1 1.95H6.75a.75.75 0 000 1.5h8.59l-2.1 1.95a.75.75 0 101.02 1.1l3.5-3.25a.75.75 0 000-1.1l-3.5-3.25a.75.75 0 00-1.06.04zm-6.4 8a.75.75 0 00-1.06-.04l-3.5 3.25a.75.75 0 000 1.1l3.5 3.25a.75.75 0 101.02-1.1l-2.1-1.95h8.59a.75.75 0 000-1.5H4.66l2.1-1.95a.75.75 0 00.04-1.06z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        <a href="{{ route('almacenes') }}"
-                                            wire:click="leerNoti({{ $item }})">{{ __('El Supervisor' . ' ' . '"' . $item->data['userEs'] . '"' . ' ' . 'ha solicitado un' . ' ' . $item->data['entradaSalida'] . ' ' . 'de productos en su bodega con Folio' . ' ' . '"' . $item->data['folio'] . '", Evidencia:') }}</a>
-
-                                        <a href="{{ asset('storage/entradas-salidas-pdfs/' . $item->data['pdf']) }}"
-                                            target="_blank" class="">
-                                            {{ $item->data['pdf'] }}
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                fill="currentColor" class="w-3 h-3">
-                                                <path fill-rule="evenodd"
-                                                    d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z"
-                                                    clip-rule="evenodd" />
-                                                <path fill-rule="evenodd"
-                                                    d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                            fill="currentColor" class="w-4 h-4">
-                                            <path fill-rule="evenodd"
-                                                d="M4.25 2A2.25 2.25 0 002 4.25v2.5A2.25 2.25 0 004.25 9h2.5A2.25 2.25 0 009 6.75v-2.5A2.25 2.25 0 006.75 2h-2.5zm0 9A2.25 2.25 0 002 13.25v2.5A2.25 2.25 0 004.25 18h2.5A2.25 2.25 0 009 15.75v-2.5A2.25 2.25 0 006.75 11h-2.5zm9-9A2.25 2.25 0 0011 4.25v2.5A2.25 2.25 0 0013.25 9h2.5A2.25 2.25 0 0018 6.75v-2.5A2.25 2.25 0 0015.75 2h-2.5zm0 9A2.25 2.25 0 0011 13.25v2.5A2.25 2.25 0 0013.25 18h2.5A2.25 2.25 0 0018 15.75v-2.5A2.25 2.25 0 0015.75 11h-2.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        <a
-                                            href="{{ route('almacenes') }}">{{ __('El Gerente' . ' ' . '"' . $item->data['userEs'] . '"' . ' ' . 'ha solicitado una' . ' ' . $item->data['entradaSalida'] . ' ' . 'de productos en su bodega con Folio' . ' ' . '"' . $item->data['folio'] . '", Evidencia:') }}</a>
-
-                                        <a href="{{ asset('storage/entradas-salidas-pdfs/' . $item->data['pdf']) }}"
-                                            target="_blank" class="text-xs">
-                                            {{ $item->data['pdf'] }} <svg xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
-                                                <path fill-rule="evenodd"
-                                                    d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z"
-                                                    clip-rule="evenodd" />
-                                                <path fill-rule="evenodd"
-                                                    d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    @endif
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M4.25 2A2.25 2.25 0 002 4.25v2.5A2.25 2.25 0 004.25 9h2.5A2.25 2.25 0 009 6.75v-2.5A2.25 2.25 0 006.75 2h-2.5zm0 9A2.25 2.25 0 002 13.25v2.5A2.25 2.25 0 004.25 18h2.5A2.25 2.25 0 009 15.75v-2.5A2.25 2.25 0 006.75 11h-2.5zm9-9A2.25 2.25 0 0011 4.25v2.5A2.25 2.25 0 0013.25 9h2.5A2.25 2.25 0 0018 6.75v-2.5A2.25 2.25 0 0015.75 2h-2.5zm0 9A2.25 2.25 0 0011 13.25v2.5A2.25 2.25 0 0013.25 18h2.5A2.25 2.25 0 0018 15.75v-2.5A2.25 2.25 0 0015.75 11h-2.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    <a
-                                        href="{{ route('almacenes') }}">{{ __('El Gerente' . ' ' . '"' . $item->data['userEs'] . '"' . ' ' . 'ha solicitado una' . ' ' . $item->data['entradaSalida'] . ' ' . 'de productos en su bodega con Folio' . ' ' . '"' . $item->data['folio'] . '", Evidencia:') }}</a>
-
-                                    <a href="{{ asset('storage/entradas-salidas-pdfs/' . $item->data['pdf']) }}"
-                                        target="_blank" class="enlace-notifi-pdf text-bold text-xs">
-                                        {{ $item->data['pdf'] }} <svg xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
-                                            <path fill-rule="evenodd"
-                                                d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z"
-                                                clip-rule="evenodd" />
-                                            <path fill-rule="evenodd"
-                                                d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </a>
-                                @endif
-                            </div>
-                        @elseif ($item->type == 'App\Notifications\NotifiAcepRechaAlmacen')
-                            <x-dropdown-link href="{{ route('almacenes') }}"
-                                wire:click="leerNoti({{ $item }})" class="mb-4">
-                                @if ($item->data['permiTie'] == 2)
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M4.25 2A2.25 2.25 0 002 4.25v2.5A2.25 2.25 0 004.25 9h2.5A2.25 2.25 0 009 6.75v-2.5A2.25 2.25 0 006.75 2h-2.5zm0 9A2.25 2.25 0 002 13.25v2.5A2.25 2.25 0 004.25 18h2.5A2.25 2.25 0 009 15.75v-2.5A2.25 2.25 0 006.75 11h-2.5zm9-9A2.25 2.25 0 0011 4.25v2.5A2.25 2.25 0 0013.25 9h2.5A2.25 2.25 0 0018 6.75v-2.5A2.25 2.25 0 0015.75 2h-2.5zm0 9A2.25 2.25 0 0011 13.25v2.5A2.25 2.25 0 0013.25 18h2.5A2.25 2.25 0 0018 15.75v-2.5A2.25 2.25 0 0015.75 11h-2.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('El Supervisor' . ' ' . '"' . $item->data['userEs'] . '"' . ' ' . 'ha ' . $item->data['acepRecha'] . ' la ' . $item->data['entradaSalida'] . ' #' . $item->data['entrasalID'] . ' con folio: "' . $item->data['folio'] . '" del producto "' . $item->data['produc'] . '" con ID #' . $item->data['epId']) }}
-                                @elseif ($item->data['permiTie'] != 2 && $item->data['permiTie'] != 3)
-                                    @if ($item->data['entradaSalida'] == 'Traspaso')
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                            fill="currentColor" class="w-4 h-4">
-                                            <path fill-rule="evenodd"
-                                                d="M13.2 2.24a.75.75 0 00.04 1.06l2.1 1.95H6.75a.75.75 0 000 1.5h8.59l-2.1 1.95a.75.75 0 101.02 1.1l3.5-3.25a.75.75 0 000-1.1l-3.5-3.25a.75.75 0 00-1.06.04zm-6.4 8a.75.75 0 00-1.06-.04l-3.5 3.25a.75.75 0 000 1.1l3.5 3.25a.75.75 0 101.02-1.1l-2.1-1.95h8.59a.75.75 0 000-1.5H4.66l2.1-1.95a.75.75 0 00.04-1.06z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        {{ __('"' . $item->data['userEs'] . '"' . ' ' . 'ha ' . $item->data['acepRecha'] . ' el ' . $item->data['entradaSalida'] . ' #' . $item->data['entrasalID'] . ' con folio: "' . $item->data['folio'] . '" del producto "' . $item->data['produc'] . '" con ID #' . $item->data['epId']) }}
-                                    @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                            fill="currentColor" class="w-4 h-4">
-                                            <path fill-rule="evenodd"
-                                                d="M4.25 2A2.25 2.25 0 002 4.25v2.5A2.25 2.25 0 004.25 9h2.5A2.25 2.25 0 009 6.75v-2.5A2.25 2.25 0 006.75 2h-2.5zm0 9A2.25 2.25 0 002 13.25v2.5A2.25 2.25 0 004.25 18h2.5A2.25 2.25 0 009 15.75v-2.5A2.25 2.25 0 006.75 11h-2.5zm9-9A2.25 2.25 0 0011 4.25v2.5A2.25 2.25 0 0013.25 9h2.5A2.25 2.25 0 0018 6.75v-2.5A2.25 2.25 0 0015.75 2h-2.5zm0 9A2.25 2.25 0 0011 13.25v2.5A2.25 2.25 0 0013.25 18h2.5A2.25 2.25 0 0018 15.75v-2.5A2.25 2.25 0 0015.75 11h-2.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        {{ __('"' . $item->data['userEs'] . '"' . ' ' . 'ha ' . $item->data['acepRecha'] . ' la ' . $item->data['entradaSalida'] . ' #' . $item->data['entrasalID'] . ' con folio: "' . $item->data['folio'] . '" del producto "' . $item->data['produc'] . '" con ID #' . $item->data['epId']) }}
-                                    @endif
-                                @endif
-                                {{ $item->created_at }}
-                            </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiAcepRechaSolicitud')
-                            <x-dropdown-link href="{{ route('solicitudes') }}"
-                                wire:click="leerNoti({{ $item }})" class="mb-4">
-                                @if ($item->data['permiTie'] == 2 && $item->data['acepRecha'] == 'Solicitado a Compras')
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('El Supervisor' . ' ' . '"' . $item->data['userEs'] . '"' . ' ' . 'ha ' . $item->data['acepRecha'] . ' la solicitud #' . $item->data['soliciID'] . $item->data['fecha']) }}
-                                @elseif ($item->data['acepRecha'] == 'Solicitud Rechazada')
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('La solicitud #' . $item->data['soliciID'] . ' ha sido rechazada.' . $item->data['fecha']) }}
-                                @elseif ($item->data['permiTie'] == 4 && $item->data['acepRecha'] == 'Enviado a Administración')
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('"' . $item->data['userEs'] . '"' . ' ' . 'ha ' . $item->data['acepRecha'] . ' la solicitud #' . $item->data['soliciID'] . $item->data['fecha']) }}
-                                @elseif ($item->data['acepRecha'] == 'Solicitud Aprobada')
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('La solicitud #' . $item->data['soliciID'] . ' ha sido Aprobada.' . $item->data['fecha']) }}
-                                @endif
-                            </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiNewRepuesto')
-                            <x-dropdown-link href="{{ route('repuestos') }}"
-                                wire:click="leerNoti({{ $item }})" class="mb-4">
-                                @if ($item->data['permiTie'] == 2)
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('El Supervisor' . ' ' . '"' . $item->data['userEs'] . '"' . ' ' . 'ha solicitado repuestos para "' . $item->data['produEs'] . '" para la estación "' . $item->data['estacEs'] . '" con ID #' . $item->data['esrepID']) }}
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('"' . $item->data['userEs'] . '"' . ' ' . 'ha solicitado repuestos para "' . $item->data['produEs'] . '" para la estación "' . $item->data['estacEs'] . '" con ID #' . $item->data['esrepID']) }}
-                                @endif
-                            </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiEditRepuesto')
-                            <x-dropdown-link href="{{ route('repuestos') }}"
-                                wire:click="leerNoti({{ $item }})" class="mb-4">
-                                @if ($item->data['permiTie'] == 2)
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('El Supervisor' . ' ' . '"' . $item->data['userEs'] . '"' . ' ' . 'ha editado la solicitud repuestos de "' . $item->data['produEs'] . '" para la estación "' . $item->data['estacEs'] . '" con ID #' . $item->data['esrepID']) }}
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('"' . $item->data['userEs'] . '"' . ' ' . 'ha editado la solicitud repuestos de"' . $item->data['produEs'] . '" para la estación "' . $item->data['estacEs'] . '" con ID #' . $item->data['esrepID']) }}
-                                @endif
-                            </x-dropdown-link>
-                        @elseif ($item->type == 'App\Notifications\NotifiAcepRechaRepuesto')
-                            <x-dropdown-link href="{{ route('repuestos') }}"
-                                wire:click="leerNoti({{ $item }})" class="mb-4">
-                                @if ($item->data['permiTie'] == 2 && $item->data['acepRecha'] == 'Solicitado a Compras')
-                                    <img class="w-4" src="{{ asset('img/icons/icon-check.svg') }}"
-                                        alt="">
-                                    {{ __('El Supervisor' . ' ' . '"' . $item->data['userEs'] . '"' . ' ' . 'ha ' . $item->data['acepRecha'] . ' el repuesto #' . $item->data['repuesID'] . ' del producto ' . $item->data['produEs']) }}
-                                @elseif ($item->data['permiTie'] != 2 && $item->data['permiTie'] != 3 && $item->data['acepRecha'] == 'Solicitado a Compras')
-                                    <img class="w-4" src="{{ asset('img/icons/icon-check.svg') }}"
-                                        alt="">
-                                    {{ __('"' . $item->data['userEs'] . '"' . ' ' . 'ha ' . $item->data['acepRecha'] . ' el repuesto #' . $item->data['repuesID'] . ' del producto ' . $item->data['produEs']) }}
-                                @elseif ($item->data['acepRecha'] == 'Repuesto Aprobado')
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('La solicitud para el repuesto #' . $item->data['repuesID'] . ' ha sido aprobada por Compras.') }}
-                                @elseif ($item->data['acepRecha'] == 'Repuesto Rechazado')
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-4 h-4">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('La solicitud para el repuesto #' . $item->data['repuesID'] . ' ha sido rechazada.') }}
-                                @endif
-
-                                {{ $item->created_at }}
+                                <div class="text-sm">{{ _('Hola') }} "{{ $item->data['asignado'] }}",
+                                    {{ __('el usuario') }} "{{ $item->data['userEs'] }}"
+                                    {{ __('ha realizado un comentario en la tarea #') }}{{ $item->data['tareaId'] }}
+                                    {{ __('en  el ticket #') }}{{ $item->data['tckId'] }}
+                                    {{ $item->data['fecha'] }}</div>
                             </x-dropdown-link>
                         @endif
+
                         @if ($loop->last)
                             <div class="border-t border-gray-100 dark:border-gray-700"></div>
                             <div class="text-center">
@@ -352,7 +200,8 @@
                             </div>
                         @endif
                     @empty
-                        <img src="{{ asset('img/logo/emptystate.svg') }}" style="max-width: 190px" alt="Buzón Vacío">
+                        <img src="{{ asset('img/logo/emptystate.svg') }}" style="max-width: 190px"
+                            alt="Buzón Vacío">
                     @endforelse
                 </div>
             </x-slot>

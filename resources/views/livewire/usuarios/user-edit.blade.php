@@ -12,7 +12,7 @@
 
     <x-dialog-modal wire:model="EditUsuario" id="EditUsuario{{ $user_edit_id }}" class="flex items-center">
         <x-slot name="title">
-            <div class="bg-dark-eval-1 p-4 rounded-md text-white text-center">
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
                 {{ __('Editar Usuario') }}
             </div>
         </x-slot>
@@ -22,13 +22,15 @@
                 <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <x-label value="{{ __('Nombre') }}" />
-                        <x-input wire:model="name" class="{{ $errors->has('name') ? 'is-invalid' : '' }}" type="text"
+                        <x-input wire:model="name" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('name') ? 'is-invalid' : '' }}" type="text"
                             name="name" :value="old('name')" required autofocus autocomplete="name" />
                         <x-input-error for="name"></x-input-error>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <x-label value="{{ __('Usuario') }}" />
-                        <x-input wire:model.defer="username" class="{{ $errors->has('username') ? 'is-invalid' : '' }}"
+                        <x-input wire:model.defer="username" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('username') ? 'is-invalid' : '' }}"
                             type="text" name="username" :value="old('username')" required autofocus
                             autocomplete="username" />
                         <x-input-error for="username"></x-input-error>
@@ -37,7 +39,8 @@
                 <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-full px-3">
                         <x-label value="{{ __('Correo Electrónico') }}" />
-                        <x-input wire:model.defer="email" class="w-full{{ $errors->has('email') ? 'is-invalid' : '' }}"
+                        <x-input wire:model.defer="email" class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('email') ? 'is-invalid' : '' }}"
                             type="email" name="email" :value="old('email')" required />
                         <x-input-error for="email"></x-input-error>
                     </div>
@@ -63,7 +66,8 @@
                             <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
                                 @foreach ($areas as $tag)
                                     <div class="flex items-center">
-                                        <input type="checkbox" wire:model="areasUpdate" value="{{ $tag->id }}"
+                                        <input type="checkbox" wire:model="areasUpdate" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" value="{{ $tag->id }}"
                                             name="names[]" id="{{ $tag->name }}" multiple>
                                         <label for="{{ $tag->name }}">{{ $tag->name }}</label>
                                     </div>
@@ -78,7 +82,8 @@
                             <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
                                 @foreach ($zonas as $tag)
                                     <div class="flex items-center">
-                                        <input type="checkbox" wire:model="zonasUpdate" value="{{ $tag->id }}"
+                                        <input type="checkbox" wire:model="zonasUpdate" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" value="{{ $tag->id }}"
                                             name="names[]" id="{{ $tag->name }}" multiple>
                                         <label for="{{ $tag->name }}">{{ $tag->name }}</label>
                                     </div>
@@ -124,14 +129,16 @@
                 <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <x-label value="{{ __('Contraseña') }}" />
-                        <x-input wire:model="password" class="{{ $errors->has('password') ? 'is-invalid' : '' }}"
+                        <x-input wire:model="password" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('password') ? 'is-invalid' : '' }}"
                             type="password" name="password" required autocomplete="new-password"
                             wire:keydown.enter="addUsuario" />
                         <x-input-error for="password"></x-input-error>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <x-label value="{{ __('Confirmar Contraseña') }}" />
-                        <x-input class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"
+                        <x-input class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"
                             type="password" wire:model="password_confirmation" name="password_confirmation" required
                             autocomplete="new-password" wire:keydown.enter="addUsuario" />
                         <x-input-error for="password_confirmation"></x-input-error>

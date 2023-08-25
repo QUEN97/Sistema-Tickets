@@ -41,17 +41,41 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+
 </head>
 
 <body class="font-sans antialiased text-gray-900 dark:text-gray-200">
-    {{-- <script type="text/javascript">
-        $(document).ready(function () {
-            //Deshabilitar click derecho mouse
-            $("body").on("contextmenu",function(e){
-                return false;
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            // Capturar el evento de clic derecho en el body
+            document.body.addEventListener("contextmenu", function(e) {
+                e.preventDefault(); // Prevenir el menú contextual predeterminado
+
+                // Crear el modal
+                var modalContainer = document.createElement("div");
+                modalContainer.className = "fixed inset-0 flex items-center justify-center z-50";
+                modalContainer.innerHTML = `
+                    <div class="bg-white p-8 rounded shadow-md">
+                        <h2 class="text-xl font-semibold mb-4">Atención</h2>
+                        <p>¿Deseas convertirte en desarrollador para poder realizar ajustes en el sistema?</p>
+                        <div class="flex gap-2">
+                            <button class="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" id="closeModal">Cerrar</button>
+                            <button class="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" onclick="window.location.href='https://www.xataka.com/otros/31-cursos-gratis-para-aprender-a-programar-cero'">Modo Desarrollador</button>
+                        </div>
+                    </div>
+                `;
+
+                // Agregar el modal al body
+                document.body.appendChild(modalContainer);
+
+                // Capturar el clic en el botón de cerrar
+                var closeModalButton = modalContainer.querySelector("#closeModal");
+                closeModalButton.addEventListener("click", function() {
+                    document.body.removeChild(modalContainer);
+                });
             });
         });
-        </script>  --}}
+    </script>
     <div x-data="mainState" :class="{ dark: isDarkMode }" @resize.window="handleWindowResize" x-cloak>
         <x-banner />
 
@@ -74,7 +98,8 @@
                 <!-- Page Heading -->
                 @if (isset($header))
                     <header>
-                        <div class="px-4 py-6 mx-auto max-w-7xl w-full sm:px-6 lg:px-8 bg-white dark:bg-dark-eval-1 overflow-visible">
+                        <div
+                            class="px-4 py-6 mx-auto max-w-7xl w-full sm:px-6 lg:px-8 bg-white dark:bg-dark-eval-1 overflow-visible">
                             {{ $header }}
                         </div>
                     </header>
@@ -98,16 +123,6 @@
     @livewireScripts
 
     @stack('scripts')
-
-    {{-- Toast --}}
-    <script src="{{ asset('js/toast.js') }}"></script>
-    <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
-    @if ($cantidadTicketsProximosVencer > 0)
-        <script type="text/javascript">
-            toastr.warning("EXISTEN {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS  A VENCER")
-        </script>
-    @endif
-
 
 </body>
 

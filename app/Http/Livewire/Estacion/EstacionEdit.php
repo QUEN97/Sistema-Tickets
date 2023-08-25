@@ -11,7 +11,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 class EstacionEdit extends Component
 {
     public $EditEstacion, $gerente;
-    public $estacion_id, $name, $zona, $supervisor, $status,$isSuper, $isGeren;
+    public $estacion_id, $name, $zona, $supervisor, $status,$isSuper, $isGeren,$numero;
     
     public function resetFilters()
     {
@@ -31,6 +31,7 @@ class EstacionEdit extends Component
 
         $this->estacion_id = $id;
         $this->name = $estacion->name;
+        $this->numero = $estacion->num_estacion;
         $this->zona = $estacion->zona_id;
         $this->gerente = $estacion->user_id;
         $this->supervisor = $estacion->supervisor_id;
@@ -45,14 +46,16 @@ class EstacionEdit extends Component
 
         $this->validate( [
             'name' => ['required', 'max:250'],
+            'numero' => ['required'],
             'supervisor' => ['required', 'not_in:0'],
             'gerente' => ['required', 'not_in:0'],
             'zona' => ['required', 'not_in:0'],
             'status' => ['required', 'not_in:0'],
         ],
         [
-            'name.required' => 'El Nombre de la Estación es oblogatorio',
+            'name.required' => 'El Nombre de la Estación es obligatorio',
             'name.max' => 'El Nombre de la Estación no debe ser mayor a 250 caracteres',
+            'numero.required' => 'El Número de la Estación es obligatorio',
             'supervisor.required' => 'El Supervisor es obligatorio',
             'gerente.required' => 'El Gerente es obligatorio',
             'zona.required' => 'La Zona es obligatoria',
@@ -61,6 +64,7 @@ class EstacionEdit extends Component
 
         $esta->forceFill([
             'name' => $this->name,
+            'num_estacion' => $this->numero,
             'zona_id' => $this->zona,
             'user_id' => $this->gerente,
             'supervisor_id' => $this->supervisor,

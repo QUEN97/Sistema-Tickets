@@ -5,7 +5,11 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Nueva requisición para el ticket #').$ticketID }}
             </h2>
+            {{-- Botones acción --}}
             <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-center mt-5">
+            <div class="bg-dark-eval-1 dark:bg-dark-eval-2 p-2 rounded-md text-white text-center">
+                {{ __('Ir a:') }}
+            </div>
                 <div class="flex justify-center rounded-lg" role="group">
                     <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip" href="{{ route('tck.ver', $ticketID) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"

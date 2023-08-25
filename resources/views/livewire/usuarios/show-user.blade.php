@@ -13,14 +13,14 @@
 
     <x-dialog-modal wire:model="ShowgUsuario" id="ShowUsuario{{ $user_show_id }}" >
         <x-slot name="title">
-            <div class="bg-dark-eval-1 p-4 rounded-md text-white text-center">
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
             {{ __('Información General del Usuario') }}
            </div>
         </x-slot>
 
         <x-slot name="content">
             <div class="flex items-center justify-center">
-                <div class=" bg-white dark:bg-dark-eval-0 shadow-md rounded-lg overflow-hidden ">
+                <div class=" bg-gray-200 dark:bg-dark-eval-0 shadow-lg rounded-lg overflow-hidden ">
                     @if ($user->profile_photo_path)
                         <img class="w-full h-56 object-cover object-center"
                             src="{{ Storage::url($user->profile_photo_path) }}" alt="{{ $user->name }} foto">
@@ -38,8 +38,8 @@
                         <h1 class="mx-3 text-white font-semibold text-lg">{{ $this->rol }}</h1>
                     </div>
                     <div class="py-2 px-3">
-                        <h1 class="text-2xl font-semibold text-gray-800">{{ $this->name }}</h1>
-                        <h1 class="text-md font-semibold text-gray-600">({{ $this->username }})</h1>
+                        <h1 class="text-2xl font-semibold ">{{ $this->name }}</h1>
+                        <h1 class="text-md font-semibold ">({{ $this->username }})</h1>
                         <div style="display: flex; justify-content: center;">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-cyan-300">
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-1.5 0a6.5 6.5 0 11-11-4.69v.447a3.5 3.5 0 001.025 2.475L8.293 10 8 10.293a1 1 0 000 1.414l1.06 1.06a1.5 1.5 0 01.44 1.061v.363a1 1 0 00.553.894l.276.139a1 1 0 001.342-.448l1.454-2.908a1.5 1.5 0 00-.281-1.731l-.772-.772a1 1 0 00-1.023-.242l-.384.128a.5.5 0 01-.606-.25l-.296-.592a.481.481 0 01.646-.646l.262.131a1 1 0 00.447.106h.188a1 1 0 00.949-1.316l-.068-.204a.5.5 0 01.149-.538l1.44-1.234A6.492 6.492 0 0116.5 10z" clip-rule="evenodd" />
@@ -94,14 +94,14 @@
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <div class="flex items-center mt-4 text-gray-700">
+                            <div class="flex items-center mt-4">
                                 <svg class="h-4 w-4 fill-current text-indigo-500" viewBox="0 0 512 512">
                                     <path
                                         d="M437.332 80H74.668C51.199 80 32 99.198 32 122.667v266.666C32 412.802 51.199 432 74.668 432h362.664C460.801 432 480 412.802 480 389.333V122.667C480 99.198 460.801 80 437.332 80zM432 170.667L256 288 80 170.667V128l176 117.333L432 128v42.667z" />
                                 </svg>
-                                <h1 class="px-2 text-xs dark:text-gray-800">{{ $this->email }}</h1>
+                                <h1 class="px-2 text-xs">{{ $this->email }}</h1>
                             </div>
-                            <div class="flex items-center mt-4 text-gray-700">
+                            <div class="flex items-center mt-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="w-6 h-6 text-gray-500 dark:text-white">
                                     <path
@@ -110,7 +110,7 @@
                                         d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <h1 class="px-2 text-xs dark:text-gray-800">{{ $this->created_at }}</h1>
+                                <h1 class="px-2 text-xs">{{ $this->created_at }}</h1>
                             </div>
                         </div>
                     </div>

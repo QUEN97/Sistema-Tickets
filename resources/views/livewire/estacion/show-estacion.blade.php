@@ -13,44 +13,45 @@
 
     <x-dialog-modal wire:model="ShowgEstacion" id="ShowEstacion{{ $estacion_show_id }}" class="flex items-center">
         <x-slot name="title">
-            {{ __('Información General de la Estación') }}
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+                {{ __('Información de la Estación') }}
+            </div>
         </x-slot>
 
         <x-slot name="content">
             <div class="w-full rounded overflow-hidden shadow-lg">
                 {{-- <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> --}}
                 <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2 text-black">{{ $this->titulo_estacion }}</div>
-                    <div class="font-bold text-sm mb-2 text-black">({{ $this->numero }})</div>
+                    <div class="font-bold text-xl mb-2 ">EDS - {{ $this->titulo_estacion }}</div>
+                    <div class="font-bold text-sm mb-2 ">No. {{ $this->numero }}</div>
                     <div class="px-2">
-                        <div class="flex -mx-2 bg-indigo-300 p-2 rounded-md">
+                        <div class="flex -mx-2 bg-gray-300 p-2 rounded-md">
                             <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Gerente: </span>
+                                <span class="dark:text-black">Gerente: </span>
                                 @if ($gerentestat == 'Inactivo')
                                     <p class="text-red-500">
                                         <span class="text-xs">{{ $this->gerente }}</span>
                                     </p>
                                 @else
-                                    <span class="text-xs"> {{ $this->gerente }}</span>
+                                    <span class="text-xs dark:text-black"> {{ $this->gerente }}</span>
                                 @endif
                             </div>
                             <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Supervisor:</span>
+                                <span class="dark:text-black">Supervisor:</span>
                                 @if ($supervisorstat == 'Inactivo')
                                     <p class="text-red-500">
                                         <span class="text-xs"> {{ $this->supervisor }}</span>
                                     </p>
                                 @else
-                                    <span class="text-xs"> {{ $this->supervisor }}</span>
+                                    <span class="text-xs dark:text-black"> {{ $this->supervisor }}</span>
                                 @endif
                             </div>
                             <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Status:</span>
-                                <span class="text-xs">{{ $this->status }}</span>
+                                <span class="dark:text-black">Status:</span>
+                                <span class="text-xs dark:text-black">{{ $this->status }}</span>
                             </div>
-                            <div class="w-1/3 px-2">
-                                <span class="text-gray-700"> Registro:</span>
-                                <span class="text-xs">{{ $this->created_at }}</span>
+                            <div class="w-1/3 dark:text-black"> Registro:</span>
+                                <span class="text-xs dark:text-black">{{ $this->created_at }}</span>
                             </div>
                         </div>
                     </div>

@@ -15,6 +15,10 @@
                         <span class="bg-orange-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
                         </span>
+                    @elseif ($tck->status == 'Vencido')
+                        <span class="bg-red-400 p-1 rounded-md text-white">
+                            {{ $tck->status }}
+                        </span>
                     @elseif ($tck->status == 'Cerrado')
                         <span class="bg-gray-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
@@ -44,7 +48,8 @@
             </ul>
             <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-center mt-5">
                 <div class="flex justify-center rounded-lg" role="group">
-                    <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip" href="{{ route('tck.ver', $tck->id) }}">
+                    <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
+                        href="{{ route('tck.ver', $tck->id) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
                             class="w-6 h-6 text-black hover:text-purple-600 dark:text-white" viewBox="0 0 576 512">
                             <path
@@ -74,6 +79,19 @@
     </div>
 
     <div class="mt-4 bg-white dark:bg-dark-eval-1 text-gray-800 p-4 rounded-md shadow-lg">
+        <div class="bg-dark-eval-1 p-1 rounded-md text-white text-center mb-2">
+            {{ __('Tareas del ticket:') }}
+        </div>
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-3">
+            <span
+                class="inline-flex items-center p-1 text-sm font-medium text-center text-white bg-gray-400 rounded-lg">
+                Tareas
+                <span
+                    class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                    {{ $tareas->count() }}
+                </span>
+            </span>
+        </div>
         @forelse ($tareas as $tarea)
             <div @if ($tarea->status == 'Abierto') class="mb-2 bg-teal-100 border-t-4 border-teal-500 rounded-md text-teal-900 px-4 py-3 shadow-md" @endif
                 @if ($tarea->status == 'En Proceso') class="mb-2 bg-orange-100 border-t-4 border-orange-500 rounded-md text-orange-900 px-4 py-3 shadow-md" @endif
@@ -120,11 +138,9 @@
                 </div>
             </div>
         @empty
-            <span class="text-danger text-lg">
-                <p style="display: flex; justify-content: center;"><img src="{{ asset('img/logo/emptystate.svg') }}"
-                        style="" alt="Buzón Vacío"></p>
+            <span class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
+                Sin tareas actualmente.
             </span>
-            Sin registros.
         @endforelse
     </div>
 </x-app-layout>

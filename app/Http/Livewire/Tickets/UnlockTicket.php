@@ -4,8 +4,10 @@ namespace App\Http\Livewire\Tickets;
 
 use App\Models\Comentario;
 use App\Models\Ticket;
+use App\Notifications\TicketReAbiertoNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -13,14 +15,9 @@ class UnlockTicket extends Component
 {
     public $ticketID,$mensaje,$statustck,$status,$modal=false;
     public function unlockTicket(Ticket $tck){
-        // if($tck->status=="Por abrir"){
-        //     $fecha=Carbon::today()->addHours(9);
-        //     /*NOTA: Validar si en caso de estar los tickets fuera de horario resetear su hora de creación a la hora de 
-        //     que se inicia el horario laboral 9 am o a la hora que le dan a 'abrir'
-        //     */
-        //     $tck->fecha_cierre=$fecha->addHours($tck->falla->prioridad->tiempo);
-        // }
+        
         $tck->status="Abierto";
+        $tck->cerrado = NULL;
         $tck->save();
 
         $reg=new Comentario();
@@ -31,6 +28,15 @@ class UnlockTicket extends Component
         $reg->save();
         $tck->status = $tck->status;
         $tck->save();
+
+        $ticketOwner = $tck->cliente;
+        $agent = $tck->agente;
+
+        $notification = new TicketReAbiertoNotification($tck);
+        $ticketOwner->notify($notification);
+
+        $notification = new TicketReAbiertoNotification($tck);
+        $agent->notify($notification);
 
         Alert::success('Ticket Abierto','El ticket #'.$this->ticketID.' ha sido actualizado');
         return redirect()->route('tickets');

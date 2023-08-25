@@ -81,12 +81,12 @@
                 </tr>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+            <tbody class="divide-y divide-gray-100 ">
                 @if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
                     @forelse ($users as $user)
                         <tr>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static dark:border-gray-800">
+                                class="w-full lg:w-auto p-3 text-center border border-b block lg:table-cell relative lg:static dark:border-gray-800">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
                                 <div class="text-sm">
@@ -96,13 +96,13 @@
                                 </div>
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 dark:text-gray-400 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
+                                class="w-full lg:w-auto p-3 dark:text-gray-400 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Email</span>
                                 {{ $user->email }}
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
+                                class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Zonas</span>
                                 @if ($user->zonas->count() > 0)
@@ -122,7 +122,7 @@
                                 @endif
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
+                                class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Status</span>
                                 @if (Cache::has('user-is-online-' . $user->id))
@@ -172,7 +172,7 @@
                             </td>
                             @if ($valid->pivot->vermas == 1 || $valid->pivot->ed == 1 || $valid->pivot->de == 1)
                                 <td
-                                    class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static dark:border-gray-800">
+                                    class="w-full lg:w-auto p-3 border border-b block lg:table-cell relative lg:static dark:border-gray-800">
                                     <span
                                         class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                     <div class="grid grid-cols-3">
@@ -197,7 +197,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static"
+                            <td class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static"
                                 colspan="6">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin

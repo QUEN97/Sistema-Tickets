@@ -6,6 +6,7 @@ use App\Models\Comentario;
 use App\Models\ComentarioTarea;
 use App\Models\Tarea;
 use App\Models\Ticket;
+use App\Notifications\TareaComentarioNotification;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -46,6 +47,11 @@ class ComentariosTarea extends Component
             }
 
             $ticketId = $reg->tarea->ticket_id;
+
+            $agent = $tarea->usercrea;
+
+            $notification = new TareaComentarioNotification($tarea);
+            $agent->notify($notification);
 
             Alert::success('Tarea Actualizada', 'Se ha actualizado la información de la tarea');
         } catch (Exception $e) {

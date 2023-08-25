@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TicketStatusChangedEvent;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CategoriaController;

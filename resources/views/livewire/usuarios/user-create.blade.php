@@ -7,7 +7,7 @@
 
     <x-dialog-modal wire:model="newgUsuario" id="modalUsuario" class="flex items-center">
         <x-slot name="title">
-            <div class="bg-dark-eval-1 p-4 rounded-md text-white text-center">
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
                 {{ __('Nuevo Usuario') }}
             </div>
         </x-slot>
@@ -23,7 +23,7 @@
                     <div class="md:w-1/2 px-3 mb-6 md:mb-2">
                         <x-label value="{{ __('Nombre') }}" />
                         <x-input wire:model.defer="name"
-                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:border-gray-600 dark:bg-dark-eval-1
                         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('name') ? 'is-invalid' : '' }}"
                             type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
                         <x-input-error for="name"></x-input-error>

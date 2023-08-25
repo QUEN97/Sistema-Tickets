@@ -46,13 +46,13 @@
                                             @forelse($ultimosAbiertos as $open)
                                                 <tr>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800  dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
                                                         {{ $open->id }}
                                                     </td>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800  dark:text-white border border-b block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3   dark:text-white border border-b block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                                         <div style="display: flex; justify-content: center;">
@@ -68,15 +68,15 @@
                                                     </td>
                                                 </tr>
                                             @empty
-                                                <tr>
-                                                    <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static"
-                                                        colspan="6">
-                                                        <span
-                                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin
-                                                            registros</span>
-                                                        {{ __('No hay tickets Abiertos') }}
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static"
+                                                    colspan="6">
+                                                    <span
+                                                        class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin
+                                                        registros</span>
+                                                    {{ __('No hay tickets Abiertos') }}
+                                                </td>
+                                            </tr>
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -89,7 +89,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                                 </svg>
-                                <p class="font-semibold text-sm text-gray-400">{{ $mesEnCurso }}</p>
+                                <p class="font-semibold text-sm text-gray-400">Mes en curso: {{ $mesEnCurso }}</p>
                             </div>
                         </div>
                         <!-- End Card List -->
@@ -122,13 +122,13 @@
                                             @forelse($ultimosEnProceso as $process)
                                                 <tr>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800 dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3  dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
                                                         {{ $process->id }}
                                                     </td>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800 dark:text-white border border-b block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3  dark:text-white border border-b block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                                             <div style="display: flex; justify-content: center;">
@@ -145,7 +145,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static"
+                                                    <td class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static"
                                                         colspan="6">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin
@@ -165,7 +165,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                                 </svg>
-                                <p class="font-semibold text-sm text-gray-400">{{ $mesEnCurso }}</p>
+                                <p class="font-semibold text-sm text-gray-400">Mes en curso: {{ $mesEnCurso }}</p>
                             </div>
                         </div>
                         <!-- End Card List -->
@@ -198,13 +198,13 @@
                                             @forelse($ultimosCerrados as $closed)
                                                 <tr>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800 dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3  dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
                                                         {{ $closed->id }}
                                                     </td>
                                                     <td
-                                                        class="w-full lg:w-auto p-3 text-gray-800 dark:text-white  border border-b block lg:table-cell relative lg:static">
+                                                        class="w-full lg:w-auto p-3  dark:text-white  border border-b block lg:table-cell relative lg:static">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                                             <div style="display: flex; justify-content: center;">
@@ -221,7 +221,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static"
+                                                    <td class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static"
                                                         colspan="6">
                                                         <span
                                                             class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin
@@ -241,7 +241,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                                 </svg>
-                                <p class="font-semibold text-sm text-gray-400">{{ $mesEnCurso }}</p>
+                                <p class="font-semibold text-sm text-gray-400">Mes en curso: {{ $mesEnCurso }}</p>
                             </div>
                         </div>
                         <!-- End Card List -->

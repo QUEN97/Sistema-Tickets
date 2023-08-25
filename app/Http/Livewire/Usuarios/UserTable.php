@@ -55,7 +55,7 @@ class UserTable extends Component
             ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request){
                 $filterSoli = $request->input('filter');
                 $query->where('permiso_id', $filterSoli);
-            })->where('id','!=',1)
+            })
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();

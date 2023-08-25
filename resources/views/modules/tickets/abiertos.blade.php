@@ -1,9 +1,9 @@
 <x-app-layout>
-    @section('title', 'Tickets por abrir')
+    @section('title', 'Tickets Pendientes')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Tickets por abrir') }}
+                {{ __('TICKETS PENDIENTES') }}
             </h2>
             {{-- <div class="flex flex-wrap gap-2">
                 @if ($pendientes > 0 && Auth::user()->permiso_id==1)

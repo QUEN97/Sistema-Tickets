@@ -3,24 +3,22 @@
         {{ __('Editar Ticket') }}
     </div>
     <div class="max-h-[150px] overflow-auto">
-        <div class="flex  gap-2 justify-evenly items-center mb-2">
-            <div>
+            <div class="mb-2">
                 <x-label value="{{ __('Creado') }}" for="creado" />
                 <x-input wire:model.defer="creado" type="datetime-local" name="creado" id="creado"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                             dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
                 <x-input-error for="creado"></x-input-error>
             </div>
-            <div>
+            <div class="mb-2">
                 <x-label value="{{ __('Vencimiento') }}" for="vence" />
                 <x-input wire:model.defer="vence" type="datetime-local" name="vence" id="vence"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                             dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
                 <x-input-error for="vence"></x-input-error>
             </div>
-        </div>
         @if ($this->cerrado != NULL)
-            <div class="text-center mb-2">
+            <div class=" mb-2">
                 <x-label value="{{ __('Cerrado') }}" for="cerrado" />
                 <x-input wire:model.defer="cerrado" type="datetime-local" name="cerrado" id="cerrado"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
@@ -57,7 +55,7 @@
             @if ($servicios)
                 <div>
                     <x-label value="{{ __('Servicio') }}" for="servicio" />
-                    <select wire:model.defer="servicio" name="servicio" id="servicio"
+                    <select wire:model.defer="servicio" name="servicio" id="servicio" style="width: 150px;"
                         class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
                         <option hidden value="" selected>Seleccionar Servicio</option>
                         @foreach ($servicios as $servicio)
@@ -70,7 +68,7 @@
             @if ($fallas)
                 <div>
                     <x-label value="{{ __('Falla') }}" for="falla" />
-                    <select wire:model.defer="falla" name="falla" id="falla"
+                    <select wire:model.defer="falla" name="falla" id="falla" style="width: 150px;"
                         class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
                         <option hidden value="" selected>Seleccionar falla</option>
                         @foreach ($fallas as $falla)
@@ -141,7 +139,7 @@
         <input type="file" wire:model="evidencias"
             class="flex flex-wrap file:text-sm file:font-semibold file:bg-blue-300 file:text-blue-700 hover:file:bg-blue-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0"
             multiple name="evidencias" required autocomplete="evidencias"
-            accept="image/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+            accept="video/*, image/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
         <x-input-error for="evidencias"></x-input-error>
 
         <!-- Progress Bar -->
