@@ -28,10 +28,10 @@ class NewTicket extends Component
         $asignado, $creador, $cierre, $asunto, $mensaje, //Se definen varias propiedades públicas para almacenar los datos del ticket, como el área, servicio, falla, asunto, mensaje, etc.
         $evidencias = [], $urlArchi, $modal = false;
 
-    public function mount()
-    {
-        $this->closeExpiredTickets();
-    }
+    // public function mount()
+    // {
+    //     $this->closeExpiredTickets();
+    // }
 
     public function updatedArea($id)
     { //El método updatedArea() se ejecuta cuando se actualiza el área seleccionada y carga los servicios correspondientes a esa área.
@@ -162,26 +162,26 @@ class NewTicket extends Component
         return redirect()->route('tickets');
     }
 
-    protected function closeExpiredTickets()
-    {
-        $tickets = Ticket::whereNotNull('fecha_cierre')
-            ->where('status', '<>', 'Cerrado')
-            ->where('fecha_cierre', '<=', Carbon::now())
-            ->get();
+    // protected function closeExpiredTickets() //Se creo una tarea programada
+    // {
+    //     $tickets = Ticket::whereNotNull('fecha_cierre')
+    //         ->where('status', '<>', 'Cerrado')
+    //         ->where('fecha_cierre', '<=', Carbon::now())
+    //         ->get();
 
-        foreach ($tickets as $ticket) {
-            DB::beginTransaction();
-            try {
-                $ticket->status = 'Vencido';
-                $ticket->save();
+    //     foreach ($tickets as $ticket) {
+    //         DB::beginTransaction();
+    //         try {
+    //             $ticket->status = 'Vencido';
+    //             $ticket->save();
 
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollBack();
-            }
-        }
-        return Response::json(['success' => true]);
-    }
+    //             DB::commit();
+    //         } catch (\Exception $e) {
+    //             DB::rollBack();
+    //         }
+    //     }
+    //     return Response::json(['success' => true]);
+    // }
 
     public function render()
     {

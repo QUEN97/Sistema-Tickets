@@ -55,7 +55,7 @@
 
                 <div class="border-t border-gray-100 dark:border-gray-700"></div>
 
-                <div class="max-h-[320px] overflow-y-auto" wire:poll>
+                <div class="max-h-[320px] overflow-y-auto">
                     @forelse (Auth::user()->unreadNotifications as $item)
                         {{-- Notif ticket asignado --}}
                         @if ($item->type == 'App\Notifications\TicketAsignadoNotificacion')
