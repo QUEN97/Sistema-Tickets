@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlmacenCi;
 use App\Models\ArchivosTicket;
 use App\Models\Areas;
 use App\Models\Comentario;
@@ -56,5 +57,10 @@ class TicketController extends Controller
     public function compra($request){
         $ticketID=$request;
         return view('modules.tickets.compras.compras',compact('ticketID'));
+    }
+
+    public function almacenCIS(){
+        $productos=AlmacenCi::select('*')->paginate(10);
+        return view('modules.productos.almacen.cis',compact('productos'));
     }
 }

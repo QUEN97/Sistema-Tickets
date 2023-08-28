@@ -97,17 +97,46 @@
         @endforeach
     </div>
 
-    {{-- Almácenes --}}
-    <div>
-        <x-sidebar.link title="Almácenes" href="{{ route('almacenes') }}" :isActive="request()->routeIs('almacenes')">
+     {{-- Almacén --}}
+     <div class="{{ $sistema }}">
+        <x-sidebar.dropdown title="Almacén" :active="Str::startsWith(
+            request()
+                ->route()
+                ->uri(),
+            'buttons',
+        )">
             <x-slot name="icon">
+                {{-- <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" /> --}}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
                 </svg>
             </x-slot>
-        </x-sidebar.link>
+            @foreach ($valid as $item)
+                @if ($item->pivot->panel_id == 20 && $item->pivot->re == 1)
+                    <x-sidebar.sublink title="Almacén CIS" href="{{ route('almacenCIS') }}" :active="request()->routeIs('almacenes')" />
+                @endif
+            @endforeach
+            {{-- Folios --}}
+            <x-sidebar.dropdown title="Folios" :active="Str::startsWith(
+                request()
+                    ->route()
+                    ->uri(),
+                'buttons',
+            )">
+                @foreach ($valid as $item)
+                    @if ($item->pivot->panel_id == 6 && $item->pivot->re == 1)
+                        <x-sidebar.sublink title="Entradas" href="{{ route('folios.entradas') }}" :active="request()->routeIs('folios.entradas')" />
+                    @endif
+                    @if ($item->pivot->panel_id == 7 && $item->pivot->re == 1)
+                        <x-sidebar.sublink title="Salidas" href="{{ route('folios.salidas') }}"
+                            :active="request()->routeIs('folios.salidas')" />
+                    @endif
+                @endforeach
+            </x-sidebar.dropdown>
+        </x-sidebar.dropdown>
+        
     </div>
 
     {{-- Ajustes --}}

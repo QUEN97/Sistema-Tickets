@@ -110,4 +110,13 @@ class User extends Authenticatable
         return $this->hasMany(Ticket::class)->whereBetween('created_at',[$fecha.' 00:00:00',$fecha.' 23:59:00']);
     }
 
+    public function salidas():HasMany
+    {
+        return $this->hasMany(Salida::class)->orderBy('id','DESC');
+    }
+    public function entradas():HasMany
+    {
+        return $this->hasMany(Entrada::class)->orderBy('id','DESC');
+    }
+
 }

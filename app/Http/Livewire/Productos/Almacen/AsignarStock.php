@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Tickets\Productos\Almacen;
+namespace App\Http\Livewire\Productos\Almacen;
 
 use App\Models\AlmacenCi;
 use App\Models\Producto;
@@ -59,6 +59,6 @@ class AsignarStock extends Component
     }
     public function render()
     {
-        return view('livewire.tickets.productos.almacen.asignar-stock');
+        return view('livewire.productos.almacen.asignar-stock');
     }
 }

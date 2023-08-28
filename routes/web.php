@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EstacionController;
 use App\Http\Controllers\FallaController;
+use App\Http\Controllers\FolioController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PrioridadController;
@@ -149,7 +150,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::delete('/tickets{id}', 'removeArch')->name('tck.destroy');
         Route::get('/tickets/tarea{id}','tarea')->name('tck.tarea');
         Route::get('/tickets/requisicion{id}','compra')->name('tck.compra');
-        Route::get('/ticktes/pendientes','pendientes')->name('tck.abierto');
+        Route::get('/tickets/pendientes','pendientes')->name('tck.abierto');
+        Route::get('/tickets/almacenCIS','almacenCIS')->name('almacenCIS');
     });
 
     Route::controller(TareaController::class)->group(function(){
@@ -161,9 +163,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/requisiciones/{id}','edit')->name('req.edit');
     });
 
-    //rAlmácenes (apartado)
-    Route::controller(AlmacenController::class)->group(function(){
-        Route::get('/almacenes','home')->name('almacenes');
-        Route::get('/requisiciones/{id}','edit')->name('req.edit');
+     //folios de entradas y salidas
+     Route::controller(FolioController::class)->group(function(){
+        Route::get('/tck/folios/entradas','entradas')->name('folios.entradas');
+        Route::get('/tck/folios/salidas','salidas')->name('folios.salidas');
     });
 });

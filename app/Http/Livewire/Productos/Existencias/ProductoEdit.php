@@ -54,7 +54,7 @@ class ProductoEdit extends Component
         if($this->imagen !=null){
             $this->urlImg=$this->imagen->store('tck/productos', 'public');
             Storage::disk('public')->delete($dato->product_photo_path);
-            $dato->archivo_path=$this->urlImg;
+            $dato->product_photo_path=$this->urlImg;
         }
         $dato->save();
         Alert::success('Actualización realizada','Los datos del registro se actualizaron con éxito');
