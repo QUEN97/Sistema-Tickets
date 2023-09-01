@@ -41,7 +41,6 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-
 </head>
 
 <body class="font-sans antialiased text-gray-900 dark:text-gray-200">
@@ -123,7 +122,7 @@
     @livewireScripts
 
     @stack('scripts')
-
+   
 </body>
 
 </html>

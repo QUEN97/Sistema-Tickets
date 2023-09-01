@@ -47,7 +47,6 @@
                     </li>
                 @endif
             </ul>
-
             {{-- Botones acción --}}
             @if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 7 || Auth::user()->permiso_id == 4)
                 <div class="bg-dark-eval-1 dark:bg-dark-eval-2 p-2 rounded-md text-white text-center">
@@ -175,7 +174,6 @@
             </ul>
         @else
             <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
-                
                 <span>Sin comentarios actualmente.</span>
             </div>
         @endif

@@ -28,25 +28,30 @@ class NewTicket extends Component
         $asignado, $creador, $cierre, $asunto, $mensaje, //Se definen varias propiedades públicas para almacenar los datos del ticket, como el área, servicio, falla, asunto, mensaje, etc.
         $evidencias = [], $urlArchi, $modal = false;
 
-    // public function mount()
-    // {
-    //     $this->closeExpiredTickets();
-    // }
+    public function mount()
+    {
+    //    $this->closeExpiredTickets();
+    $this->servicios=Servicio::all();
+    }
 
-    public function updatedArea($id)
-    { //El método updatedArea() se ejecuta cuando se actualiza el área seleccionada y carga los servicios correspondientes a esa área.
-        $this->servicios = Servicio::where('area_id', $id)->get();
-        $this->fallas = [];
-        $this->personal = [];
-    }
-    public function updatedServicio($id)
-    { //El método updatedServicio() se ejecuta cuando se actualiza el servicio seleccionado y carga las fallas correspondientes a ese servicio.
-        $this->fallas = Falla::where('servicio_id', $id)->get();
-        $this->personal = [];
-    }
-    public function updatedFalla()
+    // public function updatedArea($id)
+    // { //El método updatedArea() se ejecuta cuando se actualiza el área seleccionada y carga los servicios correspondientes a esa área.
+    //     $this->servicios = Servicio::where('area_id', $id)->get();
+    //     $this->fallas = [];
+    //     $this->personal = [];
+    // }
+    // public function updatedServicio($id)
+    // { //El método updatedServicio() se ejecuta cuando se actualiza el servicio seleccionado y carga las fallas correspondientes a ese servicio.
+    //     $this->fallas = Falla::where('servicio_id', $id)->get();
+    //     $this->personal = [];
+    // }
+    public function updatedFalla($val)
     { //El método updatedFalla() se ejecuta cuando se actualiza la falla seleccionada y carga el personal asignado correspondiente a esa área.
-        $this->personal = Areas::find($this->area)->users;
+        // $this->personal = Areas::find($this->area)->users;
+        $falla=Falla::find($val);
+        $this->servicio=$falla->servicio->id;
+        $this->area=$falla->servicio->area->id;
+        $this->personal=Areas::find($this->area)->users;
     }
 
     //función para encontrar el agente con menor cant. de tcks asignados el día de hoy
@@ -84,6 +89,7 @@ class NewTicket extends Component
     {
         return Holiday::whereDate('date', $fecha->format('Y-m-d'))->exists();
     }
+
     public function addTicket()
     { //El método addTicket() se ejecuta cuando se envía el formulario para agregar un nuevo ticket. 
         $dia = Carbon::now(); //Obtenemos el dia actual

@@ -105,9 +105,11 @@ class User extends Authenticatable
     public function tickets():HasMany{
         return $this->hasMany(Ticket::class);
     }
-    public function ticketsHoy(){
-        $fecha=Carbon::now()->format('Y-m-d');
-        return $this->hasMany(Ticket::class)->whereBetween('created_at',[$fecha.' 00:00:00',$fecha.' 23:59:00']);
+    public function ticketsHoy(){  //asignamos tickets de manera equitativa, sin que se reinicie cada dia
+        $fechaHoy=Carbon::now();
+        $hoy=$fechaHoy->format('Y-m-d');
+        $ayer=$fechaHoy->subDay()->format('Y-m-d');
+        return $this->hasMany(Ticket::class)->whereBetween('created_at',[$ayer.' 00:00:00',$hoy.' 23:59:00']);
     }
 
     public function salidas():HasMany

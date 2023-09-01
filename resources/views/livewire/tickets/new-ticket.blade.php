@@ -23,7 +23,7 @@
                             </select>
                             <x-input-error for="departamento"></x-input-error>
                         </div> --}}
-                <div>
+                {{-- <div>
                     <x-label value="{{ __('Área') }}" for="area" />
                     <select id="area" name="area"
                         class="rounded-md dark:bg-slate-800 dark:border-gray-700" wire:model="area">
@@ -59,7 +59,25 @@
                         </select>
                         <x-input-error for="falla"></x-input-error>
                     </div>
-                @endif
+                @endif --}}
+                <div class="w-full">
+                    <x-label value="{{ __('Falla') }}" for="falla"/>
+                    <select wire:model="falla" name="falla" id="fallaSelect" style="width: 100%;"
+                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                    dark:focus:ring-offset-dark-eval-1 w-full">
+                        <option hidden value="" selected>Seleccionar falla</option>
+                        @foreach ($servicios as $servicio)
+                            @if ($servicio->fallas->count() > 0)    
+                                <optgroup label="{{$servicio->name}}">
+                                    @foreach ($servicio->fallas as $falla)
+                                        <option value="{{$falla->id}}">{{$falla->name}}</option>
+                                    @endforeach
+                                </optgroup>
+                            @endif
+                        @endforeach
+                    </select>
+                    <x-input-error for="falla"></x-input-error>
+                </div>
                 {{-- @if ($personal)
                     <div>
                         <x-label value="{{ __('Agente') }}" for="personal" />
@@ -134,4 +152,20 @@
             </x-secondary-button>
         </x-slot>
     </x-dialog-modal>
+    @push('scripts')
+    <script>
+        document.addEventListener('livewire:load',()=>{
+            Livewire.hook('message.processed',(message,component)=>{
+
+                $('#fallaSelect').select2({
+                    placeholder: "Seleccionar falla",
+                    allowClear: true,
+                }).on('change', function() {
+                    @this.set('falla', $(this).val());
+                });
+            });
+        });
+        
+    </script>
+@endpush
 </div>
