@@ -92,6 +92,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     //Sistema
     Route::get('/versiones', [VersionController::class, 'show'])->name('versiones');
     Route::get('/manuales', [ManualController::class, 'show'])->name('manuales');
+    Route::get('/horarios', [ManualController::class, 'index'])->name('horarios');
 
     //Areas
     Route::get('/areas', [AreaController::class, "home"])->name('areas');

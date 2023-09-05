@@ -37,7 +37,7 @@ class MealScheduleCreate extends Component
 
         if ($horarioExiste) { // lanzamos advertencia en caso de que el horario ya este registrado y no procede la creación
             Alert::warning('Atención', 'El horario que intentas agregar ya se encuentra registrado en el sistema.');
-            return redirect()->route('profile.show'); 
+            return redirect()->route('horarios'); 
         }
 
         try { // creacion del horario
@@ -48,11 +48,11 @@ class MealScheduleCreate extends Component
     
             $this->reset(['inicio', 'fin']);//reinicia los campos
            Alert::success('Nuevo horario', 'Se ha añadido un nuevo horario de comida');
-           return redirect()->route('profile.show'); //volvemos a la ventana Perfil
+           return redirect()->route('horarios'); //volvemos a la ventana Perfil
 
         } catch (\Exception $e) { //en caso de que ocurra un error 
             Alert::error('ERROR', 'A ocurrido un error al añadir el horario');
-            return redirect()->route('profile.show'); 
+            return redirect()->route('horarios'); 
         }
     }
 
@@ -63,10 +63,10 @@ class MealScheduleCreate extends Component
             $meal->delete();
 
             Alert::success('Horario Eliminado', 'Se ha eliminado el horario de comida');
-            return redirect()->route('profile.show');
+            return redirect()->route('horarios');
         } catch (\Exception $e) {
             Alert::error('ERROR', 'Ocurrió un error al eliminar el horario de comida');
-            return redirect()->route('profile.show');
+            return redirect()->route('horarios');
         }
     }
 

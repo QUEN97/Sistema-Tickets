@@ -9,6 +9,7 @@ class Kernel extends ConsoleKernel
 {
     protected $commands = [
        Commands\CloseExpiredTickets::class,
+       Commands\AsignmentSchedule::class,
     ];
 
     /**
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('ticket:expired')->everyMinute();
+        $schedule->command('user:schedule')->everyFiveMinutes();
     }
 
     /**

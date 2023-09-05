@@ -19,4 +19,9 @@ class ManualController extends Controller
             return redirect()->route('dashboard');
         }
     }
+
+    public function index()
+    {
+        return view('modules.horarios.index');
+    }
 }

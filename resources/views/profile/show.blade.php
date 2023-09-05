@@ -9,21 +9,7 @@
     </x-slot>
 
     <div class="grid gap-8">
-
-        @if (Auth::user()->permiso_id == 1)
-        <div>
-            @livewire('sistema.holiday.holiday-component')
-        </div>
-        <div class="grid grid-cols-2 space-x-2">
-            <div>
-                @livewire('sistema.meals.meal-schedule-create')
-            </div>
-            <div>
-                @livewire('sistema.meals.meal-asignment')
-            </div>
-        </div>
-        @endif
-
+        
         @if (Laravel\Fortify\Features::canUpdateProfileInformation())
             @livewire('profile.update-profile-information-form')
         @endif

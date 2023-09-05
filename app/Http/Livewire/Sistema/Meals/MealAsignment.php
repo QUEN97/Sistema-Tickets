@@ -23,7 +23,7 @@ class MealAsignment extends Component
 
     public function render()
     {
-        $this->updateUserStatus();
+        // $this->updateUserStatus();
         
         $mealSchedules = Meals::all();
         $users = User::all();
@@ -44,14 +44,14 @@ class MealAsignment extends Component
 
         if (!$meal) {//en caso de que no exista el horario
             Alert::error('ERROR', 'No se encontró el horario seleccionado');
-            return redirect()->route('profile.show'); 
+            return redirect()->route('horarios'); 
         }
 
         $user = User::find($this->selectedUser);
 
         if (!$user) {// en caso de que no exista el usuario
             Alert::error('ERROR', 'No se encontró el usuario seleccionado');
-            return redirect()->route('profile.show'); 
+            return redirect()->route('horarios'); 
         }
 
         // Validamos si el horario y el usuario ya estan asignados
@@ -61,7 +61,7 @@ class MealAsignment extends Component
 
         if ($existe) { //si ya existe no procede
             Alert::warning('Atención', 'El usuario ya tiene un horario asignado.');
-            return redirect()->route('profile.show'); 
+            return redirect()->route('horarios'); 
         }
 
         // Creamos la asignación 
@@ -71,28 +71,28 @@ class MealAsignment extends Component
                 'user_id' => $user->id,
             ]);
             Alert::success('Horario Asignado', 'Se ha asignado el horario');
-            return redirect()->route('profile.show');
+            return redirect()->route('horarios');
         } catch (\Exception $e) {
             Alert::error('ERROR', 'A ocurrido un error al asignar el horario');
-            return redirect()->route('profile.show');
+            return redirect()->route('horarios');
         }
     }
 
-    public function updateUserStatus()
-    {
-        $now = Carbon::now();
-        $assignedMeals = MealUsers::with('meal', 'user')->get();
+    // public function updateUserStatus()
+    // {
+    //     $now = Carbon::now();
+    //     $assignedMeals = MealUsers::with('meal', 'user')->get();
 
-        foreach ($assignedMeals as $assignment) {
-            $startTime = Carbon::parse($assignment->meal->start_time);
-            $endTime = Carbon::parse($assignment->meal->end_time);
+    //     foreach ($assignedMeals as $assignment) {
+    //         $startTime = Carbon::parse($assignment->meal->start_time);
+    //         $endTime = Carbon::parse($assignment->meal->end_time);
 
-            if ($now->between($startTime, $endTime)) {
-                $assignment->user->status = 'Hora Comida';
-                $assignment->user->save();
-            }
-        }
-    }
+    //         if ($now->between($startTime, $endTime)) {
+    //             $assignment->user->status = 'Hora Comida';
+    //             $assignment->user->save();
+    //         }
+    //     }
+    // }
 
     public function deleteMealAssignment($assignmentId)
     {
@@ -105,6 +105,6 @@ class MealAsignment extends Component
             Alert::error('ERROR', 'Ocurrió un error al eliminar la asignación del horario');
         }
 
-        return redirect()->route('profile.show');
+        return redirect()->route('horarios');
     }
 }

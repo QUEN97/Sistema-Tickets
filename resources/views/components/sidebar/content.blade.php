@@ -262,6 +262,9 @@
                     <x-sidebar.sublink title="Versiones" href="{{ route('versiones') }}" :active="request()->routeIs('versiones')" />
                 @endif
             @endforeach
+            @if (Auth::user()->permiso_id == 1)
+            <x-sidebar.sublink title="Horarios" href="{{ route('horarios') }}" :active="request()->routeIs('horarios')" />
+            @endif
         </x-sidebar.dropdown>
     </div>
 

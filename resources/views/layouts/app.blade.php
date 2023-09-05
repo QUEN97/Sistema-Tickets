@@ -44,7 +44,7 @@
 </head>
 
 <body class="font-sans antialiased text-gray-900 dark:text-gray-200">
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function() {
             // Capturar el evento de clic derecho en el body
             document.body.addEventListener("contextmenu", function(e) {
@@ -74,7 +74,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
     <div x-data="mainState" :class="{ dark: isDarkMode }" @resize.window="handleWindowResize" x-cloak>
         <x-banner />
 
@@ -109,7 +109,6 @@
                     {{ $slot }}
                     @livewire('atencion-guardia') {{-- llamado al componente  --}}
                 </main>
-
                 <!-- Page Footer -->
                 <x-footer />
             </div>
@@ -120,7 +119,7 @@
     @include('sweetalert::alert') {{-- llamado a las propiedades de Sweet Alert --}}
 
     @livewireScripts
-
+    <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v0.x.x/dist/livewire-sortable.js"></script>
     @stack('scripts')
    
 </body>
