@@ -7,7 +7,7 @@
         <textarea wire:model="servicio" disabled
             class="w-full resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('servicio') ? 'is-invalid' : '' }} "
-            name="servicio" required autofocus autocomplete="servicio">
+            name="servicio" required  autocomplete="servicio">
     </textarea>
         <x-input-error for="servicio"></x-input-error>
     </div>
@@ -16,7 +16,7 @@
         <textarea wire:model="falla" disabled
             class="w-full resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('falla') ? 'is-invalid' : '' }} "
-            name="falla" required autofocus autocomplete="falla">
+            name="falla" required  autocomplete="falla">
     </textarea>
         <x-input-error for="falla"></x-input-error>
     </div>
@@ -26,7 +26,7 @@
             <textarea wire:model="asunto" disabled
                 class="resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('asunto') ? 'is-invalid' : '' }} "
-                name="asunto" required autofocus autocomplete="asunto">
+                name="asunto" required  autocomplete="asunto">
             </textarea>
             <x-input-error for="asunto"></x-input-error>
         </div>
@@ -35,7 +35,7 @@
             <textarea wire:model="mensaje" disabled
                 class="resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('mensaje') ? 'is-invalid' : '' }} "
-                name="mensaje" required autofocus autocomplete="mensaje">
+                name="mensaje" required  autocomplete="mensaje">
             </textarea>
             <x-input-error for="mensaje"></x-input-error>
         </div>

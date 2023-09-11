@@ -9,9 +9,7 @@
             {{-- @if ($valid->pivot->wr == 1)
                 @livewire('dashboard.generate-reporte')
             @endif --}}
-            <div class="bg-gray-500 p-2 rounded-md font-bold text-white text-center">
-                {{ __('Sistema de Atención de Tickets (Helpdesk)') }}
-            </div>
+            
         </div>
     </x-slot>
     <div class="flex flex-wrap justify-center items-center gap-3 py-3">
@@ -22,11 +20,14 @@
                         <!-- Status Abierto-->
                         <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl ">
                             <div class="flex flex-col justify-center items-center">
-                                <img src="{{ asset('img/icons/Imagen1.png') }}" class="w-full h-40 rounded-lg" />
+                                <a href="{{ asset('img/icons/Imagen1.png') }}" target="_blank">
+                                    <img src="{{ asset('img/icons/Imagen1.png') }}" class="w-full h-40 rounded-lg" />
+                                </a>
                             </div>
+                            
                             <p class="font-semibold text-lg mt-1 text-left"></p>
                             <p class="font-semibold text-sm text-gray-400">
-                            <div class="border rounded-lg overflow-hidden">
+                            <div class=" rounded-lg overflow-hidden">
                                 <details>
                                     <summary class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 cursor-pointer text-center">Mostrar/ocultar
                                     </summary>
@@ -98,11 +99,14 @@
                         <!-- Status En Proceso -->
                         <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl mt-">
                             <div class="flex flex-col justify-center items-center">
-                                <img src="{{ asset('img/icons/Imagen3.png') }}" class="w-full h-40 rounded-lg" />
+                                <a href="{{ asset('img/icons/Imagen3.png') }}" target="_blank">
+                                    <img src="{{ asset('img/icons/Imagen3.png') }}" class="w-full h-40 rounded-lg" />
+                                </a>
                             </div>
+                            
                             <p class="font-semibold text-lg mt-1 text-left"></p>
                             <p class="font-semibold text-sm text-gray-400">
-                            <div class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
+                            <div class=" rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
                                 <details>
                                     <summary class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 ">Mostrar/ocultar
                                     </summary>
@@ -171,14 +175,17 @@
                         <!-- End Card List -->
                     </div>
                     <div class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-5 xxl:col-span-5">
-                        <!-- Start Card List -->
+                        <!-- Status Cerrado -->
                         <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl ">
                             <div class="flex flex-col justify-center items-center">
-                                <img src="{{ asset('img/icons/Imagen2.png') }}" class="w-full h-40 rounded-lg" />
+                                <a href="{{ asset('img/icons/Imagen2.png') }}" target="_blank">
+                                    <img src="{{ asset('img/icons/Imagen2.png') }}" class="w-full h-40 rounded-lg" />
+                                </a>
                             </div>
+                            
                             <p class="font-semibold text-lg mt-1 text-left"></p>
                             <p class="font-semibold text-sm text-gray-400">
-                            <div class="border rounded-lg overflow-hidden ">
+                            <div class=" rounded-lg overflow-hidden ">
                                 <details>
                                     <summary class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 cursor-pointer text-center">Mostrar/ocultar
                                     </summary>
@@ -250,7 +257,6 @@
             </div>
         </div>
         <div>
-            @livewire('dashboard.dashboard-charts')
-        </div>
+            @livewire('dashboard.dashboard-charts') 
     </div>
 </x-app-layout>

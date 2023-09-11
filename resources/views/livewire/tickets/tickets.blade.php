@@ -55,7 +55,8 @@
         </div>
         <form action="{{ route('tickets') }}" method="GET" class="flex gap-2 items-end">
             <div class="flex gap-1 flex-col">
-                <x-label value="{{ __('Filtro') }}" for="status" />
+                {{-- <x-label value="{{ __('Filtro') }}" for="status" /> --}}
+                <div>Filtro</div>
                 <select name="status" id="status"
                     class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                     <option hidden value="" selected>Todos</option>
@@ -66,7 +67,8 @@
             </div>
             @if (!in_array(Auth::user()->permiso_id, [2, 3]))
                 <div>
-                    <x-label value="{{ __('Zona') }}" for="zona" />
+                    {{-- <x-label value="{{ __('Zona') }}" for="zona" /> --}}
+                    <div>Zona</div>
                     <select name="zona" id="zona"
                         class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                         <option value="" selected>Todas</option>
@@ -77,12 +79,14 @@
                 </div>
             @endif
             <div class="flex gap-1 flex-col">
-                <x-label value="{{ __('Fecha inicial') }}" for="fechaIn" />
+                {{-- <x-label value="{{ __('Fecha inicial') }}" for="fechaIn" /> --}}
+                <div>Fecha inicial</div>
                 <input type="date" name="start" id="fechaIn"
                     class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" />
             </div>
             <div class="flex gap-1 flex-col">
-                <x-label value="{{ __('Fecha final') }}" for="sfechaEnd" />
+                {{-- <x-label value="{{ __('Fecha final') }}" for="sfechaEnd" /> --}}
+                <div>Fecha final</div>
                 <input type="date" name="end" id="fechaEnd"
                     class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" />
             </div>
@@ -94,9 +98,9 @@
                 </svg>
             </button>
             <form action="{{ route('tickets') }}" method="GET">
-                <label for="search" class="sr-only">
+                {{-- <label for="search" class="sr-only">
                     Search
-                </label>
+                </label> --}}
                 <input type="search" name="tck"
                     class="block w-full p-3 pl-10 text-sm rounded-md  dark:bg-dark-eval-0 dark:text-white"
                     placeholder="Buscar Ticket..." />

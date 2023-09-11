@@ -10,7 +10,9 @@
 
     <x-dialog-modal wire:model="EditZona" id="EditZona{{ $zona_id }}" class="flex items-center">
         <x-slot name="title">
-            {{ __('Editar Zona') }}
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+                {{ __('Editar Zona') }}
+            </div>
         </x-slot>
 
         <x-slot name="content">

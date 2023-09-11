@@ -118,14 +118,14 @@
                 <x-label value="{{ __('Asunto') }}" for="asunto" />
                 <x-input wire:model.defer="asunto" type="text" name="asunto" id="asunto" class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" required
-                    autofocus autocomplete="asunto" />
+                    autocomplete="asunto" />
                 <x-input-error for="asunto"></x-input-error>
             </div>
             <div class="w-full">
                 <x-label value="{{ __('Descripción') }}" for="mensaje" />
                 <textarea wire:model.defer="mensaje"
                     class="resize-none w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('mensaje') ? 'is-invalid' : '' }} resize-none"
-                    name="mensaje" required autofocus autocomplete="mensaje">
+                    name="mensaje" required  autocomplete="mensaje">
                             </textarea>
                 <x-input-error for="mensaje"></x-input-error>
             </div>

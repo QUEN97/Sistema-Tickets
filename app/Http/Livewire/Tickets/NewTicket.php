@@ -161,7 +161,7 @@ class NewTicket extends Component
             }
         }
         
-        $agent = User::find($this->asignado);
+        $agent = User::find($ticket['user_id']);
         $agent->notify(new TicketAsignadoNotificacion($ticket));
 
         Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); //Finalmente, se muestra una alerta de éxito y se redirige a la página de tickets.

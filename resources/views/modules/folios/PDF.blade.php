@@ -55,13 +55,13 @@
     <div class="header">
         <table width="100%">
             <tr>
-                <th><img src="{{public_path('storage/logo/FullGas_rojo2.png')}}" alt="" width="200px"></th>
+                <th><img src="{{public_path('storage/logo/FullGas.png')}}" alt="" width="200px"></th>
                 <th>{{strtoupper($tipo)}} DE EQUIPOS Y MATERIALES (ESTACIONES)</th>
                 <th><img src="{{public_path('storage/logo/AbejaFullGas2.png')}}" alt="" width="200px"></th>
             </tr>
         </table>
     </div>
-    <br>
+    <br><br><br>
     <table  width="100%" class="text-md">
         <tr>
             <th colspan="2">
@@ -154,7 +154,7 @@
     <div class="text-sm footer">
         <div class="text-center">
             <p><b>www.fullgas.com.mx</b></p>
-            <p><b>97125 Mérida, Yucatán, México | sistemas@fullgas.com.mx |9999269020|9999686823</b></p>
+            <p><b>97125 Mérida, Yucatán, México | sistemas@fullgas.com.mx | 9999269020 | 9999686823</b></p>
         </div>
         <img src="{{public_path('storage/logo/FullPower.png')}}" alt="" width="100%">
     </div>

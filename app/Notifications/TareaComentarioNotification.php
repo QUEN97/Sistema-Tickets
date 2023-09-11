@@ -27,29 +27,23 @@ class TareaComentarioNotification extends Notification
      *
      * @return array<int, string>
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database', 'broadcast'];
     }
     /**
      * Get the mail representation of the notification.
      */
-    public function toDatabase($notifiable)
+    public function toDatabase(object $notifiable): array
     {
         return [
-            'tareaId' => $this->tarea->id,
-            'tckId' => $this->tarea->ticket_id,
-            'userEs' => Auth::user()->name,
-            'asignado' => $this->tarea->usercrea->name,
-            'fecha' => $this->tarea->created_at->format('d/m/Y H:i:s A'),
+            'url' => route('tck.tarea', $this->tarea->id),
+            'message' => "Hola {$this->tarea->usercrea->name}," . " " . "el" . Auth::user()->permiso->titulo_permiso . Auth::user()->name . "ha realizado un comentario en la tarea #{$this->tarea->id} del ticket #{$this->tarea->ticket_id}."
         ];
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(object $notifiable): BroadcastMessage
     {
-        return new BroadcastMessage([
-            'tarea_id' => $this->tarea->id,
-            'message' => '¡Se te ha asignado un nuevo tarea!'
-        ]);
+        return new BroadcastMessage([ ]);
     }
 }

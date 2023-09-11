@@ -1,7 +1,8 @@
 <main class="flex flex-col items-center flex-1 px-4 pt-6 sm:justify-center">
     <div>
         <a href="/">
-            <img src="{{ asset('img/logo/FullGas_rojo2.png') }}" style="width: 250px" alt="">
+            {{-- <img src="{{ asset('img/logo/FullGas_rojo2.png') }}" style="width: 250px" alt=""> --}}
+            <img src="{{ asset('img/logo/FullGas.png') }}" alt="logo empresa fullgas" style="width: 250px;">
         </a>
     </div>
 

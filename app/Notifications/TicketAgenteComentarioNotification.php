@@ -33,27 +33,22 @@ class TicketAgenteComentarioNotification extends Notification implements ShouldB
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database', 'broadcast'];
     }
 
-    public function toDatabase($notifiable)
+    public function toDatabase(object $notifiable): array
     {
         return [
-            'tckId' => $this->ticket->id,
-            'asignado' => $this->ticket->agente->name,
-            'cliente' => $this->ticket->cliente->name,
-            'status' => $this->ticket->status,
-            'fecha' => $this->ticket->created_at->format('d/m/Y H:i:s A'),
+            'url' => route('tck.ver', $this->ticket->id),
+            'message' => "Hola {$this->ticket->agente->name}, {$this->ticket->cliente->name} ha realizado un nuevo comentario para el ticket 
+            #{$this->ticket->id}." 
         ];
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(object $notifiable): BroadcastMessage
     {
-        return new BroadcastMessage([
-            'ticket_id' => $this->ticket->id,
-            'message' => '¡Se te ha asignado un nuevo ticket!'
-        ]);
+        return new BroadcastMessage([ ]);
     }
 }

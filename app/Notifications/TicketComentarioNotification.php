@@ -27,28 +27,23 @@ class TicketComentarioNotification extends Notification
      *
      * @return array<int, string>
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database', 'broadcast'];
     }
     /**
      * Get the mail representation of the notification.
      */
-    public function toDatabase($notifiable)
+    public function toDatabase(object $notifiable): array
     {
         return [
-            'tckId' => $this->ticket->id,
-            'userEs' => Auth::user()->name,
-            'permiTie' => Auth::user()->permiso_id,
-            'fecha' => $this->ticket->created_at->format('d/m/Y H:i:s A'),
+            'url' => route('tck.ver', $this->ticket->id),
+            'message' => "El " .  Auth::user()->permiso->titulo_permiso . " " . Auth::user()->name . " ha realizado un comentario en el ticket #{$this->ticket->id}."
         ];
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(object $notifiable): BroadcastMessage
     {
-        return new BroadcastMessage([
-            'ticket_id' => $this->ticket->id,
-            'message' => '¡Se te ha asignado un nuevo ticket!'
-        ]);
+        return new BroadcastMessage([ ]);
     }
 }

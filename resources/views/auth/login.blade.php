@@ -58,11 +58,11 @@
                         <input id="remember_me" type="checkbox"
                             class="text-gray-500 border-gray-300 rounded focus:border-gray-300 focus:ring focus:ring-gray-500 dark:text-red-500 dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
                             name="remember">
-                        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Recuerdame') }}</span>
+                        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Mantener sesión activa') }}</span>
                     </label>
 
                      @if (Route::has('password.request'))
-                    <a class="text-sm text-gray-500 hover:underline" href="{{ route('password.request') }}">
+                    <a class="text-sm text-gray-500 dark:text-gray-400 " href="{{ route('password.request') }}">
                         {{ __('¿Olvído su contraseña?') }}
                     </a>
                     @endif 
@@ -72,14 +72,14 @@
 
                 <div>
                     <x-button class="justify-center w-full gap-2">
-                        <x-heroicon-o-login class="w-6 h-6" aria-hidden="true" />
+                        {{--  --}}
                         <span>{{ __('Iniciar sesión') }}</span>
                     </x-button>
                 </div>
 
                 {{-- @if (Route::has('register'))
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                    {{ __('Don’t have an account?') }}
+                    {{ __('Don’t have an account?') }}<x-heroicon-o-login class="w-6 h-6" aria-hidden="true" />
                     <a href="{{ route('register') }}" class="text-blue-500 hover:underline">
                         {{ __('Register') }}
                     </a>

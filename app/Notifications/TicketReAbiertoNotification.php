@@ -29,27 +29,23 @@ class TicketReAbiertoNotification extends Notification implements ShouldBroadcas
      *
      * @return array<int, string>
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database', 'broadcast'];
     }
     /**
      * Get the mail representation of the notification.
      */
-    public function toDatabase($notifiable)
+    public function toDatabase(object $notifiable): array
     {
         return [
-            'tckId' => $this->ticket->id,
-            'userEs' => Auth::user()->name,
-            'fecha' => $this->ticket->created_at->format('d/m/Y H:i:s A'),
+            'url' => route('tck.ver', $this->ticket->id),
+            'message' => "El usuario " . Auth::user()->name . " ha Abierto nuevamente el ticket #{$this->ticket->id}."
         ];
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(object $notifiable): BroadcastMessage
     {
-        return new BroadcastMessage([
-            'ticket_id' => $this->ticket->id,
-            'message' => '¡Se te ha asignado un nuevo ticket!'
-        ]);
+        return new BroadcastMessage([ ]);
     }
 }

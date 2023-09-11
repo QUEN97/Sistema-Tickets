@@ -27,29 +27,24 @@ class TareaAsignadaNotification extends Notification
      *
      * @return array<int, string>
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database', 'broadcast'];
     }
     /**
      * Get the mail representation of the notification.
      */
-    public function toDatabase($notifiable)
+    public function toDatabase(object $notifiable): array
     {
         return [
-            'tareaId' => $this->tarea->id,
-            'tckId' => $this->tarea->ticket_id,
-            'userEs' => Auth::user()->name,
-            'asignado' => $this->tarea->user->name,
-            'fecha' => $this->tarea->created_at->format('d/m/Y H:i:s A'),
+            'url' => route('tck.tarea', $this->tarea->id),
+            'message' => "Hola {$this->tarea->user->name}, el usuario " .  Auth::user()->name . " te ha creado la tarea #{$this->tarea->id}, en el ticket #{$this->tarea->ticket_id}."
         ];
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(object $notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
-            'tarea_id' => $this->tarea->id,
-            'message' => '¡Se te ha asignado un nuevo tarea!'
         ]);
     }
 }

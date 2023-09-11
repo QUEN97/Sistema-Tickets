@@ -29,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/toastr.css') }}">
     <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 
+  
     @livewireStyles
 
     <!--JQuery-->
@@ -119,9 +120,23 @@
     @include('sweetalert::alert') {{-- llamado a las propiedades de Sweet Alert --}}
 
     @livewireScripts
+
+
+    @auth
+        <script>
+            window.onload=function() {
+                Echo.private('App.Models.User.' + {{ Auth::user()->id }})
+                    .notification((notification) => {
+                       console.log(notification.type)
+                    });
+            }
+        </script>
+    @endauth
+
     <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v0.x.x/dist/livewire-sortable.js"></script>
+
     @stack('scripts')
-   
+
 </body>
 
 </html>

@@ -13,35 +13,36 @@
 
     <x-dialog-modal wire:model="ShowgZona" id="ShowZona{{ $zona_show_id }}" class="flex items-center">
         <x-slot name="title">
-            {{ __('Información General de la Zona') }}
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+                {{ __('Información General de la Zona') }}
+            </div>
         </x-slot>
 
         <x-slot name="content">
-            <div class="w-full rounded overflow-hidden shadow-lg">
                 {{-- <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> --}}
                 <div class="px-6 py-4">
                     <div class="font-bold text-xl mb-2 text-black">{{ $this->name }}</div>
                     <div class="px-2">
-                        <div class="flex -mx-2 bg-indigo-300 p-2 rounded-md">
+                        <div class="flex -mx-2 bg-black opacity-50 p-2 rounded-md">
                             <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Gerentes: </span>
-                                <span class="text-xs">{{ $this->gerent }}</span>
+                                <span class="text-gray-100">Gerentes: </span>
+                                <span class="text-xs text-gray-100">{{ $this->gerent }}</span>
                             </div>
                             <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Estaciones: </span>
-                                <span class="text-xs">{{ $this->estacions }}</span>
+                                <span class="text-gray-100">Estaciones: </span>
+                                <span class="text-xs text-gray-100">{{ $this->estacions }}</span>
                             </div>
                             {{-- <div class="w-1/3 px-2">
                                 <span class="text-gray-700">Productos:</span>
                                 <span class="text-xs">{{ $this->prods }}</span>
                             </div> --}}
                             <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Status:</span>
-                                <span class="text-xs">{{ $this->status }}</span>
+                                <span class="text-gray-100">Status:</span>
+                                <span class="text-xs text-gray-100">{{ $this->status }}</span>
                             </div>
                             <div class="w-1/3 px-2">
-                                <span class="text-gray-700"> Registro:</span>
-                                <span class="text-xs"> {{ $this->created_at }}</span>
+                                <span class="text-gray-100"> Registro:</span>
+                                <span class="text-xs text-gray-100"> {{ $this->created_at }}</span>
                             </div>
                         </div>
                     </div>
@@ -212,6 +213,7 @@
                         </div>
                     @endif
                 </div>
+                <br>
                 {{-- <br>
                 <div>
                     @if ($productos->isnotEmpty())
@@ -265,7 +267,6 @@
                         </div>
                     @endif
                 </div> --}}
-            </div>
         </x-slot>
 
         <x-slot name="footer" class="d-none">

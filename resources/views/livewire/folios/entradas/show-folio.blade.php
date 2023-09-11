@@ -99,8 +99,7 @@
 
                                         </div>
 
-                                        <button onclick="window.location.href='{{ asset('Storage/' . $entrada->pdf) }}'"
-                                            class="">
+                                        <button onclick="window.open('{{ asset('Storage/' . $entrada->pdf) }}', '_blank')" class="">
                                             <svg class="w-12 h-12" viewBox="0 0 32 32"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path fill="#909090"

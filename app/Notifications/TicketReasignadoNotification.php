@@ -27,28 +27,23 @@ class TicketReasignadoNotification extends Notification
      *
      * @return array<int, string>
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database', 'broadcast'];
     }
     /**
      * Get the mail representation of the notification.
      */
-    public function toDatabase($notifiable)
+    public function toDatabase(object $notifiable): array
     {
         return [
-            'tckId' => $this->ticket->id,
-            'userEs' => Auth::user()->name,
-            'asignado' => $this->ticket->agente->name,
-            'fecha' => $this->ticket->created_at->format('d/m/Y H:i:s A'),
+            'url' => route('tck.ver', $this->ticket->id),
+            'message' => "Hola {$this->ticket->agente->name}, el usuario " . Auth::user()->name . " te ha reasignado el ticket #{$this->ticket->id}." 
         ];
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(object $notifiable): BroadcastMessage
     {
-        return new BroadcastMessage([
-            'ticket_id' => $this->ticket->id,
-            'message' => '¡Se te ha asignado un nuevo ticket!'
-        ]);
+        return new BroadcastMessage([ ]);
     }
 }

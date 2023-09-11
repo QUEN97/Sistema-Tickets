@@ -17,7 +17,7 @@ class TicketAsignadoNotificacion extends Notification implements ShouldBroadcast
 
     public $ticket;
 
-     /**
+    /**
      * Create a new notification instance.
      *
      * @return void
@@ -27,32 +27,29 @@ class TicketAsignadoNotificacion extends Notification implements ShouldBroadcast
         $this->ticket = $ticket;
     }
 
-        /**
+    /**
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database', 'broadcast'];
     }
 
-    public function toDatabase($notifiable)
+    public function toDatabase(object $notifiable): array
     {
         return [
-            'tckId' => $this->ticket->id,
-            'asignado' => $this->ticket->agente->name,
-            'cliente' => $this->ticket->cliente->name,
-            'fecha' => $this->ticket->created_at->format('d/m/Y H:i:s A'),
+            'url' => route('tickets', $this->ticket->id),
+            'message' => "Hola {$this->ticket->agente->name}, el usuario {$this->ticket->cliente->name} necesita tu apoyo con el ticket #{$this->ticket->id}."
         ];
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+
+    public function toBroadcast(object $notifiable): BroadcastMessage
     {
-        return new BroadcastMessage([
-            'ticket_id' => $this->ticket->id,
-            'message' => '¡Se te ha asignado un nuevo ticket!'
-        ]);
+        return new BroadcastMessage([ ]);
     }
+
 }

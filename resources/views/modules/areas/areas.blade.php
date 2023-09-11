@@ -66,7 +66,7 @@
             </div>
         </div>
         @if ($areas->count()>0)
-            <table>
+            <table id="example">
                 <thead>
                     <tr>
                         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
