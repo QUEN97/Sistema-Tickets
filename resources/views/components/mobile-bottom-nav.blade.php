@@ -12,7 +12,7 @@
         <span class="sr-only">Dashboard</span>
     </a> --}}
 
-    <x-button type="button" iconOnly variant="secondary" srText="Open main menu" 
+    <x-button type="button" iconOnly variant="secondary" srText="Open main menu" class="border border-gray-400"
         @click="isSidebarOpen = !isSidebarOpen">
         <x-heroicon-o-menu x-show="!isSidebarOpen" aria-hidden="true" class="w-6 h-6" />
         <x-heroicon-o-x x-show="isSidebarOpen" aria-hidden="true" class="w-6 h-6" />

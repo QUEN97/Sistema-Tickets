@@ -264,6 +264,16 @@
             @endforeach
             @if (Auth::user()->permiso_id == 1)
             <x-sidebar.sublink title="Horarios" href="{{ route('horarios') }}" :active="request()->routeIs('horarios')" />
+                <x-sidebar.dropdown title="Análiticas" :active="Str::startsWith(
+                request()
+                    ->route()
+                    ->uri(),
+                'buttons',
+            )">
+                <x-sidebar.sublink title="General" href="{{ route('analytics.general') }}" :active="request()->routeIs('analytics.general')" />
+                    <x-sidebar.sublink title="Usuarios" href="{{ route('analytics.users') }}" :active="request()->routeIs('analytics.users')" />
+                        <x-sidebar.sublink title="Compras" href="{{ route('analytics.compras') }}" :active="request()->routeIs('analytics.compras')" />
+            </x-sidebar.dropdown>
             @endif
         </x-sidebar.dropdown>
     </div>

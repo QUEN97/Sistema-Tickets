@@ -24,7 +24,7 @@ class DepartamentoController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Departamento::onlyTrashed()->count();
-        return view('modules.departamentos.departamentos',compact('deptos','trashed'));
+        return view('modules.departamentos.departamentos',compact('valid','trashed','deptos'));
     }
 
 

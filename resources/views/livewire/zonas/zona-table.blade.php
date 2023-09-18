@@ -1,5 +1,4 @@
-<div
-    class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
+<div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
     <div class="w-full">
         <div class="flex gap-1 flex-col">
             <form action="{{ route('zonas') }}" method="GET">
@@ -35,7 +34,8 @@
                 </a>
             </div>
         </div>
-        <table class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
+        <table
+            class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
             <thead class="bg-gray-50">
                 <tr>
                     <th
@@ -204,14 +204,11 @@
             </tbody>
         </table>
         @if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
-        <div class="mt-2 mb-2 mr-2" wire:ignore>
-            {{ $zonas->appends($_GET)->links() }}
-        </div>
+            <div class="mt-2 mb-2 mr-2" wire:ignore>
+                {{ $zonas->appends($_GET)->links() }}
+            </div>
         @else
-            
-        @endif 
-        
+        @endif
+
     </div>
 </div>
-
-

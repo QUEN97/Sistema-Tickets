@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Guardia extends Model
 {
     use HasFactory;
-
+    
+    protected $fillable=['id','user_id','status','orden'];
     public function usuario():BelongsTo
     {
         return $this->belongsTo(User::class,'user_id');

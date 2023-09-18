@@ -1,7 +1,7 @@
 <div class="w-full h-full text-center flex flex-wrap justify-center items-center gap-6">
 
     <div class="flex flex-wrap justify-center gap-5">
-        @auth
+        {{-- @auth
             @if (Auth::user()->permiso_id == 1)
                 <div class="bg-white dark:bg-gray-500  rounded-xl p-4 shadow-xl">
                     {!! $chartTickets->container() !!}
@@ -25,7 +25,7 @@
                 {{ $chartTicketsDeptos->script() }}
                 {{ $chartTicketsAsignados->script() }}
             @endif
-        @endauth
+        @endauth --}}
 
         <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl">
             {!! $chartTicketsPrioridad->container() !!}

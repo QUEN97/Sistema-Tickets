@@ -22,7 +22,7 @@ class RegionController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Region::onlyTrashed()->count();
-        return view('modules.regiones.regiones',compact('regiones','trashed','valid'));
+        return view('modules.regiones.regiones',compact('trashed','valid','regiones'));
     }
 
 

@@ -14,15 +14,16 @@ class Areas extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public function servicios():HasMany{
-        return $this->hasMany(Servicio::class,'area_id');
+    public function servicios(): HasMany
+    {
+        return $this->hasMany(Servicio::class, 'area_id');
     }
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_areas','area_id');
+        return $this->belongsToMany(User::class, 'user_areas', 'area_id');
     }
     public function departamento()
-{
-    return $this->belongsTo(Departamento::class);
-}
+    {
+        return $this->belongsTo(Departamento::class);
+    }
 }

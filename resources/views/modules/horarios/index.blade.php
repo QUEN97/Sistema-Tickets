@@ -18,33 +18,14 @@
                         <div>
                             @livewire('sistema.meals.meal-asignment')
                         </div>
+                        <div>
+                            @livewire('sistema.holiday.holiday-component')
+                        </div>
                     @endif
                 </div>
             </div>
         </div>
-        <div class="flex flex-wrap justify-center gap-5">
-            <div>
-                @livewire('sistema.holiday.holiday-component')
-            </div>
-            <div>
-                <x-action-section>
-                    <x-slot name="title">
-                        {{ __('Guardias') }}
-                    </x-slot>
-                    <x-slot name="description">
-                    </x-slot>
-                    <x-slot name="content">
-                        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                            <div>
-                                @livewire('usuarios.guardias.new-user-guardia')
-                            </div>
-                            <div>
-                                @livewire('usuarios.guardias.edit-orden')
-                            </div>
-                        </div>
-                    </x-slot>
-                </x-action-section>
-            </div>
-        </div>
     </div>
+    @livewire('usuarios.guardias.edit-orden')
+    
 </x-app-layout>

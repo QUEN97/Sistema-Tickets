@@ -25,11 +25,21 @@ class CompraEdit extends Component
         $compra = Compra::find($this->compraID);
         $compra->productos->count()>0? $this->tipo="prod"
         : $this->tipo= "serv";
+        $this->servicios=TckServicio::select('id','name')->get();
+        $this->productos=Producto::select('id','name','categoria_id','product_photo_path')->get();
+        foreach ($this->productos as $key=> $producto){
+            $producto->cantidad='';
+            $producto->selected=false;
+        }
+        foreach ($this->servicios as $key=> $servicio){
+            $servicio->cantidad='';
+            $servicio->selected=false;
+        }
     }
     public function updatedCategoria($id){
         $categoria=Categoria::find($id);
-        $excluir=CompraDetalle::whereIn('id',array_column($this->carrito, 'id'))->pluck('producto_id');
-        $this->productos=Producto::where('categoria_id',$categoria->id)->whereNotIn('id',$excluir)->get();
+        // $excluir=CompraDetalle::whereIn('id',array_column($this->carrito, 'id'))->pluck('producto_id');
+        // $this->productos=Producto::where('categoria_id',$categoria->id)->whereNotIn('id',$excluir)->get();
     }
     public function updatedSearchService($query){
         $excluir=CompraServicio::where('id',array_column($this->carrito, 'id'))->pluck('servicio_id');
@@ -73,15 +83,24 @@ class CompraEdit extends Component
             ]);
         }
         if($compra->productos->count()==0 && $compra->servicios->count()==0){
-            $this->newCarrito=array_filter($this->newCarrito,function($element){
-                if(count($element)==3 && $element['id']!=false){
-                    return $element;
-                }
-            });
+            // $this->newCarrito=array_filter($this->newCarrito,function($element){
+            //     if(count($element)==3 && $element['id']!=false){
+            //         return $element;
+            //     }
+            // });
             $this->validate([
-                'newCarrito'=>['required']
+                'newCarrito'=>['required'],
+                'newCarrito.*.cantidad'=>['required'],
             ],[
-                'newCarrito.required'=>'Seleccione sus productos'
+                'newCarrito.required'=>'Seleccione sus productos',
+                'newCarrito.*.cantidad.required'=>'Ingrese la cantidad para todos sus productos/servicios',
+            ]);
+        }
+        if(count($this->newCarrito)>0){
+            $this->validate([
+                'newCarrito.*.cantidad'=>['required'],
+            ],[
+                'newCarrito.*.cantidad.required'=>'Ingrese la cantidad para todos sus productos/servicios',
             ]);
         }
         $this->validate([
@@ -125,7 +144,6 @@ class CompraEdit extends Component
                 }
             }
         }
-        //guardamos las evidencias
         //guardamos evidencias
         //dd($this->evidencias);
         foreach ($this->evidencias as $lue) {

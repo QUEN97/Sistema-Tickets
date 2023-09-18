@@ -10,41 +10,32 @@ use Illuminate\Support\Facades\DB;
 
 class ZonaTable extends Component
 {
+
     public function render(Request $request)
     {
-        $this->valid = Auth::user()->permiso->panels->where('id', 6)->first();
+        $this->valid = Auth::user()->permiso->panels->where('id', 12)->first();
 
         $user = Auth::user();
         
         $zonasSups = $user->zonas;
-
-        //  $zonas = Zona::where([
-        //      ['name', '!=', Null],
-        //      [function ($query) use ($request) {
-        //          if (($s = $request->s)) {
-        //              $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                  ->get();
-        //          }
-        //      }]
-        //  ])->paginate(5);
         
         $zonas = Zona::where(function ($query) use ($request) {
-                $search = $request->input('search');
-                if ($search) {
-                    $query->where('id', 'LIKE', '%' . $search . '%')
-                        ->orWhere('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', 'LIKE', '%' . $search . '%');
-                }
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(10)
-            ->withQueryString();
-      
-        $trashed = Zona::onlyTrashed()->count();
-        return view('livewire.zonas.zona-table',[
-            'zonasSups' => $zonasSups,
-            'trashed' => $trashed,
-             'zonas' => $zonas,
-        ]);
+            $search = $request->input('search');
+            if ($search) {
+                $query->where('id', 'LIKE', '%' . $search . '%')
+                    ->orWhere('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('status', 'LIKE', '%' . $search . '%');
+            }
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10)
+        ->withQueryString();
+  
+    $trashed = Zona::onlyTrashed()->count();
+    return view('livewire.zonas.zona-table',[
+        'zonasSups' => $zonasSups,
+        'trashed' => $trashed,
+         'zonas' => $zonas,
+    ]);
     }
 }

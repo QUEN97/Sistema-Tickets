@@ -40,7 +40,7 @@ class AreaController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Areas::onlyTrashed()->count();
-        return view('modules.areas.areas', compact('areas', 'trashed', 'deptos', 'valid'));
+        return view('modules.areas.areas', compact('valid','trashed','deptos','areas'));
     }
 
 

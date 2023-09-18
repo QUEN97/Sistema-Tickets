@@ -7,6 +7,7 @@ use App\Events\NewTicketNotification;
 use App\Models\ArchivosTicket;
 use App\Models\Areas;
 use App\Models\Falla;
+use App\Models\Guardia;
 use App\Models\Holiday;
 use App\Models\Servicio;
 use App\Models\Ticket;
@@ -115,7 +116,7 @@ class NewTicket extends Component
         if ($this->asignado === null) {
             return redirect()->route('tickets');
         }
-
+        $guardia=Guardia::where('status','Esta semana')->first();
         $ticket = new Ticket();
         $ticket->falla_id = $this->falla;
         $ticket->user_id = $this->asignado;
@@ -133,9 +134,10 @@ class NewTicket extends Component
             if ($dia->greaterThanOrEqualTo($inicio) && $dia->lessThanOrEqualTo($limite)) {
                 $ticket->fecha_cierre = $cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
                 $ticket->save();
-            }/* elseif($dia->dayOfWeek==6 && $dia->greaterThanOrEqualTo($limite)){
-                dd('es sabado después de la 1');
-            } */ else {
+            }elseif($dia->dayOfWeek==6 && $dia->greaterThanOrEqualTo($limite)){
+                $ticket->user_id=$guardia->user_id;
+                $ticket->save();
+            }else {
                 $ticket->status = 'Por abrir';
                 $ticket->save();
             }

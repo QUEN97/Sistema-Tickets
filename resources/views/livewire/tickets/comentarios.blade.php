@@ -8,7 +8,9 @@
 
     <x-dialog-modal wire:model="modal" id="modalRepuesto" class="flex items-center">
         <x-slot name="title">
-            {{ __('Comentarios') }}
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-2 rounded-md text-white text-center">
+                {{ __('Comentarios') }}
+            </div>
         </x-slot>
         <x-slot name="content">
             @if ($tck->status != 'Cerrado')

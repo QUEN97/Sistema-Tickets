@@ -257,6 +257,6 @@
             </div>
         </div>
         <div>
-            @livewire('dashboard.dashboard-charts') 
+          @livewire('dashboard.dashboard-charts')  
     </div>
 </x-app-layout>

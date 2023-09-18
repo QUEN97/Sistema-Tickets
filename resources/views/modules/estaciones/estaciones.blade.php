@@ -5,16 +5,28 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('ESTACIONES') }}
             </h2>
-            @if ($valid->pivot->wr == 1)
-                @livewire('estacion.estacion-create')
-            @endif
+            <div class=" flex justify-center space-x-2">
+                <div>
+                    @livewire('estacion.estacion-create')
+                </div>
+                <div>
+                    <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
+                        href="{{ route('estaciones.trashed') }}">
+                        Eliminados
+                        <span
+                            class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                            {{ $trashed }}
+                        </span>
+                    </a>
+                </div>
+            </div>
         </div>
     </x-slot>
 
     <div
         class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
         <div class="w-full">
-            <div class="flex gap-1 flex-col">
+            <div class="flex gap-1 flex-col mb-3">
                 <form action="{{ route('estaciones') }}" method="GET">
                     <div class="flex">
                         <div class="relative mr-4">
@@ -54,19 +66,8 @@
                         </div>
                         <button type="submit"
                             class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
-                        
                     </div>
                 </form>
-                <div class="mb-2">
-                    <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
-                        href="{{ route('estaciones.trashed') }}">
-                        Eliminados
-                        <span
-                            class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                            {{ $trashed }}
-                        </span>
-                    </a>
-                </div>
             </div>
             <table class="border-collapse w-full  bg-white text-center text-sm   dark:bg-dark-eval-0 dark:text-gray-400">
                 <thead class="bg-gray-50">
@@ -243,4 +244,5 @@
             </div>
         </div>
     </div>
+    
 </x-app-layout>

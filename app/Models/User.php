@@ -109,6 +109,10 @@ class User extends Authenticatable
     public function tickets():HasMany{
         return $this->hasMany(Ticket::class);
     }
+    public function tckGen():HasMany
+    {
+        return $this->hasMany(Ticket::class,'solicitante_id');
+    }
     public function ticketsHoy(){  //asignamos tickets de manera equitativa, sin que se reinicie cada dia
         $fechaHoy=Carbon::now();
         $hoy=$fechaHoy->format('Y-m-d');

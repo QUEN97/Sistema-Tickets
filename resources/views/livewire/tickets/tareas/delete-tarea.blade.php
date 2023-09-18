@@ -21,6 +21,7 @@
         <x-slot name="footer" >
             <div class="w-full flex justify-center gap-3">
                 <x-danger-button class="mr-2" wire:click="DeleteTarea({{$tareaID}})" wire:loading.attr="disabled">
+                    
                     Aceptar
                 </x-danger-button>
                 <x-secondary-button wire:click="$set('modalDelete',false)" wire:loading.attr="disabled">

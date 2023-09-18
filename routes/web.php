@@ -2,6 +2,7 @@
 
 use App\Events\TicketStatusChangedEvent;
 use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DashboardController;
@@ -169,5 +170,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
      Route::controller(FolioController::class)->group(function(){
         Route::get('/tck/folios/entradas','entradas')->name('folios.entradas');
         Route::get('/tck/folios/salidas','salidas')->name('folios.salidas');
+    });
+     //analiticas
+     Route::controller(AnalyticsController::class)->group(function(){
+        Route::get('/analytics/general','general')->name('analytics.general');
+        Route::get('/analytics/users','users')->name('analytics.users');
+        Route::get('/analytics/compras','compras')->name('analytics.compras');
     });
 });

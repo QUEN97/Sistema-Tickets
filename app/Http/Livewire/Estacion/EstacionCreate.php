@@ -13,7 +13,7 @@ class EstacionCreate extends Component
 {
     public $newgEstacion;
     public $supervisor, $gerente, $zona, $itsTrue;
-    public $name, $zonas, $users, $isSuper, $isGeren;
+    public $name, $zonas, $users, $isSuper, $isGeren,$numero;
 
     public function resetFilters()
     {
@@ -44,7 +44,7 @@ class EstacionCreate extends Component
             'zona' => ['required', 'not_in:0']
         ],
         [
-            'name.required' => 'El Nombre de la Estación es oblogatorio',
+            'name.required' => 'El Nombre de la Estación es obligatorio',
             'name.max' => 'El Nombre de la Estación no debe ser mayor a 250 caracteres',
             'supervisor.required' => 'El Supervisor es obligatorio',
             'gerente.required' => 'El Gerente es obligatorio',
@@ -55,6 +55,7 @@ class EstacionCreate extends Component
             DB::transaction(function () {
                 return tap(Estacion::create([
                     'name' => $this->name,
+                    'num_estacion'=>$this->numero,
                     'zona_id' => $this->zona,
                     'user_id' => $this->gerente,
                     'supervisor_id' => $this->supervisor,

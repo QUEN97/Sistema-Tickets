@@ -7,7 +7,9 @@
     </button>
     <x-dialog-modal wire:model="modal" class="flex items-center">
         <x-slot name="title">
-            {{ __('Información del Area') }}
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-2 rounded-md text-white text-center">
+                {{ __('Información del Area') }}
+            </div>
         </x-slot>
         <x-slot name="content" class="relative">
             <div class=" flex justify-evenly pb-4">
@@ -88,15 +90,11 @@
                 @endif
             @endif
             
-            <div class="absolute right-1.5	top-1.5">
-                <button wire:click="$toggle('modal')" wire:loading.attr="disabled">
-                    <svg xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="w-6 h-6 text-gray-400 hover:text-orange-800 transition duration-300" viewBox="0 0 320 512" >
-                        <path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/>
-                    </svg>
-                </button>
-            </div>
         </x-slot>
         <x-slot name="footer">
+            <x-secondary-button wire:click="$toggle('modal')" wire:loading.attr="disabled">
+                Cancelar
+            </x-secondary-button>
         </x-slot>
     </x-dialog-modal>
 </div>

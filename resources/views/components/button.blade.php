@@ -6,7 +6,7 @@
 
     switch ($variant) {
         case 'primary':
-            $variantClasses = 'bg-gray-900 text-white  dark:bg-dark-eval-3 ';
+            $variantClasses = 'bg-gray-900 text-white  dark:bg-gray-400';
         break;
         case 'secondary': 
             $variantClasses = 'bg-white text-gray-500 hover:bg-gray-100  dark:text-gray-400 dark:bg-dark-eval-1 dark:hover:bg-dark-eval-2 dark:hover:text-gray-200';
