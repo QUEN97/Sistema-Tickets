@@ -1,17 +1,15 @@
 <div x-data="{ edit: false, cancel(){
     $wire.restoreData();
     this.edit = false;
-} }" class="w-full bg-white p-2 dark:bg-transparent">
-
+} }" class="w-full">
     <div class="flex justify-between mb-2">
-            <div>
-                @livewire('usuarios.guardias.new-user-guardia')
-                <button type="button" class="flex gap-2 items-center justify-center text-gray-400 hover:text-indigo-500 transition duration-300 " title="Restaurar cambios" wire:click="restoreData()" x-cloack x-show="edit">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.545 8.163a.75.75 0 0 1-.487-1.044l1.66-3.535a.75.75 0 0 1 1.36.002l.732 1.569a.755.755 0 0 1 .08-.027a8.15 8.15 0 1 1-5.8 5.903a.75.75 0 1 1 1.456.364a6.65 6.65 0 1 0 4.907-4.862l.74 1.583a.75.75 0 0 1-.872 1.043l-3.776-.996Z"/>
-                    </svg>
-                </button>
-            </div>
+        <div>
+            <button type="button" class="flex gap-2 items-center justify-center text-gray-400 hover:text-indigo-500 transition duration-300 " title="Restaurar cambios" wire:click="restoreData()" x-cloack x-show="edit">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.545 8.163a.75.75 0 0 1-.487-1.044l1.66-3.535a.75.75 0 0 1 1.36.002l.732 1.569a.755.755 0 0 1 .08-.027a8.15 8.15 0 1 1-5.8 5.903a.75.75 0 1 1 1.456.364a6.65 6.65 0 1 0 4.907-4.862l.74 1.583a.75.75 0 0 1-.872 1.043l-3.776-.996Z"/>
+                </svg>
+            </button>
+        </div>
         {{-- <button type="button" wire:click="prox()" class="p-2 border">
             change
         </button> --}}
@@ -96,7 +94,7 @@
         @endforeach
         <div class="flex justify-end" x-cloack x-show="edit" x-collapse>
             <div class="flex flex-wrap gap-2">
-                <x-button wire:click="update()"  class="max-[320px]:w-full flex gap-2 items-center justify-center font-semibold text-xs uppercase tracking-widest">
+                <x-button wire:click="update()" class="max-[320px]:w-full flex gap-2 items-center justify-center font-semibold text-xs uppercase tracking-widest">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512">
                         <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V173.3c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32H64zm0 96c0-17.7 14.3-32 32-32H288c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V128zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>
                     </svg>

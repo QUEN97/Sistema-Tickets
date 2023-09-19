@@ -97,8 +97,8 @@
         @endforeach
     </div>
 
-     {{-- Almacén --}}
-     <div class="{{ $sistema }}">
+    {{-- Almacén --}}
+    <div class="{{ $sistema }}">
         <x-sidebar.dropdown title="Almacén" :active="Str::startsWith(
             request()
                 ->route()
@@ -130,13 +130,12 @@
                         <x-sidebar.sublink title="Entradas" href="{{ route('folios.entradas') }}" :active="request()->routeIs('folios.entradas')" />
                     @endif
                     @if ($item->pivot->panel_id == 7 && $item->pivot->re == 1)
-                        <x-sidebar.sublink title="Salidas" href="{{ route('folios.salidas') }}"
-                            :active="request()->routeIs('folios.salidas')" />
+                        <x-sidebar.sublink title="Salidas" href="{{ route('folios.salidas') }}" :active="request()->routeIs('folios.salidas')" />
                     @endif
                 @endforeach
             </x-sidebar.dropdown>
         </x-sidebar.dropdown>
-        
+
     </div>
 
     {{-- Ajustes --}}
@@ -201,8 +200,8 @@
                         <x-sidebar.sublink title="Categorías" href="{{ route('categorias') }}" :active="request()->routeIs('categorias')" />
                     @endif
                     @if ($item->pivot->panel_id == 22 && $item->pivot->re == 1)
-                    <x-sidebar.sublink title="Servicios" href="{{ route('serviciosTCK') }}" :active="request()->routeIs('productosTCK')" />
-                @endif
+                        <x-sidebar.sublink title="Servicios" href="{{ route('serviciosTCK') }}" :active="request()->routeIs('productosTCK')" />
+                    @endif
                     @if ($item->pivot->panel_id == 14 && $item->pivot->re == 1)
                         <x-sidebar.sublink title="Marcas" href="{{ route('marcas') }}" :active="request()->routeIs('marcas')" />
                     @endif
@@ -224,7 +223,8 @@
                         <x-sidebar.sublink title="Fallas" href="{{ route('fallas') }}" :active="request()->routeIs('fallas')" />
                     @endif
                     @if ($item->pivot->panel_id == 17 && $item->pivot->re == 1)
-                        <x-sidebar.sublink title="Prioridades" href="{{ route('prioridades') }}" :active="request()->routeIs('prioridades')" />
+                        <x-sidebar.sublink title="Prioridades" href="{{ route('prioridades') }}"
+                            :active="request()->routeIs('prioridades')" />
                     @endif
                     @if ($item->pivot->panel_id == 18 && $item->pivot->re == 1)
                         <x-sidebar.sublink title="Servicios" href="{{ route('servicios') }}" :active="request()->routeIs('servicios')" />
@@ -263,17 +263,18 @@
                 @endif
             @endforeach
             @if (Auth::user()->permiso_id == 1)
-            <x-sidebar.sublink title="Horarios" href="{{ route('horarios') }}" :active="request()->routeIs('horarios')" />
+                <x-sidebar.sublink title="Horarios" href="{{ route('horarios') }}" :active="request()->routeIs('horarios')" />
+                <x-sidebar.sublink title="Guardias" href="{{ route('guardias.home') }}" :active="request()->routeIs('guardias.home')" />
                 <x-sidebar.dropdown title="Análiticas" :active="Str::startsWith(
-                request()
-                    ->route()
-                    ->uri(),
-                'buttons',
-            )">
-                <x-sidebar.sublink title="General" href="{{ route('analytics.general') }}" :active="request()->routeIs('analytics.general')" />
+                    request()
+                        ->route()
+                        ->uri(),
+                    'buttons',
+                )">
+                    <x-sidebar.sublink title="General" href="{{ route('analytics.general') }}" :active="request()->routeIs('analytics.general')" />
                     <x-sidebar.sublink title="Usuarios" href="{{ route('analytics.users') }}" :active="request()->routeIs('analytics.users')" />
-                        <x-sidebar.sublink title="Compras" href="{{ route('analytics.compras') }}" :active="request()->routeIs('analytics.compras')" />
-            </x-sidebar.dropdown>
+                    <x-sidebar.sublink title="Compras" href="{{ route('analytics.compras') }}" :active="request()->routeIs('analytics.compras')" />
+                </x-sidebar.dropdown>
             @endif
         </x-sidebar.dropdown>
     </div>

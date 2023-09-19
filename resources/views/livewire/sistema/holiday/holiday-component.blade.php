@@ -1,22 +1,10 @@
-<x-action-section>
-    <x-slot name="title">
-        {{ __('Crear Festivo/Inhábil') }}
-    </x-slot>
-
-    <x-slot name="description">
-        {{-- {{ __('Nota: para la creación del horario se debe ingresar las horas basadas en el formato de 24 horas.') }} --}}
-    </x-slot>
-
-    <x-slot name="content">
-        <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400 text-center mx-auto">
-
+<div class="w-full">
+    <div class="w-full">
+        <div class="text-sm text-gray-600 dark:text-gray-400 text-center mx-auto">
             <table
-                class="border-collapse w-full mx-auto bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-white">
+            class="border-collapse w-full  text-center text-sm text-gray-500 dark:text-white ">
                 <thead class="bg-gray-50 dark:bg-dark-eval-2">
                     <tr>
-                        <th
-                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                            Id</th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
                             Festivo/Inhábil</th>
@@ -32,27 +20,21 @@
                     @forelse ($holidays as $holy)
                         <tr>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800  dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
+                            class="w-full lg:w-auto p-3 text-gray-800  dark:text-white border border-b block lg:table-cell relative lg:static dark:border-gray-700">
                                 <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                {{ $holy->id }}
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800  dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
+                                    class="lg:hidden top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase dark:text-black">Nombre</span>
                                 {{ $holy->name }}
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800  dark:text-white border border-b block lg:table-cell relative lg:static">
+                            class="w-full lg:w-auto p-3 text-gray-800  dark:text-white border border-b block lg:table-cell relative lg:static dark:border-gray-700">
                                 <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Fecha</span>
+                                    class="lg:hidden top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase dark:text-black">Fecha</span>
                                 {{ \Carbon\Carbon::parse($holy->date)->format('d-m-Y') }}
                             </td>
                             <td
-                                class="w-full lg:w-auto p-3 text-gray-800  dark:text-white border border-b block lg:table-cell relative lg:static">
+                            class="w-full lg:w-auto p-3 text-gray-800  dark:text-white border border-b block lg:table-cell relative lg:static dark:border-gray-700">
                                 <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">opciones</span>
+                                    class="lg:hidden top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase dark:text-black">opciones</span>
                                 <button wire:click="deleteFestivo({{ $holy->id }})">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor"
@@ -65,11 +47,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static"
+                            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static dark:text-gray-300 dark:border-gray-700"
                                 colspan="6">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin
-                                    registros</span>
                                 {{ __('No hay festivos o inhábiles') }}
                             </td>
                         </tr>
@@ -141,5 +120,5 @@
                 </x-button>
             </x-slot>
         </x-dialog-modal>
-    </x-slot>
-</x-action-section>
+    </div>
+</div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EstacionController;
 use App\Http\Controllers\FallaController;
 use App\Http\Controllers\FolioController;
+use App\Http\Controllers\GuardiasController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PrioridadController;
@@ -176,5 +177,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/analytics/general','general')->name('analytics.general');
         Route::get('/analytics/users','users')->name('analytics.users');
         Route::get('/analytics/compras','compras')->name('analytics.compras');
+    });
+    //guardias de fin de semana
+    Route::controller(GuardiasController::class)->group(function(){
+        Route::get('/guardias','home')->name('guardias.home');
     });
 });

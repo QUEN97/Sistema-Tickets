@@ -84,3 +84,53 @@ div::-webkit-scrollbar {
     cursor: pointer;
     color: red;
 }
+
+.leyenda {
+    font-size: 14px;
+    color: var(--q-secondary);
+    text-align: right;
+    margin-top: 0.4rem;
+  }
+  .kbc-button {
+    height: 18px;
+    font-size: inherit;
+    line-height: 1;
+    margin: 0.24rem 0.24rem 0.4275rem;
+    padding: 0.1rem 0.2rem;
+    box-shadow: 0 0 #d9d9d9, 0 0 #d9d9d9, 0 1px #d9d9d9, 0 2px #d9d9d9,
+        0 3px #d9d9d9, 0 4px #d9d9d9, 0 5px #d9d9d9, 2px 2.5px 4px #adb5bd,
+        0 -1px 2.5px #adb5bd;
+    background-color: #fff;
+    color: #343a40;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border: 1px solid #e6e6e6;
+    border-radius: 0.25rem;
+    display: inline-block;
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
+        Courier New, monospace;
+    font-weight: 400;
+    text-align: left;
+    transform: translateZ(5px);
+    transform-style: preserve-3d;
+    transition: all 0.25s cubic-bezier(0.2, 1, 0.2, 1);
+  }
+  .kbc-button::after {
+    border-style: solid;
+    box-sizing: content-box;
+    content: "";
+    display: block;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: all 0.25s cubic-bezier(0.2, 1, 0.2, 1);
+  }
+  .kbc-button::after {
+    border-radius: 0.5rem;
+    border-width: 0.125rem;
+    bottom: -9px;
+    left: -0.3125rem;
+    right: -0.3125rem;
+    top: -3px;
+    transform: translateZ(-3px);
+    border-color: #ccc;
+  }
