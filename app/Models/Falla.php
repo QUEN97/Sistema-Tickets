@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class Falla extends Model
 {
@@ -27,5 +29,9 @@ class Falla extends Model
     public function prioridad(): BelongsTo
     {
         return $this->belongsTo(Prioridad::class);
+    }
+    public function tickets(array $dates):HasMany
+    {
+        return $this->hasMany(Ticket::class)->whereBetween('created_at', $dates);
     }
 }

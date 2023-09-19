@@ -7,7 +7,12 @@
             </h2>
         </div>
         <div class="mt-10 mb-2 flex flex-wrap gap-2 justify-center">
-            @livewire('analytics.compras.clases')
+            @livewire('analytics.compras.categorias')
+            @livewire('analytics.compras.serv-prod')
+        </div>
+        <div class="mb-2 flex flex-wrap gap-2 justify-center">
+            @livewire('analytics.compras.productos')
+            @livewire('analytics.compras.servicios')
         </div>
     </x-slot>
     {{-- script de ChartsJS --}}

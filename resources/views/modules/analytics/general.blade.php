@@ -8,7 +8,7 @@
         </div>
         <div class="mt-10 mb-2 flex flex-wrap gap-2 justify-center">
             @livewire('analytics.general')
-            @livewire('analytics.proridades')
+            @livewire('analytics.prioridades')
         </div>
         <div>
             @livewire('analytics.fallas')

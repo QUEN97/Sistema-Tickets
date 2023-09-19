@@ -38,7 +38,7 @@
             <x-label value="{{__('Seleccionar mes')}}"/>
             <x-input type="month" wire:model='mes' wire:change='change()' {{-- @change="selectMonth(event)" --}}/>
         </div>
-        <h2 class=" flex-auto text-center">Cantidad de tickets por clase</h2>
+        <h2 class=" flex-auto text-center">Cantidad de tickets por categoría</h2>
     </div>
     <div class=" h-96">
         <canvas id="myChart" x-ref="canvas"></canvas>
