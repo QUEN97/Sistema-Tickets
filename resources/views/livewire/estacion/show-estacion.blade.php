@@ -13,16 +13,15 @@
 
     <x-dialog-modal wire:model="ShowgEstacion" id="ShowEstacion{{ $estacion_show_id }}" class="flex items-center">
         <x-slot name="title">
-            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-2 rounded-md text-white text-center">
                 {{ __('Información de la Estación') }}
             </div>
         </x-slot>
 
         <x-slot name="content">
             <div class="w-full rounded overflow-hidden shadow-lg">
-                {{-- <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> --}}
                 <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2 ">EDS - {{ $this->titulo_estacion }}</div>
+                    <div class="font-bold text-xl mb-2 ">{{ $this->titulo_estacion }}</div>
                     <div class="font-bold text-sm mb-2 ">No. {{ $this->numero }}</div>
                     <div class="px-2">
                         <div class="flex -mx-2 bg-gray-300 p-2 rounded-md">
@@ -61,6 +60,7 @@
                     <span
                         class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $this->zonas }}</span>
                 </div>
+                <img class="w-full" src="{{ asset('img/logo/fullpower.png') }}" alt="">
             </div>
         </x-slot>
 

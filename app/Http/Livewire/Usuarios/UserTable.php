@@ -56,8 +56,9 @@ class UserTable extends Component
                 $filterSoli = $request->input('filter');
                 $query->where('permiso_id', $filterSoli);
             })
-            ->orderBy('id', 'desc')
-            ->paginate(10)
+            ->where('id','!=',1)
+            ->orderBy('id', 'asc')
+            ->paginate(25)
             ->withQueryString();
 
         $trashed = User::onlyTrashed()->count();

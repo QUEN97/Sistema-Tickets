@@ -35,7 +35,7 @@ class ServicioController extends Controller
                 $filterSoli = $request->input('filter');
                 $query->where('area_id', $filterSoli);
             })
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
             ->paginate(10)
             ->withQueryString();
         $trashed = Servicio::onlyTrashed()->count();

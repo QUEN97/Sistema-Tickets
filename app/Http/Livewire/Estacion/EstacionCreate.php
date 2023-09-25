@@ -39,12 +39,14 @@ class EstacionCreate extends Component
     {
         $this->validate( [
             'name' => ['required', 'max:250'],
+            'numero' => ['required', 'max:250'],
             'supervisor' => ['required', 'not_in:0'],
             'gerente' => ['required', 'not_in:0'],
             'zona' => ['required', 'not_in:0']
         ],
         [
             'name.required' => 'El Nombre de la Estación es obligatorio',
+            'numero.required' => 'El Número de la Estación es obligatorio',
             'name.max' => 'El Nombre de la Estación no debe ser mayor a 250 caracteres',
             'supervisor.required' => 'El Supervisor es obligatorio',
             'gerente.required' => 'El Gerente es obligatorio',

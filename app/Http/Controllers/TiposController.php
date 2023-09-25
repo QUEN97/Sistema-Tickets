@@ -18,7 +18,7 @@ class TiposController extends Controller
                         ->orWhere('status', 'LIKE', '%' . $search . '%');
                 } 
             })
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
             ->paginate(10)
             ->withQueryString();
         $trashed = Tipo::onlyTrashed()->count();

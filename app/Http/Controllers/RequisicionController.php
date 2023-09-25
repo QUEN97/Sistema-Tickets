@@ -13,7 +13,9 @@ class RequisicionController extends Controller
 {
     public function home(){
         $valid = Auth::user()->permiso->panels->where('id', 4)->first();
+
         $user=Auth::user();
+        
         if(!in_array($user->permiso_id,[1,2,4,7])){
             $tck=Ticket::where(function($q)use($user){
                 $q->where('user_id',$user->id)

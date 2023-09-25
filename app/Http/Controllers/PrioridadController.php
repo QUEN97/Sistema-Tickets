@@ -34,7 +34,7 @@ class PrioridadController extends Controller
                 $filterSoli = $request->input('filter');
                 $query->where('tipo_id', $filterSoli);
             })
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
             ->paginate(10)
             ->withQueryString();
         $trashed = Prioridad::onlyTrashed()->count();

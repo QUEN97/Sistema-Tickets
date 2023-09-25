@@ -36,8 +36,8 @@ class FallaController extends Controller
                 $filterSoli = $request->input('filter');
                 $query->where('servicio_id', $filterSoli);
             })
-            ->orderBy('id', 'desc')
-            ->paginate(10)
+            ->orderBy('id', 'asc')
+            ->paginate(25)
             ->withQueryString();
         $trashed = Falla::onlyTrashed()->count();
         return view('modules.fallas.fallas',compact('fallas','trashed','servicios','valid'));

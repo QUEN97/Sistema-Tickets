@@ -36,7 +36,7 @@ class AreaController extends Controller
                 $filterSoli = $request->input('filter');
                 $query->where('departamento_id', $filterSoli);
             })
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
             ->paginate(10)
             ->withQueryString();
         $trashed = Areas::onlyTrashed()->count();

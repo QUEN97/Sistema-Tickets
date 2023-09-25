@@ -70,6 +70,7 @@ class NewTarea extends Component
 
             // Mostrar mensaje de éxito
             Alert::success('Nueva Tarea', 'La tarea ha sido creada exitosamente.');
+            
         } catch (Exception $e) {
             Alert::error('Error', $e->getMessage()); //si hay un eror 
         }

@@ -53,58 +53,52 @@
                 @endif
             </button>
         </div>
-        <form action="{{ route('tickets') }}" method="GET" class="flex gap-2 items-end">
+        <form action="{{ route('tickets') }}" method="GET" class="flex flex-wrap gap-2 items-end">
             <div class="flex gap-1 flex-col">
-                {{-- <x-label value="{{ __('Filtro') }}" for="status" /> --}}
-                <div>Filtro</div>
-                <select name="status" id="status"
-                    class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                <x-label value="{{ __('Filtro') }}" for="status"/>
+                <select name="status" id="filtro-status"
+                class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                     <option hidden value="" selected>Todos</option>
                     <option value="Abierto">Abierto</option>
                     <option value="En proceso">En proceso</option>
                     <option value="Cerrado">Cerrado</option>
                 </select>
             </div>
-            @if (!in_array(Auth::user()->permiso_id, [2, 3]))
+            @if (!in_array(Auth::user()->permiso_id,[2,3]) )    
                 <div>
-                    {{-- <x-label value="{{ __('Zona') }}" for="zona" /> --}}
-                    <div>Zona</div>
+                    <x-label value="{{ __('Zona') }}" for="zona"/>
                     <select name="zona" id="zona"
-                        class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                    class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                         <option value="" selected>Todas</option>
                         @foreach ($zonas as $zona)
-                            <option value="{{ $zona->id }}">{{ $zona->name }}</option>
+                            <option value="{{$zona->id}}">{{$zona->name}}</option>
                         @endforeach
                     </select>
                 </div>
             @endif
             <div class="flex gap-1 flex-col">
-                {{-- <x-label value="{{ __('Fecha inicial') }}" for="fechaIn" /> --}}
-                <div>Fecha inicial</div>
+                <x-label value="{{ __('Fecha inicial') }}" for="fechaIn"/>
                 <input type="date" name="start" id="fechaIn"
-                    class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" />
+                    class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"/>
             </div>
             <div class="flex gap-1 flex-col">
-                {{-- <x-label value="{{ __('Fecha final') }}" for="sfechaEnd" /> --}}
-                <div>Fecha final</div>
+                <x-label value="{{ __('Fecha final') }}" for="fechaEnd"/>
                 <input type="date" name="end" id="fechaEnd"
-                    class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" />
+                    class="text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"/>
             </div>
-            <button type="submit"
-                class="bg-gray-300 p-1 w-8 h-8 flex justify-center items-center rounded dark:bg-dark-eval-3 dark:text-white">
+            <button type="submit" aria-label="buscar" id="btn-search" class="border p-2 w-8 h-8 flex justify-center items-center rounded dark:border-gray-700 dark:text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" fill="currentColor">
-                    <path
-                        d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                    <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
                 </svg>
             </button>
-            <form action="{{ route('tickets') }}" method="GET">
-                {{-- <label for="search" class="sr-only">
-                    Search
-                </label> --}}
-                <input type="search" name="tck"
-                    class="block w-full p-3 pl-10 text-sm rounded-md  dark:bg-dark-eval-0 dark:text-white"
-                    placeholder="Buscar Ticket..." />
-            </form>
+        </form>
+        <form action="{{ route('tickets') }}" method="GET">
+            <label for="search" class="sr-only">
+                Search
+            </label>
+            <input type="search" name="tck"
+                class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+                placeholder="Buscar..." />
         </form>
     </div>
 

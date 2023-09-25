@@ -27,7 +27,7 @@ class ZonaTable extends Component
                     ->orWhere('status', 'LIKE', '%' . $search . '%');
             }
         })
-        ->orderBy('id', 'desc')
+        ->orderBy('id', 'asc')
         ->paginate(10)
         ->withQueryString();
   

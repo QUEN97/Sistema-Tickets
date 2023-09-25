@@ -45,7 +45,7 @@ class EstacionController extends Controller
                     $filterSoli = $request->input('filter');
                     $query->where('zona_id', $filterSoli);
                 })
-                ->orderBy('id', 'desc')
+                ->orderBy('id', 'asc')
                 ->paginate(10)
                 ->withQueryString();
         }
@@ -73,7 +73,7 @@ class EstacionController extends Controller
                     $filterSoli = $request->input('filter');
                     $query->where('zona_id', $filterSoli);
                 })->where('supervisor_id', $user->id)
-                ->orderBy('id', 'desc')
+                ->orderBy('id', 'asc')
                 ->paginate(10)
                 ->withQueryString();
         }
@@ -101,7 +101,7 @@ class EstacionController extends Controller
                     $filterSoli = $request->input('filter');
                     $query->where('zona_id', $filterSoli);
                 })->where('user_id', $user->id)
-                ->orderBy('id', 'desc')
+                ->orderBy('id', 'asc')
                 ->paginate(10)
                 ->withQueryString();
         }

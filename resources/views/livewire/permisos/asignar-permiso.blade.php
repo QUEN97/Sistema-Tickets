@@ -7,7 +7,9 @@
 
     <x-dialog-modal wire:model="AsigPermiso" id="AsigPermiso{{ $permiso_asig_id }}" class="flex items-center">
         <x-slot name="title">
-            {{ __('Asignar Permisos a:') . ' ' . $permiso_asig_name }}
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+                {{ __('Asignar Permisos a:') . ' ' . $permiso_asig_name }}
+            </div>
         </x-slot>
 
         <x-slot name="content">
