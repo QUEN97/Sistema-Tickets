@@ -61,7 +61,7 @@ class NewTicket extends Component
         $desocupado = [];
         $disponible = [];
         foreach ($this->personal as $key => $personal) {
-            if ($personal->status === 'Activo') { // Revisa el status del usuario
+            if ($personal->status === 'Activo' && $personal->id !== 154)  { // Revisa el status del usuario
                 $desocupado[$key]['id'] = $personal->id;
                 $desocupado[$key]['cant'] = $personal->ticketsHoy->count();
             }
@@ -94,7 +94,8 @@ class NewTicket extends Component
     public function addTicket()
     { //El método addTicket() se ejecuta cuando se envía el formulario para agregar un nuevo ticket. 
         $dia = Carbon::now(); //Obtenemos el dia actual
-        $Festivo = $this->esDiaFestivo($dia);
+        $Festivo = $this->esDiaFestivo($dia); //llamamos a los dias festivos del sistema
+        $regionId = Auth::user()->region_id; // obtenemos la region del usuario autenticado
 
         $this->validate([ //Valida los campos requeridos y crea un nuevo registro de ticket en la base de datos.
             'area' => ['required', 'not_in:0'],
@@ -112,10 +113,17 @@ class NewTicket extends Component
             'mensaje.required' => 'Ingrese los detalles del problema',
         ]);
 
-        $this->asignado = $this->agenteDisponible();
+        if ($regionId == 2) {
+            // si la region es 2 (Guatemala) se asigna el ticket al usuario 154
+            $this->asignado = 154;
+        } else {
+            // si la region es diferente a 2 en este caso México se asignan los tickets de al agente correspondiente
+            $this->asignado = $this->agenteDisponible();
+        }
         if ($this->asignado === null) {
             return redirect()->route('tickets');
         }
+        dd($this->asignado);
         $guardia=Guardia::where('status','Esta semana')->first();
         $ticket = new Ticket();
         $ticket->falla_id = $this->falla;
@@ -166,8 +174,7 @@ class NewTicket extends Component
         $agent = User::find($ticket['user_id']);
         $agent->notify(new TicketAsignadoNotificacion($ticket));
 
-        session()->flash('flash.banner','El ticket se ha generado correctamente');
-        // Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); //Finalmente, se muestra una alerta de éxito y se redirige a la página de tickets.
+       Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); //Finalmente, se muestra una alerta de éxito y se redirige a la página de tickets.
         return redirect()->route('tickets');
     }
 

@@ -114,7 +114,7 @@
                 </svg>
             </x-slot>
             @foreach ($valid as $item)
-                @if ($item->pivot->panel_id == 20 && $item->pivot->re == 1)
+                @if ($item->pivot->panel_id == 23 && $item->pivot->re == 1)
                     <x-sidebar.sublink title="Almacén CIS" href="{{ route('almacenCIS') }}" :active="request()->routeIs('almacenes')" />
                 @endif
             @endforeach
@@ -274,6 +274,7 @@
                     <x-sidebar.sublink title="General" href="{{ route('analytics.general') }}" :active="request()->routeIs('analytics.general')" />
                     <x-sidebar.sublink title="Usuarios" href="{{ route('analytics.users') }}" :active="request()->routeIs('analytics.users')" />
                     <x-sidebar.sublink title="Compras" href="{{ route('analytics.compras') }}" :active="request()->routeIs('analytics.compras')" />
+                        <x-sidebar.sublink title="Calificaciones" href="{{ route('analytics.calificaciones') }}" :active="request()->routeIs('analytics.calificaciones')" />
                 </x-sidebar.dropdown>
             @endif
         </x-sidebar.dropdown>

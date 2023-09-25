@@ -28,7 +28,7 @@ class CategoriaController extends Controller
                     ->orWhere('status', 'LIKE', '%' . $search . '%');
             } 
         })
-        ->orderBy('id', 'desc')
+        ->orderBy('id', 'asc')
         ->paginate(10)
         ->withQueryString();
         $trashed = Categoria::onlyTrashed()->count();
@@ -82,8 +82,8 @@ public function marcas(Request $request){
                         ->orWhere('status', 'LIKE', '%' . $search . '%');
                 } 
             })
-            ->orderBy('id', 'desc')
-            ->paginate(10)
+            ->orderBy('id', 'asc')
+            ->paginate(25)
             ->withQueryString();
     $trashed = Marca::onlyTrashed()->count();
     return view('modules.productos.marcas.index',compact('marcas','trashed','valid'));

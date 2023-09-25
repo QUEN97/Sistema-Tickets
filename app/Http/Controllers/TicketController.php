@@ -31,8 +31,9 @@ class TicketController extends Controller
     public function ver($request){
         $ticketID=$request;
         $tck=Ticket::findOrFail($ticketID);
+        $ticketOwner = $tck->solicitante_id;
         $comentarios=Comentario::where('ticket_id',$ticketID)->orderBy('id','desc')->get();
-        return view('modules.tickets.detalles.ver',compact('ticketID','tck','comentarios'));
+        return view('modules.tickets.detalles.ver',compact('ticketID','tck','comentarios','ticketOwner'));
     }
     public function editar($request){
         $ticketID=$request;
@@ -56,7 +57,8 @@ class TicketController extends Controller
     }
     public function compra($request){
         $ticketID=$request;
-        return view('modules.tickets.compras.compras',compact('ticketID'));
+        $tck=Ticket::findOrFail($ticketID);
+        return view('modules.tickets.compras.compras',compact('ticketID','tck'));
     }
 
     public function almacenCIS(){

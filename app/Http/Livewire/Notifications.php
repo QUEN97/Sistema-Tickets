@@ -20,10 +20,14 @@ class Notifications extends Component
     public function readNotification($id)
     {
         auth()->user()->notifications->find($id)->markAsRead();
+        // DB::table('notifications')->where('id', $notification['id'])->update(['read_at' =>now()]);
+
     }
-    public function readAllNotification()
+    public function readAllNotification($notifiable_id)
     {
-        auth()->user()->unreadNotifications->markAsRead();
+        // auth()->user()->unreadNotifications->markAsRead();
+        DB::table('notifications')->where('notifiable_id', $notifiable_id)->update(['read_at' =>now()]);
+
     }
     public function render()
     {

@@ -34,7 +34,7 @@ class AsignarPermiso extends Component
         $this->permiso_asig_name = $permiso->titulo_permiso;
         $this->titulo_permiso = $permiso->titulo_permiso;
         $this->descripcion = $permiso->descripcion;
-
+//dd($this->permiso_asig_id);
         $this->AsigPermiso = true;
     }
 
@@ -58,7 +58,6 @@ class AsignarPermiso extends Component
                 ])->save();
             }
         }
-            
         $this->AsigPermiso = false;
 
         Alert::success('Permisos Actualizados', "El Rol". ' '.$this->titulo_permiso. ' '. "ha actualizado sus permisos en el sistema");
@@ -71,9 +70,9 @@ class AsignarPermiso extends Component
         //$this->permission = Permiso::where('id', $this->permiso_asig_id)->first();
 
         $this->permission = Panel::all()->take(22);
-
+//dd($this->permission);
         $this->perm = PanelPermiso::where('permiso_id', $this->permiso_asig_id)->get();
-        
+        //dd($this->perm);
         return view('livewire.permisos.asignar-permiso');
     }
 }

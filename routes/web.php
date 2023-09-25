@@ -177,6 +177,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/analytics/general','general')->name('analytics.general');
         Route::get('/analytics/users','users')->name('analytics.users');
         Route::get('/analytics/compras','compras')->name('analytics.compras');
+        Route::get('/analytics/calificaciones','calificaciones')->name('analytics.calificaciones');
     });
     //guardias de fin de semana
     Route::controller(GuardiasController::class)->group(function(){

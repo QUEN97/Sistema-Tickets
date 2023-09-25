@@ -165,6 +165,15 @@
 
     @stack('scripts')
 
+    <script src="{{ ('assets/js/toastr.min.js') }}"></script>
+
+
+    @if ($cantidadTicketsProximosVencer > 0)
+        <script type="text/javascript">
+            toastr.warning("TIENES {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER")
+        </script>
+    @endif
+
 </body>
 
 </html>

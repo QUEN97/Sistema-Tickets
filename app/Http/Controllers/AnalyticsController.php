@@ -15,4 +15,7 @@ class AnalyticsController extends Controller
     public function compras(){
         return view('modules.analytics.compras');
     }
+    public function calificaciones() {
+        return view('modules.analytics.calificaciones');
+    }
 }

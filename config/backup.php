@@ -116,10 +116,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'backup' => [
-                    'driver' => 'local',
-                    'root' => storage_path('app/backups'),
-                ],
+                'local',
             ],
         ],
 

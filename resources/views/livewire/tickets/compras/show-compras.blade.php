@@ -1,7 +1,7 @@
 <div class="col-md-4 col-sm-6 col-6 d-flex justify-content-end justify-content-md-end justify-content-sm-end">
     <div class="">
-        <button wire:click="$set('modal',true)" class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip">
-            <svg class="w-6 h-6 hover:text-yellow-400" xmlns="http://www.w3.org/2000/svg"
+        <button wire:click="$set('modal',true)" class="dark:text-white tooltip">
+            <svg class="w-6 h-6 hover:text-indigo-600" xmlns="http://www.w3.org/2000/svg"
                 class="icon icon-tabler icon-tabler-shopping-bag" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                 fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

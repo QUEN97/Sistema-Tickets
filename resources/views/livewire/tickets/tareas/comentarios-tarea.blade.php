@@ -55,8 +55,18 @@
                 <li>
                     <a
                         class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
-                        <img class="object-cover w-10 h-10 rounded-full"
-                            src="{{ asset('img/logo/blank-profile-picture-973460_1280.webp') }}" alt="username" />
+                        @if ($comentario->usuario->profile_photo_path)
+                                <div onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_url) }}'">
+                                    <img class="h-10 w-10 rounded-full object-cover"
+                                    src="/storage/{{ $comentario->usuario->profile_photo_path }}"
+                                    alt="{{ $comentario->usuario->name }}" />
+                                </div>
+                            @else
+                            <div onclick="window.location.href='{{ asset($comentario->usuario->profile_photo_url) }}'">
+                                <img class="object-cover w-10 h-10 rounded-full"
+                                src="{{ $comentario->usuario->profile_photo_url }}" alt="{{ $comentario->usuario->name }}" />
+                            </div>
+                            @endif
                         <div class="w-full pb-2">
                             <div class="flex justify-between">
                             <div class="flex">
