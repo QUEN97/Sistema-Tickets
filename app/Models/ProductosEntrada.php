@@ -10,12 +10,16 @@ class ProductosEntrada extends Model
 {
     use HasFactory;
 
-    public function producto():BelongsTo
+    public function producto(): BelongsTo
     {
-        return $this->belongsTo(Producto::class,'producto_id');
+        return $this->belongsTo(Producto::class, 'producto_id');
     }
-    public function estacion():BelongsTo
+    public function estacion(): BelongsTo
     {
         return $this->belongsTo(Estacion::class);
+    }
+    public function serie()
+    {
+        return $this->belongsTo(ProductoSerie::class, 'id');
     }
 }

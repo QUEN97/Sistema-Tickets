@@ -9,6 +9,7 @@ use App\Models\FoliosEntrada;
 use App\Models\FoliosSalida;
 use App\Models\Producto;
 use App\Models\ProductosEntrada;
+use App\Models\ProductoSerie;
 use App\Models\ProductosSalida;
 use App\Models\Salida;
 use App\Models\Ticket;
@@ -101,47 +102,6 @@ class EntradasSalidas extends Component
         $table->save();
         return $pdf->output();
     }
-    // public function docWord($tipo,$id){
-    //     //dd($id);
-    //     try {
-    //         $rows=[];
-    //         //dd($table->usuario);
-    //         if($tipo=='salida'){
-    //             $table=Salida::find($id);
-    //         }else{
-    //             $table=Entrada::find($id);
-    //         }
-    //         $array=[
-    //             'tipo'=>strtoupper($tipo),
-    //             'user'=>$table->usuario->name,
-    //             'motivo'=>$table->motivo,
-    //             'fecha'=>$table->created_at,
-    //             'folio'=>$table->folio->folio
-    //         ];
-    //         foreach($table->productos as $pr){
-    //             array_push($rows,[
-    //                 'tck'=>isset($pr->ticket->id)?$pr->ticket->id:'S/N',
-    //                 'est'=>isset($pr->estacion->name)?$pr->estacion->name:'S/N',
-    //                 'pr'=>$pr->producto->name,
-    //                 'unidad'=>$pr->producto->unidad,
-    //                 'cant'=>$pr->cantidad,
-    //                 'ob'=>$pr->observacion,
-    //             ]);
-    //         }
-    //         $nameArchivo=$table->folio->folio.' '.$table->usuario->name.'.pdf';
-    //         $template = new TemplateProcessor(documentTemplate:'storage/templates/folio.docx');
-    //         $template->setValues($array);
-    //         $template->cloneRowAndSetValues('tck',$rows);
-    //         $tenpFile = tempnam(sys_get_temp_dir(),'PHPWord');
-    //         $template->saveAs($tenpFile);
-    //         $header = [
-    //               "Content-Type: application/octet-stream",
-    //         ];
-    //         return response()->download($tenpFile, $nameArchivo, $header)->deleteFileAfterSend($shouldDelete = true);
-    //     } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
-    //         return back($e->getCode());
-    //     }
-    // }
     
     public function operacion(){
         //$hoy=Carbon::now()->format('Y-m-d');
@@ -158,6 +118,7 @@ class EntradasSalidas extends Component
             'carrito.*.cantsol'=>['required','gt:0'],
             'carrito.*.estacion'=>['required'],
             'carrito.*.observacion'=>['required'],
+            'carrito.*.serie' => ['nullable'],
         ],[
             'tipo.required'=>'Seleccione la operacion a realizar',
             'motivo.required'=>'Ingrese el motivo de la operacion a realizar',
@@ -188,6 +149,13 @@ class EntradasSalidas extends Component
         // guardamos los productos 
         foreach($this->carrito as $p){
             $pAlm=AlmacenCi::where('producto_id',$p['prod']);
+            if (!empty($p['serie'])) { //Almacenamos la serie en la tabla ProductoSerie por cada producto
+                $productoSerie = new ProductoSerie();
+                $productoSerie->serie = $p['serie'];
+                $productoSerie->producto_id = $p['prod'];
+                $productoSerie->save();
+            }
+
             if ($pAlm->count() > 0) {
                 $updateAlma=AlmacenCi::find($pAlm->first()->id);
                 $this->tipo=='entrada'

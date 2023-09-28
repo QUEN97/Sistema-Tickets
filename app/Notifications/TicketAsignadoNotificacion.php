@@ -42,7 +42,8 @@ class TicketAsignadoNotificacion extends Notification implements ShouldBroadcast
     {
         return [
             'url' => route('tickets', $this->ticket->id),
-            'message' => "Hola {$this->ticket->agente->name}, el usuario {$this->ticket->cliente->name} necesita tu apoyo con el ticket #{$this->ticket->id}."
+            'message' => "Hola {$this->ticket->agente->name}, el usuario {$this->ticket->cliente->name} 
+            necesita tu apoyo con el ticket #{$this->ticket->id}, '{$this->ticket->falla->name}'."
         ];
     }
 

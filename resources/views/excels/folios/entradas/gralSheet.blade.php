@@ -4,6 +4,7 @@
             <th>No. de ticket</th>
             <th>Estación</th>
             <th>Producto</th>
+            <th>Serie</th>
             <th>Cantidad</th>
             <th>Usuario</th>
             <th>Observación</th>
@@ -17,6 +18,7 @@
                     <th>{{isset($producto->ticket->id)?$producto->ticket->id : 'S/N'}}</th>
                     <th>{{isset($producto->estacion->name)?$producto->estacion->name : 'S/N'}}</th>
                     <th>{{$producto->producto->name}}</th>
+                    <th>{{$producto->serie->serie}}</th>
                     <th>{{$producto->cantidad}}</th>
                     <th>{{$entrada->usuario->name}}</th>
                     <th>{{$producto->observacion}}</th>

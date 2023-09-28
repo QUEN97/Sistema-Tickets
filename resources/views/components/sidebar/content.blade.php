@@ -114,7 +114,7 @@
                 </svg>
             </x-slot>
             @foreach ($valid as $item)
-                @if ($item->pivot->panel_id == 23 && $item->pivot->re == 1)
+                @if ($item->pivot->panel_id == 22 && $item->pivot->re == 1)
                     <x-sidebar.sublink title="Almacén CIS" href="{{ route('almacenCIS') }}" :active="request()->routeIs('almacenes')" />
                 @endif
             @endforeach

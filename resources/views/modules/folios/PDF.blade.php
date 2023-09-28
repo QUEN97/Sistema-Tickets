@@ -103,6 +103,7 @@
                 <th>#TICKET</th>
                 <th>ESTACIÓN</th>
                 <th>EQUIPO/MATERIAL</th>
+                <th>SERIE</th>
                 <th>UNIDAD</th>
                 <th>CANTIDAD</th>
                 <th>OBSERVACIÓN</th>
@@ -114,6 +115,7 @@
                 <th>{{isset($producto->ticket->id)?'#'.$producto->ticket->id : 'S/N'}}</th>
                 <th>{{isset($producto->estacion->name)?$producto->estacion->name : 'S/N'}}</th>
                 <th>{{$producto->producto->name}}</th>
+                <th>{{$producto->serie->serie}}</th>
                 <th>{{$producto->producto->unidad}}</th>
                 <th>{{$producto->cantidad}}</th>
                 <th>{{$producto->observacion}}</th>

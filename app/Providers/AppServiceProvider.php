@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('layouts.app', function ($view) {
             $mePertenece = Auth::user()->id;
             $ticketsProximosVencer = 0;
+            $ticketsPorAtender = 0;
+            $mediaHora = Carbon::now()->subMinutes(30);
             $fechaActual = Carbon::now();
             $fechaLimite = $fechaActual->copy()->addHour(5);
             $ticketsProximosVencer = Ticket::where('fecha_cierre', '>=', $fechaActual)
@@ -36,10 +38,17 @@ class AppServiceProvider extends ServiceProvider
                     }
                 })
                 ->get();
+
+                $ticketsPorAtender = Ticket::where('status', 'Abierto')
+                ->where('created_at', '<=', $mediaHora)
+                ->get();
+
             $cantidadTicketsProximosVencer = $ticketsProximosVencer->count();
+            $cantidadTicketsPorAtender = $ticketsPorAtender->count();
 
             $view->with([
-                'cantidadTicketsProximosVencer' => $cantidadTicketsProximosVencer
+                'cantidadTicketsProximosVencer' => $cantidadTicketsProximosVencer,
+                'cantidadTicketsPorAtender' => $cantidadTicketsPorAtender
             ]);
         });
         // Configuración para fechas en español

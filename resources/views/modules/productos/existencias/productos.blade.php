@@ -5,16 +5,27 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('PRODUCTOS') }}
             </h2>
+            <div class=" flex justify-center space-x-2">
             @if ($valid->pivot->wr == 1)
                 @livewire('productos.existencias.producto-create')
             @endif
+            <div class="mb-2">
+                <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
+                    href="{{ route('productos.trashed') }}">
+                    Eliminados
+                    <span
+                        class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                        {{ $trashed }}
+                    </span>
+                </a>
+            </div>
+            </div>
         </div>
     </x-slot>
 
     <div
-        class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
-        <div class="w-full">
-            <div class="flex gap-1 flex-col">
+        class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+            <div class="flex gap-1 flex-col mb-2">
                 <form action="{{ route('productos') }}" method="GET">
                     <div class="flex">
                         <div class="relative mr-4">
@@ -57,16 +68,6 @@
                         
                     </div>
                 </form>
-                <div class="mb-2">
-                    <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
-                        href="{{ route('productos.trashed') }}">
-                        Eliminados
-                        <span
-                            class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                            {{ $trashed }}
-                        </span>
-                    </a>
-                </div>
             </div>
             <table class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-black">
                 <thead class="bg-gray-50">
@@ -186,6 +187,5 @@
             <div class="mt-2 mb-2 mr-2">
                 {{ $productos->appends($_GET)->links() }}
             </div>
-        </div>
     </div>
 </x-app-layout>

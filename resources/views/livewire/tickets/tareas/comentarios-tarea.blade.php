@@ -56,7 +56,7 @@
                     <a
                         class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
                         @if ($comentario->usuario->profile_photo_path)
-                                <div onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_url) }}'">
+                                <div onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_path) }}'">
                                     <img class="h-10 w-10 rounded-full object-cover"
                                     src="/storage/{{ $comentario->usuario->profile_photo_path }}"
                                     alt="{{ $comentario->usuario->name }}" />

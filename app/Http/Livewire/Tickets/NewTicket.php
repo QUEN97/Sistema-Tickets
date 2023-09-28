@@ -123,7 +123,7 @@ class NewTicket extends Component
         if ($this->asignado === null) {
             return redirect()->route('tickets');
         }
-        dd($this->asignado);
+        //dd($this->asignado);
         $guardia=Guardia::where('status','Esta semana')->first();
         $ticket = new Ticket();
         $ticket->falla_id = $this->falla;
@@ -170,6 +170,8 @@ class NewTicket extends Component
                 $archivo->save();
             }
         }
+
+        $this->emit('ticketCreated');
         
         $agent = User::find($ticket['user_id']);
         $agent->notify(new TicketAsignadoNotificacion($ticket));

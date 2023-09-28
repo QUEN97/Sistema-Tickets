@@ -18,4 +18,9 @@ class FoliosEntrada extends Model
     {
         return $this->hasMany(Entrada::class,'folio_id')->select('user_id')->groupBy('user_id');
     }
+   
+    public function serie()
+    {
+        return $this->belongsTo(ProductoSerie::class, 'producto_id');
+    }
 }

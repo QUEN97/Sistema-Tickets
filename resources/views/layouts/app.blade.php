@@ -173,6 +173,11 @@
             toastr.warning("TIENES {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER")
         </script>
     @endif
+    @if ($cantidadTicketsPorAtender > 0)
+    <script type="text/javascript">
+        toastr.info("TIENES {{ $cantidadTicketsPorAtender }} TICKETS SIN ATENDER")
+    </script>
+@endif
 
 </body>
 

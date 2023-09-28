@@ -41,9 +41,22 @@
                                 <li>
                                     <a
                                         class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
-                                        <img class="object-cover w-10 h-10 rounded-full"
-                                            src="{{ asset('img/logo/blank-profile-picture-973460_1280.webp') }}"
-                                            alt="username" />
+
+                                        @if ($entrada->usuario->profile_photo_path)
+                                            <div
+                                                onclick="window.location.href='{{ asset('/storage/' . $entrada->usuario->profile_photo_path) }}'">
+                                                <img class="h-10 w-10 rounded-full object-cover"
+                                                    src="/storage/{{ $entrada->usuario->profile_photo_path }}"
+                                                    alt="{{ $entrada->usuario->name }}" />
+                                            </div>
+                                        @else
+                                            <div
+                                                onclick="window.location.href='{{ asset($entrada->usuario->profile_photo_url) }}'">
+                                                <img class="object-cover w-10 h-10 rounded-full"
+                                                    src="{{ $entrada->usuario->profile_photo_url }}"
+                                                    alt="{{ $entrada->usuario->name }}" />
+                                            </div>
+                                        @endif
                                         <div class="w-full pb-2">
                                             <div class="flex justify-between">
                                                 <div class="flex">
@@ -56,9 +69,11 @@
                                                 <span
                                                     class="block ml-2 text-sm text-gray-600 dark:text-white">{{ $entrada->motivo }}</span>
                                             </div>
-                                            <div class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
+                                            <div
+                                                class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
                                                 <details>
-                                                    <summary class="bg-gray-100 py-2 px-4 cursor-pointer">Click para mostrar/ocultar
+                                                    <summary class="bg-gray-100 py-2 px-4 cursor-pointer">Click para
+                                                        mostrar/ocultar
                                                         Productos</summary>
                                                     <table class="table-auto w-full">
                                                         <thead>
@@ -71,25 +86,35 @@
                                                         <tbody>
                                                             @forelse($entrada->productos as $producto)
                                                                 <tr>
-                                                                    <td class="border px-4 py-2 w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
+                                                                    <td
+                                                                        class="border px-4 py-2 w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
                                                                         <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}"
-                                                                            alt=""
-                                                                            class="w-full">
+                                                                            alt="" class="w-full">
+                                                                    </td>
+                                                                    <td
+                                                                        class="w-full lg:w-auto p-3 text-center border border-b block lg:table-cell relative lg:static dark:border-gray-800">
+                                                                        <span
+                                                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
+                                                                        <div class="text-sm">
+                                                                            <div
+                                                                                class="font-medium text-gray-700 dark:text-gray-400">
+                                                                                {{ $producto->producto->name }}</div>
+                                                                            <div
+                                                                                class="text-gray-400 dark:ttext-gray-400">
+                                                                                {{ $producto->serie->serie }}
+                                                                            </div>
+                                                                        </div>
                                                                     </td>
                                                                     <td class="border px-4 py-2">
-                                                                        <span class="text-xs">
-                                                                            {{ $producto->producto->name }}
-                                                                        </span>
-                                                                    </td>
-                                                                    <td class="border px-4 py-2">
-                                                                        <span class="text-xs">
+                                                                        <span class="text-xs text-center">
                                                                             {{ $producto->cantidad }}
                                                                         </span>
                                                                     </td>
                                                                 </tr>
                                                             @empty
                                                                 <tr>
-                                                                    <td class="border px-4 py-2" colspan="3">Sin datos.</td>
+                                                                    <td class="border px-4 py-2" colspan="3">Sin
+                                                                        datos.</td>
                                                                 </tr>
                                                             @endforelse
                                                         </tbody>
@@ -99,7 +124,9 @@
 
                                         </div>
 
-                                        <button onclick="window.open('{{ asset('Storage/' . $entrada->pdf) }}', '_blank')" class="">
+                                        <button
+                                            onclick="window.open('{{ asset('Storage/' . $entrada->pdf) }}', '_blank')"
+                                            class="">
                                             <svg class="w-12 h-12" viewBox="0 0 32 32"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path fill="#909090"

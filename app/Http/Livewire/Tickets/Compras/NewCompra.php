@@ -155,6 +155,7 @@ class NewCompra extends Component
                 $cp->save();
             }
         }
+        
         $this->PDF($compra);
         //dd($this->carrito);
         Alert::success('Nueva requisición', "La requisición ha sido registrada");

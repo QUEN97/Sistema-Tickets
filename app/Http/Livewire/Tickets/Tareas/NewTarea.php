@@ -82,7 +82,7 @@ class NewTarea extends Component
     {
         $ticket = Ticket::find($this->ticketID);
         //$agentes = $ticket->falla->servicio->area->users; // agentes del area que pertenece el ticket
-        $agentes = User::where('status', 'Activo')->whereNotIn('permiso_id', [3, 6])->get();
+        $agentes = User::where('status', 'Activo')->whereNotIn('permiso_id', [3, 6,2])->get();
         return view('livewire.tickets.tareas.new-tarea', compact('agentes'));
     }
 }

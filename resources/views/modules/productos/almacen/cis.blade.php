@@ -59,11 +59,15 @@
                                 </figure>
                             </div>
                         </th>
-                        <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center items-center gap-2">
-                                <div>{{$producto->producto->name}}</div>
-                            </div>
-                        </th>
+                        <td
+                        class="w-full lg:w-auto p-3 text-center border border-b block lg:table-cell relative lg:static dark:border-gray-800">
+                        <span
+                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
+                        <div class="text-sm">
+                            <div class="font-medium text-gray-700 dark:text-gray-400">{{$producto->producto->name}}</div>
+                            {{-- <div class="text-gray-400 dark:ttext-gray-400">{{$producto->serie->serie}}</div> --}}
+                        </div>
+                    </td>
                         <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                             <div class="w-full flex justify-center gap-2">
                                 <span class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">

@@ -14,4 +14,6 @@ class AlmacenCi extends Model
     {
         return $this->belongsTo(Producto::class,'producto_id');
     }
+
+   
 }
