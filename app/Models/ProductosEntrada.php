@@ -18,7 +18,7 @@ class ProductosEntrada extends Model
     {
         return $this->belongsTo(Estacion::class);
     }
-    public function serie()
+    public function seriesDeProducto()
     {
         return $this->belongsTo(ProductoSerie::class, 'id');
     }

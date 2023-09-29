@@ -32,10 +32,11 @@
                     tickets: tck,
                     contador: 1,
                     showSerie: false,
-                    carrito: [{ id: 1, tck: '', estacion: '', prod: '', observacion: '', cantsol: '' }],
+                    showSerie2: false,
+                    carrito: [{ id: 1, tck: '', estacion: '', prod: '', observacion: '', cantsol: '', serie: ''}],
                     addChild() {
                         this.contador++;
-                        this.carrito.push({ id: this.contador, tck: '', estacion: '', prod: '', observacion: '', cantsol: '' })
+                        this.carrito.push({ id: this.contador, tck: '', estacion: '', prod: '', observacion: '', cantsol: '', serie: '' })
                         //console.log(this.carrito);
                     },
                     remove(id) {
@@ -118,7 +119,7 @@
                             <div class="flex gap-2 justify-center py-3">
                                 <div id="tipo">
                                     <input type="radio" name="tipo" id="entrada" value="entrada"
-                                        wire:model.defer="tipo" class="peer/entrada hidden" @click="showSerie=true">
+                                        wire:model.defer="tipo" class="peer/entrada hidden" @click="showSerie=true; showSerie2=false">
                                     <label for="entrada"
                                         class="flex items-center justify-center gap-1 cursor-pointer bg-gray-300 dark:bg-dark-eval-0 peer-checked/entrada:bg-black hover:bg-black text-white px-4 py-2 rounded-md">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
@@ -137,7 +138,7 @@
                                 </div>
                                 <div>
                                     <input type="radio" name="tipo" id="salida" value="salida"
-                                        wire:model.defer="tipo" class="peer/salida hidden" @click="showSerie=false">
+                                        wire:model.defer="tipo" class="peer/salida hidden" @click="showSerie=false; showSerie2=true">
                                     <label for="salida"
                                         class="flex items-center justify-center gap-1 cursor-pointer bg-gray-300 dark:bg-dark-eval-0 peer-checked/salida:bg-black hover:bg-black text-white px-4 py-2 rounded-md">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
@@ -175,7 +176,7 @@
                             const prod = {!! json_encode($productosEntradaSalida) !!};
                             const est = {!! json_encode($estaciones) !!};
                             const tck = {!! json_encode($tck) !!}
-                            console.log(prod);
+                            //console.log(prod);
                         </script>
                         <template x-for="prod in carrito" :key="prod.id">
                             <div class=" py-3  border-b border-gray-400 relative">
@@ -235,10 +236,6 @@
                                                                 <path d="M6 9l6 6l6 -6"></path>
                                                             </svg>
                                                         </div>
-                                                        {{-- <svg  xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <polyline x-show="!isOpen()" points="18 15 12 20 6 15"></polyline>
-                                                            <polyline x-show="isOpen()" points="18 15 12 9 6 15"></polyline>
-                                                        </svg> --}}
                                                     </button>
                                                 </div>
                                             </div> 
@@ -285,6 +282,16 @@
                                         <label :for="`serie${prod.id}`"
                                             class="absolute rounded-md duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-dark-eval-1 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
                                             {{ __('Serie') }}</label>
+                                    </div>
+                                    <div class="relative" x-show="showSerie2" x-cloak >
+                                        <select :id="`serie${prod.id}`"  x-model="prod.serie"
+                                        class="peer w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1"
+                                        :name="`serie${prod.id}`" >
+                                        <option hidden value="" selected>{{ __('Seleccionar Serie') }}</option>
+                                        @foreach ($productosSerie as $pserie)
+                                            <option value="{{ $pserie->serie }}">{{ $pserie->serie }}</option>
+                                        @endforeach
+                                    </select>
                                     </div>
                                     <div>
                                         <div class="w-full relative mt-2">

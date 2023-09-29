@@ -21,6 +21,4 @@ class Entrada extends Model
     {
         return $this->hasMany(ProductosEntrada::class);
     }
-
-
 }

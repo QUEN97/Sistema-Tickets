@@ -28,7 +28,7 @@
                 <div class="mb-1">
                     <div class="bg-dark-eval-1 p-1 rounded-md text-white text-center mb-2">
                         <div>{{ __('Folio:') }} {{ $folio->folio }}</div>
-                        <div> {{ __('Fecha:') }} {{ $folio->created_at }}</div>
+                        {{-- <div> {{ __('Fecha:') }} {{ $folio->created_at }}</div> --}}
                     </div>
                 </div>
                 <div>
@@ -59,9 +59,10 @@
                                         @endif
                                         <div class="w-full pb-2">
                                             <div class="flex justify-between">
-                                                <div class="flex">
+                                                <div class="flex gap-2">
                                                     <span
                                                         class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $entrada->usuario->name }}</span>
+                                                        <div class="float-right"> {{ __('Fecha:') }} {{ $entrada->created_at }}</div>
                                                 </div>
                                                 <span class="block ml-2 "></span>
                                             </div>
@@ -100,8 +101,8 @@
                                                                                 class="font-medium text-gray-700 dark:text-gray-400">
                                                                                 {{ $producto->producto->name }}</div>
                                                                             <div
-                                                                                class="text-gray-400 dark:ttext-gray-400">
-                                                                                {{ $producto->serie->serie }}
+                                                                                class="text-gray-400 dark:text-gray-400">
+                                                                                {{ $producto->seriesDeProducto->serie }}
                                                                             </div>
                                                                         </div>
                                                                     </td>
@@ -147,7 +148,7 @@
                                     </a>
                                     <div class="flex items-center ml-4">
                                         <!-- Agregado el contenedor flex -->
-
+                                        
                                     </div>
                                 </li>
                             @endforeach

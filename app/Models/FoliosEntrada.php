@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class FoliosEntrada extends Model
 {
     use HasFactory;
-    use HasFactory;
+
     public function entradas():HasMany
     {
         return  $this->hasMany(Entrada::class,'folio_id')->orderBy('id','DESC');
@@ -18,9 +18,5 @@ class FoliosEntrada extends Model
     {
         return $this->hasMany(Entrada::class,'folio_id')->select('user_id')->groupBy('user_id');
     }
-   
-    public function serie()
-    {
-        return $this->belongsTo(ProductoSerie::class, 'producto_id');
-    }
+  
 }

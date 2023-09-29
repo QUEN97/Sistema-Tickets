@@ -13,7 +13,6 @@ class ProductoSerie extends Model
 
     protected $fillable = [
         'serie',
-        'producto_id',
     ];
 
     public function producto()

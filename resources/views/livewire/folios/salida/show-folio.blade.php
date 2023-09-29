@@ -28,7 +28,7 @@
                 <div class="mb-1">
                     <div class="bg-dark-eval-1 p-1 rounded-md text-white text-center mb-2">
                         <div>{{ __('Folio:') }} {{ $folio->folio }}</div>
-                        <div> {{ __('Fecha:') }} {{ $folio->created_at }}</div>
+                        {{-- <div> {{ __('Fecha:') }} {{ $folio->created_at }}</div> --}}
                     </div>
                 </div>
                 <div>
@@ -41,14 +41,27 @@
                                 <li>
                                     <a
                                         class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
-                                        <img class="object-cover w-10 h-10 rounded-full"
-                                            src="{{ asset('img/logo/blank-profile-picture-973460_1280.webp') }}"
-                                            alt="username" />
+                                        @if ($salida->usuario->profile_photo_path)
+                                            <div
+                                                onclick="window.location.href='{{ asset('/storage/' . $salida->usuario->profile_photo_path) }}'">
+                                                <img class="h-10 w-10 rounded-full object-cover"
+                                                    src="/storage/{{ $salida->usuario->profile_photo_path }}"
+                                                    alt="{{ $salida->usuario->name }}" />
+                                            </div>
+                                        @else
+                                            <div
+                                                onclick="window.location.href='{{ asset($salida->usuario->profile_photo_url) }}'">
+                                                <img class="object-cover w-10 h-10 rounded-full"
+                                                    src="{{ $salida->usuario->profile_photo_url }}"
+                                                    alt="{{ $salida->usuario->name }}" />
+                                            </div>
+                                        @endif
                                         <div class="w-full pb-2">
                                             <div class="flex justify-between">
-                                                <div class="flex">
+                                                <div class="flex gap-2">
                                                     <span
                                                         class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $salida->usuario->name }}</span>
+                                                        <div class="float-right"> {{ __('Fecha:') }} {{ $salida->created_at }}</div>
                                                 </div>
                                                 <span class="block ml-2 "></span>
                                             </div>
@@ -71,25 +84,35 @@
                                                         <tbody>
                                                             @forelse($salida->productos as $producto)
                                                                 <tr>
-                                                                    <td class="border px-4 py-2 w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
+                                                                    <td
+                                                                        class="border px-4 py-2 w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
                                                                         <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}"
-                                                                            alt=""
-                                                                            class="w-full">
+                                                                            alt="" class="w-full">
+                                                                    </td>
+                                                                    <td
+                                                                        class="w-full lg:w-auto p-3 text-center border border-b block lg:table-cell relative lg:static dark:border-gray-800">
+                                                                        <span
+                                                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
+                                                                        <div class="text-sm">
+                                                                            <div
+                                                                                class="font-medium text-gray-700 dark:text-gray-400">
+                                                                                {{ $producto->producto->name }}</div>
+                                                                            <div
+                                                                                class="text-gray-400 dark:ttext-gray-400">
+                                                                                {{ $producto->serie->serie }}
+                                                                            </div>
+                                                                        </div>
                                                                     </td>
                                                                     <td class="border px-4 py-2">
-                                                                        <span class="text-xs">
-                                                                            {{ $producto->producto->name }}
-                                                                        </span>
-                                                                    </td>
-                                                                    <td class="border px-4 py-2">
-                                                                        <span class="text-xs">
+                                                                        <span class="text-xs text-center">
                                                                             {{ $producto->cantidad }}
                                                                         </span>
                                                                     </td>
                                                                 </tr>
                                                             @empty
                                                                 <tr>
-                                                                    <td class="border px-4 py-2" colspan="3">Sin datos.</td>
+                                                                    <td class="border px-4 py-2" colspan="3">Sin
+                                                                        datos.</td>
                                                                 </tr>
                                                             @endforelse
                                                         </tbody>

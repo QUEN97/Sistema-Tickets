@@ -22,4 +22,8 @@ class ProductosSalida extends Model
     {
         return $this->belongsTo(Ticket::class);
     }
+    public function seriesDeProducto()
+    {
+        return $this->belongsTo(ProductoSerie::class, 'id');
+    }
 }

@@ -103,7 +103,6 @@
                 <th>#TICKET</th>
                 <th>ESTACIÓN</th>
                 <th>EQUIPO/MATERIAL</th>
-                <th>SERIE</th>
                 <th>UNIDAD</th>
                 <th>CANTIDAD</th>
                 <th>OBSERVACIÓN</th>
@@ -115,10 +114,9 @@
                 <th>{{isset($producto->ticket->id)?'#'.$producto->ticket->id : 'S/N'}}</th>
                 <th>{{isset($producto->estacion->name)?$producto->estacion->name : 'S/N'}}</th>
                 <th>{{$producto->producto->name}}</th>
-                <th>{{$producto->serie->serie}}</th>
                 <th>{{$producto->producto->unidad}}</th>
                 <th>{{$producto->cantidad}}</th>
-                <th>{{$producto->observacion}}</th>
+                <th>No. Serie: {{$producto->seriesDeProducto->serie}} <br><hr>{{$producto->observacion}}</th>
             </tr>
             @endforeach
         </tbody>
@@ -153,8 +151,8 @@
         </p>
     </div>
     <br>
-    <div class="text-sm footer">
-        <div class="text-center">
+    <div class="footer">
+        <div class="text-center text-sm">
             <p><b>www.fullgas.com.mx</b></p>
             <p><b>97125 Mérida, Yucatán, México | sistemas@fullgas.com.mx | 9999269020 | 9999686823</b></p>
         </div>
