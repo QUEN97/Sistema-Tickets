@@ -120,6 +120,7 @@ class Comentarios extends Component
     {
         // $comentarios=Comentario::where('ticket_id',$this->ticketID)->orderBy('id','desc')->get();
         $tck = Ticket::find($this->ticketID);
-        return view('livewire.tickets.comentarios', compact('tck'));
+        $ticketOwner = $tck->solicitante_id; //para evitar que quien cree el ticket pueda cambiar su status
+        return view('livewire.tickets.comentarios', compact('tck','ticketOwner'));
     }
 }

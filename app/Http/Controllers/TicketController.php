@@ -13,56 +13,88 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TicketController extends Controller
 {
 
-
-    public function home(){
+    //Vista Lista de tickets
+    public function home()
+    {
         $valid = Auth::user()->permiso->panels->where('id', 2)->first();
-        $pendientes=Ticket::where('status','Por abrir')->count();
-        return view('modules.tickets.index',compact('pendientes','valid'));
+        $pendientes = Ticket::where('status', 'Por abrir')->count();
+        return view('modules.tickets.index', compact('pendientes', 'valid'));
     }
 
-    public function pendientes(){
+    //vista tickets pendientes
+    public function pendientes()
+    {
         return view('modules.tickets.abiertos');
     }
 
-    public function ver($request){
-        $ticketID=$request;
-        $tck=Ticket::findOrFail($ticketID);
+    //Vista Detalles y comentarios de ticket
+    public function ver($request )
+    {
+        $ticketID = $request;
+        $tck = Ticket::findOrFail($ticketID);
         $ticketOwner = $tck->solicitante_id;
-        $comentarios=Comentario::where('ticket_id',$ticketID)->orderBy('id','desc')->get();
-        return view('modules.tickets.detalles.ver',compact('ticketID','tck','comentarios','ticketOwner'));
+        $comentarios = Comentario::where('ticket_id', $ticketID)->orderBy('id', 'desc')->get();
+        return view('modules.tickets.detalles.ver', compact('ticketID', 'tck', 'comentarios', 'ticketOwner'));
     }
-    public function editar($request){
-        $ticketID=$request;
-        $tck=Ticket::findOrFail($ticketID);
-        $evidenciaArc=$tck->archivos;
-        return view('modules.tickets.detalles.editar',compact('ticketID','tck','evidenciaArc'));
+
+    //Vista editar ticket
+    public function editar($request)
+    {
+        $ticketID = $request;
+        $tck = Ticket::findOrFail($ticketID);
+        $evidenciaArc = $tck->archivos;
+        return view('modules.tickets.detalles.editar', compact('ticketID', 'tck', 'evidenciaArc'));
     }
+
+    //Eliminar Evidencias Tickets
     public function removeArch($id)
-{
-    $archivo = ArchivosTicket::findOrFail($id);
-    $archivo->flag_trash=1;
-    $archivo->save();
-    return redirect()->back()->with('success', 'Archivo eliminado correctamente');
-}
-    public function tarea($request){
-        $ticketID=$request;
-        $tck=Ticket::findOrFail($ticketID);
+    {
+        $archivo = ArchivosTicket::findOrFail($id);
+        $archivo->flag_trash = 1;
+        $archivo->save();
+        Alert::warning('Eliminado', "El archivo ha sido eliminado correctamente");
+        return redirect()->back();
+    }
+
+    //Eliminar Comentario
+    public function removeCom($id)
+    {
+        $dato = Comentario::findOrFail($id);
+        foreach ($dato->archivos as $archivo) {
+            $archivo->delete();
+        }
+        $dato->delete();
+        Alert::warning('Eliminado', "El comentario ha sido eliminado correctamente");
+        return redirect()->back();
+    }
+
+    //Tareas
+    public function tarea($request)
+    {
+        $ticketID = $request;
+        $tck = Ticket::findOrFail($ticketID);
 
         $tareas = Tarea::where('ticket_id', $ticketID)->orderBy('id', 'desc')->paginate(5);
-        return view('modules.tickets.tareas.index',compact('ticketID','tck','tareas'));
-    }
-    public function compra($request){
-        $ticketID=$request;
-        $tck=Ticket::findOrFail($ticketID);
-        return view('modules.tickets.compras.compras',compact('ticketID','tck'));
+        return view('modules.tickets.tareas.index', compact('ticketID', 'tck', 'tareas'));
     }
 
-    public function almacenCIS(){
-        $productos=AlmacenCi::select('*')->paginate(10);
-        return view('modules.productos.almacen.cis',compact('productos'));
+    //Compras
+    public function compra($request)
+    {
+        $ticketID = $request;
+        $tck = Ticket::findOrFail($ticketID);
+        return view('modules.tickets.compras.compras', compact('ticketID', 'tck'));
+    }
+
+    //Almácen
+    public function almacenCIS()
+    {
+        $productos = AlmacenCi::select('*')->paginate(10);
+        return view('modules.productos.almacen.cis', compact('productos'));
     }
 }

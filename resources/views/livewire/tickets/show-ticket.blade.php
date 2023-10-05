@@ -20,7 +20,7 @@
     </textarea>
         <x-input-error for="falla"></x-input-error>
     </div>
-    <div class=" flex gap-2 justify-evenly pb-4">
+    <div class=" flex gap-1 pb-4">
         <div class="w-full">
             <x-label value="{{ __('Asunto') }}" for="asunto" />
             <textarea wire:model="asunto" disabled

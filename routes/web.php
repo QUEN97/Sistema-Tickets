@@ -152,6 +152,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/tickets/ver{id}','ver')->name('tck.ver');
         Route::get('/tickets/editar{id}','editar')->name('tck.editar');
         Route::delete('/tickets{id}', 'removeArch')->name('tck.destroy');
+        Route::delete('/tickets{id}', 'removeCom')->name('com.destroy');
         Route::get('/tickets/tarea{id}','tarea')->name('tck.tarea');
         Route::get('/tickets/requisicion{id}','compra')->name('tck.compra');
         Route::get('/tickets/pendientes','pendientes')->name('tck.abierto');

@@ -34,7 +34,7 @@ class AsignarPermiso extends Component
         $this->permiso_asig_name = $permiso->titulo_permiso;
         $this->titulo_permiso = $permiso->titulo_permiso;
         $this->descripcion = $permiso->descripcion;
-//dd($this->permiso_asig_id);
+        //dd($this->permiso_asig_id);
         $this->AsigPermiso = true;
     }
 
@@ -52,7 +52,6 @@ class AsignarPermiso extends Component
         for ($i=1; $i <= count(Panel::all()); $i++) { 
             foreach ($this->leer as $key => $value) {
                 $permi = PanelPermiso::where('permiso_id', $id)->where('panel_id', $i)->first();
-
                 $permi->forceFill([ 
                     're' => $value['valer'],
                 ])->save();

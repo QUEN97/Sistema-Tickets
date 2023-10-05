@@ -23,7 +23,7 @@
                             <x-label value="{{ __('Nombre del Rol') }}" />
                             <x-input wire:model="titulo_permiso"
                                 class="{{ $errors->has('titulo_permiso') ? 'is-invalid' : '' }}" type="text"
-                                name="titulo_permiso" :value="old('titulo_permiso')" maxlength="30" required autofocus
+                                name="titulo_permiso" :value="old('titulo_permiso')" required autofocus
                                 autocomplete="titulo_permiso" />
                             <x-input-error for="titulo_permiso"></x-input-error>
                             @if ($errors->has('titulo_permiso'))
@@ -35,7 +35,7 @@
                             <x-label value="{{ __('Descripción') }}" />
                             <x-input wire:model="descripcion"
                                 class="{{ $errors->has('descripcion') ? 'is-invalid' : '' }}" type="text"
-                                name="descripcion" :value="old('descripcion')" required maxlength="200" autofocus
+                                name="descripcion" :value="old('descripcion')" required autofocus
                                 autocomplete="descripcion" />
                             <x-input-error for="descripcion"></x-input-error>
                             @if ($errors->has('descripcion'))
