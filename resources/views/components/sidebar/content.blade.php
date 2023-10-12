@@ -1,25 +1,25 @@
 @php
     $valid = Auth::user()->permiso->panels;
-    
+
     // $dash = 'hidden';
-    
+
     // $tcks = 'hidden';
-    
+
     // $tasks = 'hidden';
-    
+
     // $requis = 'hidden';
-    
+
     $settings = 'hidden';
-    
+
     $sistema = 'hidden';
-    
+
     foreach ($valid as $permis) {
         for ($i = 6; $i <= 19; $i++) {
             if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
                 $settings = 'block';
             }
         }
-    
+
         for ($i = 20; $i <= 22; $i++) {
             if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
                 $sistema = 'block';
@@ -113,7 +113,7 @@
                         d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
                 </svg>
             </x-slot>
-                    <x-sidebar.sublink title="Almacén CIS" href="{{ route('almacenCIS') }}" :active="request()->routeIs('almacenes')" />
+            <x-sidebar.sublink title="Almacén CIS" href="{{ route('almacenCIS') }}" :active="request()->routeIs('almacenes')" />
             {{-- Folios --}}
             <x-sidebar.dropdown title="Folios" :active="Str::startsWith(
                 request()
@@ -121,8 +121,8 @@
                     ->uri(),
                 'buttons',
             )">
-                        <x-sidebar.sublink title="Entradas" href="{{ route('folios.entradas') }}" :active="request()->routeIs('folios.entradas')" />
-                        <x-sidebar.sublink title="Salidas" href="{{ route('folios.salidas') }}" :active="request()->routeIs('folios.salidas')" />
+                <x-sidebar.sublink title="Entradas" href="{{ route('folios.entradas') }}" :active="request()->routeIs('folios.entradas')" />
+                <x-sidebar.sublink title="Salidas" href="{{ route('folios.salidas') }}" :active="request()->routeIs('folios.salidas')" />
             </x-sidebar.dropdown>
         </x-sidebar.dropdown>
 
@@ -199,6 +199,16 @@
                         <x-sidebar.sublink title="Productos" href="{{ route('productos') }}" :active="request()->routeIs('productos')" />
                     @endif
                 @endforeach
+                <x-sidebar.dropdown title="Correos" :active="Str::startsWith(
+                    request()
+                        ->route()
+                        ->uri(),
+                    'buttons',
+                )">
+                    <x-sidebar.sublink title="Lista" href="{{ route('correos') }}" :active="request()->routeIs('correos')" />
+                    <x-sidebar.sublink title="Asignados" href="{{ route('correos.asignados') }}"
+                        :active="request()->routeIs('correos.asignados')" />
+                </x-sidebar.dropdown>
             </x-sidebar.dropdown>
 
             {{-- Ajustes Tickets --}}
@@ -264,7 +274,8 @@
                     <x-sidebar.sublink title="General" href="{{ route('analytics.general') }}" :active="request()->routeIs('analytics.general')" />
                     <x-sidebar.sublink title="Usuarios" href="{{ route('analytics.users') }}" :active="request()->routeIs('analytics.users')" />
                     <x-sidebar.sublink title="Compras" href="{{ route('analytics.compras') }}" :active="request()->routeIs('analytics.compras')" />
-                        <x-sidebar.sublink title="Calificaciones" href="{{ route('analytics.calificaciones') }}" :active="request()->routeIs('analytics.calificaciones')" />
+                    <x-sidebar.sublink title="Calificaciones" href="{{ route('analytics.calificaciones') }}"
+                        :active="request()->routeIs('analytics.calificaciones')" />
                 </x-sidebar.dropdown>
             @endif
         </x-sidebar.dropdown>

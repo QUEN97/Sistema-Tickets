@@ -96,7 +96,7 @@ class AcepCompra extends Component
             Notification::send($Agente, new AprobadaCompraNotification($compra));
         }
         // Alert::success('Aprobado','La requisición ha sido aprobada');
-        session()->flash('flash.banner', 'La requisición ha sido Aprobada, se ha creado la tarea de seguimiento.');
+        session()->flash('flash.banner', 'Requisición Aprobada, se ha creado una tarea a "'.$this->asignado->name.'" para realizar el seguimiento.');
         session()->flash('flash.bannerStyle', 'success');
 
         return redirect()->route('requisiciones');
@@ -108,8 +108,6 @@ class AcepCompra extends Component
         $Admins = User::where('permiso_id', 1)->get();
         $Compras = User::where('permiso_id', 4)->get();
         $Agente = $compra->ticket->agente;
-
-       
 
         $compra->status = 'Enviado a compras';
         $compra->save();

@@ -5,6 +5,7 @@ use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\CorreosController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EstacionController;
@@ -172,6 +173,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
      Route::controller(FolioController::class)->group(function(){
         Route::get('/tck/folios/entradas','entradas')->name('folios.entradas');
         Route::get('/tck/folios/salidas','salidas')->name('folios.salidas');
+        Route::get('/tck/folios/entradas/{id}','editEntrada')->name('entrada.edit');
+        Route::get('/tck/folios/salidas/{id}','editSalida')->name('salida.edit');
     });
      //analiticas
      Route::controller(AnalyticsController::class)->group(function(){
@@ -183,5 +186,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     //guardias de fin de semana
     Route::controller(GuardiasController::class)->group(function(){
         Route::get('/guardias','home')->name('guardias.home');
+    });
+
+    //correos para compras
+    Route::controller(CorreosController::class)->group(function(){
+        Route::get('/compras/correos','home')->name('correos');
+        Route::get('/compras/correos/asignados','asignados')->name('correos.asignados');
     });
 });
