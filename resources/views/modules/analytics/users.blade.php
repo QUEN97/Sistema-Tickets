@@ -12,6 +12,9 @@
             @livewire('analytics.users.cant-tck-zona')
             @livewire('analytics.users.cant-tck-area')
         </div>
+        <div class="mt-3">
+            @livewire('analytics.users.cant-tck-individual')
+        </div>
     </x-slot>
     {{-- script de ChartsJS --}}
     @push('scripts')

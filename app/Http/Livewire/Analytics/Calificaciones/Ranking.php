@@ -42,11 +42,12 @@ class Ranking extends Component
                 foreach($prioridades as $pr){
                     //comparamos la falla para calificarla y obtener los puntos correspondientes
                     if(strcasecmp($ticket->falla->prioridad->name,$pr[0])==0){
+                        //si el ticket se cerró a tiempo
                         if($cierre->lessThanOrEqualTo($vencimiento)){
                             $pos+=$pr[1];
                         }else{
-                            $ticket->tareas->count()>0
-                            ? $pos+=$pr[1]
+                            $ticket->tareas->count()>0 || $ticket->compras->count()>0 //si hay tareas o compras en el ticket vencido se toma como bueno
+                            ? $pos+=$pr[1]/2
                             :$neg+=$pr[1];
                         }
                     }
