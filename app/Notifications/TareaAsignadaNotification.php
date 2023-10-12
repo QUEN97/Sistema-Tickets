@@ -37,7 +37,7 @@ class TareaAsignadaNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'url' => route('tck.tarea', $this->tarea->id),
+            'url' => route('tareas'),
             'message' => "Hola {$this->tarea->user->name}, el usuario " .  Auth::user()->name . " te ha creado la tarea #{$this->tarea->id}, en el ticket #{$this->tarea->ticket_id}."
         ];
     }

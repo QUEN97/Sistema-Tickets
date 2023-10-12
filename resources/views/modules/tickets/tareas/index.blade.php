@@ -47,15 +47,17 @@
                 @endif
             </ul>
             {{-- Botones acción --}}
-            @if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 7 || Auth::user()->permiso_id == 4 || Auth::user()->permiso_id == 5)
+            @if (Auth::user()->permiso_id == 1 ||
+                    Auth::user()->permiso_id == 7 ||
+                    Auth::user()->permiso_id == 4 ||
+                    Auth::user()->permiso_id == 5)
                 <div class="bg-dark-eval-1 dark:bg-dark-eval-2 p-2 rounded-md text-white text-center">
                     {{ __('Ir a:') }}
                 </div>
                 <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-center mt-5">
                     <div class="flex justify-center rounded-lg" role="group">
                         @if (Auth::user()->permiso_id == 1)
-                            <a class="tooltip"
-                                href="{{ route('tck.editar', $tck->id) }}">
+                            <a class="tooltip" href="{{ route('tck.editar', $tck->id) }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor"
                                     class="w-6 h-6 text-black hover:text-indigo-600 dark:text-white">
@@ -66,8 +68,7 @@
                             </a>
                             @livewire('tickets.reasignar', ['ticketID' => $tck->id])
                         @endif
-                        <a class=" tooltip"
-                            href="{{ route('tck.ver', $tck->id) }}">
+                        <a class=" tooltip" href="{{ route('tck.ver', $tck->id) }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" fill="currentColor"
                                 class="w-6 h-6 text-black hover:text-indigo-600 dark:text-white" viewBox="0 0 576 512">
                                 <path
@@ -86,7 +87,7 @@
         </div>
 
         <div class="ml-0 sm:ml-16">
-            @livewire('tickets.tareas.new-tarea', ['ticketID' => $ticketID])
+            @livewire('tickets.tareas.new-tarea', ['ticketID' => $ticketID], key('new' . $tarea->id))
         </div>
     </div>
 
@@ -139,11 +140,14 @@
                         @endif
                     </div>
                     <div class="flex gap-2">
-                        @livewire('tickets.tareas.show-tarea', ['tareaID' => $tarea->id])
+                        {{-- @if (!(Auth::id() == $solicitaTarea )) --}}
+                            @livewire('tickets.tareas.show-tarea', ['tareaID' => $tarea->id], key('show' . $tarea->id))
+                        {{-- @endif --}}
+
                         @if ($tarea->status != 'Cerrado' || Auth::user()->permiso_id == 1)
                             @if (Auth::user()->permiso_id == 1)
-                                @livewire('tickets.tareas.edit-tarea', ['tareaID' => $tarea->id])
-                                @livewire('tickets.tareas.delete-tarea', ['tareaID' => $tarea->id])
+                                @livewire('tickets.tareas.edit-tarea', ['tareaID' => $tarea->id], key('edit' . $tarea->id))
+                                @livewire('tickets.tareas.delete-tarea', ['tareaID' => $tarea->id], key('delete' . $tarea->id))
                             @endif
                         @endif
                     </div>

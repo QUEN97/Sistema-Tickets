@@ -11,7 +11,11 @@ use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\TckServicio;
 use App\Models\Ticket;
+use App\Models\User;
+use App\Notifications\NewCompraNotification;
+use App\Notifications\NewCompraServicioNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -23,71 +27,84 @@ class NewCompra extends Component
     public $ticketID,$w=0,$w2=0,$step=1,$tipo;
     //variables del formulario
     public $titulo,$problema,$solucion,$evidencias=[],$urlArchi,$categoria,$productos,$servicios,$carrito=[],$search,$searchService;
+    public function mount(){
+        $this->productos= Producto::select('id','name','categoria_id','product_photo_path')->get();
+        foreach($this->productos as $p){
+           $p->selected=false;
+           $p->cantidad=0;
+        }
+        $this->servicios=TckServicio::select('id','name')->get();
+        foreach($this->servicios as $p){
+            $p->selected=false;
+            $p->cantidad=0;
+         }
+        //dd($this->servicios);
+    }
     //funciones para controlar el formulario con Steps
-    public function nextStep(){
-        if($this->step==1){
-            $this->validate([
-                'titulo' => ['required'],
-                'problema' => ['required'],
-                'solucion' => ['required'],
-                'evidencias' => ['required'],
-            ],[
-                'titulo.required' => 'Ingrese un título',
-                'problema.required' => 'Describa el problema',
-                'solucion.required' => 'Ingrese la soución',
-                'evidencias.required' => 'Cargue sus evidencias'
-            ]);
-            $this->w=100;
-        }else{
-            //limpiamos el carrito en caso que haya lugares con id=false
-            $this->carrito=array_filter($this->carrito,function($element){
-                if($element['id']!=false){
-                    return $element;
-                }
-            });
-            $this->validate([
-                'carrito' => ['required'],
-            ],[
-                'carrito.required' => 'Seleccione un producto'
-            ]);
-            $this->w2=100;
-        }
+    // public function nextStep(){
+    //     if($this->step==1){
+    //         $this->validate([
+    //             'titulo' => ['required'],
+    //             'problema' => ['required'],
+    //             'solucion' => ['required'],
+    //             'evidencias' => ['required'],
+    //         ],[
+    //             'titulo.required' => 'Ingrese un título',
+    //             'problema.required' => 'Describa el problema',
+    //             'solucion.required' => 'Ingrese la soución',
+    //             'evidencias.required' => 'Cargue sus evidencias'
+    //         ]);
+    //         $this->w=100;
+    //     }else{
+    //         //limpiamos el carrito en caso que haya lugares con id=false
+    //         $this->carrito=array_filter($this->carrito,function($element){
+    //             if($element['id']!=false){
+    //                 return $element;
+    //             }
+    //         });
+    //         $this->validate([
+    //             'carrito' => ['required'],
+    //         ],[
+    //             'carrito.required' => 'Seleccione un producto'
+    //         ]);
+    //         $this->w2=100;
+    //     }
        
-        $this->step++;
-    }
-    public function previusStep(){
-        $this->step--;
-        if($this->step==1){
-            $this->w=0;
-        }else{
-            $this->w2=0;
-        }
-    }
+    //     $this->step++;
+    // }
+    // public function previusStep(){
+    //     $this->step--;
+    //     if($this->step==1){
+    //         $this->w=0;
+    //     }else{
+    //         $this->w2=0;
+    //     }
+    // }
     //-------------------------------//
-    public function updatedTipo($val){
-        if($val=="Servicio"){
-            $this->servicios=TckServicio::all();
-        }
-        $this->carrito=[];
-    }
-    public function updatedCategoria($id){
-        $categoria=Categoria::find($id);
-        $this->productos=$categoria->productos;
-    }
-    public function updatedSearchService($query){
-        $this->servicios=TckServicio::where('name','LIKE','%'.$query.'%')->get();
-    }
-    public function updatedSearch($query){
-        $marca=Marca::where('name','LIKE','%'.$query.'%')->first();
-        $this->productos=Producto::where([[function($q)use($marca,$query){
-            if(isset($marca->id)){
-                $q->where('name','LIKE','%'.$query.'%')
-                ->orWhere('marca_id',$marca->id);
-            }else{
-                $q->where('name','LIKE','%'.$query.'%');
-            }
-        }],['categoria_id',$this->categoria]])->get();
-    }
+    // public function updatedTipo($val){
+    //     if($val=="Servicio"){
+    //         $this->servicios=TckServicio::all();
+    //     }
+    //     $this->carrito=[];
+    // }
+    // public function updatedCategoria($id){
+    //     $categoria=Categoria::find($id);
+    //     $this->productos=$categoria->productos;
+    // }
+    // public function updatedSearchService($query){
+    //     $this->servicios=TckServicio::where('name','LIKE','%'.$query.'%')->get();
+    // }
+    // public function updatedSearch($query){
+    //     $marca=Marca::where('name','LIKE','%'.$query.'%')->first();
+    //     $this->productos=Producto::where([[function($q)use($marca,$query){
+    //         if(isset($marca->id)){
+    //             $q->where('name','LIKE','%'.$query.'%')
+    //             ->orWhere('marca_id',$marca->id);
+    //         }else{
+    //             $q->where('name','LIKE','%'.$query.'%');
+    //         }
+    //     }],['categoria_id',$this->categoria]])->get();
+    // }
     public function addCompra(){
         //dd($this->carrito);
         //eliminamos elementos cuando el id sea falso,no exista el id,la prioridad o la cantidad
@@ -96,16 +113,29 @@ class NewCompra extends Component
         //             return $element;
         //         }
         // });
+        $Admins = User::where('permiso_id',1)->get();
+        $Compras = User::where('permiso_id',4)->get();
+        //dd($this->tipo);
         $this->validate([
+            'titulo' => ['required'],
+            'problema' => ['required'],
+            'solucion' => ['required'],
+            'evidencias' => ['required'],
+            'tipo' => ['required'],
             'carrito' => ['required'],
-            // 'carrito.*.prioridad' => ['required'],
+           /*  'carrito.*.prioridad' => ['required'], */
             'carrito.*.id' => ['required'],
             'carrito.*.cantidad' => ['required','gt:0'],
         ],[
-            'carrito.required' => 'Seleccione productos para la requisicicón',
-            // 'carrito.*.prioridad.required' => 'Seleccione la prioridad del producto',
+            'titulo.required' => 'Ingrese un título',
+            'problema.required' => 'Describa el problema',
+            'solucion.required' => 'Ingrese la solución',
+            'evidencias.required' => 'Cargue sus evidencias',
+            'tipo.required'=>'Seleccione el tipo de requisición que  desea realizar',
+            'carrito.required' => 'Seleccione productos/servicios para la requisición',
+           /*  'carrito.*.prioridad.required' => 'Seleccione la prioridad del producto', */
             'carrito.*.cantidad.required' => 'La cantidad es requerida',
-            'carrito.*.cantidad.gt' => 'La cantidad solicitada debe ser 1 o más'
+            'carrito.*.cantidad.gt' => 'La cantidad solicitada para cada producto/servicio debe ser 1 o más'
         ]);
 
         $ticket = Ticket::find($this->ticketID); // Obtener el ticket correspondiente
@@ -143,6 +173,8 @@ class NewCompra extends Component
                 $cp->producto_id=$p['id'];
                 // $cp->prioridad=$p['prioridad'];
                 $cp->cantidad=$p['cantidad'];
+                Notification::send($Admins, new NewCompraNotification($compra));
+                Notification::send($Compras, new NewCompraNotification($compra));
                 $cp->save();
             }
         }else{
@@ -152,13 +184,19 @@ class NewCompra extends Component
                 $cp->servicio_id=$p['id'];
                 // $cp->prioridad=$p['prioridad'];
                 $cp->cantidad=$p['cantidad'];
+                Notification::send($Admins, new NewCompraServicioNotification($compra));
+                Notification::send($Compras, new NewCompraServicioNotification($compra));
                 $cp->save();
             }
         }
         
         $this->PDF($compra);
+        
         //dd($this->carrito);
-        Alert::success('Nueva requisición', "La requisición ha sido registrada");
+        // Alert::success('Nueva requisición', "La requisición ha sido registrada");
+        session()->flash('flash.banner', 'La requisicion ha sido registrada');
+        session()->flash('flash.bannerStyle', 'success');
+
         return redirect()->route('tickets');
     }
     public function PDF($compra){

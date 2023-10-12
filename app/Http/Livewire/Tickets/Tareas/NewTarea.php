@@ -69,8 +69,10 @@ class NewTarea extends Component
             $this->user_asignado = '';
 
             // Mostrar mensaje de éxito
-            Alert::success('Nueva Tarea', 'La tarea ha sido creada exitosamente.');
-            
+            session()->flash('flash.banner', 'La tarea ha sido creada exitosamente.');
+            session()->flash('flash.bannerStyle', 'success');
+            // Alert::success('Nueva Tarea', 'La tarea ha sido creada exitosamente.');
+
         } catch (Exception $e) {
             Alert::error('Error', $e->getMessage()); //si hay un eror 
         }
@@ -82,7 +84,7 @@ class NewTarea extends Component
     {
         $ticket = Ticket::find($this->ticketID);
         //$agentes = $ticket->falla->servicio->area->users; // agentes del area que pertenece el ticket
-        $agentes = User::where('status', 'Activo')->whereNotIn('permiso_id', [3, 6,2])->get();
+        $agentes = User::where('status', 'Activo')->whereNotIn('permiso_id', [3, 6, 2])->get();
         return view('livewire.tickets.tareas.new-tarea', compact('agentes'));
     }
 }

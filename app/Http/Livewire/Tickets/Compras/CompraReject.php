@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tickets\Compras;
 
 use App\Models\Compra;
 use App\Models\ComentariosCompra;
+use App\Notifications\RechazoCompraNotification;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -25,7 +26,13 @@ class CompraReject extends Component
         $comentario->save();
         $compra->status='Rechazado';
         $compra->save();
-        Alert::warning('Compra rechazada','El status de la compra ha sido actualizada');
+        
+        $agent = $compra->ticket->agente;
+        //dd($agent);
+        $agent->notify(new RechazoCompraNotification($compra));
+        // Alert::warning('Compra rechazada','El status de la compra ha sido actualizada');
+        session()->flash('flash.banner', 'La requisición ha sido rechazada');
+        session()->flash('flash.bannerStyle', 'success');
         return redirect()->route('requisiciones');
     }
     public function render()

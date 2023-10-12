@@ -30,9 +30,9 @@
                 @endif
             </div>
             <div class="max-h-[320px] overflow-y-auto">
-                @if (Auth::user()->notifications->count())
+                @if (auth()->user()->notifications->count())
                     <ul class="divide-y">
-                        @foreach (Auth::user()->notifications as $notification)
+                        @foreach (auth()->user()->notifications as $notification)
                             <li @class(['bg-blue-200' => !$notification->read_at]) wire:click="readNotification('{{ $notification->id }}')">
                                 <x-dropdown-link href="{{ $notification->data['url'] }}">
                                     {{ $notification->data['message'] }}

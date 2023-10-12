@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Tarea;
+use App\Models\Compra;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -10,17 +10,17 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class TareaReasignada extends Notification
+class AgenteCompraEnviadaNotification extends Notification
 {
     use Queueable;
-    public $tarea;
+    public $compra;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Tarea $tarea)
+    public function __construct(Compra $compra)
     {
-        $this->tarea = $tarea;
+        $this->compra = $compra;
     }
 /**
      * Get the notification's delivery channels.
@@ -36,10 +36,10 @@ class TareaReasignada extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
-        $newAssignedUserName = $notifiable->name;
         return [
-            'url' => route('tareas'),
-            'message' => "Hola {$newAssignedUserName}, el usuario " .  Auth::user()->name . " te ha reasignado la tarea #{$this->tarea->id}, en el ticket #{$this->tarea->ticket_id}."
+            'url' => route('requisiciones'),
+            'message' => "La  requisición #{$this->compra->id}, 
+            con el ticket #{$this->compra->ticket_id}, '{$this->compra->titulo_correo}' ha sido enviada al área de compras "  
         ];
     }
 

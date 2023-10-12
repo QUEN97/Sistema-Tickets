@@ -119,6 +119,12 @@ class User extends Authenticatable
         $ayer=$fechaHoy->subDay()->format('Y-m-d');
         return $this->hasMany(Ticket::class)->whereBetween('created_at',[$ayer.' 00:00:00',$hoy.' 23:59:00']);
     }
+    public function tareasHoy(){  //asignamos tareas de manera equitativa, sin que se reinicie cada dia
+        $fechaHoy=Carbon::now();
+        $hoy=$fechaHoy->format('Y-m-d');
+        $ayer=$fechaHoy->subDay()->format('Y-m-d');
+        return $this->hasMany(Tarea::class)->whereBetween('created_at',[$ayer.' 00:00:00',$hoy.' 23:59:00']);
+    }
 
     public function salidas():HasMany
     {
