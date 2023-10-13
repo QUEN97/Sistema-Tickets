@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire\Tickets\Compras;
 
-
+use App\Models\Categoria;
 use App\Models\Compra;
+use App\Models\CorreosZona;
 use App\Models\Permiso;
 use App\Models\Tarea;
 use App\Models\User;
+use App\Models\UserZona;
 use App\Notifications\AgenteCompraEnviadaNotification;
 use App\Notifications\AprobadaCompraNotification;
 use App\Notifications\CompletadaCompraAgenteNotification;
@@ -96,7 +98,7 @@ class AcepCompra extends Component
             Notification::send($Agente, new AprobadaCompraNotification($compra));
         }
         // Alert::success('Aprobado','La requisición ha sido aprobada');
-        session()->flash('flash.banner', 'Requisición Aprobada, se ha creado una tarea a "'.$this->asignado->name.'" para realizar el seguimiento.');
+        session()->flash('flash.banner', 'Requisición Aprobada, se ha creado una tarea a "'.$asignadoUser->name.'" para realizar el seguimiento.');
         session()->flash('flash.bannerStyle', 'success');
 
         return redirect()->route('requisiciones');
@@ -109,11 +111,22 @@ class AcepCompra extends Component
         $Compras = User::where('permiso_id', 4)->get();
         $Agente = $compra->ticket->agente;
 
+        $tipoRequi = Categoria::where('status','Activo')->get(); //categoria del producto
+        $cliente = $compra->ticket->cliente->zonas; //zona del cliente
+        $correos = CorreosZona::all();
+        dd($correos);
+
+        // Actualiza el status de la compra
         $compra->status = 'Enviado a compras';
         $compra->save();
 
+        // Notificaciones por correo según la zona del cliente y la categoría del producto
+        // Occidente
+
+        //Sureste
        
 
+        // Notificaciones por sistema
         if (Auth::user()->permiso_id == 1) {
             Notification::send($Compras, new ComprasRequiNotification($compra));
             Notification::send($Agente, new AgenteCompraEnviadaNotification($compra));
@@ -123,7 +136,7 @@ class AcepCompra extends Component
         }
 
         // Alert::success('Enviado','La requisición ha sido enviada al departamento de compras');
-        session()->flash('flash.banner', 'La requisición ha sido enviada al área de compras');
+        session()->flash('flash.banner', 'La requisición ha sido enviada a Compras');
         session()->flash('flash.bannerStyle', 'success');
         return redirect()->route('requisiciones');
     }

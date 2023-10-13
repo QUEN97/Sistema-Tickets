@@ -184,7 +184,9 @@ class UserCreate extends Component
             ->bcc('auxsistemas@fullgas.com.mx') // copia a Aux Sistemas
             ->send(new MailNewUser($mailDataU)); // enviamos la vista mail creada pasando los datos almacenados en la variable $mailDataU
 
-        Alert::success('Nuevo Usuario', "El usuario" . ' ' . $this->name . ' ' . "ha sido agregado al sistema"); // Alerta SweetAlert  Usuario Creado
+        // Alert::success('Nuevo Usuario', "El usuario" . ' ' . $this->name . ' ' . "ha sido agregado al sistema"); 
+        session()->flash('flash.banner', 'Nuevo usuario, el usuario "'.$this->name.'" ha sido agregado al sistema.');
+        session()->flash('flash.bannerStyle', 'success');
 
         return redirect()->route('users'); //Despúes de creado el usuario retornamos a la vista usuarios
     }

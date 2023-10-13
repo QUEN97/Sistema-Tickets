@@ -37,8 +37,8 @@ class TareaComentarioNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'url' => route('tck.tarea', $this->tarea->id),
-            'message' => "Hola {$this->tarea->usercrea->name}," . " " . "el" . " " . Auth::user()->permiso->titulo_permiso . " " .  Auth::user()->name . "ha realizado un comentario en la tarea #{$this->tarea->id} del ticket #{$this->tarea->ticket_id}."
+            'url' => route('tck.tarea', $this->tarea->ticket->id),
+            'message' => "Hola {$this->tarea->usercrea->name}," . " " . "el usuario " . " " .  Auth::user()->name . "ha realizado un comentario en la tarea #{$this->tarea->id} del ticket #{$this->tarea->ticket_id}."
         ];
     }
 
