@@ -226,10 +226,10 @@ class CompraEdit extends Component
         $this->tipo == 'prod'
             ? $categoria = $compra->productos->first()->producto->categoria->name
             : $categoria = "Servicio";
-        $nombre = 'R' . $compra->id . '-' . $compra->ticket->agente->name;
+            $nombre='R'.$compra->id.'-'.$categoria.'-'.$compra->ticket->agente->name.'-'.$compra->ticket->cliente->name;
         //eliminamos el PDF antiguo
         Storage::disk('public')->delete($compra->documento);
-        $pdf = Pdf::loadView('livewire.tickets.compras.PDFCompra', compact('categoria', 'compra'))->output();
+        $pdf = Pdf::loadView('livewire.tickets.compras.PDFCompra', compact('categoria', 'compra','nombre'))->output();
         Storage::disk('public')->put('tck/compras/documentos/' . $nombre . '.pdf', $pdf);
         $compra->documento = 'tck/compras/documentos/' . $nombre . '.pdf';
         $compra->save();

@@ -463,9 +463,14 @@
                                                                     style="padding:0;Margin:0;padding-bottom:10px">
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:23px;color:#555555;font-size:15px">
-                                                                        <strong>¡Bienvenido/a a FULLGAS©! Agradecemos su elección de unirse a nuestra familia. 
-                                                                            Como miembro valioso, tendrá acceso a diversas funciones y recursos para ayudarnos a alcanzar nuestras metas. 
-                                                                            Su presencia en nuestra comunidad vibrante será de gran contribución. Esperamos ver su éxito y crecimiento en nuestra familia.
+                                                                        <strong>¡Bienvenido/a a FULLGAS©! Agradecemos su
+                                                                            elección de unirse a nuestra familia.
+                                                                            Como miembro valioso, tendrá acceso a
+                                                                            diversas funciones y recursos para ayudarnos
+                                                                            a alcanzar nuestras metas.
+                                                                            Su presencia en nuestra comunidad vibrante
+                                                                            será de gran contribución. Esperamos ver su
+                                                                            éxito y crecimiento en nuestra familia.
                                                                         </strong>
                                                                     </p>
                                                                 </td>
@@ -473,8 +478,14 @@
                                                             <tr>
                                                                 <td class="esd-block-text es-p10t es-p10b"
                                                                     align="left">
-                                                                    <p>Aquí están tus datos de acceso. Por favor, asegúrate de respetar las mayúsculas y cualquier carácter especificado para evitar problemas al iniciar sesión. 
-                                                                        Recuerda que puedes consultar los manuales disponibles en el menú <strong>Sistema->Manuales</strong> para obtener ayuda sobre el uso del sistema.
+                                                                    <p>Aquí están tus datos de acceso. Por favor,
+                                                                        asegúrate de respetar las mayúsculas y cualquier
+                                                                        carácter especificado para evitar problemas al
+                                                                        iniciar sesión.
+                                                                        Recuerda que puedes consultar los manuales
+                                                                        disponibles en el menú
+                                                                        <strong>Sistema->Manuales</strong> para obtener
+                                                                        ayuda sobre el uso del sistema.
                                                                     </p>
                                                                     <ul>
                                                                         <li>Usuario: {{ $mailDataU['usuariousername'] }}
@@ -483,7 +494,8 @@
                                                                     </ul>
                                                                     <p>Para cualquier duda y/o aclaración no dude en
                                                                         contactarse con nosotros
-                                                                        <i>sistemas@fullgas.com.mx</i> .</p>
+                                                                        <i>sistemas@fullgas.com.mx</i> .
+                                                                    </p>
                                                                 </td>
                                                             </tr>
                                                             <tr style="border-collapse:collapse">

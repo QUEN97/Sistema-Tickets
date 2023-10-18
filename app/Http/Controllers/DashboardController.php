@@ -25,24 +25,29 @@ class DashboardController extends Controller
         $date = Carbon::now()->format('m-d'); // Mes y Día
 
         $greeting = '';
+        $inspire = '';
 
         // Determina el saludo según la hora del día en la que nos encontremos
         if ($hour >= 5 && $hour < 12) {
-            $greeting = '¡Buenos días!';
+            $greeting = 'Buenos días';
+            $inspire = 'La vida es bella y con un buen café es aún mejor.';
         } elseif ($hour >= 12 && $hour < 19) {
-            $greeting = '¡Buenas tardes!';
+            $greeting = 'Buenas tardes';
+            $inspire = '';
         } else {
-            $greeting = '¡Buenas noches!';
+            $greeting = 'Buenas noches';
+            $inspire = '';
         }
 
         // Determina el saludo según la festividad que se celebre
         $festivities = [
-            '01-01' => ' - ¡Feliz Año Nuevo!',
-            '12-25' => ' - ¡Feliz Navidad!',
-            '11-02' => ' - ¡Feliz Día de los Muertos!',
-            '02-14' => ' - ¡Feliz Día del Amor y la Amistad',
-            '05-10' => ' - ¡Feliz Día de las Madres!',
+            '01-01' => ' - ¡Felíz Año Nuevo!',
+            '12-25' => ' - ¡Felíz Navidad!',
+            '11-02' => ' - ¡Felíz Día de los Muertos!',
+            '02-14' => ' - ¡Felíz Día del Amor y la Amistad',
+            '05-10' => ' - ¡Felíz Día de las Madres!',
             // Agrega aquí las festividades que desees
+            //No usamos las festividades del modelo Holliday porque en esas se da por sentado que no se asignaran tickets
         ];
 
         if (isset($festivities[$date])) { //Si existe la fecha coincide con alguna de las establecidas, concatena el saludo y la celebración

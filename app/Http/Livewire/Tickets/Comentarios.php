@@ -102,7 +102,9 @@ class Comentarios extends Component
                 $agent->notify($notification);
             }
 
-            Alert::success('Nuevo Comentario', "El comentario ha sido registrado");
+            // Alert::success('Nuevo Comentario', "El comentario ha sido registrado");
+            session()->flash('flash.banner', 'Nuevo Comentario, el comentario se ha registrado correctamente');
+            session()->flash('flash.bannerStyle', 'success');
         } catch (Exception $e) {
             Alert::error('ERROR', $e->getMessage());
         }
@@ -121,6 +123,7 @@ class Comentarios extends Component
         // $comentarios=Comentario::where('ticket_id',$this->ticketID)->orderBy('id','desc')->get();
         $tck = Ticket::find($this->ticketID);
         $ticketOwner = $tck->solicitante_id; //para evitar que quien cree el ticket pueda cambiar su status
-        return view('livewire.tickets.comentarios', compact('tck','ticketOwner'));
+        $agente = $tck->user_id;
+        return view('livewire.tickets.comentarios', compact('tck','ticketOwner','agente'));
     }
 }

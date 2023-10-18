@@ -8,7 +8,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class NewServicio extends Component
 {
-    public $name,$descripcion;
+    public $name,$prioridad,$descripcion;
     public function addServicio(){
         $this->validate([
             'name' =>['required'],

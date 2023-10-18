@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('compra_id');
             $table->unsignedBigInteger('servicio_id');
-            $table->string('prioridad',200);
+            // $table->string('prioridad',200);
             $table->integer('cantidad');
             $table->timestamps();
             $table->foreign('compra_id')->references('id')->on('compras')->onDelete('cascade');

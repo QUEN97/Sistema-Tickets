@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Tickets\Compras;
 
+use App\Mail\SendEmailRequisicion as MailSendEmailRequisicion;
 use App\Models\Categoria;
 use App\Models\Compra;
 use App\Models\CorreosZona;
@@ -9,13 +10,16 @@ use App\Models\Permiso;
 use App\Models\Tarea;
 use App\Models\User;
 use App\Models\UserZona;
+use Illuminate\Support\Facades\Mail;
 use App\Notifications\AgenteCompraEnviadaNotification;
 use App\Notifications\AprobadaCompraNotification;
 use App\Notifications\CompletadaCompraAgenteNotification;
 use App\Notifications\CompletadaCompraNotification;
 use App\Notifications\ComprasRequiNotification;
+use App\Notifications\SendEmailRequisicion;
 use App\Notifications\TareaAsignadaNotification;
 use App\Notifications\TareaRequisicionNotification;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -24,7 +28,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class AcepCompra extends Component
 {
-    public $compraID, $status, $permiso, $personal, $asignado;
+    public $compraID, $status, $permiso, $personal, $asignado, $emailAddress = [];
 
     public function mount()
     {
@@ -98,7 +102,7 @@ class AcepCompra extends Component
             Notification::send($Agente, new AprobadaCompraNotification($compra));
         }
         // Alert::success('Aprobado','La requisición ha sido aprobada');
-        session()->flash('flash.banner', 'Requisición Aprobada, se ha creado una tarea a "'.$asignadoUser->name.'" para realizar el seguimiento.');
+        session()->flash('flash.banner', 'Requisición Aprobada, se ha creado una tarea a "' . $asignadoUser->name . '" para realizar el seguimiento.');
         session()->flash('flash.bannerStyle', 'success');
 
         return redirect()->route('requisiciones');
@@ -110,21 +114,65 @@ class AcepCompra extends Component
         $Admins = User::where('permiso_id', 1)->get();
         $Compras = User::where('permiso_id', 4)->get();
         $Agente = $compra->ticket->agente;
+        $agenteMail = $compra->ticket->agente->email;
 
-        $tipoRequi = Categoria::where('status','Activo')->get(); //categoria del producto
-        $cliente = $compra->ticket->cliente->zonas; //zona del cliente
-        $correos = CorreosZona::all();
-        dd($correos);
+        foreach ($compra->ticket->cliente->areas as $area) {
+            $areaCliente = $area->name;
+            // Ahora, $areaCliente contiene la propiedad de nombre del elemento actual en la colección.
+        }
+        //dd($areaCliente);
+        foreach ($compra->productos as $prod) {
+            $producto = $prod->producto->name;
+        }
+        //dd($producto);
+        foreach ($compra->servicios as $serv) {
+            $servicio = $serv->servicio->name;
+        }
+        //dd($servicio);
+
+        $tipoRequi = Categoria::where('status', 'Activo')->first('id'); //categoria del producto
+        //dd($tipoRequi);
+        $cliente = $compra->ticket->cliente->zonas->pluck('id'); //zona del cliente
+        //dd($cliente);
+        $correosZona = CorreosZona::whereIn('zona_id', $cliente)->get();
 
         // Actualiza el status de la compra
         $compra->status = 'Enviado a compras';
         $compra->save();
 
         // Notificaciones por correo según la zona del cliente y la categoría del producto
-        // Occidente
+        foreach ($correosZona as $correoZona) {
+            array_push($this->emailAddress, $correoZona->correo->correo);
+        }
+        //dd($this->emailAddress);
 
-        //Sureste
-       
+
+        //correo
+        $mailDataU = [
+            'ticket' => $compra->ticket->id,
+            'asunto' => $compra->titulo_correo,
+            'solicitadopor' => $compra->ticket->cliente->name,
+            'verificadopor' => $compra->ticket->agente->name,
+            'areacliente' => $areaCliente,
+            'fechaSolicitud' => Carbon::now(),
+            'producto' => $compra->productos->name,
+            'problema' => $compra->problema,
+            'solucion' => $compra->solucion,
+        ];
+
+        if ($tipoRequi->id == 1) {
+            // Lista de correos electrónicos en copia oculta (CCO)
+            $bccEmails = [
+                'iiuit@fullgas.com.mx',
+                'achavez@fullgas.com.mx',
+                $agenteMail,
+                // Agrega más direcciones de correo aquí...
+            ];
+
+            Mail::to($this->emailAddress)
+                ->cc($bccEmails)
+                ->send(new MailSendEmailRequisicion($mailDataU));
+        }
 
         // Notificaciones por sistema
         if (Auth::user()->permiso_id == 1) {

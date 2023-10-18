@@ -23,7 +23,8 @@
                             </select>
                             <x-input-error for="departamento"></x-input-error>
                         </div> --}}
-                {{-- <div>
+                
+                <div>
                     <x-label value="{{ __('Área') }}" for="area" />
                     <select id="area" name="area"
                         class="rounded-md dark:bg-slate-800 dark:border-gray-700" wire:model="area">
@@ -59,9 +60,8 @@
                         </select>
                         <x-input-error for="falla"></x-input-error>
                     </div>
-                @endif --}}
-                <div class="w-full">
-                    {{-- <x-label value="{{ __('Falla') }}" for="falla"/> --}}
+                @endif
+                {{-- <div class="w-full">
                     <div>Falla</div>
                     <select wire:model="falla" name="falla" id="fallaSelect" style="width: 100%;"
                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
@@ -78,7 +78,7 @@
                         @endforeach
                     </select>
                     <x-input-error for="falla"></x-input-error>
-                </div>
+                </div> --}}
                 {{-- @if ($personal)
                     <div>
                         <x-label value="{{ __('Agente') }}" for="personal" />

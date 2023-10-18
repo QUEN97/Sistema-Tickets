@@ -32,26 +32,26 @@ class NewTicket extends Component
     public function mount()
     {
     //    $this->closeExpiredTickets();
-    $this->servicios=Servicio::all();
+    // $this->servicios=Servicio::all();
     }
 
-    // public function updatedArea($id)
-    // { //El método updatedArea() se ejecuta cuando se actualiza el área seleccionada y carga los servicios correspondientes a esa área.
-    //     $this->servicios = Servicio::where('area_id', $id)->get();
-    //     $this->fallas = [];
-    //     $this->personal = [];
-    // }
-    // public function updatedServicio($id)
-    // { //El método updatedServicio() se ejecuta cuando se actualiza el servicio seleccionado y carga las fallas correspondientes a ese servicio.
-    //     $this->fallas = Falla::where('servicio_id', $id)->get();
-    //     $this->personal = [];
-    // }
+    public function updatedArea($id)
+    { //El método updatedArea() se ejecuta cuando se actualiza el área seleccionada y carga los servicios correspondientes a esa área.
+        $this->servicios = Servicio::where('area_id', $id)->get();
+        $this->fallas = [];
+        $this->personal = [];
+    }
+    public function updatedServicio($id)
+    { //El método updatedServicio() se ejecuta cuando se actualiza el servicio seleccionado y carga las fallas correspondientes a ese servicio.
+        $this->fallas = Falla::where('servicio_id', $id)->get();
+        $this->personal = [];
+    }
     public function updatedFalla($val)
     { //El método updatedFalla() se ejecuta cuando se actualiza la falla seleccionada y carga el personal asignado correspondiente a esa área.
         // $this->personal = Areas::find($this->area)->users;
-        $falla=Falla::find($val);
-        $this->servicio=$falla->servicio->id;
-        $this->area=$falla->servicio->area->id;
+        // $falla=Falla::find($val);
+        // $this->servicio=$falla->servicio->id;
+        // $this->area=$falla->servicio->area->id;
         $this->personal=Areas::find($this->area)->users;
     }
 
@@ -176,7 +176,9 @@ class NewTicket extends Component
         $agent = User::find($ticket['user_id']);
         $agent->notify(new TicketAsignadoNotificacion($ticket));
 
-       Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); //Finalmente, se muestra una alerta de éxito y se redirige a la página de tickets.
+    //    Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); 
+       session()->flash('flash.banner', 'Nuevo Ticket, el ticket se ha creado y asignado correctamente.');
+       session()->flash('flash.bannerStyle', 'success');
         return redirect()->route('tickets');
     }
 

@@ -203,8 +203,8 @@ class NewCompra extends Component
         $this->tipo=="Servicio"?$categoria="Servicio"
         : $categoria=Categoria::find($this->categoria)->name;
         $compra=$compra;
-        $nombre='R'.$compra->id.'-'.$compra->ticket->agente->name;
-        $pdf=Pdf::loadView('livewire.tickets.compras.PDFCompra',compact('categoria','compra'))->output();
+        $nombre='R'.$compra->id.'-'.$categoria.'-'.$compra->ticket->agente->name.'-'.$compra->ticket->cliente->name;
+        $pdf=Pdf::loadView('livewire.tickets.compras.PDFCompra',compact('categoria','compra','nombre'))->output();
         Storage::disk('public')->put('tck/compras/documentos/'.$nombre.'.pdf', $pdf); 
         $compra->documento='tck/compras/documentos/'.$nombre.'.pdf';
         $compra->save();

@@ -21,6 +21,7 @@ class Compra extends Model
     public function ticket():BelongsTo{
         return $this->belongsTo(Ticket::class);
     }
+   
     public function productos():HasMany{
         return $this->hasMany(CompraDetalle::class);
     }

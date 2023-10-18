@@ -2,15 +2,13 @@
     @section('title', 'Dashboard')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div
-                class="text-xl font-semibold leading-tight bg-black text-center text-white dark:bg-dark-eval-3 p-2 rounded-lg">
-                {{ $greeting }}
-            </div>
+                <x-card-greet>
+                    {{ $greeting }} 
+                </x-card-greet>
 
             {{-- @if ($valid->pivot->wr == 1)
                 @livewire('dashboard.generate-reporte')
             @endif --}}
-
         </div>
     </x-slot>
     <div class="flex flex-wrap justify-center items-center gap-3 py-3">

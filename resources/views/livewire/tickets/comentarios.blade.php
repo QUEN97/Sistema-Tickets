@@ -20,7 +20,7 @@
                         <select wire:model="status" name="status" id="status"
                             class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
                             <option hidden value="" selected>Seleccionar status</option>
-                            <option value="Abierto"@if (Auth::id() == $ticketOwner) hidden @endif>Abierto</option>
+                            <option value="Abierto"@if (Auth::id() == $ticketOwner || Auth::id() == $agente) hidden @endif>Abierto</option>
                             <option value="En proceso">En proceso</option>
                             <option value="Cerrado"@if (Auth::id() == $ticketOwner) hidden @endif>Cerrado</option>
                         </select>
