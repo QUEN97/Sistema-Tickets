@@ -38,9 +38,14 @@ class TicketReAbiertoNotification extends Notification implements ShouldBroadcas
      */
     public function toDatabase(object $notifiable): array
     {
+        $photo = isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path)
+        ? Auth::user()->profile_photo_path
+        : Auth::user()->profile_photo_url;
         return [
             'url' => route('tck.ver', $this->ticket->id),
-            'message' => "El usuario " . Auth::user()->name . " ha Abierto nuevamente el ticket #{$this->ticket->id}."
+            'photo' => $photo,
+            'user' => Auth::user()->name,
+            'message' => " ha Abierto nuevamente el ticket #{$this->ticket->id}."
         ];
     }
 

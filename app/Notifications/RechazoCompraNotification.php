@@ -36,9 +36,15 @@ class RechazoCompraNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+        $photo = isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path)
+        ? Auth::user()->profile_photo_path
+        : Auth::user()->profile_photo_url;
+
         return [
             'url' => route('requisiciones'),
-            'message' => "El usuario " .  Auth::user()->name . " " . "no autorizó la requisición #{$this->compra->id}, 
+            'photo' => $photo,
+            'user' => "El " .  Auth::user()->permiso->titulo_permiso . " " . Auth::user()->name,
+            'message' => "no autorizó la requisición #{$this->compra->id}, 
             en el ticket #{$this->compra->ticket_id}."  
         ];
     }

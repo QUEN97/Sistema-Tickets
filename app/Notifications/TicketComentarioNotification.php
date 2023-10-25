@@ -36,9 +36,14 @@ class TicketComentarioNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+        $photo = isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path)
+        ? Auth::user()->profile_photo_path
+        : Auth::user()->profile_photo_url;
         return [
             'url' => route('tck.ver', $this->ticket->id),
-            'message' => "El " .  Auth::user()->permiso->titulo_permiso . " " . Auth::user()->name . " ha realizado un comentario en el ticket #{$this->ticket->id}."
+            'photo' => $photo,
+            'user' => "El " .  Auth::user()->permiso->titulo_permiso . " " . Auth::user()->name,
+            'message' => " ha realizado un comentario en el ticket #{$this->ticket->id}."
         ];
     }
 

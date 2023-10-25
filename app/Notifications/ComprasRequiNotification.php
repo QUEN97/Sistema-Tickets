@@ -36,9 +36,14 @@ class ComprasRequiNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+        $photo = isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path)
+        ? Auth::user()->profile_photo_path
+        : Auth::user()->profile_photo_url;
         return [
             'url' => route('requisiciones'),
-            'message' => "El usuario " .  Auth::user()->name . " " . "ha Enviado a Compras la requisición #{$this->compra->id}, 
+            'photo' => $photo,
+            'user' => Auth::user()->name,
+            'message' =>  ", ha Enviado a Compras la requisición #{$this->compra->id}, 
             con el ticket #{$this->compra->ticket_id}, '{$this->compra->titulo_correo}' "  
         ];
     }

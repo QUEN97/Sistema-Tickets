@@ -40,10 +40,14 @@ class TicketAsignadoNotificacion extends Notification implements ShouldBroadcast
 
     public function toDatabase(object $notifiable): array
     {
+        $photo = isset($this->ticket->cliente->profile_photo_path) && !empty($this->ticket->cliente->profile_photo_path)
+        ? $this->ticket->cliente->profile_photo_path
+        : $this->ticket->cliente->profile_photo_url;
         return [
             'url' => route('tickets', $this->ticket->id),
-            'message' => "Hola {$this->ticket->agente->name}, el usuario {$this->ticket->cliente->name} 
-            necesita tu apoyo con el ticket #{$this->ticket->id}, '{$this->ticket->falla->name}'."
+            'photo' => $photo,
+            'user' => $this->ticket->cliente->name,
+            'message' => ", necesita tu apoyo con el ticket #{$this->ticket->id}, '{$this->ticket->falla->name}'."
         ];
     }
 

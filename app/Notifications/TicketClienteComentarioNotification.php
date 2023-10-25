@@ -38,9 +38,14 @@ class TicketClienteComentarioNotification extends Notification implements Should
      */
     public function toDatabase(object $notifiable): array
     {
+        $photo = isset($this->ticket->agente->profile_photo_path) && !empty($this->ticket->agente->profile_photo_path)
+        ? $this->ticket->agente->profile_photo_path
+        : $this->ticket->agente->profile_photo_url;
         return [
             'url' => route('tck.ver', $this->ticket->id),
-            'message' => "Hola {$this->ticket->cliente->name}, {$this->ticket->agente->name} ha realizado un nuevo comentario para el ticket 
+            'photo' => $photo,
+            'user' => $this->ticket->agente->name,
+            'message' => ", ha realizado un nuevo comentario para el ticket 
             #{$this->ticket->id}." 
         ];
     }

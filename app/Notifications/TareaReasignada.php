@@ -36,10 +36,16 @@ class TareaReasignada extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
-        $newAssignedUserName = $notifiable->name;
+        $photo = isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path)
+        ? Auth::user()->profile_photo_path
+        : Auth::user()->profile_photo_url;
+
+        //$newAssignedUserName = $notifiable->name;
         return [
             'url' => route('tareas'),
-            'message' => "Hola {$newAssignedUserName}, el usuario " .  Auth::user()->name . " te ha reasignado la tarea #{$this->tarea->id}, en el ticket #{$this->tarea->ticket_id}."
+            'photo' => $photo,
+            'user' => "El " .  Auth::user()->permiso->titulo_permiso . " " . Auth::user()->name,
+            'message' => " te ha reasignado la tarea #{$this->tarea->id}, en el ticket #{$this->tarea->ticket_id}."
         ];
     }
 

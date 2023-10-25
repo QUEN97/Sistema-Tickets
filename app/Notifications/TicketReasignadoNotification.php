@@ -36,9 +36,14 @@ class TicketReasignadoNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+        $photo = isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path)
+        ? Auth::user()->profile_photo_path
+        : Auth::user()->profile_photo_url;
         return [
             'url' => route('tck.ver', $this->ticket->id),
-            'message' => "Hola {$this->ticket->agente->name}, el usuario " . Auth::user()->name . " te ha reasignado el ticket #{$this->ticket->id}." 
+            'photo' => $photo,
+            'user' => Auth::user()->name,
+            'message' => " te ha reasignado el ticket #{$this->ticket->id}." 
         ];
     }
 

@@ -31,14 +31,27 @@
             </div>
             <div class="max-h-[320px] overflow-y-auto">
                 @if (auth()->user()->notifications->count())
-                    <ul class="divide-y">
+                    <ul class="divide-y divide-gray-100">
                         @foreach (auth()->user()->notifications as $notification)
-                            <li @class(['bg-blue-200' => !$notification->read_at]) wire:click="readNotification('{{ $notification->id }}')">
+                            <li wire:click="readNotification('{{ $notification->id }}')" @class(['bg-blue-200' => !$notification->read_at])>
                                 <x-dropdown-link href="{{ $notification->data['url'] }}">
-                                    {{ $notification->data['message'] }}
-                                    <br>
-                                    <span
-                                        class="text-xs font-semibold">{{ $notification->created_at->diffForHumans() }}</span>
+                                    <div class="flex">
+                                        @if (isset($notification->data['photo']))
+                                            <!-- Verifica si la propiedad "photo" existe -->
+                                            <img class="h-10 w-10 rounded-full object-cover"
+                                                src="{{ $notification->data['photo'] }}"
+                                                alt="{{ $notification->data['user'] }}">
+                                        @endif
+                                        <div class="flex-1 ml-4">
+                                            @if (isset($notification->data['user']))
+                                                <b>{{ $notification->data['user'] }}</b>
+                                            @endif
+                                            {{ $notification->data['message'] }}
+                                            <span class="block text-sm text-blue-600">
+                                                {{ $notification->created_at->diffForHumans() }}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </x-dropdown-link>
                             </li>
                             <div class="border-t border-gray-100 dark:border-gray-700"></div>
