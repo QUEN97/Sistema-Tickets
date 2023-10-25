@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\Tickets\Compras;
 
-use App\Mail\SendEmailRequisicion as MailSendEmailRequisicion;
+use App\Mail\SendEmailRequi;
+use App\Mail\SendEmailRequiGT;
+use App\Mail\SendEmailRequisicion;
 use App\Models\Categoria;
 use App\Models\Compra;
+use App\Models\CorreosServicio;
 use App\Models\CorreosZona;
 use App\Models\Permiso;
 use App\Models\Tarea;
@@ -16,7 +19,6 @@ use App\Notifications\AprobadaCompraNotification;
 use App\Notifications\CompletadaCompraAgenteNotification;
 use App\Notifications\CompletadaCompraNotification;
 use App\Notifications\ComprasRequiNotification;
-use App\Notifications\SendEmailRequisicion;
 use App\Notifications\TareaAsignadaNotification;
 use App\Notifications\TareaRequisicionNotification;
 use Carbon\Carbon;
@@ -28,23 +30,57 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class AcepCompra extends Component
 {
-    public $compraID, $status, $permiso, $personal, $asignado, $emailAddress = [];
+    public $compraID, $status, $permiso, $personal,
+        $asignado, $emailAddress = [], $emailAddressServ = [],
+        $open = false,$mailPS,$bccEmails;
 
     public function mount()
     {
         $this->permiso = Permiso::findOrFail(4);
         $this->personal = $this->permiso->users;
         //dd($this->personal);
+
+        $compra=Compra::findOrFail($this->compraID);
+        $cliente = $compra->ticket->cliente->zonas->pluck('id');
+        $catego = null;
+        foreach ($compra->productos as $prod) {
+            $catego = $prod->producto->categoria->id;
+        }
+        $correosZona = CorreosZona::whereIn('zona_id', $cliente)->where('categoria_id', $catego)->get();
+        $emailAddress = [];
+        foreach ($correosZona as $correoZona) {
+            $email = $correoZona->correo->correo;
+            if (!in_array($email, $emailAddress)) {//se verifica si ya existe en el array utilizando in_array. Si ya existe, no se agrega nuevamente, lo que evita duplicados en los arrays.
+                $emailAddress[] = $email;
+            }
+        }
+        $correosServicio = CorreosServicio::whereIn('zona_id', $cliente)->get();
+        $emailAddressServ = [];
+        foreach ($correosServicio as $correoServicio) {
+            $email = $correoServicio->correo->correo;
+            if (!in_array($email, $emailAddressServ)) {//se verifica si ya existe en el array utilizando in_array. Si ya existe, no se agrega nuevamente, lo que evita duplicados en los arrays.
+                $emailAddressServ[] = $email;
+            }
+        }
+        $this->mailPS = $compra->productos->count() > 0 ? $emailAddress : $emailAddressServ;
+
+        $agenteMail = $compra->ticket->agente->email; //email del agente
+        $this->bccEmails = [
+            'iiuit@fullgas.com.mx', //Irvin Iuit
+            'achavez@fullgas.com.mx', //Arlenny Chavez
+            $agenteMail, //Obtenemos el mail del agente 
+            // Agrega más direcciones de correo aquí...
+        ];
     }
     //función para encontrar el agente con permiso de compras con menor cant. de tareas asignados el día de hoy
     public function agenteDisponible()
     {
         $desocupado = [];
         $disponible = [];
-        foreach ($this->personal as $key => $personal) {
-            if ($personal->status === 'Activo') {
-                $desocupado[$key]['id'] = $personal->id;
-                $desocupado[$key]['cant'] = $personal->tareasHoy->count();
+        foreach ($this->personal as $key => $personal) { // En el Mount definimos que $this->personal sean usuarios Compra
+            if ($personal->status === 'Activo') { //Personal con status Activo
+                $desocupado[$key]['id'] = $personal->id; //tomamos el id
+                $desocupado[$key]['cant'] = $personal->tareasHoy->count(); //validamos total de asignamiento
             }
         }
         if (empty($this->personal)) {
@@ -67,40 +103,51 @@ class AcepCompra extends Component
         }
     }
 
-    //aprobar requisición - Notificar al agente
+    //Aprobar requisición - Notificar al agente - Crear tarea
     public function aprobar(Compra $compra)
     {
-        $Admins = User::where('permiso_id', 1)->get();
+        $Admins = User::where('permiso_id', 1)->get(); //Usuarios Administradores
         //$Compras = User::where('permiso_id', 4)->get();
-        $Agente = $compra->ticket->agente;
+        $Agente = $compra->ticket->agente; // Usuario Agente
 
-        $this->asignado = $this->agenteDisponible();
+        $this->asignado = $this->agenteDisponible(); // Llamado a la función disponibilidad de agente
         //dd($this->asignado);
 
+        // Se cambia el Status de la compra 
         $compra->status = 'Aprobado';
         $compra->save();
 
+        //Creamos tarea al Agente con perfil de Compras
         $tarea = new Tarea();
-        $tarea->asunto = 'Requisición ' . $compra->id;
-        $tarea->mensaje = 'Tarea creada para llevar a cabo el debido seguimiento para la requisición, por parte del área de Compras';
+        $tarea->asunto = 'Requisición #' . $compra->id;
+        $tarea->mensaje = 'Tarea creada para llevar a cabo el debido seguimiento para la requisición, por parte de Compras';
         $tarea->ticket_id = $compra->ticket->id;
         $tarea->user_id = Auth::user()->id;
         $tarea->user_asignado = $this->asignado;
 
+        // Guardar la tarea en la base de datos
         $tarea->save();
 
-        $asignadoUser = User::find($this->asignado);
+        $tareaId = $tarea->id; // ID de la tarea creada anteriormente
+        $compraId = $compra->id; // ID de la compra aprobada
+
+        // Relacionamos la tarea con la compra y la almacenamos en la tabla pivote "tarea_compra"
+        $tarea->compras()->attach($compraId);
+
+        $asignadoUser = User::find($this->asignado); //  Usuario asignado a la tarea
         //dd($asignadoUser);
-        $notification = new TareaRequisicionNotification($tarea, $this->compraID);
+        $notification = new TareaRequisicionNotification($tarea, $this->compraID); // le enviamos notificacion de la tarea al usuario
         $asignadoUser->notify($notification);
 
+        // Notificaciones por sistema
         if (Auth::user()->permiso_id == 1) {
-            // Notification::send($Compras, new AprobadaCompraNotification($compra));
+            // Notification::send($Compras, new AprobadaCompraNotification($compra)); Desactivada por ambiguedad de notif
             Notification::send($Agente, new AprobadaCompraNotification($compra));
         } elseif (Auth::user()->permiso_id == 4) {
             Notification::send($Admins, new AprobadaCompraNotification($compra));
             Notification::send($Agente, new AprobadaCompraNotification($compra));
         }
+
         // Alert::success('Aprobado','La requisición ha sido aprobada');
         session()->flash('flash.banner', 'Requisición Aprobada, se ha creado una tarea a "' . $asignadoUser->name . '" para realizar el seguimiento.');
         session()->flash('flash.bannerStyle', 'success');
@@ -111,67 +158,97 @@ class AcepCompra extends Component
     //enviar a compras
     public function enviar(Compra $compra)
     {
-        $Admins = User::where('permiso_id', 1)->get();
-        $Compras = User::where('permiso_id', 4)->get();
-        $Agente = $compra->ticket->agente;
-        $agenteMail = $compra->ticket->agente->email;
+        $Admins = User::where('permiso_id', 1)->get(); //Administradores
+        $Compras = User::where('permiso_id', 4)->get(); //Compras
+        $Agente = $compra->ticket->agente; // id del agente
+        $agenteMail = $compra->ticket->agente->email; //email del agente
 
-        foreach ($compra->ticket->cliente->areas as $area) {
+        foreach ($compra->ticket->cliente->areas as $area) { //mediante este foreach anidado obtenemos del area actual del cliente
             $areaCliente = $area->name;
             // Ahora, $areaCliente contiene la propiedad de nombre del elemento actual en la colección.
         }
         //dd($areaCliente);
-        foreach ($compra->productos as $prod) {
+        foreach ($compra->productos as $prod) { //mediante este foreach anidado obtenemos del array el nombre del producto
             $producto = $prod->producto->name;
         }
         //dd($producto);
-        foreach ($compra->servicios as $serv) {
+        foreach ($compra->servicios as $serv) { //mediante este foreach anidado obtenemos del array el nombre del servicio
             $servicio = $serv->servicio->name;
         }
         //dd($servicio);
 
-        $tipoRequi = Categoria::where('status', 'Activo')->first('id'); //categoria del producto
-        //dd($tipoRequi);
         $cliente = $compra->ticket->cliente->zonas->pluck('id'); //zona del cliente
-        //dd($cliente);
-        $correosZona = CorreosZona::whereIn('zona_id', $cliente)->get();
+
+        $clienter = $compra->ticket->cliente->zonas->first()->regions[0]->id;
+        //dd($clienter);
+
+        $catego = null;
+        foreach ($compra->productos as $prod) { //categoria del producto
+            $catego = $prod->producto->categoria->id;
+        }
+        //dd($catego);
+
+        $correosZona = CorreosZona::whereIn('zona_id', $cliente)->where('categoria_id', $catego)->get();
+        foreach ($correosZona as $correoZona) { //correos por zona y categoria de requisición, Productos
+            array_push($this->emailAddress, $correoZona->correo->correo);
+        }
+        //dd($this->emailAddress)
+
+        $correosServicio = CorreosServicio::whereIn('zona_id', $cliente)->get();
+        foreach ($correosServicio as $correoServicio) { //correos por zona, Servicios
+            array_push($this->emailAddressServ, $correoServicio->correo->correo);
+        }
+        //dd($this->emailAddressServ);
+
+        $catPS = $compra->productos->count() > 0 ? 'Producto' : 'Servicio';
+        $mailPS = $compra->productos->count() > 0 ? $this->emailAddress : $this->emailAddressServ;
+        //dd($catPS);
 
         // Actualiza el status de la compra
         $compra->status = 'Enviado a compras';
         $compra->save();
 
-        // Notificaciones por correo según la zona del cliente y la categoría del producto
-        foreach ($correosZona as $correoZona) {
-            array_push($this->emailAddress, $correoZona->correo->correo);
-        }
-        //dd($this->emailAddress);
+        // Accede a la tarea relacionada
+        $tarea = $compra->tareas->first(); // Esto obtendría la primera tarea relacionada
+        //dd($tarea);
+        $tarea->status = 'En Proceso';
+        $tarea->save();
 
-
-        //correo
+        // Propiedades para el correo
         $mailDataU = [
-            'ticket' => $compra->ticket->id,
-            'asunto' => $compra->titulo_correo,
-            'solicitadopor' => $compra->ticket->cliente->name,
-            'verificadopor' => $compra->ticket->agente->name,
-            'areacliente' => $areaCliente,
-            'fechaSolicitud' => Carbon::now(),
-            'producto' => $compra->productos->name,
-            'problema' => $compra->problema,
-            'solucion' => $compra->solucion,
+            'ticket' => $compra->ticket->id, //Atraves de la compra obtenemos el ID del ticket 
+            'asunto' => $compra->titulo_correo, //Asunto del correo
+            'solicitadopor' => $compra->ticket->cliente->name, // Usuario Cliente, quien creo el ticket
+            'verificadopor' => $compra->ticket->agente->name, // Usuario agente, quien lleva seguimiento del ticket (Asignado)
+            'areacliente' => $areaCliente, //Área del cliente
+            'fechaSolicitud' => Carbon::now(), //fecha actual
+            'prodserv' => $compra->productos->count() > 0 ? $producto : $servicio, //El nombre del producto o servicio
+            'catPS' => $catPS, //Categoría Producto o Servicio
+            'problema' => $compra->problema, // de la requisición
+            'solucion' => $compra->solucion, // de la requisición
         ];
 
-        if ($tipoRequi->id == 1) {
-            // Lista de correos electrónicos en copia oculta (CCO)
-            $bccEmails = [
-                'iiuit@fullgas.com.mx',
-                'achavez@fullgas.com.mx',
-                $agenteMail,
-                // Agrega más direcciones de correo aquí...
-            ];
+        //En todas las requisiciones sin importar zona, se envia correo con copia a irvin, arlenny y al agente
+        $bccEmails = [
+            'iiuit@fullgas.com.mx', //Irvin Iuit
+            'achavez@fullgas.com.mx', //Arlenny Chavez
+            $agenteMail, //Obtenemos el mail del agente 
+            // Agrega más direcciones de correo aquí...
+        ];
 
-            Mail::to($this->emailAddress)
-                ->cc($bccEmails)
-                ->send(new MailSendEmailRequisicion($mailDataU));
+        //Correo
+        if($clienter == 3){//Occidente
+        Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
+            ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
+            ->send(new SendEmailRequi($mailDataU)); //Pasamos la propiedades a la vista del correo
+        }elseif($clienter == 4){//Sureste
+            Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
+            ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
+            ->send(new SendEmailRequisicion($mailDataU)); //Pasamos la propiedades a la vista del correo
+        }elseif($clienter == 2){//Guatemala
+            Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
+            ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
+            ->send(new SendEmailRequiGT($mailDataU)); //Pasamos la propiedades a la vista del correo
         }
 
         // Notificaciones por sistema
@@ -186,6 +263,7 @@ class AcepCompra extends Component
         // Alert::success('Enviado','La requisición ha sido enviada al departamento de compras');
         session()->flash('flash.banner', 'La requisición ha sido enviada a Compras');
         session()->flash('flash.bannerStyle', 'success');
+
         return redirect()->route('requisiciones');
     }
 
@@ -198,6 +276,12 @@ class AcepCompra extends Component
 
         $compra->status = 'Completado';
         $compra->save();
+
+        // Accede a la tarea relacionada
+        $tarea = $compra->tareas->first(); // Esto obtendría la primera tarea relacionada
+        //dd($tarea);
+        $tarea->status = 'Cerrado';
+        $tarea->save();
 
         if (Auth::user()->permiso_id == 1) {
             Notification::send($Compras, new CompletadaCompraNotification($compra));

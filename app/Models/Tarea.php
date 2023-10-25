@@ -24,6 +24,11 @@ class Tarea extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function compras()
+{
+    return $this->belongsToMany(Compra::class, 'tarea_compra', 'tarea_id', 'compra_id');
+}
    
 
 //    public static function boot()

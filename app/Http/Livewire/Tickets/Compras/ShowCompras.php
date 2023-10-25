@@ -17,7 +17,7 @@ class ShowCompras extends Component
         //dd($compra->evidencias);
         Storage::disk('public')->delete($compra->documento);
         foreach($compra->evidencias as $ev){
-            Storage::disk('public')->delete($ev->archivo_path);
+            Storage::disk('public')->delete($ev->product_photo_path);
         }
         $compra->delete();
         Alert::warning('Eliminado','La requisición ha sido eliminada permanentemente');

@@ -1,4 +1,4 @@
-<div >
+<div>
     <x-button class="float-right" wire:click="showModalFormZona">
         <i class="fa-solid fa-user-plus"></i>
         {{ __('Nueva Zona') }}
@@ -13,10 +13,21 @@
             <div class="flex flex-wrap">
                 <div class="mb-3 mr-2 ">
                     <x-label value="{{ __('Nombre') }}" />
-    
-                    <x-input wire:model="name" class="uppercase {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text"
-                        name="name" :value="old('name')" required autofocus autocomplete="name" />
+
+                    <x-input wire:model="name" class="uppercase {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                        type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
                     <x-input-error for="name"></x-input-error>
+                </div>
+                <div class="mb-3 mr-2 ">
+                    <x-label value="{{ __('Región') }}" />
+                    <select wire:model="region" name="region" id="region"
+                        class="rounded-md dark:bg-slate-800 dark:border-gray-700">
+                        <option hidden value="" selected>Seleccionar región</option>
+                        @foreach ($regions as $region)
+                            <option value="{{ $region->id }}">{{ $region->name }}</option>
+                        @endforeach
+                    </select>
+                    <x-input-error for="region"></x-input-error>
                 </div>
             </div>
         </x-slot>

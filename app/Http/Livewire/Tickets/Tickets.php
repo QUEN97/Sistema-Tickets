@@ -17,6 +17,11 @@ use Carbon\Carbon;
 class Tickets extends Component
 {
     public $c,$zonas,$orden;
+    public $perPage = 10;
+    public $search = '';
+    public $orderBy = 'id';
+    public $orderAsc = true;
+
     public function mount(){
         $this->c=session('view_tck');
         session('orden_tck')?$this->orden=session('orden_tck'):$this->orden='desc';
@@ -449,4 +454,5 @@ class Tickets extends Component
         //dd($request->zona);
         return view('livewire.tickets.tickets',compact('tickets'));
     }
+
 }

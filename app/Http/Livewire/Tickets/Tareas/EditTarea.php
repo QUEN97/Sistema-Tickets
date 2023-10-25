@@ -12,20 +12,21 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class EditTarea extends Component
 {
-    public $modal=false;
+    public $modal = false;
     public $tareaID;
     public $ticketID;
-    public $asunto,$user_asignado;
-    public $mensaje,$status;
+    public $asunto, $user_asignado;
+    public $mensaje, $status;
 
-    public function editTarea(Tarea $tarea){
+    public function editTarea(Tarea $tarea)
+    {
         $this->tareaID = $tarea->id;
         $this->ticketID = $tarea->ticket_id;
         $this->asunto = $tarea->asunto;
         $this->mensaje = $tarea->mensaje;
         $this->status = $tarea->status;
         $this->user_asignado = $tarea->user_asignado;
-        $this->modal=true;
+        $this->modal = true;
     }
 
     public function updateTarea()
@@ -38,22 +39,22 @@ class EditTarea extends Component
 
         $tarea = Tarea::findOrFail($this->tareaID);
 
-                //Revisa si el usuario asignado es distinto al actual
-    if ($tarea->user_asignado != $this->user_asignado) {
-        // Notificar tarea reasignada
-        $newAssignedUser = User::findOrFail($this->user_asignado);
-        $newAssignedUser->notify(new TareaReasignada($tarea));
-    }
-    
-    // Actualizar atributos
+        //Revisa si el usuario asignado es distinto al actual
+        if ($tarea->user_asignado != $this->user_asignado) {
+            // Notificar tarea reasignada
+            $newAssignedUser = User::findOrFail($this->user_asignado);
+            $newAssignedUser->notify(new TareaReasignada($tarea));
+        }
+
+        // Actualizar atributos
         $tarea->asunto = $this->asunto;
         $tarea->mensaje = $this->mensaje;
         $tarea->status = $this->status;
         $tarea->user_asignado = $this->user_asignado;
         $tarea->save();
 
-    
-     //dd($this->user_asignado);
+
+        //dd($this->user_asignado);
         $this->modal = false;
 
         // Show success message
@@ -66,11 +67,11 @@ class EditTarea extends Component
     {
         $ticket = Ticket::find($this->ticketID);
         // $agentes = [];
-    
+
         // if ($ticket && $ticket->falla && $ticket->falla->servicio && $ticket->falla->servicio->area) {
         //     $agentes = $ticket->falla->servicio->area->users;
         // }
-        $agentes = User::where('status','Activo')->whereNotIn('permiso_id',[3,6,2])->get();
-        return view('livewire.tickets.tareas.edit-tarea',compact('agentes'));
+        $agentes = User::where('status', 'Activo')->whereNotIn('permiso_id', [3, 6, 2])->get();
+        return view('livewire.tickets.tareas.edit-tarea', compact('agentes'));
     }
 }

@@ -9,11 +9,12 @@
                         <select name="filter" id="filter"
                             class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white">
                             <option value="">Todos</option>
-                                @foreach ($permisos as $permiso)
-                                    <option value="{{ $permiso->id }}"
-                                        {{ request('filter') == $permiso->id ? 'selected' : '' }}>{{ $permiso->titulo_permiso }}
-                                    </option>
-                                @endforeach
+                            @foreach ($permisos as $permiso)
+                                <option value="{{ $permiso->id }}"
+                                    {{ request('filter') == $permiso->id ? 'selected' : '' }}>
+                                    {{ $permiso->titulo_permiso }}
+                                </option>
+                            @endforeach
                         </select>
                         <div class="absolute top-0 left-0 mt-3 ml-3">
                             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -62,10 +63,10 @@
                 <tr>
                     <th
                         class=" p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Nombre</th>
-                    <th
+                        Usuario</th>
+                    {{-- <th
                         class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Email</th>
+                        Email</th> --}}
                     <th
                         class=" p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
                         Zona/Área</th>
@@ -85,22 +86,42 @@
                 @if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
                     @forelse ($users as $user)
                         <tr>
-                            <td
-                                class="w-full lg:w-auto p-3 text-center border border-b block lg:table-cell relative lg:static dark:border-gray-800">
+                            <th class="flex gap-3 px-6 py-4 font-normal text-gray-900 ">
                                 <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
-                                <div class="text-sm">
-                                    <div class="font-medium text-gray-700 dark:text-gray-400">{{ $user->name }}</div>
-                                    <div class="text-gray-400 dark:ttext-gray-400">{{ $user->permiso->titulo_permiso }}
-                                    </div>
+                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Usuario</span>
+                                <div class="relative h-10 w-10">
+                                    @if ($user->profile_photo_path)
+                                        <div
+                                            onclick="window.location.href='{{ asset('/storage/' . $user->profile_photo_path) }}'">
+                                            <img class="h-10 w-10 rounded-full object-cover"
+                                                src="/storage/{{ $user->profile_photo_path }}"
+                                                alt="{{ $user->name }}" />
+                                        </div>
+                                    @else
+                                        <div onclick="window.location.href='{{ asset($user->profile_photo_url) }}'">
+                                            <img class="object-cover w-10 h-10 rounded-full"
+                                                src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" />
+                                        </div>
+                                    @endif
+                                    @if (Cache::has('user-is-online-' . $user->id))
+                                        <span
+                                            class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
+                                    @else
+                                        <span
+                                            class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-red-600 ring ring-white"></span>
+                                    @endif
                                 </div>
-                            </td>
-                            <td
+                                <div class="text-sm">
+                                    <div class="font-medium text-gray-700">{{ $user->name }}</div>
+                                    <div class="text-gray-400">{{ $user->permiso->titulo_permiso }}</div>
+                                </div>
+                            </th>
+                            {{-- <td
                                 class="w-full lg:w-auto p-3 dark:text-gray-400 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Email</span>
                                 {{ $user->email }}
-                            </td>
+                            </td> --}}
                             <td
                                 class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
                                 <span

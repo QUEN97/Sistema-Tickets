@@ -36,4 +36,8 @@ class Compra extends Model
     {
         return $this->hasMany(ComentariosCompra::class)->orderBy('id','DESC');
     }
+    public function tareas()
+{
+    return $this->belongsToMany(Tarea::class, 'tarea_compra', 'compra_id', 'tarea_id');
+}
 }

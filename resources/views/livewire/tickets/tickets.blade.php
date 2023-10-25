@@ -212,7 +212,7 @@
                                     </svg>
                                     <span class="tooltiptext">Ver Más</span>
                                 </a>
-                                @if (!in_array(Auth::user()->permiso_id, [2, 3, 6])) 
+                                @if (!in_array(Auth::user()->permiso_id, [2, 3, 6]))
                                     {{-- Requisiciones --}}
                                     @livewire('tickets.compras.show-compras', ['ticketID' => $tck->id], key('compra' . $tck->id))
                                     {{-- Tareas --}}

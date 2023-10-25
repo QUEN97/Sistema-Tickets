@@ -201,7 +201,7 @@
                                                                     style="color:#000000;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:21px;">
                                                                     <p style="margin: 0; margin-bottom: 16px;"><span
                                                                             style="color: #000100;">Buen día Lic. <span
-                                                                                style="color: #000000;"><strong>MAGDALENA</strong></span></span>
+                                                                                style="color: #000000;"><strong>ISABEL</strong></span></span>
                                                                     </p>
                                                                     <p style="margin: 0;"><span
                                                                             style="color: #000100;"><span
