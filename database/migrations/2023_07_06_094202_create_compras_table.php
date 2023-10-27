@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('problema',1000);
             $table->string('documento')->nullable();
             $table->string('com_rev',1000)->nullable();
+            $table->string('mensaje_opcion',1000)->nullable();
             $table->string('status',50);
             $table->timestamps();
             $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');

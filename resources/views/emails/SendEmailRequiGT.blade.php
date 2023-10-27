@@ -141,7 +141,8 @@
                                                                     style="margin: 0; color: #555555; direction: ltr; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: normal; line-height: 200%; text-align: center; margin-top: 0; margin-bottom: 0;">
                                                                     <span class="tinyMce-placeholder"><span
                                                                             style="color: #000000;">REQUISICIÓN DE
-                                                                            {{  mb_strtoupper($mailDataU['catPS']) }}</span></span></h2>
+                                                                            {{ mb_strtoupper($mailDataU['catPS']) }}</span></span>
+                                                                </h2>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -159,7 +160,8 @@
                                                                         <p
                                                                             style="margin: 0; font-size: 15px; text-align: left; mso-line-height-alt: 22.5px; letter-spacing: normal;">
                                                                             <strong><span style="color:#000100;">Fecha
-                                                                                    de Solicitud:</span></strong></p>
+                                                                                    de Solicitud:</span></strong>
+                                                                        </p>
                                                                         <p
                                                                             style="margin: 0; font-size: 15px; text-align: left; mso-line-height-alt: 22.5px; letter-spacing: normal;">
                                                                             <span
@@ -209,7 +211,7 @@
                                                                                 siguiente requisición
                                                                                 solicitando: <span
                                                                                     style="color: #000000;"><em><strong>
-                                                                                                {{  mb_strtoupper($mailDataU['prodserv']) }}
+                                                                                            {{ mb_strtoupper($mailDataU['prodserv']) }}
                                                                                         </strong></em></span></span></span>
                                                                     </p>
                                                                 </div>
@@ -290,7 +292,15 @@
                                                                         <p
                                                                             style="margin: 0; mso-line-height-alt: 18px; letter-spacing: normal;">
                                                                             <strong>SOLUCIÓN:
-                                                                            </strong>{{ $mailDataU['solucion'] }}</p>
+                                                                            </strong>{{ $mailDataU['solucion'] }}
+                                                                        </p>
+                                                                        @if (isset($mailDataU['mensaje']))
+                                                                            <p
+                                                                                style="margin: 0; mso-line-height-alt: 18px; letter-spacing: normal;">
+                                                                                <strong>NOTA:
+                                                                                </strong>{{ $mailDataU['mensaje'] }}
+                                                                            </p>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                             </td>

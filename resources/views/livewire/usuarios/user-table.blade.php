@@ -3,7 +3,7 @@
     <div class="w-full">
         <div class="flex gap-1 flex-col">
             <form action="{{ route('users') }}" method="GET">
-                <div class="flex">
+                <div class="flex mb-3">
                     <div class="relative mr-4">
                         <label for="filter" class="sr-only">Filtrar por departamento</label>
                         <select name="filter" id="filter"
@@ -45,16 +45,6 @@
 
                 </div>
             </form>
-            <div class="mb-2">
-                <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
-                    href="{{ route('users.trashed') }}">
-                    Eliminados
-                    <span
-                        class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                        {{ $trashed }}
-                    </span>
-                </a>
-            </div>
         </div>
         <table
             class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
@@ -126,21 +116,23 @@
                                 class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Zonas</span>
-                                @if ($user->zonas->count() > 0)
+                                <div class="flex flex-wrap">
+                                    {{-- @if ($user->zonas->count() > 0) --}}
                                     @foreach ($user->zonas as $zona)
                                         <span
                                             class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600  dark:bg-red-900 dark:text-red-300">
                                             {{ $zona->name }}
                                         </span>
                                     @endforeach
-                                @else
+                                {{-- @else --}}
                                     @foreach ($user->areas as $area)
                                         <span
                                             class="inline-flex items-center gap-1 rounded-full bg-sky-600 px-2 py-1 text-xs font-semibold text-white">
                                             {{ $area->name }}
                                         </span>
                                     @endforeach
-                                @endif
+                                {{-- @endif --}}
+                                </div>
                             </td>
                             <td
                                 class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">

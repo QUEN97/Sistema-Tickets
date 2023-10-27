@@ -12,7 +12,7 @@
 
     <x-dialog-modal wire:model="EditUsuario" id="EditUsuario{{ $user_edit_id }}" class="flex items-center">
         <x-slot name="title">
-            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-1 rounded-md text-white text-center">
                 {{ __('Editar Usuario') }}
             </div>
         </x-slot>
@@ -60,7 +60,7 @@
                         </select>
                         <x-input-error for="role"></x-input-error>
                     </div>
-                    @if ($areau)
+                    {{-- @if ($areau) --}}
                         <div class="mb-3 col-6">
                             <x-label value="{{ __('Area') }}" />
                             <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
@@ -69,14 +69,14 @@
                                         <input type="checkbox" wire:model="areasUpdate" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                                         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" value="{{ $tag->id }}"
                                             name="names[]" id="{{ $tag->name }}" multiple>
-                                        <label for="{{ $tag->name }}">{{ $tag->name }}</label>
+                                        <label for="{{ $tag->name }}"  @if (old('areasUpdate') == $tag->id) selected @endif>{{ $tag->name }}</label>
                                     </div>
                                 @endforeach
                             </div>
                             <x-input-error for="area"></x-input-error>
                         </div>
-                    @endif
-                    @if ($zonau)
+                    {{-- @endif
+                    @if ($zonau) --}}
                         <div class="mb-3 col-6">
                             <x-label value="{{ __('Zona') }}" />
                             <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
@@ -85,13 +85,13 @@
                                         <input type="checkbox" wire:model="zonasUpdate" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                                         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" value="{{ $tag->id }}"
                                             name="names[]" id="{{ $tag->name }}" multiple>
-                                        <label for="{{ $tag->name }}">{{ $tag->name }}</label>
+                                        <label for="{{ $tag->name }}" @if (old('zonasUpdate') == $tag->id) selected @endif>{{ $tag->name }}</label>
                                     </div>
                                 @endforeach
                             </div>
                             <x-input-error for="zona"></x-input-error>
                         </div>
-                    @endif
+                    {{-- @endif --}}
                 </div>
                 <div class="flex gap-2 mb-3">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">

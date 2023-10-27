@@ -108,7 +108,13 @@
                         <p>No se encontraron correos electrónicos.</p>
                     @endif
 
-                    @if (count($bccEmails) > 0)
+                    <div class="mb-3">
+                        <x-label value="{{ __('Comentario de envío') }}" />
+    
+                        <x-input wire:model="mensaje" class="uppercase {{ $errors->has('mensaje') ? 'is-invalid' : '' }}"
+                            type="text" name="mensaje" :value="old('mensaje')" autocomplete="mensaje" />
+                    </div>
+                    {{-- @if (count($bccEmails) > 0)
                         <x-card-warn>
                             {{ __('Con copia a los siguientes correos:') }}
                             <br>
@@ -130,7 +136,7 @@
                         </ul>
                     @else
                         <p>No se encontraron correos electrónicos.</p>
-                    @endif
+                    @endif --}}
                 </x-slot>
 
                 <x-slot name="footer" class="d-none">

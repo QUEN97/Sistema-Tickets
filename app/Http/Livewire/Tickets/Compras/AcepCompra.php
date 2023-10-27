@@ -32,7 +32,7 @@ class AcepCompra extends Component
 {
     public $compraID, $status, $permiso, $personal,
         $asignado, $emailAddress = [], $emailAddressServ = [],
-        $open = false,$mailPS,$bccEmails;
+        $open = false,$mailPS,$bccEmails, $mensaje_opcion, $mensaje;
 
     public function mount()
     {
@@ -206,6 +206,8 @@ class AcepCompra extends Component
 
         // Actualiza el status de la compra
         $compra->status = 'Enviado a compras';
+        $compra->mensaje_opcion = $this->mensaje;
+        //dd($this->mensaje);
         $compra->save();
 
         // Accede a la tarea relacionada
@@ -226,6 +228,7 @@ class AcepCompra extends Component
             'catPS' => $catPS, //Categoría Producto o Servicio
             'problema' => $compra->problema, // de la requisición
             'solucion' => $compra->solucion, // de la requisición
+            'mensaje' => $compra->mensaje_opcion,
         ];
 
         //En todas las requisiciones sin importar zona, se envia correo con copia a irvin, arlenny y al agente
@@ -241,7 +244,7 @@ class AcepCompra extends Component
         Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
             ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
             ->send(new SendEmailRequi($mailDataU)); //Pasamos la propiedades a la vista del correo
-        }elseif($clienter == 4){//Sureste
+        }elseif($clienter == 4 || $clienter == 1){//Sureste
             Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
             ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
             ->send(new SendEmailRequisicion($mailDataU)); //Pasamos la propiedades a la vista del correo

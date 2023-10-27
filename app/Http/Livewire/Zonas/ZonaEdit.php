@@ -79,7 +79,7 @@ class ZonaEdit extends Component
     }
     public function render()
     {
-        $regions = Region::where('status', 'Activo')->whereNotIn('id', [1])->get(); // Regiones
+        $regions = Region::where('status', 'Activo')->whereNotIn('id', [2])->get(); // Regiones
         return view('livewire.zonas.zona-edit',['regions'=>$regions]);
     }
 }

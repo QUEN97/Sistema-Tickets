@@ -75,7 +75,7 @@
                         </select>
                         <x-input-error for="permiso"></x-input-error>
                     </div>
-                    @if ($zonau)
+                    {{-- @if ($zonau) --}}
                         <div class="md:w-1/2 px-3 mb-6 md:mb-0" wire:ignore>
                             <x-label value="{{ __('Zona') }}" />
                             <select id="select2" name="zonasList[ ]"
@@ -88,10 +88,10 @@
                             </select>
                             <x-input-error for="zona"></x-input-error>
                         </div>
-                    @endif
+                    {{-- @endif --}}
                 </div>
                 <div class="flex gap-2 mb-3">
-                    @if ($areau)
+                    {{-- @if ($areau) --}}
                         <div class="md:w-1/2 px-3 mb-6 md:mb-0" wire:ignore>
                             <x-label value="{{ __('Area') }}" />
                             <select id="select3" name="areasList[ ]" 
@@ -104,7 +104,7 @@
                             </select>
                             <x-input-error for="area"></x-input-error>
                         </div>
-                    @endif
+                    {{-- @endif --}}
                     <div class="md:w-1/2 mb-6 md:mb-0">
                         <x-label value="{{ __('Región') }}" />
                         <select id="region" wire:model="region"

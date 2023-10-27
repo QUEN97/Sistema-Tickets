@@ -58,23 +58,23 @@ class UserCreate extends Component
         $this->newgUsuario = true;
     }
 
-    public function UpdatedPermiso($val)
-    {
-        if ($val == 1 || $val == 4) {
-            $this->areau = false;
-            $this->zonau = false;
-        } elseif ($val == 5 || $val == 6 || $val == 7 || $val == 8) {
-            $this->areau = true;
-            $this->zonau = false;
-        } elseif ($val == 2 || $val == 3) {
-            $this->areau = true;
-            $this->zonau = true;
-        } else {
-            // Reinicia los valores al pasar de un valor a otro
-            $this->areau = false;
-            $this->zonau = false;
-        }
-    }
+    // public function UpdatedPermiso($val)
+    // {
+    //     if ($val == 1 || $val == 4) {
+    //         $this->areau = false;
+    //         $this->zonau = false;
+    //     } elseif ($val == 5 || $val == 6 || $val == 7 || $val == 8) {
+    //         $this->areau = true;
+    //         $this->zonau = false;
+    //     } elseif ($val == 2 || $val == 3) {
+    //         $this->areau = true;
+    //         $this->zonau = true;
+    //     } else {
+    //         // Reinicia los valores al pasar de un valor a otro
+    //         $this->areau = false;
+    //         $this->zonau = false;
+    //     }
+    // }
 
 
     public function nextStep() //funcion siguiente con validacion

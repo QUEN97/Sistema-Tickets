@@ -76,6 +76,12 @@
                             <h2 class=" text-sm font-bold">Solución:</h2>
                             <p>{{$compra->solucion}}</p>
                         </div>
+                        @if (isset($compra->mensaje_opcion))
+                        <div class="text-start">
+                            <h2 class=" text-sm font-bold">Nota:</h2>
+                            <p>{{$compra->mensaje_opcion}}</p>
+                        </div>
+                        @endif
                     </div>
                     @if ($compra->comentarios->count() > 0)
                         <div class='w-full rounded-lg border overflow-auto dark:border-gray-700 flex items-center justify-center my-2' x-data="{ open: false }">

@@ -25,11 +25,12 @@ class UserController extends Controller
 
         // $trashed = User::onlyTrashed()->count();
         $valid = Auth::user()->permiso->panels->where('id', 11)->first();
+        $trashed = User::onlyTrashed()->count();
 
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.usuarios.usuarios', ['val' => $valid]);
+            return view('modules.usuarios.usuarios', ['val' => $valid, 'trashed' => $trashed]);
         } elseif ($valid->pivot->re == 1) {
-            return view('modules.usuarios.usuarios', ['val' => $valid]);
+            return view('modules.usuarios.usuarios', ['val' => $valid, 'trashed' => $trashed]);
         } else {
             return redirect()->route('dashboard');
         }
