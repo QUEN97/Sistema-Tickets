@@ -1,4 +1,4 @@
-<div x-data="{ modelOpen: false }">
+<div x-data="{ modelOpen: true }">
     <button @click="modelOpen =!modelOpen" wire:loading.attr="disabled" aria-label="ver servicio" class="tooltip">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
             class="w-6 h-6 text-gray-400 hover:text-indigo-500 transition duration-300"
@@ -62,7 +62,26 @@
                                                 <div class="flex gap-2">
                                                     <span
                                                         class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $entrada->usuario->name }}</span>
-                                                        <div class="float-right"> {{ __('Fecha:') }} {{ $entrada->created_at }}</div>
+                                                    <div class="float-right"> {{ __('Fecha:') }}
+                                                        {{ $entrada->created_at }}</div>
+                                                    @if ($entrada->editable == 1)
+                                                        <div class="ml-6" style="display: flex; justify-content: center;">
+                                                            <div class="flex gap-1">
+                                                                <button onclick="window.location.href = '{{ route('entrada.edit', $entrada->id) }}'"
+                                                                    title="Editar">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor"
+                                                                        class="w-4 h-4 text-gray-400 hover:text-indigo-500 transition duration-300">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                                    </svg>
+                                                                </button>
+                                                                @livewire('folios.entradas.lock', ['entradaID' => $entrada->id])
+                                                            </div>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                                 <span class="block ml-2 "></span>
                                             </div>
@@ -73,9 +92,9 @@
                                             <div
                                                 class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
                                                 <details>
-                                                    <summary class="bg-gray-100 py-2 px-4 cursor-pointer">Click para
+                                                    <summary class="bg-gray-200 py-2 px-4 cursor-pointer">Click para
                                                         mostrar/ocultar
-                                                        Productos</summary>
+                                                        productos</summary>
                                                     <table class="table-auto w-full">
                                                         <thead>
                                                             <tr>
@@ -102,7 +121,10 @@
                                                                                 {{ $producto->producto->name }}</div>
                                                                             <div
                                                                                 class="text-gray-400 dark:text-gray-400">
-                                                                                {{ $producto->seriesDeProducto->serie }}
+                                                                                @if (isset($producto->serie->serie))
+                                                                                    {{ $producto->serie->serie }}
+                                                                                @endif
+
                                                                             </div>
                                                                         </div>
                                                                     </td>
@@ -122,12 +144,9 @@
                                                     </table>
                                                 </details>
                                             </div>
-
                                         </div>
-
                                         <button
-                                            onclick="window.open('{{ asset('Storage/' . $entrada->pdf) }}', '_blank')"
-                                            class="">
+                                            onclick="window.open('{{ asset('Storage/' . $entrada->pdf) }}', '_blank')">
                                             <svg class="w-12 h-12" viewBox="0 0 32 32"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path fill="#909090"
@@ -146,10 +165,6 @@
                                             </svg>
                                         </button>
                                     </a>
-                                    <div class="flex items-center ml-4">
-                                        <!-- Agregado el contenedor flex -->
-                                        
-                                    </div>
                                 </li>
                             @endforeach
                         </ul>
@@ -161,7 +176,7 @@
                                 <path
                                     d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                             </svg>
-                            <span class="text-lg">Sin folios registradas</span>
+                            <span class="text-lg">Sin folios de entrada registrados</span>
                         </div>
                     @endif
                 </div>

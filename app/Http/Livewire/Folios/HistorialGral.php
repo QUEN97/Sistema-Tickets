@@ -24,7 +24,7 @@ class HistorialGral extends Component
             ]);
             $folios=FoliosSalida::whereBetween('created_at',[$this->dateIn,$this->dateEnd.' 23:59:00'])->get();
         }
-    return Excel::download(new GralExport($folios),'Folios.xlsx');
+    return Excel::download(new GralExport($folios),'FOLIOS DE SALIDA.xlsx');
     
     }
     public function render()

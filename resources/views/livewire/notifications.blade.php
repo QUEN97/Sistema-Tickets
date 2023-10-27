@@ -44,6 +44,7 @@
                                         @endif
                                         <div class="flex-1 ml-4">
                                             @if (isset($notification->data['user']))
+                                             <!-- Verifica si la propiedad "user" existe -->
                                                 <b>{{ $notification->data['user'] }}</b>
                                             @endif
                                             {{ $notification->data['message'] }}

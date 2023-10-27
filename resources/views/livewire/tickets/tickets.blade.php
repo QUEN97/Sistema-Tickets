@@ -133,7 +133,6 @@
                 </div>
                 @if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 7)
                     <div class="text-center">
-                        {{-- <p>Agente asignado:</p> --}}
                         {{ $tck->agente->name }}
                     </div>
                 @endif
@@ -186,7 +185,6 @@
                         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             @if ($tck->status != 'Cerrado')
                                 @if (Auth::user()->permiso_id == 1)
-                                    {{-- Editar --}}
                                     <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
                                         href="{{ route('tck.editar', $tck->id) }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -197,10 +195,8 @@
                                         </svg>
                                         <span class="tooltiptext">Editar</span>
                                     </a>
-                                    {{-- Reasignamiento --}}
                                     @livewire('tickets.reasignar', ['ticketID' => $tck->id], key('reasignar' . $tck->id))
                                 @endif
-                                {{-- Ver y comentarios --}}
                                 <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
                                     href="{{ route('tck.ver', $tck->id) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
@@ -213,9 +209,7 @@
                                     <span class="tooltiptext">Ver Más</span>
                                 </a>
                                 @if (!in_array(Auth::user()->permiso_id, [2, 3, 6]))
-                                    {{-- Requisiciones --}}
                                     @livewire('tickets.compras.show-compras', ['ticketID' => $tck->id], key('compra' . $tck->id))
-                                    {{-- Tareas --}}
                                     <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
                                         href="{{ route('tck.tarea', $tck->id) }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -228,7 +222,6 @@
                                     </a>
                                 @endif
                             @else
-                                {{-- Ver y comentarios --}}
                                 <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
                                     href="{{ route('tck.ver', $tck->id) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
@@ -241,7 +234,6 @@
                                     <span class="tooltiptext">Ver Más</span>
                                 </a>
                             @endif
-                            {{-- Abrir Ticket Rápido --}}
                             @if (Auth::user()->permiso_id == 1 && $tck->status == 'Cerrado')
                                 @livewire('tickets.unlock-ticket', ['ticketID' => $tck->id], key('unlock' . $tck->id))
                             @endif

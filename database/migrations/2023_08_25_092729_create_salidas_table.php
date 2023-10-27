@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('pdf', 2048)->nullable();
             $table->string('motivo');
+            $table->boolean('editable')->default(true);
             $table->timestamps();
             $table->foreign('folio_id')->references('id')->on('folios_salidas')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

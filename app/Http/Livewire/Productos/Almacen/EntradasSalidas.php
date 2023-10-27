@@ -9,7 +9,8 @@ use App\Models\FoliosEntrada;
 use App\Models\FoliosSalida;
 use App\Models\Producto;
 use App\Models\ProductosEntrada;
-use App\Models\ProductoSerie;
+use App\Models\ProductoSerieEntrada;
+use App\Models\ProductoSerieSalida;
 use App\Models\ProductosSalida;
 use App\Models\Salida;
 use App\Models\Ticket;
@@ -22,12 +23,12 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class EntradasSalidas extends Component
 {
-    public $tipo, $motivo, $productosEntradaSalida, $estaciones, $carrito, $tck,$productosSerie;
+    public $tipo, $motivo, $productosEntradaSalida, $estaciones, $carrito, $tck, $productosSerie, $prod, $series = [];
     public function mount()
     {
         $this->tck = Ticket::select('id')->where('status', 'En proceso')->get();
         $this->productosEntradaSalida = Producto::select('id', 'name', 'product_photo_path')->get();
-        $this->productosSerie = ProductoSerie::select('id', 'producto_id','serie')->get();
+        $this->productosSerie = ProductoSerieEntrada::select('id', 'producto_entrada_id', 'serie')->get();
         $this->estaciones = Estacion::select('id', 'name')->get();
         foreach ($this->productosEntradaSalida as $p) {
             $alm = AlmacenCi::where('producto_id', $p->id)->get();
@@ -40,6 +41,9 @@ class EntradasSalidas extends Component
             } else {
                 $p->cant = 'No registrado';
             }
+        }
+        foreach (ProductosEntrada::all() as $pr) {
+            array_push($this->series, ['id' => $pr->id, 'producto' => $pr->producto_id, 'serie' => isset($pr->serie->serie) ? $pr->serie->serie : 'sin serie']);
         }
     }
     public function numero($number)
@@ -102,7 +106,7 @@ class EntradasSalidas extends Component
             $table = Entrada::find($id);
         }
         $archivo = 'Folios/' . $table->folio->folio . ' ' . Auth::user()->name . '' . $hora->hour . '-' . $hora->minute . '-' . $hora->second . '.pdf';
-        $pdf = Pdf::loadView('modules.folios.PDF', ['folio' => $table, 'tipo' => $this->tipo]);
+        $pdf = Pdf::loadView('modules.folios.PDF', ['folio' => $table, 'tipo' => $this->tipo, 'archivo' => $archivo]);
         Storage::disk('public')->put($archivo, $pdf->output());
         $table->pdf = $archivo;
         $table->save();
@@ -156,14 +160,6 @@ class EntradasSalidas extends Component
         // guardamos los productos 
         foreach ($this->carrito as $p) {
             $pAlm = AlmacenCi::where('producto_id', $p['prod']);
-            if (!empty($p['serie'])) { //Almacenamos la serie en la tabla ProductoSerie por cada producto
-                $productoSerie = new ProductoSerie();
-                $productoSerie->serie = $p['serie'];
-                $productoSerie->producto_id = $p['prod'];
-                $productoSerie->save();
-            }
-           
-
             if ($pAlm->count() > 0) {
                 $updateAlma = AlmacenCi::find($pAlm->first()->id);
                 $this->tipo == 'entrada'
@@ -192,7 +188,11 @@ class EntradasSalidas extends Component
                     $pe->ticket_id = $p['tck'];
                 }
                 $pe->observacion = $p['observacion'];
-                $pe->save();
+                $pe->save(); //Almacenamos la serie en la tabla ProductoSerie por cada producto
+                $productoSerie = new ProductoSerieEntrada();
+                $productoSerie->serie = $p['serie'];
+                $productoSerie->producto_entrada_id = $pe->id;
+                $productoSerie->save();
             } else {
                 $ps = new ProductosSalida();
                 $ps->producto_id = $p['prod'];
@@ -206,6 +206,12 @@ class EntradasSalidas extends Component
                 }
                 $ps->observacion = $p['observacion'];
                 $ps->save();
+                $productoSerie = new ProductoSerieSalida();
+                $productoSerie->serie = $p['serie'];
+                $productoSerie->producto_salida_id = $ps->id;
+                $productoSerie->save();
+                // Eliminar la serie del producto cuando es una salida
+                ProductoSerieEntrada::where('serie', $p['serie'])->delete();
             }
         }
 
@@ -231,7 +237,6 @@ class EntradasSalidas extends Component
     }
     public function refresh()
     {
-
         return redirect()->route('almacenCIS');
     }
     public function render()

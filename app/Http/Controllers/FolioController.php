@@ -36,4 +36,12 @@ class FolioController extends Controller
         ->withQueryString();
         return view('modules.folios.salida',compact('folios'));
     }
+    public function editEntrada($id){
+        $id=$id;
+        return view('modules.folios.entrada.edit', compact('id'));
+    }
+    public function editSalida($id){
+        $id=$id;
+        return view('modules.folios.salida.edit', compact('id'));
+    }
 }

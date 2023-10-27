@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>{{ mb_strtoupper($archivo) }}</title>
     <style>
         @page{
             margin: 3cm 1.5cm 3cm 1.5cm;
@@ -116,7 +116,7 @@
                 <th>{{$producto->producto->name}}</th>
                 <th>{{$producto->producto->unidad}}</th>
                 <th>{{$producto->cantidad}}</th>
-                <th>No. Serie: {{$producto->seriesDeProducto->serie}} <br><hr>{{$producto->observacion}}</th>
+                <th>No. Serie: {{$producto->serie->serie}} <br><hr>{{$producto->observacion}}</th>
             </tr>
             @endforeach
         </tbody>

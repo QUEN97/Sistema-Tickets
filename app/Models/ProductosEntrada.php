@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProductosEntrada extends Model
 {
@@ -18,8 +19,8 @@ class ProductosEntrada extends Model
     {
         return $this->belongsTo(Estacion::class);
     }
-    public function seriesDeProducto()
+    public function serie():HasOne
     {
-        return $this->belongsTo(ProductoSerie::class, 'id');
+        return $this->hasOne(ProductoSerieEntrada::class,'producto_entrada_id');
     }
 }
