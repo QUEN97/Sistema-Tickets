@@ -44,23 +44,23 @@ class NewManual extends Component
         $this->validate( [
             'panel' => ['required', 'not_in:0'],
             'permis' => ['required'],
-            'manual' => 'required|max:5024|file|mimetypes:application/pdf',
+            'manual' => 'required|5120',
         ],
         [
             'panel.required' => 'El campo Panel es obligatorio',
             'permis.required' => 'Debes elegir un permiso',
             'manual.max' => 'El archivo no debe ser mayor a 5 MB',
             'manual.required' => 'El campo Manual es obligatorio',
-            'manual.mimetypes' => 'Solo se aceptan archivos con extensión .pdf',
         ]);
 
-        $this->urlArchi = $this->manual->storeAs('manuales-pdfs', $this->manual->getClientOriginalName(), 'public');
+        $this->urlArchi = $this->manual->storeAs('manuales', $this->manual->getClientOriginalName(), 'public');
 
         DB::transaction(function () {
             return tap(Manual::create([
                 'panel_id' => $this->panel,
                 'titulo_manual' => $this->manual->getClientOriginalName(),
                 'manual_path' => $this->urlArchi,
+                'mime_type' => $this->manual->getMimeType(),
                 'size' => $this->manual->getSize(),
                 'flag_trash' => 0,
             ]));

@@ -265,7 +265,7 @@
             @if (Auth::user()->permiso_id == 1)
                 <x-sidebar.sublink title="Horarios" href="{{ route('horarios') }}" :active="request()->routeIs('horarios')" />
                 <x-sidebar.sublink title="Guardias" href="{{ route('guardias.home') }}" :active="request()->routeIs('guardias.home')" />
-                <x-sidebar.dropdown title="Análiticas" :active="Str::startsWith(
+                <x-sidebar.dropdown title="Estadísticas" :active="Str::startsWith(
                     request()
                         ->route()
                         ->uri(),

@@ -108,7 +108,7 @@ class UserEdit extends Component
             [
                 'name' => ['required', 'string', 'max:250'],
                 'username' => ['required', 'string', 'max:250'],
-                'email' => ['required', 'email', 'max:40', Rule::unique('users')->ignore($user->id)],
+                'email' => ['required', Rule::unique('users')->ignore($user->id)],
                 'password' => ['nullable', 'string', 'confirmed', Password::min(8)],
                 'password_confirmation' => ['same:password'],
                 'role' => ['required', 'not_in:0'],
@@ -122,7 +122,6 @@ class UserEdit extends Component
                 'username.max' => 'El campo Usuario no debe ser mayor a 250 carateres',
                 'email.required' => 'El campo Email es obligatorio',
                 'email.email' => 'El campo Email debe ser un correo valido',
-                'email.max' => 'El campo Email no debe ser mayor a 40 caracteres',
                 'password.required' => 'La contraseña es obligatoria',
                 'password.min' => 'La contraseña debe ser mayor a 8 caracteres',
                 'password.confirmed' => 'Las contraseñas no coinciden',
@@ -181,9 +180,12 @@ class UserEdit extends Component
 
 
         $this->resetFilters();//Se restablecen los filtros ($this->resetFilters()) para limpiar los campos del formulario de búsqueda o filtros utilizados antes de la edición.
-        Alert::success('Usuario Actualizado', "El usuario" . ' ' . $this->name . ' ' . "ha sido actualizado en el sistema");//Se muestra una alerta de éxito utilizando la clase Alert, indicando que el usuario ha sido actualizado.
+        //Alert::success('Usuario Actualizado', "El usuario" . ' ' . $this->name . ' ' . "ha sido actualizado en el sistema");//Se muestra una alerta de éxito utilizando la clase Alert, indicando que el usuario ha sido actualizado.
+        session()->flash('flash.banner', 'Usuario Actualizado, el usuario "'.$user->name.'" ha sido actualizado en el sistema.');
+        session()->flash('flash.bannerStyle', 'success');
 
-        return redirect()->route('users');//Finalmente, se redirige al usuario a la ruta 'users'.
+        //return redirect()->route('users');//Finalmente, se redirige al usuario a la ruta 'users'.
+        return redirect(request()->header('Referer'));
     }
 
     /**
@@ -213,7 +215,7 @@ class UserEdit extends Component
     {
         $permisos = Permiso::all();//llamamos a todos los permisos
         $zonas = Zona::where('status','Activo')->get();//llamamos a las zonas que esten activas
-        $regiones = Region::where('status', 'Activo')->get(); // llamamos a las regiones activas
+        $regiones = Region::where('status', 'Activo')->whereNotIn('id', [3,4])->get(); // llamamos a las regiones activas
         $this->deptos = Departamento::select('id', 'name')->orderBy('name', 'asc')->get(); // llamado a los departamentos
         $areas = Areas::where('status', 'Activo')->get(); // Areas
         return view('livewire.usuarios.user-edit', compact('zonas', 'permisos', 'regiones','areas')); // se pasan las variables a la vista

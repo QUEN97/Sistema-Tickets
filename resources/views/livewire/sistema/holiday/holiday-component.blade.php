@@ -73,7 +73,7 @@
 
             <x-slot name="content">
                 {{ __('Antes de proceder con la creación del festivo/inhábil, favor de validar si este ya se encuentra registrado,
-                                          de lo contrario puede proceder con la creación del horario.') }}
+                                          de lo contrario puede proceder con la creación de la fecha.') }}
 
                 <div class="flex gap-2 mt-4">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-2">

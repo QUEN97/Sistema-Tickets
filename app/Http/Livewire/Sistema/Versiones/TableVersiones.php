@@ -7,6 +7,8 @@ use App\Models\Version;
 
 class TableVersiones extends Component
 {
+    public $versions;
+
     public function render()
     {
         $this->versions = Version::where('flag_trash', 0)->orderBy('created_at', 'desc')->get();

@@ -197,7 +197,7 @@ class UserCreate extends Component
         $this->deptos = Departamento::select('id', 'name')->orderBy('name', 'asc')->get(); // Departamentos
         $zonas = Zona::where('status', 'Activo')->get(); // Zonas
         $areas = Areas::where('status', 'Activo')->get(); // Areas
-        $regiones = Region::all()->where('status', 'Activo'); // Regiones
+        $regiones = Region::where('status', 'Activo')->whereNotIn('id', [3,4])->get(); // Regiones
         return view('livewire.usuarios.user-create', compact('zonas', 'permisos', 'regiones','areas')); // pasamos las variables a renderizar con compact
     }
 }

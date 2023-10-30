@@ -9,7 +9,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="flex flex-wrap gap-3">
+            <div class="flex flex-wrap gap-3 max-h-[320px] overflow-y-auto">
                 <div>
                     <x-label value="{{ __('Nombre de la Version') }}" />
                     <x-input wire:model="titulo_version"

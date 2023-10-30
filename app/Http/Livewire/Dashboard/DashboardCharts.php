@@ -47,7 +47,7 @@ class DashboardCharts extends Component
             $labelsT[] = $estacion->estacion;
         }
         $chartTickets->setType('area')
-            ->setTitle('Tickets por Estación')
+            ->setTitle('TICKETS POR ESTACIÓN')
             ->setSubtitle('Top 5 del Mes ' . ' - ' . $currentMonth)
             ->setXAxis($labelsT)
             ->setDataset([[
@@ -103,8 +103,8 @@ class DashboardCharts extends Component
         foreach ($prioridades as $prioridad) {
             $labelsP[] = $prioridad->tipo . ' - ' . $prioridad->prioridad;
         }
-        $chartTicketsPrioridad->setTitle('Total Tickets Por Prioridad')
-            ->setSubtitle('Mes en Curso' . ' - ' . $currentMonth)
+        $chartTicketsPrioridad->setTitle('TICKETS POR PRIORIDAD')
+            ->setSubtitle('MES EN CURSO' . ' - ' . mb_strtoupper($currentMonth))
             ->setType('bar')->setXAxis($labelsP)->setGrid(true)->setDataset([[
                 'name'  => 'Tickets',
                 'data'  =>  $prioridades->pluck('tcks')->toArray()
@@ -133,8 +133,8 @@ class DashboardCharts extends Component
             $labelsE[] = $estado->nombre;
         }
         $chartTicketsStatus->setType('pie')
-            ->setTitle('Tickets por Status')
-            ->setSubtitle('Mes en Curso' . ' - ' . $currentMonth)
+            ->setTitle('TICKETS POR ESTADO')
+            ->setSubtitle('MES EN CURSO' . ' - ' . mb_strtoupper($currentMonth))
             ->setDataset($estados->pluck('tcks'))
             ->setLabels($labelsE)
             ->setToolbar(true);

@@ -1,6 +1,6 @@
 <div class="w-full">
     <h2 class="mb-2">
-        {{ __('Asignar Horario') }}
+        {{-- {{ __('Asignar Horario') }} --}}
     </h2>
     <div class="w-full">
         <div class="text-sm text-gray-600 dark:text-gray-400">

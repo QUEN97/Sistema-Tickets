@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('panel_id');
             $table->string('titulo_manual', 250);
-            $table->string('manual_path', 2048);
-            $table->bigInteger('size');
+            $table->string('manual_path', 5120);
+            $table->string('mime_type', 255); // Changed the length to 255
+            $table->bigInteger('size'); // Removed the length specification
             $table->boolean('flag_trash')->default(0);
             $table->timestamps();
-
+    
             $table->foreign('panel_id')->references('id')->on('panels')->onDelete('cascade');
-        });
+        });  
     }
 
     /**

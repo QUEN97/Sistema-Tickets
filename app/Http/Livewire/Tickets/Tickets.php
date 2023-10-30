@@ -231,7 +231,7 @@ class Tickets extends Component
             //dd($tickets);
         }
         //todos los tickets para los administradores
-        if($user->permiso_id==1){
+        if($user->permiso_id==1 || $user->permiso_id == 8){
             //si existe filtrado por rango de fecha, debe haber inicio y fin 
             if(isset($request->start) && isset($request->end) && $request->start!=null && $request->end!=null){
                 //si se seleccionó un status para buscar en ese rango de fecha
