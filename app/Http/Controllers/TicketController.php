@@ -99,7 +99,8 @@ class TicketController extends Controller
     //Almácen
     public function almacenCIS()
     {
+        $valid = Auth::user()->permiso->panels->where('id', 5)->first();
         $productos = AlmacenCi::select('*')->paginate(10);
-        return view('modules.productos.almacen.cis', compact('productos'));
+        return view('modules.productos.almacen.cis', compact('productos','valid'));
     }
 }

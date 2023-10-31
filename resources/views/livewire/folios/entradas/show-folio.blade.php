@@ -1,4 +1,4 @@
-<div x-data="{ modelOpen: true }">
+<div x-data="{ modelOpen: false }">
     <button @click="modelOpen =!modelOpen" wire:loading.attr="disabled" aria-label="ver servicio" class="tooltip">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
             class="w-6 h-6 text-gray-400 hover:text-indigo-500 transition duration-300"

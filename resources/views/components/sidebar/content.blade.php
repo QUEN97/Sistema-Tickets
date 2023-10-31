@@ -14,13 +14,13 @@
     $sistema = 'hidden';
 
     foreach ($valid as $permis) {
-        for ($i = 6; $i <= 19; $i++) {
+        for ($i = 1; $i <= 19; $i++) {
             if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
                 $settings = 'block';
             }
         }
 
-        for ($i = 20; $i <= 22; $i++) {
+        for ($i = 20; $i <= 29; $i++) {
             if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
                 $sistema = 'block';
             }
@@ -144,7 +144,7 @@
                 ->route()
                 ->uri(),
             'buttons',
-        )">
+            )">
             <x-slot name="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
