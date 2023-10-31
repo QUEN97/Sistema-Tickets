@@ -17,7 +17,7 @@ class Marca extends Model
     //mutador para el campo name (pasamos a mayusculas)
     protected function name():Attribute{
         return Attribute::make(
-            set:fn(string $value)=> strtoupper($value),
+            set:fn(string $value)=> mb_strtoupper($value),
         );
     }
 

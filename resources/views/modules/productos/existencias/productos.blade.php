@@ -154,7 +154,7 @@
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                 <div class="flex gap-2">
                                     <div>
-                                        @if ($valid->pivot->ed == 1)
+                                        @if ($valid->pivot->vermas == 1)
                                             @livewire('productos.existencias.show-producto', ['productoID' => $producto->id])
                                         @endif
                                     </div> 

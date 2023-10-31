@@ -113,7 +113,7 @@
             class=" group/buttons border-2 rounded-md" @endif
                 @if (in_array(Auth::user()->permiso_id, [1, 7])) :class="$wire.c ? 'w-[200px] flex justify-between gap-1 flex-col pb-3' : 'w-full px-1 grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] min-[851px]:grid-cols-[repeat(7,minmax(auto,1fr))] items-center gap-1'"
         @else
-            :class="$wire.c ? 'w-[200px] flex justify-between gap-1 flex-col pb-3' : 'w-full px-1 grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] min-[851px]:grid-cols-[repeat(6,minmax(auto,1fr))] items-center gap-1'" @endif>
+            :class="$wire.c ? 'w-[200px] flex justify-between gap-1 flex-col pb-3' : 'w-full px-1 grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] min-[851px]:grid-cols-[repeat(7,minmax(auto,1fr))] items-center gap-1'" @endif>
                 <div class="flex justify-between py-1">
                     <div class=" px-1">
                         #{{ $tck->id }}
@@ -131,11 +131,11 @@
                 <div class="text-center">
                     {{ $tck->cliente->name }}
                 </div>
-                @if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 7)
+                {{-- @if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 7) --}}
                     <div class="text-center">
                         {{ $tck->agente->name }}
                     </div>
-                @endif
+                {{-- @endif --}}
 
                 <div class="flex gap-2 justify-center items-center">
                     @if ($tck->status != 'Cerrado')

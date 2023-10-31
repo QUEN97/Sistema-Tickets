@@ -6,19 +6,23 @@
                 {{ __('ESTACIONES') }}
             </h2>
             <div class=" flex justify-center space-x-2">
-                <div>
-                    @livewire('estacion.estacion-create')
-                </div>
-                <div>
-                    <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
-                        href="{{ route('estaciones.trashed') }}">
-                        Eliminados
-                        <span
-                            class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                            {{ $trashed }}
-                        </span>
-                    </a>
-                </div>
+                @if ($valid->pivot->wr == 1)
+                    <div>
+                        @livewire('estacion.estacion-create')
+                    </div>
+                @endif
+                @if ($valid->pivot->verpap == 1)
+                    <div>
+                        <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
+                            href="{{ route('estaciones.trashed') }}">
+                            Eliminados
+                            <span
+                                class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                                {{ $trashed }}
+                            </span>
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </x-slot>
@@ -41,8 +45,8 @@
                                 @endforeach
                             </select>
                             <div class="absolute top-0 left-0 mt-3 ml-3">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M6 8H2a2 2 0 00-2 2v12a2 2 0 002 2h4a2 2 0 002-2V10a2 2 0 00-2-2zm0 0V4a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h12m-6 0a2 2 0 00-2 2v8a2 2 0 002 2h4a2 2 0 002-2v-8a2 2 0 00-2-2h-4a2 2 0 00-2 2z"
                                         stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
@@ -55,11 +59,12 @@
                                 class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white"
                                 placeholder="Buscar..." value="{{ request('search') }}">
                             <div class="absolute top-0 left-0 mt-3 ml-3">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16.5 9a6.5 6.5 0 10-13 0 6.5 6.5 0 0013 0z" stroke-linecap="round"
                                         stroke-linejoin="round" stroke-width="2"></path>
-                                    <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                    <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2">
                                     </path>
                                 </svg>
                             </div>
@@ -69,7 +74,8 @@
                     </div>
                 </form>
             </div>
-            <table class="border-collapse w-full  bg-white text-center text-sm   dark:bg-dark-eval-0 dark:text-gray-400">
+            <table
+                class="border-collapse w-full  bg-white text-center text-sm   dark:bg-dark-eval-0 dark:text-gray-400">
                 <thead class="bg-gray-50">
                     <tr>
                         <th
@@ -203,8 +209,7 @@
                                         class="rounded bg-red-200 py-1 px-3 text-xs text-red-500 font-bold">{{ $estacion->status }}</span>
                                 @endif
                             </td>
-                            <td
-                                class="w-full lg:w-auto p-3  border border-b block lg:table-cell relative lg:static">
+                            <td class="w-full lg:w-auto p-3  border border-b block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
                                 <div class="flex justify-end gap-4">
@@ -244,5 +249,5 @@
             </div>
         </div>
     </div>
-    
+
 </x-app-layout>

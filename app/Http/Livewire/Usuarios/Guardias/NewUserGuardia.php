@@ -12,7 +12,7 @@ class NewUserGuardia extends Component
     public $personal,$usuario,$modal=false,$falla;
     public function mount(){
         $registrados=Guardia::all()->pluck('user_id');
-        $this->personal=User::whereNotIn('id',$registrados)->orderBy('name', 'ASC')->get();
+        $this->personal=User::whereNotIn('id',$registrados)->whereNotIn('permiso_id',[1,2,3,4,6,8])->orderBy('name', 'ASC')->get();
     }
     public function addGuardia(){
         $this->validate([
@@ -26,7 +26,7 @@ class NewUserGuardia extends Component
         $guardia->orden=$orden;
         $guardia->save();
         Alert::success('Usuario asignado','El usuario ha sido registrado');
-        return redirect()->route('horarios');
+        return redirect()->route('guardias');
     }
     public function render()
     {

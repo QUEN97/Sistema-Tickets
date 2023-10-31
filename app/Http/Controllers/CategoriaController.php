@@ -122,7 +122,8 @@ public function delete_permanentlyM()
 }
 
 public function servicios(){
+    $valid = Auth::user()->permiso->panels->where('id', 22)->first();
     $servicios=TckServicio::paginate(10);
-    return view('modules.productos.servicios.servicios',compact('servicios'));
+    return view('modules.productos.servicios.servicios',compact('servicios','valid'));
 }
 }

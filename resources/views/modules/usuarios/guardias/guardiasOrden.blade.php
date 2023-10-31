@@ -5,15 +5,16 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('PERSONAL DE GUARDIA') }}
             </h2>
-           <div>
-                @livewire('usuarios.guardias.new-user-guardia')
-                
-           </div>
+            @if ($valid->pivot->wr == 1)
+                <div>
+                    @livewire('usuarios.guardias.new-user-guardia')
+                </div>
+            @endif
         </div>
     </x-slot>
     <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        @livewire('usuarios.guardias.edit-orden')
-       {{--  @if ($orden->count()>0)
+            @livewire('usuarios.guardias.edit-orden')
+        {{--  @if ($orden->count() > 0)
             <table>
                 <thead>
                     <tr>
@@ -68,6 +69,6 @@
                 <span class="text-2xl">No hay personal registrado</span>
             </div>
         @endif --}}
-        
+
     </div>
 </x-app-layout>

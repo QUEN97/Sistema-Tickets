@@ -22,6 +22,7 @@ class ManualController extends Controller
 
     public function index()
     {
-        return view('modules.horarios.index');
+        $valid = Auth::user()->permiso->panels->where('id', 24)->first();
+        return view('modules.horarios.index', compact('valid'));
     }
 }

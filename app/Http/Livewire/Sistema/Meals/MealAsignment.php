@@ -6,6 +6,7 @@ use App\Models\Meals;
 use App\Models\MealUsers;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -24,13 +25,14 @@ class MealAsignment extends Component
     public function render()
     {
         // $this->updateUserStatus();
+        $valid = Auth::user()->permiso->panels->where('id', 24)->first();
         
         $mealSchedules = Meals::all();
         $users = User::all();
         $horarios=MealUsers::all();
         return view('livewire.sistema.meals.meal-asignment', ['users' => $users,
          'mealSchedules' => $mealSchedules,
-        'horarios' => $horarios]);
+        'horarios' => $horarios, 'valid'=>$valid]);
     }
 
     public function assignMealSchedule()

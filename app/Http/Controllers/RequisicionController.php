@@ -16,7 +16,7 @@ class RequisicionController extends Controller
 
         $user=Auth::user();
         
-        if(!in_array($user->permiso_id,[1,2,4,7])){
+        if(!in_array($user->permiso_id,[1,2,4,7,8])){
             $tck=Ticket::where(function($q)use($user){
                 $q->where('user_id',$user->id)
                     ->orWhere('solicitante_id',$user->id);

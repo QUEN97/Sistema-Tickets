@@ -72,8 +72,7 @@
                                                         </form>
                                                         @endif
                                                     </div>
-                                                    <div>
-                                                        {{-- Eliminar Permanente --}}
+                                                    {{-- <div>
                                                         <form method="POST"
                                                             action="{{ route('deletezona_permanently') }}"
                                                             onsubmit="return confirm('Eliminar de manera permanente al usuario);">
@@ -92,7 +91,7 @@
                                                                 </svg>
                                                             </button>
                                                         </form>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </td>
                                         </tr>

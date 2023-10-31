@@ -6,6 +6,7 @@ use App\Exports\Calificaciones\CalificacionExport;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -150,6 +151,7 @@ class Ranking extends Component
     } */
     public function render()
     {
-        return view('livewire.analytics.calificaciones.ranking');
+        $valid = Auth::user()->permiso->panels->where('id', 29)->first();
+        return view('livewire.analytics.calificaciones.ranking',['valid'=>$valid]);
     }
 }

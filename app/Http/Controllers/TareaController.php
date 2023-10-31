@@ -23,7 +23,7 @@ class TareaController extends Controller
         $user = Auth::user();
         $userId = Auth::user()->id;
 
-        if (Auth::user()->permiso_id == 1) {
+        if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 8) {
             $tareasList = Tarea::where(function ($query) use ($request, $usuario) {
                 $search = $request->input('search');
                 if ($search && $usuario->count() === 0) {

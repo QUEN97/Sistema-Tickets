@@ -5,16 +5,30 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('CATEGORIAS') }}
             </h2>
-            @if ($valid->pivot->wr == 1)
-                @livewire('productos.categorias.categoria-create')
-            @endif
+            <div class=" flex justify-center space-x-2">
+                @if ($valid->pivot->wr == 1)
+                    @livewire('productos.categorias.categoria-create')
+                @endif
+                @if ($valid->pivot->verpap == 1)
+                    <div>
+                        <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
+                            href="{{ route('categorias.trashed') }}">
+                            Eliminados
+                            <span
+                                class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                                {{ $trashed }}
+                            </span>
+                        </a>
+                    </div>
+                @endif
+            </div>
         </div>
     </x-slot>
 
     <div
         class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
         <div class="w-full">
-            <div class="flex gap-1 flex-col">
+            <div class="flex gap-1 flex-col mb-2">
                 <form action="{{ route('categorias') }}" method="GET">
                     <div class="flex">
                         <div class="relative">
@@ -23,32 +37,24 @@
                                 class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white"
                                 placeholder="Buscar..." value="{{ request('search') }}">
                             <div class="absolute top-0 left-0 mt-3 ml-3">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16.5 9a6.5 6.5 0 10-13 0 6.5 6.5 0 0013 0z" stroke-linecap="round"
                                         stroke-linejoin="round" stroke-width="2"></path>
-                                    <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                    <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2">
                                     </path>
                                 </svg>
                             </div>
                         </div>
                         <button type="submit"
                             class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
-                        
+
                     </div>
                 </form>
-                <div class="mb-2">
-                    <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
-                        href="{{ route('categorias.trashed') }}">
-                        Eliminados
-                        <span
-                            class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                            {{ $trashed }}
-                        </span>
-                    </a>
-                </div>
             </div>
-            <table class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-black">
+            <table
+                class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-black">
                 <thead class="bg-gray-50">
                     <tr>
                         <th

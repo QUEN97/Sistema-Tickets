@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Sistema\Meals;
 
 use App\Models\Meals;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -18,8 +19,9 @@ class MealScheduleCreate extends Component
 
     public function render()
     {
+        $valid = Auth::user()->permiso->panels->where('id', 24)->first();
         $mealSchedules = Meals::all();//llamado a los horarios en el sistema
-        return view('livewire.sistema.meals.meal-schedule-create', ['mealSchedules' => $mealSchedules]);
+        return view('livewire.sistema.meals.meal-schedule-create', ['mealSchedules' => $mealSchedules, 'valid'=>$valid]);
     }
 
     public function save()

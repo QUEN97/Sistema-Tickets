@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Usuarios\Guardias;
 
 use App\Models\Guardia;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -110,12 +111,13 @@ class EditOrden extends Component
             }
         }
         Alert::success('Guardia actualizada','los datos se han actalizado');
-        return redirect()->route('horarios');
+        return redirect()->route('guardias');
     }
     public function render()
     {
+        $valid = Auth::user()->permiso->panels->where('id', 25)->first();
         $this->guardias = Guardia::select('id', 'user_id', 'status', 'orden')->orderBy('orden', 'ASC')->get();
         $this->respaldar();
-        return view('livewire.usuarios.guardias.edit-orden');
+        return view('livewire.usuarios.guardias.edit-orden',['valid'=>$valid]);
     }
 }

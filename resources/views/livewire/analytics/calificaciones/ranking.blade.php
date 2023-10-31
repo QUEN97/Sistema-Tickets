@@ -1,8 +1,9 @@
 <div class="flex flex-col gap-3" {{-- x-data="{modalOpen:false}" --}}>
-    <div  class="flex flex-wrap justify-between items-center gap-1 p-4 rounded-md bg-white shadow-md dark:bg-dark-eval-1 dark:shadow-none">
+    <div
+        class="flex flex-wrap justify-between items-center gap-1 p-4 rounded-md bg-white shadow-md dark:bg-dark-eval-1 dark:shadow-none">
         <div>
-            <x-label value="{{__('Seleccionar mes')}}"/>
-            <x-input type="month" wire:model='mes'/>
+            <x-label value="{{ __('Seleccionar mes') }}" />
+            <x-input type="month" wire:model='mes' />
         </div>
         {{-- <div class="relative  rounded-md overflow-hidden p-1 flex justify-center items-stretch">
             <div class="absolute animate-spin -top-10 -bottom-10 -left-10 -right-10 bg-gradient-to-r from-orange-500 via-orange-400 to-orange-800">
@@ -22,7 +23,9 @@
                  <span>Descargar reporte</span>
             </x-button>
         </div> --}}
-        @livewire('calificaciones.download-cal')
+        @if ($valid->pivot->vermas == 1)
+            @livewire('calificaciones.download-cal')
+        @endif
     </div>
     {{-- modal para rango de fechas --}}
     {{-- <div x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -76,56 +79,57 @@
         </div>
     </div> --}}
     {{-- Ranking --}}
-    @if (count($users) > 0)    
+    @if (count($users) > 0)
         <div class="  lg:clip-path-polygon-[50%_0,0_100%,100%_100%] flex flex-col gap-2">
-            @foreach ($users as $key=> $group)
-                <div class="flex lg:flex-col max-lg:justify-between max-lg:px-5 justify-center items-center py-3 bg-white shadow-md dark:bg-dark-eval-1 dark:shadow-none rounded-md">
-                    @if ($key<3)    
+            @foreach ($users as $key => $group)
+                <div
+                    class="flex lg:flex-col max-lg:justify-between max-lg:px-5 justify-center items-center py-3 bg-white shadow-md dark:bg-dark-eval-1 dark:shadow-none rounded-md">
+                    @if ($key < 3)
                         <div class="relative">
-                            <div class="absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center text-white text-xs">
+                            <div
+                                class="absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center text-white text-xs">
                                 <span class="font-bold">
-                                    {{number_format($group[0]['cal'],1)}}%
+                                    {{ number_format($group[0]['cal'], 1) }}%
                                 </span>
                             </div>
                             <svg viewBox="-2 -4 24 24" fill="currentColor"
-                                @if ($key==0)
-                                    :class="'w-20 text-amber-500'"
-                                @elseif($key==1)
+                                @if ($key == 0) :class="'w-20 text-amber-500'"
+                                @elseif($key == 1)
                                     :class="'w-16 text-gray-500'"
                                 @else
-                                    :class="'w-14 text-orange-700'"
-                                @endif>
-                                <path d="M2.049 1.802L5.854 5.15L9.244.976a1 1 0 0 1 1.565.017l3.235 4.156l3.928-3.396a1 1 0 0 1 1.643.9L18.115 13H1.922L.399 2.7a1 1 0 0 1 1.65-.898zM2 14h16v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
+                                    :class="'w-14 text-orange-700'" @endif>
+                                <path
+                                    d="M2.049 1.802L5.854 5.15L9.244.976a1 1 0 0 1 1.565.017l3.235 4.156l3.928-3.396a1 1 0 0 1 1.643.9L18.115 13H1.922L.399 2.7a1 1 0 0 1 1.65-.898zM2 14h16v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z" />
                             </svg>
                         </div>
                     @else
-                        @if (($key+1)==count($users))
+                        @if ($key + 1 == count($users))
                             <div class="flex gap-1 items-center rounded-full border p-1 mb-2">
                                 <svg class=" w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 512 512">
-                                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM159.3 388.7c-2.6 8.4-11.6 13.2-20 10.5s-13.2-11.6-10.5-20C145.2 326.1 196.3 288 256 288s110.8 38.1 127.3 91.3c2.6 8.4-2.1 17.4-10.5 20s-17.4-2.1-20-10.5C340.5 349.4 302.1 320 256 320s-84.5 29.4-96.7 68.7zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
+                                    <path
+                                        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM159.3 388.7c-2.6 8.4-11.6 13.2-20 10.5s-13.2-11.6-10.5-20C145.2 326.1 196.3 288 256 288s110.8 38.1 127.3 91.3c2.6 8.4-2.1 17.4-10.5 20s-17.4-2.1-20-10.5C340.5 349.4 302.1 320 256 320s-84.5 29.4-96.7 68.7zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
                                 </svg>
-                                <span>{{number_format($group[0]['cal'],1)}}%</span>
+                                <span>{{ number_format($group[0]['cal'], 1) }}%</span>
                             </div>
-                        @else    
-                            <div class="w-12 h-12 flex justify-center items-center border rounded-full m-2 font-bold text-xs">
-                                <span>{{number_format($group[0]['cal'],1)}}%</span>
+                        @else
+                            <div
+                                class="w-12 h-12 flex justify-center items-center border rounded-full m-2 font-bold text-xs">
+                                <span>{{ number_format($group[0]['cal'], 1) }}%</span>
                             </div>
                         @endif
                     @endif
                     <div class=" flex flex-wrap gap-2 justify-center items-center max-lg:flex-auto">
                         @foreach ($group as $user)
-                            <div class="flex justify-center items-center p-1 rounded-full" 
-                                @if ($key == 0)
-                                    :class="'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'"
+                            <div class="flex justify-center items-center p-1 rounded-full"
+                                @if ($key == 0) :class="'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'"
                                 @elseif($key == 1)
                                     :class="'bg-gradient-to-r from-gray-500 via-gray-400 to-gray-800'"
                                 @elseif($key == 2)
                                     :class="'bg-gradient-to-r from-orange-500 via-orange-400 to-orange-800'"
                                 @else
-                                    :class="'border'"
-                                @endif>
+                                    :class="'border'" @endif>
                                 <span class=" px-2  rounded-full bg-white dark:bg-dark-eval-1">
-                                    {{$user['user']}}
+                                    {{ $user['user'] }}
                                 </span>
                             </div>
                         @endforeach
@@ -135,35 +139,34 @@
         </div>{{-- etiqueta de cierre del path? --}}
         <!--fin de path-->
         <div class="p-2 border-b text-center mt-4 mb-2">
-            <h1 class="text-xl font-bold">{{__('Información de puntajes')}}</h1>
+            <h1 class="text-xl font-bold">{{ __('Información de puntajes') }}</h1>
         </div>
         <div class=" flex flex-col gap-2">
-            @foreach ($users as $key=>$group)   
+            @foreach ($users as $key => $group)
                 @foreach ($group as $user)
                     <div class=" p-4 rounded-md bg-white shadow-md dark:bg-dark-eval-1 dark:shadow-none">
                         <div class="mb-2 border-b pb-1">
                             @if ($key < 3)
                                 <div class=" w-6">
                                     <svg viewBox="-2 -4 24 24" fill="currentColor"
-                                        @if ($key==0)
-                                            :class="'text-amber-500'"
-                                        @elseif($key==1)
+                                        @if ($key == 0) :class="'text-amber-500'"
+                                        @elseif($key == 1)
                                             :class="'text-gray-500'"
                                         @else
-                                            :class="'text-orange-700'"
-                                        @endif>
-                                        <path d="M2.049 1.802L5.854 5.15L9.244.976a1 1 0 0 1 1.565.017l3.235 4.156l3.928-3.396a1 1 0 0 1 1.643.9L18.115 13H1.922L.399 2.7a1 1 0 0 1 1.65-.898zM2 14h16v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
+                                            :class="'text-orange-700'" @endif>
+                                        <path
+                                            d="M2.049 1.802L5.854 5.15L9.244.976a1 1 0 0 1 1.565.017l3.235 4.156l3.928-3.396a1 1 0 0 1 1.643.9L18.115 13H1.922L.399 2.7a1 1 0 0 1 1.65-.898zM2 14h16v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z" />
                                     </svg>
                                 </div>
                             @endif
-                            <span>{{$user['user']}}</span>
+                            <span>{{ $user['user'] }}</span>
                         </div>
-                        
+
                         <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-1">
-                            <span>Puntos positivos: <b>{{$user['pos']}}</b></span>
-                            <span>Puntos negativos: <b>{{$user['neg']}}</b></span>
-                            <span>Total de puntos: <b>{{$user['total']}}</b></span>
-                            <span>Calificación: <b>{{number_format($user['cal'],1)}}</b></span>
+                            <span>Puntos positivos: <b>{{ $user['pos'] }}</b></span>
+                            <span>Puntos negativos: <b>{{ $user['neg'] }}</b></span>
+                            <span>Total de puntos: <b>{{ $user['total'] }}</b></span>
+                            <span>Calificación: <b>{{ number_format($user['cal'], 1) }}</b></span>
                         </div>
                     </div>
                 @endforeach
@@ -171,9 +174,11 @@
         </div>
     @else
         <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="max-w-[200px] bi bi-x-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="max-w-[200px] bi bi-x-circle"
+                viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
             </svg>
             <span class="text-2xl text-center">Sin calificaciones por mostrar</span>
         </div>

@@ -21,7 +21,7 @@ class EstacionController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if ($user->permiso_id == 1 || $user->permiso_id == 4) {
+        if ($user->permiso_id == 1 || $user->permiso_id == 4 || $user->permiso_id == 8) {
             $this->filterSoli = $request->input('filterSoli') == 'Todos' ? null : $request->input('filterSoli');
 
             $zonas = Zona::where('status', 'Activo')->get();

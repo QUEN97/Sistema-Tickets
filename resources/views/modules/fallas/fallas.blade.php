@@ -5,8 +5,24 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('FALLAS') }}
             </h2>
-            <div>
-                @livewire('fallas.new-falla')
+            <div class=" flex justify-center space-x-2">
+                @if ($valid->pivot->wr == 1)
+                    <div>
+                        @livewire('fallas.new-falla')
+                    </div>
+                @endif
+                @if ($valid->pivot->verpap == 1)
+                    <div class="">
+                        <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
+                            href="{{ route('fallas.trashed') }}">
+                            Eliminados
+                            <span
+                                class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
+                                {{ $trashed }}
+                            </span>
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </x-slot>
@@ -51,19 +67,10 @@
                     </div>
                     <button type="submit"
                         class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
-                    
+
                 </div>
             </form>
-            <div class="">
-                <a class="inline-flex items-center px-3 py-2.5 text-sm font-medium text-center float-right text-white bg-gray-400 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-dark-eval-3 "
-                    href="{{ route('fallas.trashed') }}">
-                    Eliminados
-                    <span
-                        class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-black bg-white rounded-full">
-                        {{ $trashed }}
-                    </span>
-                </a>
-            </div>
+
         </div>
         @if ($fallas->count() > 0)
             <table>
@@ -165,8 +172,12 @@
                             <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
-                                    @livewire('fallas.edit-falla', ['fallaID' => $falla->id])
-                                    @livewire('fallas.delete-falla', ['fallaID' => $falla->id])
+                                    @if ($valid->pivot->ed == 1)
+                                        @livewire('fallas.edit-falla', ['fallaID' => $falla->id])
+                                    @endif
+                                    @if ($valid->pivot->de == 1)
+                                        @livewire('fallas.delete-falla', ['fallaID' => $falla->id])
+                                    @endif
                                 </div>
                             </th>
                         </tr>

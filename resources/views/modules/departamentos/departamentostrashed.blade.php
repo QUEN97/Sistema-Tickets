@@ -52,6 +52,7 @@
                                                 <span
                                                     class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Opciones</span>
                                                 <div class="grid grid-cols-1">
+                                                    @if ($valid->pivot->restpap == 1)
                                                     <div>
                                                         {{-- restaurar --}}
                                                         <form method="POST" action="{{ route('departamento_restore') }}"
@@ -70,6 +71,7 @@
                                                             </button>
                                                         </form> 
                                                     </div>
+                                                    @endif
                                                     <div>
                                                         {{-- Eliminar Permanente --}}
                                                         {{-- <form method="POST"

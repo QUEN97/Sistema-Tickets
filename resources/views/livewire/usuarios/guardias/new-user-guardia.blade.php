@@ -8,7 +8,7 @@
 
     <x-dialog-modal wire:model="modal" id="modalRepuesto" class="flex items-center">
         <x-slot name="title">
-            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-1 rounded-md text-white text-center">
                 {{ __('Agregar Usuario para Guardia') }}
             </div>
         </x-slot>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Sistema\Holiday;
 
 use App\Models\Holiday;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -58,7 +59,8 @@ class HolidayComponent extends Component
     }
     public function render()
     {
-        return view('livewire.sistema.holiday.holiday-component');
+        $valid = Auth::user()->permiso->panels->where('id', 24)->first();
+        return view('livewire.sistema.holiday.holiday-component',compact('valid'));
     }
 
     public function deleteFestivo($festivoId)

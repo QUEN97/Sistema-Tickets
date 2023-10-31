@@ -3,19 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnalyticsController extends Controller
 {
     public function general(){
-        return view('modules.analytics.general');
+        $valid = Auth::user()->permiso->panels->where('id', 26)->first();
+        return view('modules.analytics.general', compact('valid'));
     }
     public function users(){
-        return view('modules.analytics.users');
+        $valid = Auth::user()->permiso->panels->where('id', 27)->first();
+        return view('modules.analytics.users', compact('valid'));
     }
     public function compras(){
-        return view('modules.analytics.compras');
+        $valid = Auth::user()->permiso->panels->where('id', 28)->first();
+        return view('modules.analytics.compras', compact('valid'));
     }
     public function calificaciones() {
-        return view('modules.analytics.calificaciones');
+        $valid = Auth::user()->permiso->panels->where('id', 29)->first();
+        return view('modules.analytics.calificaciones', compact('valid'));
     }
 }
