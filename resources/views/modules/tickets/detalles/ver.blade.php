@@ -1,7 +1,7 @@
 <x-app-layout>
     @section('title', 'Ver Ticket')
 
-    <div class="flex flex-col sm:flex-row gap-2">
+    <div class="flex flex-col items-center sm:flex-row gap-2">
         <div class="bg-white dark:bg-dark-eval-1 text-gray-800 p-4 rounded-md shadow-lg mb-4 sm:mb-0">
             <ul class="list-style:none">
                 <li class="mb-2"><strong class="dark:text-white">Ticket: </strong>

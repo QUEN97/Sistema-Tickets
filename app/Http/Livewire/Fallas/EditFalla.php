@@ -33,7 +33,8 @@ class EditFalla extends Component
         $falla->prioridad_id=$this->prioridad;
         $falla->save();
         Alert::success('Actualización realizada','Los datos del registro se actualizaron con éxito');
-        return redirect()->route('fallas');
+        // return redirect()->route('fallas');
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

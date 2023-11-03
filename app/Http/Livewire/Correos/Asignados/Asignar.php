@@ -40,7 +40,7 @@ class Asignar extends Component
         foreach($this->correos as $correo){
             foreach($this->zonasAsignadas as $zona){
                 if ($this->tipo=='Producto') {
-                    if(CorreosZona::where([['correo_id',$correo],['zona_id',$zona]])->get()->count()==0){
+                    if(CorreosZona::where([['correo_id',$correo],['zona_id',$zona],['categoria_id',$this->categoria]])->get()->count()==0){
                         $reg=new CorreosZona();
                         $reg->categoria_id=$this->categoria;
                         $reg->zona_id=$zona;

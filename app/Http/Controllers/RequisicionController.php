@@ -31,7 +31,7 @@ class RequisicionController extends Controller
             $compras=Compra::whereIn('ticket_id',$tck)->paginate(10) ->withQueryString();
         }
         //listado para jefes de area
-        if($user->permiso_id==7){
+        if($user->permiso_id==7 ){
             $personal=UserArea::whereIn('area_id',$user->areas->pluck('id'))->pluck('user_id');
             $tck=Ticket::where(function($q)use($personal){
                 $q->whereIn('user_id',$personal)
@@ -40,7 +40,7 @@ class RequisicionController extends Controller
             $compras=Compra::whereIn('ticket_id',$tck)->paginate(10) ->withQueryString();
         }
         //todos los tickets cuando sea admin o compras
-        if(in_array($user->permiso_id,[1,4]) || (isset($user->areas->first()->name) && $user->areas->first()->name=='Compras')){
+        if(in_array($user->permiso_id,[1,4,7,8]) || (isset($user->areas->first()->name) && $user->areas->first()->name=='Compras')){
             $compras=Compra::orderBy('id', 'DESC')->paginate(10);
         }
         return view('modules.tickets.compras.compras-list',compact('compras','valid'));

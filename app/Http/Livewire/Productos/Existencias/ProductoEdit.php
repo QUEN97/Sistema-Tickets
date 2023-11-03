@@ -58,7 +58,8 @@ class ProductoEdit extends Component
         }
         $dato->save();
         Alert::success('Actualización realizada','Los datos del registro se actualizaron con éxito');
-        return redirect()->route('productos');
+        // return redirect()->route('productos');
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

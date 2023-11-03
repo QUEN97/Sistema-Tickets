@@ -29,7 +29,8 @@ class EditPrioridad extends Component
         $data->tiempo = $this->tiempo;
         $data->save();
         Alert::success('Actualización realizada','Los datos del registro se actualizaron con éxito');
-        return redirect()->route('prioridades');
+        // return redirect()->route('prioridades');
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

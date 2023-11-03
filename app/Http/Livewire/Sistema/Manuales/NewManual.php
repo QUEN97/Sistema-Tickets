@@ -44,7 +44,7 @@ class NewManual extends Component
         $this->validate( [
             'panel' => ['required', 'not_in:0'],
             'permis' => ['required'],
-            'manual' => 'required|5120',
+            'manual' => 'required|max:5120',
         ],
         [
             'panel.required' => 'El campo Panel es obligatorio',

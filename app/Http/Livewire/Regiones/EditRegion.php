@@ -26,7 +26,8 @@ class EditRegion extends Component
         $region->status=$this->status;
         $region->save();
         Alert::success('Actualización realizada','Los datos del registro se actualizaron con éxito');
-        return redirect()->route('regiones');
+        // return redirect()->route('regiones');
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

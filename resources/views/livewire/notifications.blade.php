@@ -36,12 +36,12 @@
                             <li wire:click="readNotification('{{ $notification->id }}')" @class(['bg-blue-200' => !$notification->read_at])>
                                 <x-dropdown-link href="{{ $notification->data['url'] }}">
                                     <div class="flex">
-                                        @if (isset($notification->data['photo']))
+                                        {{-- @if (isset($notification->data['photo']))
                                             <!-- Verifica si la propiedad "photo" existe -->
                                             <img class="h-10 w-10 rounded-full object-cover"
-                                                src="{{ $notification->data['photo'] }}"
+                                                src="{!! $notification->data['photo'] !!}"
                                                 alt="{{ $notification->data['user'] }}">
-                                        @endif
+                                        @endif --}}
                                         <div class="flex-1 ml-4">
                                             @if (isset($notification->data['user']))
                                                 <!-- Verifica si la propiedad "user" existe -->

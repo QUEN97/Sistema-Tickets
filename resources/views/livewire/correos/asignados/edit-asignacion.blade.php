@@ -38,7 +38,7 @@
                     <x-card-warn>
                         Seleccione los correos a eliminar
                     </x-card-warn>
-                    <div class="pt-1 pb-3 flex flex-col gap-2 max-h-96 overflow-y-auto">
+                    <div class="pt-1 pb-3 flex flex-col gap-2 max-h-[1020px] overflow-y-auto">
                         @foreach ($zonas as $zona)
                             <div class="border rounded-md overflow-hidden dark:border-slate-500">
                                 <div class="px-2 py-1 w-full bg-slate-500 text-white">

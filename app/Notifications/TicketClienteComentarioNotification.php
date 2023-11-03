@@ -46,7 +46,7 @@ class TicketClienteComentarioNotification extends Notification implements Should
             'photo' => $photo,
             'user' => $this->ticket->agente->name,
             'message' => ", ha realizado un nuevo comentario para el ticket 
-            #{$this->ticket->id}." 
+            #{$this->ticket->id}, ESTADO: {$this->ticket->status}" 
         ];
     }
 

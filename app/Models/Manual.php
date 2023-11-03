@@ -17,7 +17,7 @@ class Manual extends Model
      * @var string[]
      */
     protected $fillable = [
-        'panel_id', 'titulo_manual', 'manual_path', 'size', 'flag_trash',
+        'panel_id', 'titulo_manual', 'manual_path', 'size', 'flag_trash','mime_type'
     ];
 
     public function getCreatedFormatAttribute()

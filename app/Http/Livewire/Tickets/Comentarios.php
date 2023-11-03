@@ -5,11 +5,16 @@ namespace App\Http\Livewire\Tickets;
 use App\Models\ArchivosComentario;
 use App\Models\Comentario;
 use App\Models\Ticket;
+use App\Models\User;
+use App\Notifications\AdminAgenteComent;
+use App\Notifications\AdminClienteComent;
+use App\Notifications\AdminNotifyComent;
 use App\Notifications\TicketAgenteComentarioNotification;
 use App\Notifications\TicketClienteComentarioNotification;
 use App\Notifications\TicketComentarioNotification;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -85,13 +90,17 @@ class Comentarios extends Component
             $currentUserId = Auth::user()->id;
             $currentUser = Auth::user();
 
+            $Admins = User::where('permiso_id',1)->get();
+
             //Cliente comenta notifica a agente asignado
             if ($currentUserId === $ticketOwner->id) {
                 $notification = new TicketAgenteComentarioNotification($tck);
                 $agent->notify($notification);
+                Notification::send($Admins, new AdminClienteComent($tck));
             } elseif ($currentUserId === $agent->id) { //Agente comenta notifica a cliente (quien solicita el ticket)
                 $notification = new TicketClienteComentarioNotification($tck);
                 $ticketOwner->notify($notification);
+                Notification::send($Admins, new AdminAgenteComent($tck));
             }
 
             if ($currentUser->permiso_id === 1 || $currentUser->permiso_id === 2 || $currentUser->permiso_id === 7) {

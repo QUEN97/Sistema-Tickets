@@ -68,6 +68,7 @@ class AcepCompra extends Component
         $this->bccEmails = [
             'iiuit@fullgas.com.mx', //Irvin Iuit
             'achavez@fullgas.com.mx', //Arlenny Chavez
+            'auxsistemas@fullgas.com.mx',
             $agenteMail, //Obtenemos el mail del agente 
             // Agrega más direcciones de correo aquí...
         ];

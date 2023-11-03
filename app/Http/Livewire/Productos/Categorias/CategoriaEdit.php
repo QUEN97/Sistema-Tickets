@@ -48,7 +48,7 @@ class CategoriaEdit extends Component
 
         $this->EditCategoria = false;
         Alert::success('Categoria Actualizada', "La Categoria". ' '.$this->name. ' '. "ha sido actualizada en el sistema");
-        return redirect()->route('categorias');
+        // return redirect()->route('categorias');
     }
 
     public function render()

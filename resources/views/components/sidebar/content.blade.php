@@ -9,18 +9,27 @@
 
     // $requis = 'hidden';
 
+    $almacen = 'hidden';
+
     $settings = 'hidden';
 
     $sistema = 'hidden';
 
     foreach ($valid as $permis) {
-        for ($i = 1; $i <= 19; $i++) {
+
+        for ($i = 5; $i <= 5; $i++) {
+            if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
+                $almacen = 'block';
+            }
+        }
+
+        for ($i = 6; $i <= 19; $i++) {
             if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
                 $settings = 'block';
             }
         }
 
-        for ($i = 20; $i <= 29; $i++) {
+        for ($i = 20; $i <= 20; $i++) {
             if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
                 $sistema = 'block';
             }
@@ -98,7 +107,7 @@
     {{-- </div> --}}
 
     {{-- Almacén --}}
-    <div class="{{ $sistema }}">
+    <div class="{{ $almacen }}">
         <x-sidebar.dropdown title="Almacén" :active="Str::startsWith(
             request()
                 ->route()

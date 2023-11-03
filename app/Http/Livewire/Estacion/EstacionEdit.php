@@ -73,7 +73,8 @@ class EstacionEdit extends Component
 
         $this->mount();
         Alert::success('Estacion Actualizada', "La Estacion". ' '.$this->name. ' '. "ha sido actualizada en el sistema");
-        return redirect()->route('estaciones');
+        // return redirect()->route('estaciones');
+        return redirect(request()->header('Referer'));
     }
 
     public function updatedZona($id)

@@ -12,6 +12,8 @@ use App\Models\Holiday;
 use App\Models\Servicio;
 use App\Models\Ticket;
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AdminNotify;
 use App\Notifications\TicketAsignadoNotificacion;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -96,6 +98,7 @@ class NewTicket extends Component
         $dia = Carbon::now(); //Obtenemos el dia actual
         $Festivo = $this->esDiaFestivo($dia); //llamamos a los dias festivos del sistema
         $regionId = Auth::user()->region_id; // obtenemos la region del usuario autenticado
+        $Admins = User::where('permiso_id',1)->get();
 
         $this->validate([ //Valida los campos requeridos y crea un nuevo registro de ticket en la base de datos.
             'area' => ['required', 'not_in:0'],
@@ -175,10 +178,12 @@ class NewTicket extends Component
         
         $agent = User::find($ticket['user_id']);
         $agent->notify(new TicketAsignadoNotificacion($ticket));
+        Notification::send($Admins, new AdminNotify($ticket));
 
     //    Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); 
        session()->flash('flash.banner', 'Nuevo Ticket, el ticket se ha creado y asignado correctamente.');
        session()->flash('flash.bannerStyle', 'success');
+
         return redirect()->route('tickets');
     }
 

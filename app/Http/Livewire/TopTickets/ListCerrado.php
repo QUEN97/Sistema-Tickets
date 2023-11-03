@@ -14,14 +14,14 @@ class ListCerrado extends Component
            // Listado ultimos 5 tickets por status
            $mesEnCurso = Carbon::now()->monthName; //Obtenemos el nombre del mes en curso
            $mesActual = Carbon::now()->month; //Obtenemos el mes en curso para cotejar en la condicion de visibilidad de los tickets
-           $userId = Auth::id(); // Obtenemos al usuario Auntenticado
+           $userId = Auth::user(); // Obtenemos al usuario Auntenticado
 
            $ultimosCerrados = DB::table('tickets')
             ->where('status', 'Cerrado')
             ->where(function ($query) use ($userId) {
-                if ($userId !== 1) {
-                    $query->where('user_id', $userId)
-                    ->orWhere('solicitante_id',$userId);
+                if ($userId->permiso_id !== 1) {
+                    $query->where('user_id', $userId->id)
+                    ->orWhere('solicitante_id',$userId->id);
                 }
             })
             ->whereMonth('created_at', $mesActual)

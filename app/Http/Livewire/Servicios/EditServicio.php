@@ -23,7 +23,8 @@ class EditServicio extends Component
         $dato->status=$this->status;
         $dato->save();
         Alert::success('Actualización realizada','Los datos del registro se actualizaron con éxito');
-        return redirect()->route('servicios');
+        // return redirect()->route('servicios');
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

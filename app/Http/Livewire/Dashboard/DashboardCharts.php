@@ -82,12 +82,12 @@ class DashboardCharts extends Component
 
 
         //Tickets por prioridad      
-        $userId = Auth::id();
+        $userId = Auth::user();
         $prioridades = DB::table('tickets')
             ->where(function ($query) use ($userId) {
-                if ($userId !== 1) {
-                    $query->where('user_id', $userId)
-                        ->orWhere('solicitante_id', $userId);
+                if ($userId->permiso_id !== 1) {
+                    $query->where('user_id', $userId->id)
+                        ->orWhere('solicitante_id', $userId->id);
                 }
             })
             ->join('fallas', 'tickets.falla_id', 'fallas.id')
@@ -114,12 +114,12 @@ class DashboardCharts extends Component
             ->setToolbar(true);
 
         //Tickets por status
-        $userId = Auth::id();
+        $userId = Auth::user();
         $estados = DB::table('tickets')
             ->where(function ($query) use ($userId) {
-                if ($userId !== 1) {
-                    $query->where('user_id', $userId)
-                        ->orWhere('solicitante_id', $userId);
+                if ($userId->permiso_id !== 1) {
+                    $query->where('user_id', $userId->id)
+                        ->orWhere('solicitante_id', $userId->id);
                 }
             })
             ->whereMonth('tickets.created_at', Carbon::now()->month)

@@ -4,42 +4,36 @@
     </div>
     <div>
         <x-label value="{{ __('Servicio') }}" for="servicio" />
-        <textarea wire:model="servicio" disabled
-            class="w-full resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('servicio') ? 'is-invalid' : '' }} "
-            name="servicio" required  autocomplete="servicio">
-    </textarea>
+        <x-input wire:model="servicio" disabled
+        class="w-full  border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 dark:text-white"
+            name="servicio" required  autocomplete="servicio"/>
         <x-input-error for="servicio"></x-input-error>
     </div>
     <div>
         <x-label value="{{ __('Falla') }}" for="falla" />
-        <textarea wire:model="falla" disabled
-            class="w-full resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('falla') ? 'is-invalid' : '' }} "
-            name="falla" required  autocomplete="falla">
-    </textarea>
+        <x-input wire:model="falla" disabled
+        class="w-full  border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 dark:text-white"
+            name="falla" required  autocomplete="falla"/>
         <x-input-error for="falla"></x-input-error>
     </div>
-    <div class=" flex gap-1 pb-4">
+   <div class=" flex flex-wrap gap-1 pb-4"> 
         <div class="w-full">
             <x-label value="{{ __('Asunto') }}" for="asunto" />
-            <textarea wire:model="asunto" disabled
-                class="resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('asunto') ? 'is-invalid' : '' }} "
-                name="asunto" required  autocomplete="asunto">
-            </textarea>
+            <x-input wire:model="asunto" disabled
+            class="w-full  border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 dark:text-white"
+                name="asunto" required  autocomplete="asunto"/>
             <x-input-error for="asunto"></x-input-error>
         </div>
         <div class="w-full">
             <x-label value="{{ __('Descripción') }}" for="mensaje" />
             <textarea wire:model="mensaje" disabled
-                class="resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('mensaje') ? 'is-invalid' : '' }} "
+                class="w-full resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('mensaje') ? 'is-invalid' : '' }} " rows="4" cols="50"
                 name="mensaje" required  autocomplete="mensaje">
             </textarea>
             <x-input-error for="mensaje"></x-input-error>
         </div>
-    </div>
+   </div> 
     <hr>
     @if ($evidenciaArc->count() > 0)
     <div class="flex items-center ml-2 mt-3"> <!-- Agregado el contenedor flex -->

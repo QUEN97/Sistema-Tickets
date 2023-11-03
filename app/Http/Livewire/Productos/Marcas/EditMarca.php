@@ -25,7 +25,8 @@ class EditMarca extends Component
         $marca->status=$this->status;
         $marca->save();
         Alert::success('Actualización realizada','Los datos del registro se actualizaron con éxito');
-        return redirect()->route('marcas');
+        // return redirect()->route('marcas');
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

@@ -30,7 +30,8 @@ class EditServicio extends Component
         $servicio->prioridad=$this->prioridad;
         $servicio->save();
         Alert::success('Servicio actualizado', 'La información del registro ha sido actualizada');
-        return redirect()->route('serviciosTCK');
+        // return redirect()->route('serviciosTCK');
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

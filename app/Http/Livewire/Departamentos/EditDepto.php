@@ -26,7 +26,8 @@ class EditDepto extends Component
         $depto->status=$this->status;
         $depto->save();
         Alert::success('Actualización realizada','Los datos del registro se actualizaron con éxito');
-        return redirect()->route('departamentos');
+        // return redirect()->route('departamentos');
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {
