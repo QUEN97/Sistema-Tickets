@@ -4,22 +4,22 @@
     </div>
     <div>
         <x-label value="{{ __('Servicio') }}" for="servicio" />
-        <x-input wire:model="servicio" disabled
+        <x-input wire:model="servicio" disabled type="text"
         class="w-full  border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 dark:text-white"
             name="servicio" required  autocomplete="servicio"/>
         <x-input-error for="servicio"></x-input-error>
     </div>
     <div>
         <x-label value="{{ __('Falla') }}" for="falla" />
-        <x-input wire:model="falla" disabled
+        <x-input wire:model="falla" disabled type="text"
         class="w-full  border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 dark:text-white"
-            name="falla" required  autocomplete="falla"/>
+            name="falla" />
         <x-input-error for="falla"></x-input-error>
     </div>
    <div class=" flex flex-wrap gap-1 pb-4"> 
         <div class="w-full">
             <x-label value="{{ __('Asunto') }}" for="asunto" />
-            <x-input wire:model="asunto" disabled
+            <x-input wire:model="asunto" disabled type="text"
             class="w-full  border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 dark:text-white"
                 name="asunto" required  autocomplete="asunto"/>
             <x-input-error for="asunto"></x-input-error>

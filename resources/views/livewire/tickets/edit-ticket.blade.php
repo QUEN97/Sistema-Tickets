@@ -26,7 +26,7 @@
                 <x-input-error for="cerrado"></x-input-error>
             </div>
         @endif
-        <div class="flex  gap-2 justify-evenly items-center mb-2">
+        <div class="flex flex-wrap gap-2 justify-evenly items-center mb-2">
             <div>
                 <x-label value="{{ __('Departamento') }}" for="departamento" />
                 <select id="departamento" name="departamento"
