@@ -2,7 +2,8 @@
     <div class="bg-dark-eval-1 p-1 rounded-md text-white text-center mb-2">
         {{ __('Editar Ticket') }}
     </div>
-    <div class="max-h-[150px] overflow-auto">
+    <div class="max-h-[200px] overflow-auto">
+        <div class="flex flex-wrap justify-evenly gap-2">
             <div class="mb-2">
                 <x-label value="{{ __('Creado') }}" for="creado" />
                 <x-input wire:model.defer="creado" type="datetime-local" name="creado" id="creado"
@@ -17,6 +18,7 @@
                             dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
                 <x-input-error for="vence"></x-input-error>
             </div>
+        </div>
         @if ($this->cerrado != NULL)
             <div class=" mb-2">
                 <x-label value="{{ __('Cerrado') }}" for="cerrado" />
@@ -26,7 +28,7 @@
                 <x-input-error for="cerrado"></x-input-error>
             </div>
         @endif
-        <div class="flex flex-wrap gap-2 justify-evenly items-center mb-2">
+        <div class="flex  gap-2 justify-evenly items-center mb-2">
             <div>
                 <x-label value="{{ __('Departamento') }}" for="departamento" />
                 <select id="departamento" name="departamento"
@@ -41,7 +43,7 @@
             </div>
             <div>
                 <x-label value="{{ __('Área') }}" for="area" />
-                <select wire:model.defer="area" name="area" id="area"
+                <select wire:model="area" name="area" id="area"
                     class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
                     <option hidden value="" selected>Seleccionar Área</option>
                     @foreach ($areas as $area)
@@ -52,19 +54,18 @@
             </div>
         </div>
         <div class="flex gap-2 justify-evenly items-center mb-2">
-            @if ($servicios)
-                <div>
-                    <x-label value="{{ __('Servicio') }}" for="servicio" />
-                    <select wire:model.defer="servicio" name="servicio" id="servicio" style="width: 150px;"
-                        class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
-                        <option hidden value="" selected>Seleccionar Servicio</option>
-                        @foreach ($servicios as $servicio)
-                            <option value="{{ $servicio->id }}">{{ $servicio->name }}</option>
-                        @endforeach
-                    </select>
-                    <x-input-error for="servicio"></x-input-error>
-                </div>
-            @endif
+            <div>
+                <x-label value="{{ __('Servicio') }}" for="servicio" />
+                <select wire:model="servicio" name="servicio" id="servicio" style="width: 150px;"
+                    class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
+                    <option hidden value="" selected>Seleccionar Servicio</option>
+                    @foreach ($servicios as $servicio)
+                        <option value="{{ $servicio->id }}">{{ $servicio->name }}</option>
+                    @endforeach
+                </select>
+                <x-input-error for="servicio"></x-input-error>
+            </div>
+            
             @if ($fallas)
                 <div>
                     <x-label value="{{ __('Falla') }}" for="falla" />
@@ -80,7 +81,19 @@
             @endif
 
         </div>
+        <div>
+            <x-label value="{{ __('Cliente') }}" for="cliente" />
+            <select wire:model.defer="cliente" name="cliente" id="cliente"
+                class=" border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700">
+                <option hidden value="" selected>Seleccionar cliente</option>
+                @foreach ($clientes as $p)
+                    <option value="{{ $p->id }}">{{ $p->name }}</option>
+                @endforeach
+            </select>
+            <x-input-error for="cliente"></x-input-error>
+        </div>
         <div class="flex gap-2 justify-evenly items-center mb-2">
+            
             @if ($agentes)
                 <div>
                     <x-label value="{{ __('Agente') }}" for="personal" />

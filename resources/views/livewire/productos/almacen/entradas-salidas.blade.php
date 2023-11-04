@@ -29,7 +29,7 @@
                 <div class="my-2" x-data="{
                     productos: prod,
                     estaciones: est,
-                    tickets: tck,
+                    tickets: [],
                     contador: 1,
                     showSerie: false,
                     showSerie2: false,
@@ -47,6 +47,15 @@
                         $wire.set('carrito', this.carrito);
                         $wire.operacion();
                         setTimeout(() => $wire.refresh(), 50);
+                    },
+                    Selects(){
+                        return {
+                            tickets:[],
+                            filterTCK(event){
+                                const user=est.find(item=>item.id==event.target.value);
+                                this.tickets=tck.filter(item=>item.solicitante_id==user.user_id);
+                            }
+                        }
                     },
                     selectConfigs() {
                         return {
@@ -198,9 +207,9 @@
                                         </svg>
                                     </button>
                                 </template>
-                                <div class="flex flex-wrap gap-2">
+                                <div class="flex flex-wrap gap-2" x-data="Selects()">
                                     <div>
-                                        <select :name="`s${prod.id}`" :id="`s${prod.id}`" x-model="prod.estacion"
+                                        <select :name="`s${prod.id}`" :id="`s${prod.id}`" x-model="prod.estacion" @change="filterTCK(event)"
                                             class="border-gray-300 max-w-[185px] focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1">
                                             <option value="" hidden selected>Seleccione estación</option>
                                             <option value="NULL">Sin estación</option>

@@ -8,6 +8,7 @@ use App\Models\Departamento;
 use App\Models\Falla;
 use App\Models\Servicio;
 use App\Models\Ticket;
+use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -16,11 +17,39 @@ use RealRashid\SweetAlert\Facades\Alert;
 class EditTicket extends Component
 {
     use WithFileUploads;
-    public $ticketID,$fallas,$falla,$area,$servicios,$servicio,$agentes,$agente,
+    public $ticketID,$fallas,$falla,$area,$servicios,$servicio,$agentes,$agente,$cliente,$clientes,
     $asunto,$mensaje,$status,$modal=false,$departamento,
     $vence,$creado,$cerrado;
     public $evidencias=[],$evidenciaArc,$urlArchi;
-    
+    public function mount(){
+        $tck = Ticket::find($this->ticketID);
+        $this->departamento=Falla::find($tck->falla_id)->servicio->area->departamento->id;
+        $this->servicio=Falla::find($tck->falla_id)->servicio->id;
+        $this->fallas=Servicio::find($this->servicio)->fallas;
+        $this->area=Falla::find($tck->falla_id)->servicio->area->id;
+        $this->servicios=Areas::find($this->area)->servicios;
+        //$this->agentes=Areas::find($this->area)->users;
+        //$this->agentes=User::with('areas')->orderBy('name', 'ASC')->get();
+        $this->agentes=User::whereNotIn('permiso_id',[2,3,6])->orderBy('name', 'ASC')->get();
+        $this->clientes=User::all();
+        
+        $this->falla=$tck->falla_id;
+        $this->agente=$tck->user_id;
+        $this->cliente=$tck->solicitante_id;
+        $this->asunto=$tck->asunto;
+        $this->mensaje=$tck->mensaje;
+        $this->status=$tck->status;
+
+        $fecha_cierre = Carbon::parse($tck->fecha_cierre);
+        $this->vence=$fecha_cierre->format('Y-m-d\TH:i:s');
+        $this->creado=$tck->created_at->format('Y-m-d\TH:i:s');
+        if ($tck->cerrado) {
+            $cerrado = Carbon::parse($tck->cerrado);
+            $this->cerrado = $cerrado->format('Y-m-d\TH:i:s');
+        } else {
+            $this->cerrado = null;
+        }
+    }
     // public function editTicket(Ticket $tck){
     //     $this->departamento=Falla::find($tck->falla_id)->servicio->area->departamento->id;
     //     $this->servicio=Falla::find($tck->falla_id)->servicio->id;
@@ -54,14 +83,17 @@ class EditTicket extends Component
             'asunto.required'=>'El asunto es requerido',
             'mensaje.required'=>'Ingrese los detalles del problema',
         ]);
+        $falla=Falla::find($this->falla);
+        $cierre=Carbon::create($this->creado);
         //actualizamos los datos del ticket en la base de datos
         $tck->falla_id=$this->falla;
         $tck->user_id=$this->agente;
+        $tck->solicitante_id=$this->cliente;
         $tck->asunto=$this->asunto;
         $tck->mensaje=$this->mensaje;
         $tck->status=$this->status;
         $tck->created_at=$this->creado;
-        $tck->fecha_cierre=$this->vence;
+        $tck->fecha_cierre=$cierre->addHours($falla->prioridad->tiempo);
         $tck->save();
         if ($tck->status !== 'Cerrado') {
             $tck->status = $this->status;
@@ -83,13 +115,15 @@ class EditTicket extends Component
                 $archivo->save();
             }
         }
-        Alert::success('Ticket Actualizado', "La información del ticket ha sido actualizada");
-        return redirect()->route('tickets');
+        //Alert::success('Ticket Actualizado', "La información del ticket ha sido actualizada");
+        session()->flash('flash.banner', 'Ticket Actualizado, los cambios en el ticket se han registrado correctamente.');
+       session()->flash('flash.bannerStyle', 'success');
+        //return redirect()->route('tickets');
+        return redirect(request()->header('Referer'));
     }
     public function updatedArea($id){
         $area=Areas::find($id);
         $this->servicios=$area->servicios;
-        $this->agentes=$area->users;
     }
     public function updatedServicio($id){
         $this->fallas=Servicio::find($id)->fallas;
@@ -102,7 +136,7 @@ class EditTicket extends Component
     }
     public function render()
     {
-        $tck = Ticket::find($this->ticketID);
+        /* $tck = Ticket::find($this->ticketID);
         $this->departamento=Falla::find($tck->falla_id)->servicio->area->departamento->id;
         $this->servicio=Falla::find($tck->falla_id)->servicio->id;
         $this->fallas=Servicio::find($this->servicio)->fallas;
@@ -124,7 +158,7 @@ class EditTicket extends Component
             $this->cerrado = $cerrado->format('Y-m-d\TH:i:s');
         } else {
             $this->cerrado = null;
-        }
+        } */
 
         $departamentos = Departamento::all();
         $areas = $this->departamento ? Departamento::find($this->departamento)->areas : collect([]);
