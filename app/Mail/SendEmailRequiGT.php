@@ -30,6 +30,10 @@ class SendEmailRequiGT extends Mailable
     public function build()
     {
         return $this->subject($this->mailDataU['asunto']. ' - ' .$this->mailDataU['solicitadopor'])
-                    ->view('emails.SendEmailRequiGT');
+                    ->view('emails.SendEmailRequiGT')
+                    ->attach(public_path('storage/'.$this->mailDataU['pdf']), [
+                        'as' => $this->mailDataU['pdf'],
+                        'mime' => 'application/pdf',
+                    ]);
     }
 }

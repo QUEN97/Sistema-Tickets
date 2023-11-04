@@ -23,9 +23,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->composer('layouts.app', function ($view) {
-            $mePertenece = Auth::user()->id;
+            $mePertenece = Auth::user();
             $ticketsProximosVencer = 0;
             $ticketsPorAtender = 0;
+            $now = Carbon::now();
             $mediaHora = Carbon::now()->subMinutes(30);
             $fechaActual = Carbon::now();
             $fechaLimite = $fechaActual->copy()->addHour(5);
@@ -33,22 +34,48 @@ class AppServiceProvider extends ServiceProvider
                 ->where('fecha_cierre', '<=', $fechaLimite)
                 ->where('status', '!=', 'Cerrado')
                 ->where(function ($query) use ($mePertenece) {
-                    if ($mePertenece !== 1) {
-                        $query->where('user_id', $mePertenece);
+                    if ($mePertenece->permiso_id !== 1) {
+                        $query->where('user_id', $mePertenece->id)
+                            ->orWhere('solicitante_id', $mePertenece->id);
                     }
                 })
                 ->get();
 
-                $ticketsPorAtender = Ticket::where('status', 'Abierto')
+            $ticketsPorAtender = Ticket::where('status', 'Abierto')
                 ->where('created_at', '<=', $mediaHora)
+                ->where(function ($query) use ($mePertenece) {
+                    if ($mePertenece->permiso_id !== 1) {
+                        $query->where('user_id', $mePertenece->id)
+                            ->orWhere('solicitante_id', $mePertenece->id);
+                    }
+                })
+                ->get();
+
+                $ticketsEnProcesoSinComentarios = Ticket::where('status', 'En proceso')
+                ->where(function ($query) use ($now, $mePertenece) {
+                    $query->where(function ($query) use ($mePertenece) {
+                        if ($mePertenece->permiso_id !== 1) {
+                            $query->where('user_id', $mePertenece->id)
+                                ->orWhere('solicitante_id', $mePertenece->id);
+                        }
+                    })
+                    ->where(function ($query) use ($now) {
+                        $query->whereDoesntHave('comentarios')
+                            ->orWhereHas('comentarios', function ($query) use ($now) {
+                                $query->where('created_at', '<=', $now->subWeek());
+                            });
+                    });
+                })
                 ->get();
 
             $cantidadTicketsProximosVencer = $ticketsProximosVencer->count();
             $cantidadTicketsPorAtender = $ticketsPorAtender->count();
+            $cantidadTicketsSinComentar = $ticketsEnProcesoSinComentarios->count();
 
             $view->with([
                 'cantidadTicketsProximosVencer' => $cantidadTicketsProximosVencer,
-                'cantidadTicketsPorAtender' => $cantidadTicketsPorAtender
+                'cantidadTicketsPorAtender' => $cantidadTicketsPorAtender,
+                'cantidadTicketsSinComentar' =>  $cantidadTicketsSinComentar,
             ]);
         });
         // Configuración para fechas en español

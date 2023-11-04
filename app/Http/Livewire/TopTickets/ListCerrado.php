@@ -17,17 +17,19 @@ class ListCerrado extends Component
            $userId = Auth::user(); // Obtenemos al usuario Auntenticado
 
            $ultimosCerrados = DB::table('tickets')
-            ->where('status', 'Cerrado')
-            ->where(function ($query) use ($userId) {
-                if ($userId->permiso_id !== 1) {
-                    $query->where('user_id', $userId->id)
-                    ->orWhere('solicitante_id',$userId->id);
-                }
-            })
-            ->whereMonth('created_at', $mesActual)
-            ->orderBy('id', 'desc')
-            ->take(5)
-            ->get();
+           ->join('fallas', 'tickets.falla_id', '=', 'fallas.id')
+           ->select('tickets.*', 'fallas.name as nombre_falla')
+           ->where('tickets.status', 'Cerrado')
+           ->where(function ($query) use ($userId) {
+               if ($userId->permiso_id !== 1) {
+                   $query->where('tickets.user_id', $userId->id)
+                       ->orWhere('tickets.solicitante_id', $userId->id);
+               }
+           })
+           ->whereMonth('tickets.created_at', $mesActual)
+           ->orderBy('tickets.id', 'desc')
+           ->take(5)
+           ->get();
 
         return view('livewire.top-tickets.list-cerrado', [
             'mesEnCurso' => $mesEnCurso,

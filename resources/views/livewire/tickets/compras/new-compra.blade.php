@@ -77,7 +77,7 @@
     
                 <x-label value="{{ __('Evidencias') }}" class="border-b border-gray-400 w-full text-left mb-2"/>
                 <input type="file" wire:model="evidencias" class=" pb-2 flex flex-wrap file:text-sm file:font-semibold file:bg-blue-300 file:text-blue-700 hover:file:bg-blue-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0"
-                multiple name="evidencias" required autocomplete="evidencias" accept="image/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                multiple name="evidencias" required autocomplete="evidencias" accept="image/*, video/*, .pdf, .doc, .docx">
                 <x-input-error for="evidencias"></x-input-error>
     
                 <!-- Progress Bar -->

@@ -201,6 +201,13 @@ class AcepCompra extends Component
         }
         //dd($this->emailAddressServ);
 
+        foreach ($compra->evidencias as $ev) { //mediante este foreach anidado obtenemos del array el nombre de la evidencia
+            $evidencias = $ev->nombre_archivo;
+        }
+        foreach ($compra->evidencias as $ev) { //mediante este foreach anidado obtenemos del array la ruta de la evidencia
+            $evidenciaspath = $ev->archivo_path;
+        }
+
         $catPS = $compra->productos->count() > 0 ? 'Producto' : 'Servicio';
         $mailPS = $compra->productos->count() > 0 ? $this->emailAddress : $this->emailAddressServ;
         //dd($catPS);
@@ -230,6 +237,9 @@ class AcepCompra extends Component
             'problema' => $compra->problema, // de la requisición
             'solucion' => $compra->solucion, // de la requisición
             'mensaje' => $compra->mensaje_opcion,
+            'pdf' => $compra->documento,
+            'evidencias' => $evidencias,
+            'archivo' => $evidenciaspath,
         ];
 
         //En todas las requisiciones sin importar zona, se envia correo con copia a irvin, arlenny y al agente

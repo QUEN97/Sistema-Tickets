@@ -43,8 +43,8 @@ class NewCompraNotification extends Notification
             'url' => route('requisiciones'),
             'photo' => $photo,
             'user' => Auth::user()->name,
-            'message' => ", ha creado una requisición de Productos #{$this->compra->id}, 
-            en el ticket #{$this->compra->ticket_id}, '{$this->compra->titulo_correo}' "  
+            'message' => Auth::user()->name . " ha creado una requisición de Productos #{$this->compra->id} 
+            en el ticket #{$this->compra->ticket_id}, " . mb_strtoupper($this->compra->titulo_correo),
         ];
     }
 

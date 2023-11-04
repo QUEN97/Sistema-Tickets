@@ -163,19 +163,25 @@
 
     @stack('scripts')
 
-    <script src="{{ ('assets/js/toastr.min.js') }}"></script>
+    <script src="{{ 'assets/js/toastr.min.js' }}"></script>
 
 
     @if ($cantidadTicketsProximosVencer > 0)
         <script type="text/javascript">
-            toastr.warning("TIENES {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER")
+            toastr.warning("EXISTE {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER")
         </script>
     @endif
     @if ($cantidadTicketsPorAtender > 0)
-    <script type="text/javascript">
-        toastr.info("TIENES {{ $cantidadTicketsPorAtender }} TICKETS SIN ATENDER")
-    </script>
-@endif
+        <script type="text/javascript">
+            toastr.info("EXISTE {{ $cantidadTicketsPorAtender }} TICKETS ABIERTOS")
+        </script>
+    @endif
+    @if ($cantidadTicketsSinComentar > 0)
+        <script type="text/javascript">
+            toastr.info("EXISTE {{ $cantidadTicketsSinComentar}} TICKETS CON MÁS DE UNA SEMANA SIN ATENCIÓN ")
+        </script>
+    @endif
+
 
 </body>
 

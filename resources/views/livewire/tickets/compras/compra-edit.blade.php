@@ -60,6 +60,14 @@
                                                 <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
                                             </figure>
                                         </a>
+                                        @elseif ($antigArch->mime_type == "video/mp4")
+                                        <a  href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
+                                            <figure class="d-inline-block max-w-[160px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
+                                                <img class="w-100" src="{{ asset('img/icons/videos_video_media_cinema_1725.png') }}">
+                                                <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
+                                            </figure>
+                                        </a>
                                     @endif
                                     <button type="button" class="absolute top-1 right-1" wire:click="deleteEvidencia({{$antigArch->id}})" data-bs-toggle="tooltip" data-bs-placement="top" title="Doble click para Eliminar">
                                         <svg xmlns="http://www.w3.org/2000/svg"  class="bi bi-trash3-fill w-5 h-5 text-gray-400 hover:text-orange-800 transition duration-300"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

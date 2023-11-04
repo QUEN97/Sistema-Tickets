@@ -242,10 +242,10 @@
                                                                         <p
                                                                             style="margin: 0; mso-line-height-alt: 18px; letter-spacing: normal;">
                                                                             <strong>TICKET: <a
-                                                                                    href="http://www.fullgas.com.mx"
+                                                                                    href="{{ route('tck.ver', $mailDataU['ticket']) }}"
                                                                                     target="_blank"
                                                                                     style="text-decoration: underline;"
-                                                                                    rel="noopener">{{ $mailDataU['ticket'] }}</a></strong>
+                                                                                    rel="noopener">#{{ $mailDataU['ticket'] }}</a></strong>
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -337,11 +337,10 @@
                                                                         style="font-size: 12px; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 18px; color: #555555; line-height: 1.5;">
                                                                         <p
                                                                             style="margin: 0; mso-line-height-alt: 18px; letter-spacing: normal;">
-                                                                            <strong>CONSULTAR EVIDENCIAS: </strong><a
-                                                                                href="http://www.fullgas.com.mx"
+                                                                            <strong>CONSULTAR EVIDENCIAS: </strong><a href="{{ asset('storage/' . $mailDataU['archivo']) }}"
                                                                                 target="_blank"
                                                                                 style="text-decoration: underline;"
-                                                                                rel="noopener">Requisición #0000</a>
+                                                                                rel="noopener">{{ $mailDataU['evidencias'] }}</a>
                                                                         </p>
                                                                     </div>
                                                                 </div>

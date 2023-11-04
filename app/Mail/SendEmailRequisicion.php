@@ -30,6 +30,10 @@ class SendEmailRequisicion extends Mailable
     public function build()
     {
         return $this->subject($this->mailDataU['asunto']. ' - ' .$this->mailDataU['solicitadopor'])
-                    ->view('emails.SendEmailRequisicion');
+                    ->view('emails.SendEmailRequisicion')
+                    ->attach(public_path('storage/'.$this->mailDataU['pdf']), [
+                        'as' => $this->mailDataU['pdf'],
+                        'mime' => 'application/pdf',
+                    ]);
     }
 }

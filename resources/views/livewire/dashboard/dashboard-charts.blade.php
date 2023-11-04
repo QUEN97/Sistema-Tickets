@@ -26,8 +26,7 @@
                 {{ $chartTicketsAsignados->script() }}
             @endif
         @endauth --}}
-
-        <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl">
+        <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl" >
             {!! $chartTicketsPrioridad->container() !!}
         </div>
 

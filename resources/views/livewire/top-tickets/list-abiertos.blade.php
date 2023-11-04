@@ -1,7 +1,7 @@
 <div class="bg-white dark:bg-dark-eval-1 rounded-xl p-4 shadow-xl ">
     <div class="flex flex-col justify-center items-center">
         <a href="{{ asset('img/icons/Imagen1.png') }}" target="_blank">
-            <img src="{{ asset('img/icons/Imagen1.png') }}" class="w-full h-40 rounded-lg" />
+            <img src="{{ asset('img/icons/Imagen1.png') }}" class="rounded-lg" style="width: 300px; height:200px; position:relative;"  />
         </a>
     </div>
 
@@ -11,7 +11,7 @@
         <details>
             <summary
                 class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 cursor-pointer text-center">
-                {{ __('MOSTRAR/OCULTAR') }}
+                {{ __('MOSTRAR/OCULTAR') }} <span class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full" >{{ $ultimosAbiertos->count() }}</span>
             </summary>
             <table
                 class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-white">
@@ -32,7 +32,7 @@
                                 class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
                                 <span
                                     class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                {{ $open->id }}
+                                {{ $open->nombre_falla }}
                             </td>
                             <td
                                 class="w-full lg:w-auto p-3   dark:text-white border border-b block lg:table-cell relative lg:static">
