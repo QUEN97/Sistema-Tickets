@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TicketsExport;
 use App\Models\AlmacenCi;
 use App\Models\ArchivosTicket;
 use App\Models\Areas;
@@ -13,6 +14,7 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class TicketController extends Controller
@@ -103,4 +105,12 @@ class TicketController extends Controller
         $productos = AlmacenCi::select('*')->paginate(10);
         return view('modules.productos.almacen.cis', compact('productos','valid'));
     }
+
+    public function exportTickets()
+{
+    // Retrieve the tickets data as needed
+    $tickets = Ticket::all();
+
+    return Excel::download(new TicketsExport($tickets), 'TICKETS.xlsx');
+}
 }
