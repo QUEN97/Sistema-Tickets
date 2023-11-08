@@ -30,6 +30,7 @@ class Reasignar extends Component
         $reg = new Comentario();
         $reg->ticket_id = $tck->id;
         $reg->user_id = Auth::user()->id;
+        $reg->tipo='Reasignacion';
         $reg->comentario = $this->mensaje;
         $reg->statustck = $tck->status;
         $reg->save();

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ticket_id');
             $table->unsignedBigInteger('user_id');
             $table->text('comentario',10000);
+            $table->text('tipo')->default('Comentario');
             $table->string('statustck');
             $table->softDeletes();
             $table->timestamps();

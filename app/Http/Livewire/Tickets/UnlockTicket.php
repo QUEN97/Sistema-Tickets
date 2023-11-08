@@ -23,6 +23,7 @@ class UnlockTicket extends Component
         $reg=new Comentario();
         $reg->ticket_id=$tck->id;
         $reg->user_id=Auth::user()->id;
+        $reg->tipo='Abrir';
         $reg->comentario=$this->mensaje;
         $reg->statustck=$tck->status;
         $reg->save();

@@ -40,8 +40,10 @@ class TicketController extends Controller
         $ticketID = $request;
         $tck = Ticket::findOrFail($ticketID);
         $ticketOwner = $tck->solicitante_id;
-        $comentarios = Comentario::where('ticket_id', $ticketID)->orderBy('id', 'desc')->get();
-        return view('modules.tickets.detalles.ver', compact('ticketID', 'tck', 'comentarios', 'ticketOwner'));
+        $comentarios = Comentario::where([['ticket_id', $ticketID],['tipo','Comentario']])->orderBy('id', 'desc')->get();
+        $comReasignados=Comentario::where([['ticket_id', $ticketID],['tipo','Reasignacion']])->orderBy('id', 'desc')->get();
+        $comAbierto=Comentario::where([['ticket_id', $ticketID],['tipo','Abrir']])->orderBy('id', 'desc')->get();
+        return view('modules.tickets.detalles.ver', compact('ticketID', 'tck', 'comentarios', 'ticketOwner','comReasignados','comAbierto'));
     }
 
     //Vista editar ticket

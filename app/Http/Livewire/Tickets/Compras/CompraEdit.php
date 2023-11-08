@@ -132,7 +132,6 @@ class CompraEdit extends Component
         $compra->titulo_correo = $this->titulo;
         $compra->problema = $this->problema;
         $compra->solucion = $this->solucion;
-        $compra->status = "Solicitado";
         $compra->save();
         if ($compra->productos->count() > 0 && $this->categoria != null) {
             if ($compra->productos->first()->producto->categoria_id != $this->categoria) {
