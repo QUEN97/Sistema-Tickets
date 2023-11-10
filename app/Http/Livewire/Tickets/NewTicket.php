@@ -63,7 +63,7 @@ class NewTicket extends Component
         $desocupado = [];
         $disponible = [];
         foreach ($this->personal as $key => $personal) {
-            if ($personal->status === 'Activo' && $personal->id !== 154)  { // Revisa el status del usuario, excluimos al usuario de Guatemala
+            if ($personal->status === 'Activo' && $personal->id !== 154 && $personal->permiso_id == 5)  { // Revisa el status del usuario, excluimos al usuario de Guatemala
                 $desocupado[$key]['id'] = $personal->id;
                 $desocupado[$key]['cant'] = $personal->ticketsHoy->count();
             }
@@ -210,7 +210,7 @@ class NewTicket extends Component
 
     public function render()
     {
-        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [ 1, 2, 6])->get();
+        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [ 1, 2, 6, 10])->get();
         return view('livewire.tickets.new-ticket', [
             'areas' => $areas,
         ]);

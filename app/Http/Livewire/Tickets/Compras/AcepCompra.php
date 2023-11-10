@@ -30,18 +30,19 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class AcepCompra extends Component
 {
-    public $compraID, $status, $permiso, $personal,
+    public $compraID, $status, $permiso,$personal,
         $asignado, $emailAddress = [], $emailAddressServ = [],
         $open = false,$mailPS,$bccEmails, $mensaje_opcion, $mensaje;
 
     public function mount()
     {
-        $this->permiso = Permiso::findOrFail(4);
-        $this->personal = $this->permiso->users;
-        //dd($this->personal);
-
         $compra=Compra::findOrFail($this->compraID);
         $cliente = $compra->ticket->cliente->zonas->pluck('id');
+
+        $this->personal = User::where('permiso_id',4)
+        ->join('user_zona','users.id','=','user_zona.user_id')
+        ->whereIn('user_zona.zona_id',$cliente)->select('users.id')->get();
+        //dd($this->personal);
         $catego = null;
         foreach ($compra->productos as $prod) {
             $catego = $prod->producto->categoria->id;

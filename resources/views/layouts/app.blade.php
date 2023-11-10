@@ -178,10 +178,9 @@
     @endif
     @if ($cantidadTicketsSinComentar > 0)
         <script type="text/javascript">
-            toastr.info("EXISTE {{ $cantidadTicketsSinComentar}} TICKETS CON MÁS DE UNA SEMANA SIN ATENCIÓN ")
+            toastr.info("EXISTE {{ $cantidadTicketsSinComentar}} TICKETS CON MÁS DE 3 DÍAS SIN ACTUALIZAR ")
         </script>
     @endif
-
 
 </body>
 

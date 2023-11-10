@@ -62,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
                     ->where(function ($query) use ($now) {
                         $query->whereDoesntHave('comentarios')
                             ->orWhereHas('comentarios', function ($query) use ($now) {
-                                $query->where('created_at', '<=', $now->subWeek());
+                                $query->where('created_at', '<=', $now->subDay(3));
                             });
                     });
                 })

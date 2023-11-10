@@ -1,5 +1,5 @@
 <div>
-    @if ($status == 'Solicitado')
+    @if ($status == 'Solicitado' && auth()->user()->permiso_id==1)
         <button type="button" wire:click="aprobar({{ $compraID }})" class="tooltip">
             <div role="status" wire:loading wire:target="aprobar">
                 <svg aria-hidden="true"
@@ -26,7 +26,7 @@
             <span class="tooltiptext">Aprobar</span>
         </button>
     @endif
-    @if ($status == 'Aprobado')
+    @if ($status == 'Aprobado' && auth()->user()->permiso_id==4)
         {{-- <button type="button" wire:click="enviar({{$compraID}})" class="tooltip">
             <div role="status" wire:loading wire:target="enviar">
                 <svg aria-hidden="true"
@@ -165,7 +165,7 @@
 
         </div>
     @endif
-    @if ($status == 'Enviado a compras')
+    @if ($status == 'Enviado a compras'  && auth()->user()->permiso_id==4)
         <button type="button" wire:click="finish({{ $compraID }})" class="tooltip">
             <div role="status" wire:loading wire:target="completar">
                 <svg aria-hidden="true"

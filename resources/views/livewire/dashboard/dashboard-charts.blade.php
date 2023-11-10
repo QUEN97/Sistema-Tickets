@@ -26,21 +26,16 @@
                 {{ $chartTicketsAsignados->script() }}
             @endif
         @endauth --}}
-        <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl" >
+        <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl">
             {!! $chartTicketsPrioridad->container() !!}
         </div>
 
         <div class="bg-white dark:bg-gray-500 rounded-xl p-4 shadow-xl flex items-center justify-center">
             {!! $chartTicketsStatus->container() !!}
         </div>
-
     </div>
 
-
     <script src="{{ $chartTicketsPrioridad->cdn() }}"></script>
-
-
-
 
     {{ $chartTicketsPrioridad->script() }}
     {{ $chartTicketsStatus->script() }}

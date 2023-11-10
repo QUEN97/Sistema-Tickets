@@ -2,9 +2,9 @@
     @section('title', 'Dashboard')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <x-card-greet>
-                    {{ $greeting }} 
-                </x-card-greet>
+            <x-card-greet>
+                {{ $greeting }}
+            </x-card-greet>
 
             {{-- @if ($valid->pivot->wr == 1)
                 @livewire('dashboard.generate-reporte')
