@@ -2,9 +2,9 @@
     @section('title', 'Productos-Servicios')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('LISTA DE SERVICIOS PARA REQUISICIONES') }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('SERVICIOS REQUISICIONES') }}
+            </x-card-greet-header>
             @if ($valid->pivot->wr == 1)
                 @livewire('productos.existencias.new-servicio')
             @endif

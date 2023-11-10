@@ -2,9 +2,9 @@
     @section('title', 'Categorias')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('CATEGORIAS') }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('CATEGORÍAS') }}
+            </x-card-greet-header>
             <div class=" flex justify-center space-x-2">
                 @if ($valid->pivot->wr == 1)
                     @livewire('productos.categorias.categoria-create')

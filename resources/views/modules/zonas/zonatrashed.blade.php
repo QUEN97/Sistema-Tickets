@@ -2,9 +2,9 @@
     @section('title', 'Zonas Eliminadas')
     <x-slot name="header">
         <div>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Zonas Eliminadas') }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('ZONAS ELIMINADAS') }}
+            </x-card-greet-header>
         </div>
     </x-slot>
     <div class="content">

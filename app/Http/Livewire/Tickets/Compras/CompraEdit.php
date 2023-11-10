@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use PhpOffice\PhpSpreadsheet\Reader\Xls\Color\BIFF5;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CompraEdit extends Component
@@ -132,6 +133,9 @@ class CompraEdit extends Component
         $compra->titulo_correo = $this->titulo;
         $compra->problema = $this->problema;
         $compra->solucion = $this->solucion;
+        if($compra->status == 'Rechazado'){
+            $compra->status="Solicitado";
+        }
         $compra->save();
         if ($compra->productos->count() > 0 && $this->categoria != null) {
             if ($compra->productos->first()->producto->categoria_id != $this->categoria) {

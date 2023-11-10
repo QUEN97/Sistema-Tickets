@@ -7,7 +7,7 @@ if ($inspire) {
 }
 ?>
 <div id="alert-border-4"
-    class="flex items-center w-full p-6 text-indigo-800 border border-l-4 rounded-md shadow-lg border-indigo-300 bg-indigo-50 dark:text-white dark:bg-gray-800 dark:border-indigo-800">
+class="flex items-center w-full p-2 text-gray-800 border border-l-4 rounded-md shadow-lg border-gray-300 bg-gray-50 dark:text-white dark:bg-gray-800 dark:border-gray-500">
     <h1 class="text-2xl">👋</h1>
     <div class="ml-3">
         <h1 class="text-xl font-extrabold uppercase">{{ $slot }}</h1>

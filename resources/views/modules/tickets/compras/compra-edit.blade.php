@@ -2,9 +2,9 @@
     @section('title', 'Requisiciones')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('REQUISICIÓN #').$compraID }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('EDICIÓN REQUISICIÓN #').$compraID }}
+            </x-card-greet-header>
         </div>
     </x-slot>
     <div>

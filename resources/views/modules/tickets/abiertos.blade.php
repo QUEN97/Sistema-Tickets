@@ -2,9 +2,9 @@
     @section('title', 'Tickets Pendientes')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
+            <x-card-greet-header>
                 {{ __('TICKETS PENDIENTES') }}
-            </h2>
+            </x-card-greet-header>
             {{-- <div class="flex flex-wrap gap-2">
                 @if ($pendientes > 0 && Auth::user()->permiso_id==1)
                     <a href="" class="rounded-md px-2 py-1 flex justify-center items-center bg-sky-700 hover:bg-sky-800 transition duration-300" >

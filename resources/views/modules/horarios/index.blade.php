@@ -2,9 +2,9 @@
     @section('title', 'Horarios')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
+            <x-card-greet-header>
                 {{ __('HORARIOS') }}
-            </h2>
+            </x-card-greet-header>
         </div>
     </x-slot>
     <div class="flex flex-wrap justify-center items-center gap-3 pb-3">

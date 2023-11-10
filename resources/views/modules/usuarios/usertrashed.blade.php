@@ -2,9 +2,9 @@
     @section('title', 'Usuarios Eliminados')
     <x-slot name="header">
         <div>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
-                {{ __('Usuarios Eliminados') }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('USUARIOS ELIMINADOS') }}
+            </x-card-greet-header>
         </div>
     </x-slot>
     <div class="content">

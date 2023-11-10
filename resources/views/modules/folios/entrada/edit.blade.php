@@ -2,9 +2,9 @@
     @section('title', 'Folios de Entrada')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('ENTRADA #').$id }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('EDICIÓN ENTRADA #').$id }}
+            </x-card-greet-header>
         </div>
         <div>
          @livewire('folios.entradas.edit-entrada',['entradaID'=>$id])

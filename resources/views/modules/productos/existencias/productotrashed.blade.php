@@ -2,9 +2,9 @@
     @section('title', 'Productos Eliminados')
     <x-slot name="header">
         <div>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Productos Eliminados') }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('PRODUCTOS ELIMINADOS') }}
+            </x-card-greet-header>
         </div>
     </x-slot>
     <div class="content">

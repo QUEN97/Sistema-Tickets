@@ -247,6 +247,8 @@ class AcepCompra extends Component
         $bccEmails = [
             'iiuit@fullgas.com.mx', //Irvin Iuit
             'achavez@fullgas.com.mx', //Arlenny Chavez
+            'auxsistemas@fullgas.com.mx', // Viridiana Cadena
+            'desarrollo@fullgas.com.mx', // Desarrollo FullGas -> para control
             $agenteMail, //Obtenemos el mail del agente 
             // Agrega más direcciones de correo aquí...
         ];

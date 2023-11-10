@@ -2,9 +2,9 @@
     @section('title', 'Tickets')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
+            <x-card-greet-header>
                 {{ __('TICKETS') }}
-            </h2>
+            </x-card-greet-header>
             <div class="flex flex-wrap gap-2">
                 @if ($pendientes > 0 && Auth::user()->permiso_id == 1)
                     <a href="{{ route('tck.abierto') }}"

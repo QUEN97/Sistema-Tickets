@@ -2,9 +2,9 @@
     @section('title', 'Requisiciones')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
+            <x-card-greet-header>
                 {{ __('LISTA DE REQUISICIONES') }}
-            </h2>
+            </x-card-greet-header>
         </div>
     </x-slot>
     <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
@@ -137,7 +137,8 @@
                                     @if ($compra->status != 'Completado')
                                         @if (
                                             (Auth::user()->permiso_id == 1 && $compra->status == 'Solicitado') ||
-                                                (Auth::user()->permiso_id == 4 && $compra->status != 'Solicitado'))
+                                                (Auth::user()->permiso_id == 4 && $compra->status != 'Solicitado') ||
+                                                (Auth::user()->permiso_id == 5 && $compra->status != 'Solicitado' && $compra->status != 'Aprobado'))
                                             <div>
                                                 <a href="{{ route('req.edit', $compra->id) }}" class="tooltip">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -158,10 +159,10 @@
                                         @livewire('tickets.compras.acep-compra', ['compraID' => $compra->id, 'status' => $compra->status])
                                     @endif
 
-                                    @if ($compra->status != 'Completado')
+                                    @if ($compra->status != 'Completado' && $compra->status != 'Rechazado')
                                         @if (
                                             (Auth::user()->permiso_id == 1 && $compra->status == 'Solicitado') ||
-                                                (Auth::user()->permiso_id == 4 && $compra->status != 'Solicitado'))
+                                                (Auth::user()->permiso_id == 4 && $compra->status != 'Solicitado') )
                                             @livewire('tickets.compras.compra-reject', ['compraID' => $compra->id])
                                         @endif
                                     @endif

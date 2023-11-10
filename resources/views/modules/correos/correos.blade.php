@@ -2,9 +2,9 @@
     @section('title', 'Correos')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('CORREOS PARA COMPRAS') }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('LISTA DE CORREOS') }}
+            </x-card-greet-header>
             @if ($valid->pivot->wr == 1)
                 <div>
                     @livewire('correos.lista.new-correo')

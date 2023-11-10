@@ -31,7 +31,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/toastr.css') }}">
     <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 
-
     @livewireStyles
 
     <!--JQuery-->

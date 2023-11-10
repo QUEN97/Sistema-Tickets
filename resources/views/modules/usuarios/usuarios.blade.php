@@ -2,9 +2,9 @@
     @section('title', 'Usuarios')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
+            <x-card-greet-header>
                 {{ __('USUARIOS') }}
-            </h2>
+            </x-card-greet-header>
             <div class=" flex justify-center space-x-2">
                 <div>
                     @if ($val->pivot->wr == 1)

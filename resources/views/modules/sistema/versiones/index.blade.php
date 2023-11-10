@@ -2,17 +2,17 @@
     @section('title', 'Versiones')
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Versiones del sistema') }}
-            </h2>
+            <x-card-greet-header>
+                {{ __('VERSIONES') }}
+            </x-card-greet-header>
             @if (Auth::user()->id == 1 || Auth::user()->email == 'desarrollo@fullgas.com.mx')
-            <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                @livewire('sistema.versiones.new-version')
-                @livewire('sistema.versiones.user-comments')
-            </div>
+                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    @livewire('sistema.versiones.new-version')
+                    @livewire('sistema.versiones.user-comments')
+                </div>
             @else
                 @auth
-                @livewire('sistema.versiones.comment-form')
+                    @livewire('sistema.versiones.comment-form')
                 @endauth
             @endif
         </div>
