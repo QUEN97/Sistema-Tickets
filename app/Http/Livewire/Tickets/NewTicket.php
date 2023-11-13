@@ -153,8 +153,17 @@ class NewTicket extends Component
                 $ticket->save();
             }
         } else { //si es domingo
-            $ticket->status = 'Por abrir';
-            $ticket->save();
+            // $ticket->status = 'Por abrir';
+            // $ticket->save();
+            $limite=Carbon::today()->addHour(22);
+            if($dia->lessThanOrEqualTo($limite)){
+                $ticket->user_id=$guardia->user_id;
+                $ticket->fecha_cierre=$cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
+                $ticket->save();
+            }else{
+                $ticket->status='Por abrir';
+                $ticket->save();
+            }
         }
         if ($Festivo) { //si es día festivo o inhábil
             $ticket->status = 'Por abrir';
