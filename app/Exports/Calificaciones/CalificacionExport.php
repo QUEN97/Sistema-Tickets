@@ -9,6 +9,8 @@ use App\Exports\Calificaciones\Sheets\RankingSheet;
 use App\Exports\Calificaciones\Sheets\ServicioSheet;
 use App\Exports\Calificaciones\Sheets\TicketsPeriodo;
 use App\Exports\Calificaciones\Sheets\TiposPrioridadSheet;
+use App\Exports\Calificaciones\Sheets\TareasSheet;
+use App\Exports\Calificaciones\Sheets\TicketsZonas;
 use App\Models\Areas;
 use App\Models\Departamento;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -37,6 +39,8 @@ class CalificacionExport implements WithMultipleSheets
         array_push($arr,new AreasAgenteSheet($this->in,$this->end));
         array_push($arr,new TiposPrioridadSheet($this->in,$this->end));
         array_push($arr,new TicketsPeriodo($this->in,$this->end));
+        array_push($arr,new TareasSheet($this->in,$this->end));
+        array_push($arr,new TicketsZonas($this->in,$this->end));
         return $arr;
     }
 }

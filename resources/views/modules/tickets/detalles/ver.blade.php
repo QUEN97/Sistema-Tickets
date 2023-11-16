@@ -48,15 +48,17 @@
                 @endif
             </ul>
             {{-- Botones acción --}}
-            @if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 7 || Auth::user()->permiso_id == 4 || Auth::user()->permiso_id == 5)
+            @if (Auth::user()->permiso_id == 1 ||
+                    Auth::user()->permiso_id == 7 ||
+                    Auth::user()->permiso_id == 4 ||
+                    Auth::user()->permiso_id == 5)
                 <div class="bg-dark-eval-1 dark:bg-dark-eval-2 p-2 rounded-md text-white text-center">
                     {{ __('Ir a:') }}
                 </div>
                 <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-center mt-5">
                     <div class="flex justify-center rounded-lg" role="group">
                         @if (Auth::user()->permiso_id == 1)
-                            <a class="tooltip"
-                                href="{{ route('tck.editar', $tck->id) }}">
+                            <a class="tooltip" href="{{ route('tck.editar', $tck->id) }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor"
                                     class="w-6 h-6 text-black hover:text-indigo-600 dark:text-white">
@@ -67,8 +69,7 @@
                             </a>
                             @livewire('tickets.reasignar', ['ticketID' => $tck->id])
                         @endif
-                        <a class="tooltip"
-                            href="{{ route('tck.tarea', $tck->id) }}">
+                        <a class="tooltip" href="{{ route('tck.tarea', $tck->id) }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 text-black hover:text-indigo-600 dark:text-white">
@@ -106,8 +107,16 @@
                 </span>
             </span>
             <div>
+                {{-- @if ($tck->status != 'Cerrado')
+                    @if (!(Auth::user()->id == $ticketOwner && $tck->status == 'Abierto'))
+                        @livewire('tickets.comentarios', ['ticketID' => $tck->id])
+                    @endif
+                @endif--}}
                 @if ($tck->status != 'Cerrado')
-                    @if (!(Auth::id() == $ticketOwner && $tck->status == 'Abierto'))
+                    @if (
+                        !(Auth::id() == $ticketOwner && $tck->status == 'Abierto') ||
+                            Auth::id() == $tck->user_id ||
+                            (Auth::id() != $ticketOwner && Auth::id() != $tck->solicitante_id))
                         @livewire('tickets.comentarios', ['ticketID' => $tck->id])
                     @endif
                 @endif
@@ -120,16 +129,19 @@
                         <a
                             class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
                             @if ($comentario->usuario->profile_photo_path)
-                                <div onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_path) }}'">
+                                <div
+                                    onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_path) }}'">
                                     <img class="h-10 w-10 rounded-full object-cover"
-                                    src="/storage/{{ $comentario->usuario->profile_photo_path }}"
-                                    alt="{{ $comentario->usuario->name }}" />
+                                        src="/storage/{{ $comentario->usuario->profile_photo_path }}"
+                                        alt="{{ $comentario->usuario->name }}" />
                                 </div>
                             @else
-                            <div onclick="window.location.href='{{ asset($comentario->usuario->profile_photo_url) }}'">
-                                <img class="object-cover w-10 h-10 rounded-full"
-                                src="{{ $comentario->usuario->profile_photo_url }}" alt="{{ $comentario->usuario->name }}" />
-                            </div>
+                                <div
+                                    onclick="window.location.href='{{ asset($comentario->usuario->profile_photo_url) }}'">
+                                    <img class="object-cover w-10 h-10 rounded-full"
+                                        src="{{ $comentario->usuario->profile_photo_url }}"
+                                        alt="{{ $comentario->usuario->name }}" />
+                                </div>
                             @endif
                             <div class="w-full pb-2">
                                 <div class="flex justify-between">
@@ -170,20 +182,19 @@
                                     @endif
                                 </div>
                             </div>
-                            @if (Auth::user()->id == $comentario->usuario->id || Auth::user()->permiso_id ==1)
-                            <form action="{{ route('com.destroy', ['id' => $comentario->id]) }}"
-                                method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="p-2 text-gray-500 hover:text-red-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    class="w-5 h-5 text-red-500">
-                                    <path fill-rule="evenodd"
-                                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                </button>
-                            </form>
+                            @if (Auth::user()->id == $comentario->usuario->id || Auth::user()->permiso_id == 1)
+                                <form action="{{ route('com.destroy', ['id' => $comentario->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="p-2 text-gray-500 hover:text-red-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                            class="w-5 h-5 text-red-500">
+                                            <path fill-rule="evenodd"
+                                                d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </form>
                             @endif
                         </a>
 
@@ -196,160 +207,186 @@
             </div>
         @endif
     </div>
-    @if (Auth::user()->permiso_id==1 && ($comReasignados->count()>0 || $comAbierto->count()>0))
+    @if (Auth::user()->permiso_id == 1 && ($comReasignados->count() > 0 || $comAbierto->count() > 0))
         <div class="mt-4 bg-white dark:bg-dark-eval-1 text-gray-800 p-4 rounded-md shadow-lg">
             <div class="bg-dark-eval-1 p-1 rounded-md text-white text-center mb-2">
                 {{ __('Otros comentarios:') }}
             </div>
-            @if ($comReasignados->count()>0 || $comAbierto->count()>0)
-            <div class="flex flex-col gap-2">
-                @if ($comReasignados->count()>0)
-                    <div class='w-full rounded-lg border dark:border-gray-700 flex items-center justify-center' x-data="{ open: false }">
-                        <div class='w-full '>
-                            <div @click="open = !open" class='relative flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-md'>
-                                <div class=' px-2 transform transition duration-300 ease-in-out' :class="{'rotate-90': open,'text-blue-500':open }">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 512 512">
-                                        <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z"/>
-                                    </svg>        
+            @if ($comReasignados->count() > 0 || $comAbierto->count() > 0)
+                <div class="flex flex-col gap-2">
+                    @if ($comReasignados->count() > 0)
+                        <div class='w-full rounded-lg border dark:border-gray-700 flex items-center justify-center'
+                            x-data="{ open: false }">
+                            <div class='w-full '>
+                                <div @click="open = !open"
+                                    class='relative flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-md'>
+                                    <div class=' px-2 transform transition duration-300 ease-in-out'
+                                        :class="{ 'rotate-90': open, 'text-blue-500': open }">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z" />
+                                        </svg>
+                                    </div>
+                                    <div class='flex items-center px-1 py-2'>
+                                        Comentarios al reasignar
+                                    </div>
                                 </div>
-                                <div class='flex items-center px-1 py-2'>
-                                    Comentarios al reasignar
-                                </div>
-                            </div>
-                            <div class="w-full transform transition duration-300 ease-in-out"
-                            x-cloak x-show="open" x-collapse x-collapse.duration.500ms >
-                                <ul class="flex flex-col  max-h-[320px] overflow-y-auto" x-cloak x-show="open" x-collapse>
-                                    @foreach ($comReasignados as $comentario)
-                                        <li>
-                                            <a
-                                                class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
-                                                @if ($comentario->usuario->profile_photo_path)
-                                                    <div onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_path) }}'">
-                                                        <img class="h-10 w-10 rounded-full object-cover"
-                                                        src="/storage/{{ $comentario->usuario->profile_photo_path }}"
-                                                        alt="{{ $comentario->usuario->name }}" />
-                                                    </div>
-                                                @else
-                                                <div onclick="window.location.href='{{ asset($comentario->usuario->profile_photo_url) }}'">
-                                                    <img class="object-cover w-10 h-10 rounded-full"
-                                                    src="{{ $comentario->usuario->profile_photo_url }}" alt="{{ $comentario->usuario->name }}" />
-                                                </div>
-                                                @endif
-                                                <div class="w-full pb-2">
-                                                    <div class="flex justify-between">
-                                                        <div class="flex">
-                                                            <span
-                                                                class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $comentario->usuario->name }}</span>
-                                                            <span
-                                                                class="block ml-2 bg-gray-400 p-1 rounded-md text-bold text-white text-xs">{{ $comentario->statustck }}</span>
-            
+                                <div class="w-full transform transition duration-300 ease-in-out" x-cloak
+                                    x-show="open" x-collapse x-collapse.duration.500ms>
+                                    <ul class="flex flex-col  max-h-[320px] overflow-y-auto" x-cloak x-show="open"
+                                        x-collapse>
+                                        @foreach ($comReasignados as $comentario)
+                                            <li>
+                                                <a
+                                                    class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
+                                                    @if ($comentario->usuario->profile_photo_path)
+                                                        <div
+                                                            onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_path) }}'">
+                                                            <img class="h-10 w-10 rounded-full object-cover"
+                                                                src="/storage/{{ $comentario->usuario->profile_photo_path }}"
+                                                                alt="{{ $comentario->usuario->name }}" />
                                                         </div>
-                                                        <span
-                                                            class="block ml-2 text-xs text-gray-600 dark:text-white">{{ $comentario->created_at->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}</span>
+                                                    @else
+                                                        <div
+                                                            onclick="window.location.href='{{ asset($comentario->usuario->profile_photo_url) }}'">
+                                                            <img class="object-cover w-10 h-10 rounded-full"
+                                                                src="{{ $comentario->usuario->profile_photo_url }}"
+                                                                alt="{{ $comentario->usuario->name }}" />
+                                                        </div>
+                                                    @endif
+                                                    <div class="w-full pb-2">
+                                                        <div class="flex justify-between">
+                                                            <div class="flex">
+                                                                <span
+                                                                    class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $comentario->usuario->name }}</span>
+                                                                <span
+                                                                    class="block ml-2 bg-gray-400 p-1 rounded-md text-bold text-white text-xs">{{ $comentario->statustck }}</span>
+
+                                                            </div>
+                                                            <span
+                                                                class="block ml-2 text-xs text-gray-600 dark:text-white">{{ $comentario->created_at->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}</span>
+                                                        </div>
+                                                        <div class="flex items-center">
+                                                            <!-- Agregado el contenedor flex -->
+                                                            <span
+                                                                class="block ml-2 text-sm text-gray-600 dark:text-white">{{ $comentario->comentario }}</span>
+                                                        </div>
                                                     </div>
-                                                    <div class="flex items-center"> <!-- Agregado el contenedor flex -->
-                                                        <span
-                                                            class="block ml-2 text-sm text-gray-600 dark:text-white">{{ $comentario->comentario }}</span>
-                                                    </div>
-                                                </div>
-                                                @if (Auth::user()->id == $comentario->usuario->id)
-                                                <form action="{{ route('com.destroy', ['id' => $comentario->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="p-2 text-gray-500 hover:text-red-500">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                                        class="w-5 h-5 text-red-500">
-                                                        <path fill-rule="evenodd"
-                                                            d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                    </button>
-                                                </form>
-                                                @endif
-                                            </a>
-            
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                                    @if (Auth::user()->id == $comentario->usuario->id)
+                                                        <form
+                                                            action="{{ route('com.destroy', ['id' => $comentario->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="p-2 text-gray-500 hover:text-red-500">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 20 20" fill="currentColor"
+                                                                    class="w-5 h-5 text-red-500">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                                                                        clip-rule="evenodd" />
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </a>
+
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>   
-                @endif
-                @if ($comAbierto->count() > 0)
-                    <div class='w-full rounded-lg border dark:border-gray-700 flex items-center justify-center' x-data="{ open: false }">
-                        <div class='w-full '>
-                            <div @click="open = !open" class='relative flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-md'>
-                                <div class=' px-2 transform transition duration-300 ease-in-out' :class="{'rotate-90': open,'text-blue-500':open }">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 512 512">
-                                        <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z"/>
-                                    </svg>        
+                    @endif
+                    @if ($comAbierto->count() > 0)
+                        <div class='w-full rounded-lg border dark:border-gray-700 flex items-center justify-center'
+                            x-data="{ open: false }">
+                            <div class='w-full '>
+                                <div @click="open = !open"
+                                    class='relative flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-md'>
+                                    <div class=' px-2 transform transition duration-300 ease-in-out'
+                                        :class="{ 'rotate-90': open, 'text-blue-500': open }">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z" />
+                                        </svg>
+                                    </div>
+                                    <div class='flex items-center px-1 py-2'>
+                                        Comentarios por abrir el ticket
+                                    </div>
                                 </div>
-                                <div class='flex items-center px-1 py-2'>
-                                    Comentarios por abrir el ticket
-                                </div>
-                            </div>
-                            <div class="w-full transform transition duration-300 ease-in-out"
-                            x-cloak x-show="open" x-collapse x-collapse.duration.500ms >
-                                <ul class="flex flex-col  max-h-[320px] overflow-y-auto" x-cloak x-show="open" x-collapse>
-                                    @foreach ($comAbierto as $comentario)
-                                        <li>
-                                            <a
-                                                class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
-                                                @if ($comentario->usuario->profile_photo_path)
-                                                    <div onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_path) }}'">
-                                                        <img class="h-10 w-10 rounded-full object-cover"
-                                                        src="/storage/{{ $comentario->usuario->profile_photo_path }}"
-                                                        alt="{{ $comentario->usuario->name }}" />
-                                                    </div>
-                                                @else
-                                                <div onclick="window.location.href='{{ asset($comentario->usuario->profile_photo_url) }}'">
-                                                    <img class="object-cover w-10 h-10 rounded-full"
-                                                    src="{{ $comentario->usuario->profile_photo_url }}" alt="{{ $comentario->usuario->name }}" />
-                                                </div>
-                                                @endif
-                                                <div class="w-full pb-2">
-                                                    <div class="flex justify-between">
-                                                        <div class="flex">
-                                                            <span
-                                                                class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $comentario->usuario->name }}</span>
-                                                            <span
-                                                                class="block ml-2 bg-gray-400 p-1 rounded-md text-bold text-white text-xs">{{ $comentario->statustck }}</span>
-            
+                                <div class="w-full transform transition duration-300 ease-in-out" x-cloak
+                                    x-show="open" x-collapse x-collapse.duration.500ms>
+                                    <ul class="flex flex-col  max-h-[320px] overflow-y-auto" x-cloak x-show="open"
+                                        x-collapse>
+                                        @foreach ($comAbierto as $comentario)
+                                            <li>
+                                                <a
+                                                    class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
+                                                    @if ($comentario->usuario->profile_photo_path)
+                                                        <div
+                                                            onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_path) }}'">
+                                                            <img class="h-10 w-10 rounded-full object-cover"
+                                                                src="/storage/{{ $comentario->usuario->profile_photo_path }}"
+                                                                alt="{{ $comentario->usuario->name }}" />
                                                         </div>
-                                                        <span
-                                                            class="block ml-2 text-xs text-gray-600 dark:text-white">{{ $comentario->created_at->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}</span>
+                                                    @else
+                                                        <div
+                                                            onclick="window.location.href='{{ asset($comentario->usuario->profile_photo_url) }}'">
+                                                            <img class="object-cover w-10 h-10 rounded-full"
+                                                                src="{{ $comentario->usuario->profile_photo_url }}"
+                                                                alt="{{ $comentario->usuario->name }}" />
+                                                        </div>
+                                                    @endif
+                                                    <div class="w-full pb-2">
+                                                        <div class="flex justify-between">
+                                                            <div class="flex">
+                                                                <span
+                                                                    class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $comentario->usuario->name }}</span>
+                                                                <span
+                                                                    class="block ml-2 bg-gray-400 p-1 rounded-md text-bold text-white text-xs">{{ $comentario->statustck }}</span>
+
+                                                            </div>
+                                                            <span
+                                                                class="block ml-2 text-xs text-gray-600 dark:text-white">{{ $comentario->created_at->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}</span>
+                                                        </div>
+                                                        <div class="flex items-center">
+                                                            <!-- Agregado el contenedor flex -->
+                                                            <span
+                                                                class="block ml-2 text-sm text-gray-600 dark:text-white">{{ $comentario->comentario }}</span>
+                                                        </div>
                                                     </div>
-                                                    <div class="flex items-center"> <!-- Agregado el contenedor flex -->
-                                                        <span
-                                                            class="block ml-2 text-sm text-gray-600 dark:text-white">{{ $comentario->comentario }}</span>
-                                                    </div>
-                                                </div>
-                                                @if (Auth::user()->id == $comentario->usuario->id)
-                                                <form action="{{ route('com.destroy', ['id' => $comentario->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="p-2 text-gray-500 hover:text-red-500">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                                        class="w-5 h-5 text-red-500">
-                                                        <path fill-rule="evenodd"
-                                                            d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                    </button>
-                                                </form>
-                                                @endif
-                                            </a>
-            
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                                    @if (Auth::user()->id == $comentario->usuario->id)
+                                                        <form
+                                                            action="{{ route('com.destroy', ['id' => $comentario->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="p-2 text-gray-500 hover:text-red-500">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 20 20" fill="currentColor"
+                                                                    class="w-5 h-5 text-red-500">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                                                                        clip-rule="evenodd" />
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </a>
+
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>                     
-                @endif
-            </div>
+                    @endif
+                </div>
             @else
                 <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
                     <span>Sin comentarios actualmente.</span>
