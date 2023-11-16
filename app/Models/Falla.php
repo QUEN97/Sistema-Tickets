@@ -34,4 +34,8 @@ class Falla extends Model
     {
         return $this->hasMany(Ticket::class)->whereBetween('created_at', $dates);
     }
+    public function alltickets():HasMany
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

@@ -6,6 +6,7 @@ use App\Mail\SendEmailRequi;
 use App\Mail\SendEmailRequiGT;
 use App\Mail\SendEmailRequisicion;
 use App\Models\Categoria;
+use App\Models\ComentarioTarea;
 use App\Models\Compra;
 use App\Models\CorreosServicio;
 use App\Models\CorreosZona;
@@ -223,7 +224,14 @@ class AcepCompra extends Component
         $tarea = $compra->tareas->first(); // Esto obtendría la primera tarea relacionada
         //dd($tarea);
         $tarea->status = 'En Proceso';
+        $tarea->updated_at = Carbon::now();
         $tarea->save();
+        $comt = new ComentarioTarea();
+        $comt->tarea_id = $tarea->id;
+        $comt->user_id = Auth::user()->id;
+        $comt->comentario = 'Dando seguimiento a la requisición, se informa que el/los'.' '.$catPS.' '.'han sido solicitados al departamento de compras';
+        $comt->statustarea = $tarea->status;
+        $comt->save();
 
         // Propiedades para el correo
         $mailDataU = [
@@ -291,6 +299,9 @@ class AcepCompra extends Component
         $Compras = User::where('permiso_id', 4)->get();
         $Agente = $compra->ticket->agente;
 
+        $catPS = $compra->productos->count() > 0 ? 'Producto' : 'Servicio';
+        $statPS = $compra->productos->count() > 0 ? 'Entregado' : 'Realizado';
+
         $compra->status = 'Completado';
         $compra->save();
 
@@ -298,7 +309,14 @@ class AcepCompra extends Component
         $tarea = $compra->tareas->first(); // Esto obtendría la primera tarea relacionada
         //dd($tarea);
         $tarea->status = 'Cerrado';
+        $tarea->fecha_cierre = Carbon::now();
         $tarea->save();
+        $comt = new ComentarioTarea();
+        $comt->tarea_id = $tarea->id;
+        $comt->user_id = Auth::user()->id;
+        $comt->comentario = $catPS.' '.$statPS;
+        $comt->statustarea = $tarea->status;
+        $comt->save();
 
         if (Auth::user()->permiso_id == 1) {
             Notification::send($Compras, new CompletadaCompraNotification($compra));

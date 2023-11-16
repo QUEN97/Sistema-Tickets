@@ -2,6 +2,9 @@
 
 namespace App\Exports\Calificaciones\Sheets;
 
+use App\Models\Tipo;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -10,22 +13,39 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class RankingSheet implements FromView,ShouldAutoSize,WithTitle,WithEvents
+class Agentes implements FromView, WithTitle, ShouldAutoSize,WithEvents
 {
+    public $ini,$end;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($data) {
-        $this->data=$data;
+    public function __construct($ini,$end) {
+        $this->ini=Carbon::create($ini);
+        $this->end=Carbon::create($end);
     }
     public function view(): View
     {
-        $grupos=$this->data;
-        return view('excels.calificaciones.ranking',compact('grupos'));
+        $tabla=[];
+        $tipos=Tipo::all();
+        $users=User::all();
+        foreach($users as $user){
+            
+            $cantTcks=$user->tickets->whereBetween('created_at',[$this->ini->startOfMonth()->toDateTimeString(),$this->end->endOfMonth()->toDateTimeString()]);
+            if($cantTcks->count()>0){
+                //array_push($datos,['us' => $user->name]);
+                $datos=[
+                    'abierto'=>$cantTcks->where('status','Abierto')->count(),
+                    'proceso'=>$cantTcks->where('status','En proceso')->count(),
+                    'cerrado'=>$cantTcks->where('status','Cerrado')->count(),
+                    'vencido'=>$cantTcks->where('status','Vencido')->count()
+                ];
+                array_push($tabla,['us' => $user->name,'datos' => $datos]);
+            }
+        }
+        return view('excels.calificaciones.agentes',compact('tabla'));
     }
     public function registerEvents(): array
     {
@@ -47,20 +67,13 @@ class RankingSheet implements FromView,ShouldAutoSize,WithTitle,WithEvents
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_CENTER,
                         'vertical' => Alignment::VERTICAL_CENTER
-                    ],
-                    'borders' => [
-                        'allBorders' => [
-                            'borderStyle' => Border::BORDER_THIN,
-                            'color' => ['argb' => 'ff000000'],
-                        ]
                     ]
                 ]);
-                
             }
         ];
     }
     public function title(): string
     {
-        return "Calificaciones";
+        return 'Agente asignados';
     }
 }

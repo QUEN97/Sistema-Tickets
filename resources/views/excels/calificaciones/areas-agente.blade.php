@@ -1,0 +1,47 @@
+<table>
+    2
+        <thead>
+    3
+            <tr>
+    4
+                <th>Área</th>
+    5
+                <th>Abiertos</th>
+    6
+                <th>En proceso</th>
+    7
+                <th>Vencidos</th>
+    8
+                <th>Cerrados</th>
+    9
+                <th>Total</th>
+    10
+            </tr>
+    11
+        </thead>
+    12
+        <tbody>
+    13
+            @foreach ($datos as $item)
+    14
+                <tr>
+    15
+                    <td>{{$item['area']}}</td>
+    16
+                    <td>{{$item['abierto']}}</td>
+    17
+                    <td>{{$item['proceso']}}</td>
+    18
+                    <td>{{$item['vencido']}}</td>
+    19
+                    <td>{{$item['cerrado']}}</td>
+    20
+                    <td>{{$item['total']}}</td>
+    21
+                </tr>
+    22
+            @endforeach
+    23
+        </tbody>
+    24
+    </table>

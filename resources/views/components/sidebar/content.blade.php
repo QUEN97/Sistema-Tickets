@@ -16,7 +16,6 @@
     $sistema = 'hidden';
 
     foreach ($valid as $permis) {
-
         for ($i = 5; $i <= 5; $i++) {
             if ($permis->pivot->re == 1 && $permis->pivot->panel_id == $i) {
                 $almacen = 'block';
@@ -153,7 +152,7 @@
                 ->route()
                 ->uri(),
             'buttons',
-            )">
+        )">
             <x-slot name="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
@@ -299,7 +298,9 @@
                 @endif
             @endforeach
 
-
+            <x-sidebar.sublink title="Visitas" href="{{ route('users.visita') }}"
+            :active="request()->routeIs('users.visita')" />
+            
             <x-sidebar.dropdown title="Estadísticas" :active="Str::startsWith(
                 request()
                     ->route()
@@ -312,15 +313,17 @@
                             :active="request()->routeIs('analytics.general')" />
                     @endif
                     @if ($item->pivot->panel_id == 27 && $item->pivot->re == 1)
-                    <x-sidebar.sublink title="Usuarios" href="{{ route('analytics.users') }}" :active="request()->routeIs('analytics.users')" />
-                        @endif
-                        @if ($item->pivot->panel_id == 28 && $item->pivot->re == 1)
-                    <x-sidebar.sublink title="Compras" href="{{ route('analytics.compras') }}" :active="request()->routeIs('analytics.compras')" />
-                        @endif
-                        @if ($item->pivot->panel_id == 29 && $item->pivot->re == 1)
-                    <x-sidebar.sublink title="Calificaciones" href="{{ route('analytics.calificaciones') }}"
-                        :active="request()->routeIs('analytics.calificaciones')" />
-                        @endif
+                        <x-sidebar.sublink title="Usuarios" href="{{ route('analytics.users') }}"
+                            :active="request()->routeIs('analytics.users')" />
+                    @endif
+                    @if ($item->pivot->panel_id == 28 && $item->pivot->re == 1)
+                        <x-sidebar.sublink title="Compras" href="{{ route('analytics.compras') }}"
+                            :active="request()->routeIs('analytics.compras')" />
+                    @endif
+                    @if ($item->pivot->panel_id == 29 && $item->pivot->re == 1)
+                        <x-sidebar.sublink title="Calificaciones" href="{{ route('analytics.calificaciones') }}"
+                            :active="request()->routeIs('analytics.calificaciones')" />
+                    @endif
                 @endforeach
             </x-sidebar.dropdown>
         </x-sidebar.dropdown>

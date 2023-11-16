@@ -51,7 +51,7 @@ class RequisicionController extends Controller
         }
         //todos los tickets cuando sea admin o auditoria
         if(in_array($user->permiso_id,[1,8]) || (isset($user->areas->first()->name) && $user->areas->first()->name=='Compras')){
-            $compras=Compra::orderBy('id', 'DESC')->paginate(10);
+            $compras=Compra::orderBy('id', 'DESC')->paginate(10)->withQueryString();
         }
         return view('modules.tickets.compras.compras-list',compact('compras','valid'));
     }

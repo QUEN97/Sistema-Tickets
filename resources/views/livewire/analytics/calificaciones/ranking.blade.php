@@ -80,7 +80,7 @@
     </div> --}}
     {{-- Ranking --}}
     @if (count($users) > 0)
-        <div class="  lg:clip-path-polygon-[50%_0,0_100%,100%_100%] flex flex-col gap-2">
+        <div class="flex flex-col gap-2">
             @foreach ($users as $key => $group)
                 <div
                     class="flex lg:flex-col max-lg:justify-between max-lg:px-5 justify-center items-center py-3 bg-white shadow-md dark:bg-dark-eval-1 dark:shadow-none rounded-md">

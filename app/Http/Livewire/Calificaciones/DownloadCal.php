@@ -23,10 +23,10 @@ class DownloadCal extends Component
         $in=Carbon::create($this->dateIn);
         $end=Carbon::create($this->dateEnd);
         $usuarios=User::whereHas('tickets',function(Builder $query) use($in,$end){
-            $query->whereBetween('created_at',[$in->startOfMonth()->toDateTimeString(),$end->endOfMonth()->toDateTimeString()]);
+            $query->where('status','Cerrado')->whereBetween('created_at',[$in->startOfMonth()->toDateTimeString(),$end->endOfMonth()->toDateTimeString()]);
         })->get();
         $this->calificacionesRange($usuarios,$in,$end);
-        return Excel::download(new CalificacionExport($this->users),'Calificaciones '.$in->toDateString().' a '.$end->toDateString().'.xlsx');
+        return Excel::download(new CalificacionExport($this->users,$this->dateIn,$this->dateEnd),'Reporte de tickets '.$in->toDateString().' a '.$end->toDateString().'.xlsx');
     }
     public function calificacionesRange($users,$in,$end){
         $prioridades=[['Bajo',1],['Medio',2],['Alto',3],['Crítico',4],['Alto Crítico',5]];
@@ -34,19 +34,24 @@ class DownloadCal extends Component
         foreach($users as $user){
             $pos=0;
             $neg=0;     
-            $tcks=$user->tickets->whereBetween('created_at',[$in->startOfMonth()->toDateTimeString(),$end->endOfMonth()->toDateTimeString()]);
+            $tcks=$user->tickets->whereBetween('created_at',[$in->startOfMonth()->toDateTimeString(),$end->endOfMonth()->toDateTimeString()])->where('cerrado','!=',null);
             foreach($tcks as $ticket){
                 $vencimiento=Carbon::create($ticket->fecha_cierre);
-                $cierre=Carbon::create($ticket->updated_at);
+                $cierre=Carbon::create($ticket->cerrado);
                 foreach($prioridades as $pr){
                     //comparamos la falla para calificarla y obtener los puntos correspondientes
                     if(strcasecmp($ticket->falla->prioridad->name,$pr[0])==0){
                         if($cierre->lessThanOrEqualTo($vencimiento)){
                             $pos+=$pr[1];
                         }else{
-                            $ticket->tareas->count()>0
-                            ? $pos+=$pr[1]
-                            :$neg+=$pr[1];
+                            if ($ticket->tareas->whereBetween('created_at',[$ticket->created_at,$ticket->fecha_cierre])->count()>0 || $ticket->compras->whereBetween('created_at',[$ticket->created_at,$ticket->fecha_cierre])->count()>0) {//si hay tareas o compras en el ticket vencido se toma como bueno
+                                $divisor=$ticket->compras->whereBetween('created_at',[$ticket->created_at,$ticket->fecha_cierre])->count()+$ticket->tareas->whereBetween('created_at',[$ticket->created_at,$ticket->fecha_cierre])->count();
+                                $divisor>1
+                                ?$pos+=$pr[1]/$divisor
+                                :$pos+=$pr[1]/2;
+                            } else {
+                                $neg+=$pr[1];
+                            }
                         }
                     }
                 }

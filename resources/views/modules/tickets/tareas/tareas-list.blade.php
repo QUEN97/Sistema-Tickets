@@ -58,17 +58,21 @@
             <table>
                 <thead>
                     <tr>
-                        <th
+                        {{-- <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             ID
+                        </th> --}}
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                            Origen
                         </th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                            No. de ticket
+                            Fecha creación
                         </th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                            Fecha de creación
+                            Fecha actualización
                         </th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
@@ -96,7 +100,7 @@
                     @foreach ($tareasList as $tarea)
                         <tr
                             class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0 dark:bg-slate-800 dark:lg:hover:bg-slate-600">
-                            <th
+                            {{-- <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
                                     <span
@@ -105,15 +109,18 @@
                                     </span>
                                     {{ $tarea->id }}
                                 </div>
-                            </th>
+                            </th> --}}
                             <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
                                     <span
                                         class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
-                                        No. de ticket
+                                        Origen
                                     </span>
-                                    {{ $tarea->ticket_id }}
+                                    <div>
+                                        <div class="bg-gray-500 rounded-sm text-sm text-white font-bold mb-1">Tarea #{{ $tarea->id }}</div>
+                                        <div class="bg-indigo-400 rounded-sm text-sm text-white font-bold">Ticket #{{ $tarea->ticket_id }}</div>
+                                    </div>
                                 </div>
                             </th>
                             <th
@@ -124,6 +131,16 @@
                                         Fecha creación
                                     </span>
                                     {{ $tarea->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
+                                </div>
+                            </th>
+                            <th
+                                class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
+                                <div class="w-full flex justify-center gap-2">
+                                    <span
+                                        class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
+                                        Fecha creación
+                                    </span>
+                                    {{ $tarea->updated_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
                                 </div>
                             </th>
                             <th
@@ -216,6 +233,5 @@
                     <span class="">No hay tickets registrados.</span>
             </div>
         @endif
-
     </div>
 </x-app-layout>

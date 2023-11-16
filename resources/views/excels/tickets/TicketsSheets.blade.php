@@ -6,6 +6,7 @@
             <th>{{ __('SERVICIO') }}</th>
             <th>{{ __('FECHA CREACIÓN') }}</th>
             <th>{{ __('FECHA VENCIMIENTO') }}</th>
+            <th>{{ __('FECHA CERRADO') }}</th>
             <th>{{ __('AGENTE') }}</th>
             <th>{{ __('CLIENTE') }}</th>
             <th>{{ __('PRIORIDAD') }}</th>
@@ -28,6 +29,9 @@
                 </td>
                 <td>
                     {{ $item->fecha_cierre }}
+                </td>
+                <td>
+                    {{ $item->cerrado }}
                 </td>
                 <td>
                     {{ $item->agente->name }}

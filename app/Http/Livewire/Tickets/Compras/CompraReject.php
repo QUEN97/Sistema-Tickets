@@ -4,7 +4,9 @@ namespace App\Http\Livewire\Tickets\Compras;
 
 use App\Models\Compra;
 use App\Models\ComentariosCompra;
+use App\Models\ComentarioTarea;
 use App\Notifications\RechazoCompraNotification;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -26,6 +28,20 @@ class CompraReject extends Component
         $comentario->save();
         $compra->status='Rechazado';
         $compra->save();
+
+        $catPS = $compra->productos->count() > 0 ? 'Producto' : 'Servicio';
+        $statPS = $compra->productos->count() > 0 ? 'Rechazado' : 'Rechazado';
+
+        $tarea = $compra->tareas->first();
+        $tarea->status = 'Cerrado';
+        $tarea->fecha_cierre = Carbon::now();
+        $tarea->save();
+        $comt = new ComentarioTarea();
+        $comt->tarea_id = $tarea->id;
+        $comt->user_id = Auth::user()->id;
+        $comt->comentario = $catPS.' '.$statPS.','.' '. $this->observacion;
+        $comt->statustarea = $tarea->status;
+        $comt->save();
         
         $agent = $compra->ticket->agente;
         //dd($agent);

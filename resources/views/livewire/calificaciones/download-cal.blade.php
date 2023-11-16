@@ -29,7 +29,7 @@
                 class="inline-block w-full max-w-xl p-6 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl dark:bg-dark-eval-1"
             >        
                 <div class="flex items-center justify-between space-x-4">
-                    <h1 class="text-xl font-medium">{{ __('Editar falla') }}</h1>
+                    <h1 class="text-xl font-medium">{{ __('Descargar Reporte') }}</h1>
                 </div>
                 <div class="flex justify-center py-3">
                     <div class="flex flex-wrap gap-3 justify-evenly items-center">

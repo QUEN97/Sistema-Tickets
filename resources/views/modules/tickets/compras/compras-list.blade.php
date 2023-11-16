@@ -38,6 +38,10 @@
                         </th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                            Fecha de actualización
+                        </th>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             Opciones
                         </th>
                     </tr>
@@ -133,6 +137,16 @@
                             <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
+                                    <span
+                                        class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
+                                        Status
+                                    </span>
+                                    {{ $compra->updated_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
+                                </div>
+                            </th>
+                            <th
+                                class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
+                                <div class="w-full flex justify-center gap-2">
                                     @livewire('tickets.compras.compra-detail', ['compraID' => $compra->id])
                                     @if ($compra->status != 'Completado')
                                         @if (
@@ -186,6 +200,5 @@
                 <span class="text-2xl">No hay datos registrados</span>
             </div>
         @endif
-
     </div>
 </x-app-layout>
