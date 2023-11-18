@@ -9,5 +9,8 @@ class UserArea extends Model
 {
     use HasFactory;
 
-    
+    public function area()
+    {
+        return $this->belongsTo(Areas::class);
+    }
 }

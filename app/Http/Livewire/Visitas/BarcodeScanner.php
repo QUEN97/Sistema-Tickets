@@ -5,22 +5,15 @@ namespace App\Http\Livewire\Visitas;
 use App\Models\User;
 use App\Models\Visita;
 use Livewire\Component;
-
-use function Ramsey\Uuid\v1;
-
 class BarcodeScanner extends Component
 {
     public $barcode;
-    public $usuario, $asignado,$visitaID,$status;
-
-    // public function mount(){
-    //     $vta =  Visita::findOrFail($this->visitaID);
-    //     $this->id=$vta->id;
-    // }
+    public $usuario, $asignado,$visitaID,$visita,$status;
 
     public function buscarUsuario()
     {
         $this->usuario = User::where('username', $this->barcode)->first();
+        $this->visita =  Visita::findOrFail($this->visitaID);
     }
     public function updateVisita(Visita $visita)
     {
@@ -29,6 +22,10 @@ class BarcodeScanner extends Component
         $visita->user_id = $this->asignado;
         $visita->status = 'En proceso';
         $visita->save();
+        session()->flash('flash.banner', 'Usuario Asignado, la visita ha sido actualizada en el sistema.');
+        session()->flash('flash.bannerStyle', 'success');
+
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

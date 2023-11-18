@@ -18,19 +18,11 @@
                 <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ $usuario->name }}</h5>
                 <span class="text-sm text-gray-500 dark:text-gray-400">{{ $usuario->permiso->titulo_permiso }} </span>
                 <div class="flex mt-4 md:mt-6">
-                    <x-danger-button class="mr-2" wire:click="updateVisita({{ $vista->id }})" wire:loading.attr="disabled">
+                    <x-danger-button class="mr-2" wire:click="updateVisita({{ $visita->id }})" wire:loading.attr="disabled">
                         Registrar Visita
                     </x-danger-button>
-                    <x-button class="mr-2" wire:click="" wire:loading.attr="disabled">
-                        Finalizar Visita
-                    </x-button>
                 </div>
             </div>
         </div>
-
-
-        
-
-        
     @endif
 </div>
