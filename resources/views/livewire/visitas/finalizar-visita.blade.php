@@ -22,7 +22,7 @@
                 </p>
                 <div>
                     <x-label value="{{ __('Observación') }}" />
-                    <textarea wire:model="observacion" class="rounded-md w-full " name="observacion" required autofocus></textarea>
+                    <textarea wire:model="observacion" class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('observacion') ? 'is-invalid' : '' }}" name="observacion" required autofocus></textarea>
                     <x-input-error for="observacion"></x-input-error>
                 </div>
             </div>

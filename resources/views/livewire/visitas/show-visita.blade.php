@@ -16,7 +16,7 @@
         </x-slot>
         <x-slot name="content" class="relative">
             <div
-                class="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-transparent bg-clip-border text-gray-700 shadow-none">
+                class="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-transparent bg-clip-border text-gray-700 dark:text-gray-400 shadow-none">
                 <div
                     class="relative flex items-center gap-4 pt-0 pb-8 mx-0 mt-4 overflow-hidden text-gray-700 bg-transparent shadow-none rounded-xl bg-clip-border">
                     @if ($this->user)
@@ -30,7 +30,7 @@
                                 alt="{{ $this->userf }}" />
                         </div>
                     @endif
-                    <div class="flex w-full flex-col gap-0.5">
+                    <div class="flex w-full flex-col gap-0.5 dark:text-gray-400">
                         {{ __('Realizó la visita:') }}
                         <div class="flex items-center justify-between">
                             <h5
