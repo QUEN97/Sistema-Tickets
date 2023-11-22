@@ -36,52 +36,64 @@
                         <div class="w-full py-2 text-lg">
                             <h1>Historial</h1>
                         </div>
-                        <ul class="flex flex-col  max-h-[320px] overflow-y-auto">
+                        <div class="flex flex-col  max-h-[320px] overflow-y-auto">
                             @foreach ($folio->entradas as $entrada)
-                                <li>
-                                    <a
-                                        class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
+                                <div class="py-2 border-b border-gray-300">
+                                    <div class="flex mb-1 text-sm">
 
                                         @if ($entrada->usuario->profile_photo_path)
-                                            <div
-                                                onclick="window.location.href='{{ asset('/storage/' . $entrada->usuario->profile_photo_path) }}'">
-                                                <img class="h-10 w-10 rounded-full object-cover"
+                                            <figure class="flex justify-center items-center h-10 w-10 rounded-full overflow-hidden">
+                                                <img class="w-full"
                                                     src="/storage/{{ $entrada->usuario->profile_photo_path }}"
                                                     alt="{{ $entrada->usuario->name }}" />
-                                            </div>
+                                            </figure>
                                         @else
-                                            <div
-                                                onclick="window.location.href='{{ asset($entrada->usuario->profile_photo_url) }}'">
-                                                <img class="object-cover w-10 h-10 rounded-full"
+                                            <figure class="flex justify-center items-center h-10 w-10 rounded-full overflow-hidden">
+                                                <img class="w-full"
                                                     src="{{ $entrada->usuario->profile_photo_url }}"
                                                     alt="{{ $entrada->usuario->name }}" />
-                                            </div>
+                                            </figure>
                                         @endif
                                         <div class="w-full pb-2">
                                             <div class="flex justify-between">
                                                 <div class="flex gap-2">
-                                                    <span
-                                                        class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $entrada->usuario->name }}</span>
-                                                    <div class="float-right"> {{ __('Fecha:') }}
-                                                        {{ $entrada->created_at }}</div>
-                                                    @if ($entrada->editable == 1)
-                                                        <div class="ml-6" style="display: flex; justify-content: center;">
-                                                            <div class="flex gap-1">
-                                                                <button onclick="window.location.href = '{{ route('entrada.edit', $entrada->id) }}'"
-                                                                    title="Editar">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        fill="none" viewBox="0 0 24 24"
-                                                                        stroke-width="1.5" stroke="currentColor"
-                                                                        class="w-4 h-4 text-gray-400 hover:text-indigo-500 transition duration-300">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                                                    </svg>
-                                                                </button>
-                                                                @livewire('folios.entradas.lock', ['entradaID' => $entrada->id])
-                                                            </div>
+                                                    <span class="block ml-2 font-semibold text-gray-600 dark:text-white">{{ $entrada->usuario->name }}</span>
+                                                    <div class="float-right"> 
+                                                        {{ __('Fecha:') }}
+                                                        {{ $entrada->created_at }}
+                                                    </div>
+                                                    <div class="relative" x-data="{toggle:false}" @click.outside="toggle=false">
+                                                        <button class="text-gray-400 duration-300 block hover:text-gray-600" @click="toggle=!toggle">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 " viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                                <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                                <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                             </svg>
+                                                        </button>
+                                                        <div class="absolute z-50 flex flex-col w-max rounded-md overflow-hidden bg-white dark:bg-dark-eval-3 shadow-md right-full top-0 md:left-full" x-cloak x-collapse x-show="toggle">
+                                                            @if ($entrada->editable == 1)
+                                                                    <a href="{{route('entrada.edit', $entrada->id)}}" class="flex gap-1 items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none" viewBox="0 0 24 24"
+                                                                            stroke-width="1.5" stroke="currentColor"
+                                                                            class="w-6 h-6">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                                        </svg>
+                                                                        <span>Editar</span>
+                                                                    </a>
+                                                                    @livewire('folios.entradas.lock', ['entradaID' => $entrada->id])
+                                                            @endif
+                                                            <a href="{{asset('Storage/'.$entrada->pdf)}}" target="_blank" rel="noopener noreferrer" class="flex gap-1 items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M64 464h32v48H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0h165.5c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3V288h-48V160h-80c-17.7 0-32-14.3-32-32V48H64c-8.8 0-16 7.2-16 16v384c0 8.8 7.2 16 16 16zm112-112h32c30.9 0 56 25.1 56 56s-25.1 56-56 56h-16v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V368c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24h-16v48h16zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-32c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16v-64c0-8.8-7.2-16-16-16h-16v96h16zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V368z"/>
+                                                                </svg>
+                                                                <span>Ver documento</span>
+                                                            </a>
                                                         </div>
-                                                    @endif
+                                                    </div>
                                                 </div>
                                                 <span class="block ml-2 "></span>
                                             </div>
@@ -89,63 +101,8 @@
                                                 <span
                                                     class="block ml-2 text-sm text-gray-600 dark:text-white">{{ $entrada->motivo }}</span>
                                             </div>
-                                            <div
-                                                class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
-                                                <details>
-                                                    <summary class="bg-gray-200 py-2 px-4 cursor-pointer">Click para
-                                                        mostrar/ocultar
-                                                        productos</summary>
-                                                    <table class="table-auto w-full">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="px-4 py-2">Imagen</th>
-                                                                <th class="px-4 py-2">Producto</th>
-                                                                <th class="px-4 py-2">Cantidad</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @forelse($entrada->productos as $producto)
-                                                                <tr>
-                                                                    <td
-                                                                        class="border px-4 py-2 w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                                        <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}"
-                                                                            alt="" class="w-full">
-                                                                    </td>
-                                                                    <td
-                                                                        class="w-full lg:w-auto p-3 text-center border border-b block lg:table-cell relative lg:static dark:border-gray-800">
-                                                                        <span
-                                                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
-                                                                        <div class="text-sm">
-                                                                            <div
-                                                                                class="font-medium text-gray-700 dark:text-gray-400">
-                                                                                {{ $producto->producto->name }}</div>
-                                                                            <div
-                                                                                class="text-gray-400 dark:text-gray-400">
-                                                                                @if (isset($producto->serie->serie))
-                                                                                    {{ $producto->serie->serie }}
-                                                                                @endif
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="border px-4 py-2">
-                                                                        <span class="text-xs text-center">
-                                                                            {{ $producto->cantidad }}
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                            @empty
-                                                                <tr>
-                                                                    <td class="border px-4 py-2" colspan="3">Sin
-                                                                        datos.</td>
-                                                                </tr>
-                                                            @endforelse
-                                                        </tbody>
-                                                    </table>
-                                                </details>
-                                            </div>
                                         </div>
-                                        <button
+                                        {{-- <button
                                             onclick="window.open('{{ asset('Storage/' . $entrada->pdf) }}', '_blank')">
                                             <svg class="w-12 h-12" viewBox="0 0 32 32"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -163,11 +120,64 @@
                                                 <path fill="#fff"
                                                     d="M8.975 4.457H7.668v4.8H8.7V7.639l.228.013a2.042 2.042 0 0 0 .647-.117a1.428 1.428 0 0 0 .493-.291a1.224 1.224 0 0 0 .332-.454a2.13 2.13 0 0 0 .105-.908a2.237 2.237 0 0 0-.114-.644a1.173 1.173 0 0 0-.687-.65a2.149 2.149 0 0 0-.411-.105a2.232 2.232 0 0 0-.319-.026m-.189 2.294h-.089v-1.48h.194a.57.57 0 0 1 .459.181a.92.92 0 0 1 .183.558c0 .246 0 .469-.222.626a.942.942 0 0 1-.524.114m3.67-2.306c-.111 0-.219.008-.295.011l-.235.006h-.78v4.8h.918a2.677 2.677 0 0 0 1.028-.175a1.71 1.71 0 0 0 .68-.491a1.939 1.939 0 0 0 .373-.749a3.728 3.728 0 0 0 .114-.949a4.416 4.416 0 0 0-.087-1.127a1.777 1.777 0 0 0-.4-.733a1.63 1.63 0 0 0-.535-.4a2.413 2.413 0 0 0-.549-.178a1.282 1.282 0 0 0-.228-.017m-.182 3.937h-.1V5.315h.013a1.062 1.062 0 0 1 .6.107a1.2 1.2 0 0 1 .324.4a1.3 1.3 0 0 1 .142.526c.009.22 0 .4 0 .549a2.926 2.926 0 0 1-.033.513a1.756 1.756 0 0 1-.169.5a1.13 1.13 0 0 1-.363.36a.673.673 0 0 1-.416.106m5.077-3.915h-2.43v4.8h1.028V7.357h1.3v-.892h-1.3V5.353h1.4v-.892" />
                                             </svg>
-                                        </button>
-                                    </a>
-                                </li>
+                                        </button> --}}
+                                    </div>
+                                    <div class='w-full border border-gray-100 dark:border-slate-700 rounded-md overflow-hidden' x-data="{open:false}">
+                                        <div @click="open = !open" class='flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-t-md'>
+                                            <div class=' px-2 transform transition duration-300 ease-in-out' :class="{'rotate-90': open,'text-blue-500':open }">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 512 512">
+                                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z"/>
+                                                </svg>        
+                                            </div>
+                                            <div class='flex items-center px-1 py-2'>
+                                                Click para mostrar/ocultar productos de la operación
+                                            </div>
+                                        </div>
+                                        <div class="w-full transform transition duration-300 ease-in-out"
+                                        x-cloak x-show="open" x-collapse x-collapse.duration.500ms >
+                                            <div class=" max-h-72 overflow-auto">
+                                                <table class="w-full text-center rounded-b-md">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                                                 Imagen
+                                                             </th>     
+                                                            <th class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                                                Producto
+                                                            </th>
+                                                            <th class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
+                                                                Cantidad
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($entrada->productos as $producto)
+                                                             <tr>
+                                                                 <th  class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
+                                                                     <div class="flex justify-center items-center">
+                                                                         <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
+                                                                             <img src="{{ asset('storage/' . $producto->producto->archivo_path) }}" alt="" class="w-full">
+                                                                         </figure>
+                                                                     </div>
+                                                                 </th>
+                                                                 <th  class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
+                                                                     <div>
+                                                                         {{$producto->producto->name}}
+                                                                     </div>
+                                                                 </th>
+                                                                 <th  class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
+                                                                     {{$producto->cantidad}}
+                                                                 </th>
+                                                             </tr>
+                                                         @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
                     @else
                         <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"

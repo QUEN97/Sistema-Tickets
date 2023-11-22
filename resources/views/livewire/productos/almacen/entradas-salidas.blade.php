@@ -259,7 +259,7 @@
                                         </div>
                                         <div x-show="isOpen()"
                                             class="border absolute shadow bg-white top-full max-w-xs z-40 lef-0 rounded max-h-select overflow-y-auto dark:bg-dark-eval-1 dark:border-gray-400">
-                                            <div class="flex flex-col">
+                                            <div class="flex flex-col max-h-40 overflow-y-scroll">
                                                 <template x-for="(option, index) in filteredOptions()"
                                                     :key="index">
                                                     <div @click="onOptionClick(index,prod.id)"
@@ -310,13 +310,25 @@
                                     </select>
                                     </div>
                                     <div>
-                                        <div class="w-full relative mt-2">
+                                        {{-- <div class="w-full relative mt-2">
                                             <textarea
                                                 class="w-full h-24 resize-none border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1"
                                                 :name="`area${prod.id}`" :id="`area${prod.id}`" cols="30" rows="10" x-model="prod.observacion"></textarea>
                                             <label :for="`base${prod.id}`"
                                                 class="absolute rounded-md duration-300 transform  z-10 origin-[0] bg-white dark:bg-dark-eval-1 px-2 text-blue-600 dark:text-blue-500  top-2 scale-75 -translate-y-4 left-1">
                                                 {{ __('Observación') }}</label>
+                                        </div> --}}
+                                        <div class="w-full">
+                                            <select x-model="prod.observacion"
+                                            class="w-full border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700"
+                                            :name="`area${prod.id}`" :id="`area${prod.id}`">
+                                                <option value="" hidden>Estado del producto</option>
+                                                <option value="Nuevo">Nuevo</option>
+                                                <option value="Usado">Usado</option>
+                                                <option value="Reparado">Reparado</option>
+                                                <option value="Dañado">Dañado</option>
+                                                <option value="Retorno">Retornado</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
