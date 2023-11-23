@@ -74,8 +74,11 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with([
                 'cantidadTicketsProximosVencer' => $cantidadTicketsProximosVencer,
+                'ticketsProximosVencer' => $ticketsProximosVencer,
                 'cantidadTicketsPorAtender' => $cantidadTicketsPorAtender,
+                'ticketsPorAtender' => $ticketsPorAtender,
                 'cantidadTicketsSinComentar' =>  $cantidadTicketsSinComentar,
+                'ticketsEnProcesoSinComentarios' => $ticketsEnProcesoSinComentarios,
             ]);
         });
         // Configuración para fechas en español
