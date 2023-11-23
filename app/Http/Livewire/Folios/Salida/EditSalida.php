@@ -10,8 +10,11 @@ use App\Models\ProductosSalida;
 use App\Models\Salida;
 use App\Models\Producto;
 use App\Models\Ticket;
+use App\Models\User;
+use App\Notifications\SalidaEditNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -36,6 +39,8 @@ class EditSalida extends Component
         }
     }
     public function updateEntrada(){
+        $Admins = User::where('status', 'Activo')->where('permiso_id', 1)->get();
+        $Compras = User::where('status', 'Activo')->where('permiso_id', 4)->get();
         //dd($this->carrito);
         foreach($this->productos as $pr){
             $reg=ProductosSalida::find($pr['id']);
@@ -77,12 +82,16 @@ class EditSalida extends Component
             $newSerie->serie=$serieEntrada->serie->serie;
             $newSerie->save();
         }
+        Notification::send($Admins, new SalidaEditNotification($reg));
+        Notification::send($Compras, new SalidaEditNotification($reg));
         $pdf=$this->PDF($this->salidaID);
         $nameArchivo=$this->salida->folio->folio.' '.Auth::user()->name.'.pdf';
-        Alert::success('Cambios guardados','La informacion ha sido actualizada');
+        //Alert::success('Cambios guardados','La informacion ha sido actualizada');
         return response()->streamDownload(function()use ($pdf){print($pdf);},$nameArchivo);
     }
     public function refresh(){
+        session()->flash('flash.banner', ' Cambios Guardados, la SALIDA ha sido actualizada');
+        session()->flash('flash.bannerStyle', 'success');
         //recargamos la página
         return redirect(request()->header('Referer'));
     }
