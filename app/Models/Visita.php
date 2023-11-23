@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Visita extends Model
 {
@@ -12,9 +14,9 @@ class Visita extends Model
 
     protected $fillable = ['estacion_id','motivo_visita','fecha_programada','solicita_id'];
 
-    public function usuario(): BelongsTo
+    public function usuario(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(User::class,'user_visitas');
     }
     public function solicita(): BelongsTo
     {

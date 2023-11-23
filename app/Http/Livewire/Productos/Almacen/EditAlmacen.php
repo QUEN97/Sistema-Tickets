@@ -28,8 +28,11 @@ class EditAlmacen extends Component
         $reg->stock=$this->stock;
         $reg->stock_base=$this->base;
         $reg->save();
-        Alert::success('Actualizado','La información del producto ha sido actualizada');
-        return redirect()->route('almacenCIS');
+
+        session()->flash('flash.banner', 'la información  del producto ha sido actualizada');
+        session()->flash('flash.bannerStyle', 'success');
+
+        return redirect(request()->header('Referer'));
     }
     public function render()
     {

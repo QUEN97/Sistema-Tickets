@@ -14,9 +14,13 @@ use App\Models\ProductoSerieSalida;
 use App\Models\ProductosSalida;
 use App\Models\Salida;
 use App\Models\Ticket;
+use App\Models\User;
+use App\Notifications\EntradaNotification;
+use App\Notifications\SalidaNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -115,9 +119,8 @@ class EntradasSalidas extends Component
 
     public function operacion()
     {
-        //$hoy=Carbon::now()->format('Y-m-d');
-        //dd($this->carrito);
-        //null?dd(true):dd(false);
+        $Admins = User::where('status','Activo')->where('permiso_id',1)->get();
+        $Compras = User::where('status','Activo')->where('permiso_id',4)->get();
         $user = Auth::user();
         $folio = "";
         $this->validate([
@@ -193,6 +196,9 @@ class EntradasSalidas extends Component
                 $productoSerie->serie = $p['serie'];
                 $productoSerie->producto_entrada_id = $pe->id;
                 $productoSerie->save();
+
+                Notification::send($Admins, new EntradaNotification($pe));
+                Notification::send($Compras, new EntradaNotification($pe));
             } else {
                 $ps = new ProductosSalida();
                 $ps->producto_id = $p['prod'];
@@ -210,6 +216,9 @@ class EntradasSalidas extends Component
                 $productoSerie->serie = $p['serie'];
                 $productoSerie->producto_salida_id = $ps->id;
                 $productoSerie->save();
+
+                Notification::send($Admins, new SalidaNotification($ps));
+                Notification::send($Compras, new SalidaNotification($ps));
                 // Eliminar la serie del producto cuando es una salida
                 ProductoSerieEntrada::where('serie', $p['serie'])->delete();
             }
@@ -230,13 +239,16 @@ class EntradasSalidas extends Component
             //return $this->docWord($this->tipo,$entrada->id);
         }
         //$pdf=Pdf::loadView('modules.folios.PDF',['pdf'=>'hola'])->output();
-        Alert::success($this->tipo . ' registrada', 'Los datos han sido registrados');
+        // Alert::success($this->tipo . ' registrada', 'Los datos han sido registrados');
         return response()->streamDownload(function () use ($pdf) {
             print($pdf);
         }, $nameArchivo);
     }
     public function refresh()
     {
+        session()->flash('flash.banner', mb_strtoupper($this->tipo) . ' registrada, el almacén ha sido actualizado');
+        session()->flash('flash.bannerStyle', 'success');
+
         return redirect()->route('almacenCIS');
     }
     public function render()

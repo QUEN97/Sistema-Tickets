@@ -13,16 +13,14 @@ return new class extends Migration
     {
         Schema::create('visitas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('solicita_id')->nullable();
+            $table->unsignedBigInteger('solicita_id');
             $table->unsignedBigInteger('estacion_id')->nullable();
-            $table->text('motivo_visita')->nullable();
-            $table->datetime('fecha_programada')->nullable(); 
+            $table->text('motivo_visita');
+            $table->datetime('fecha_programada'); 
             $table->string('status')->default('Pendiente');
             $table->text('observacion_visita')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('solicita_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('estacion_id')->references('id')->on('estacions')->onDelete('cascade');
         });

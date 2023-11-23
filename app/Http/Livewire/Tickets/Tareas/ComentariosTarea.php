@@ -49,7 +49,6 @@ class ComentariosTarea extends Component
                 $tarea->save();
             }
 
-
             $ticketId = $reg->tarea->ticket_id;
 
             $agent = $tarea->usercrea;

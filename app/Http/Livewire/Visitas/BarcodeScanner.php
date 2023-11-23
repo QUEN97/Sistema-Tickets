@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Visitas;
 
+use App\Models\ArchivosVisita;
 use App\Models\User;
+use App\Models\UserVisita;
 use App\Models\Visita;
 use Livewire\Component;
 class BarcodeScanner extends Component
@@ -19,10 +21,15 @@ class BarcodeScanner extends Component
     {
         $this->asignado = $this->usuario->id;
 
-        $visita->user_id = $this->asignado;
+        $asignado = new UserVisita();
+        $asignado->visita_id = $visita->id;
+        $asignado->user_id = $this->asignado;
+        $asignado->save();
+
         $visita->status = 'En proceso';
         $visita->save();
-        session()->flash('flash.banner', 'Usuario Asignado, la visita ha sido actualizada en el sistema.');
+
+        session()->flash('flash.banner', 'Asignación Realizada, la visita ha sido actualizada en el sistema.');
         session()->flash('flash.bannerStyle', 'success');
 
         return redirect(request()->header('Referer'));

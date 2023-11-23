@@ -77,11 +77,11 @@ class UserController extends Controller
         $estacions = Estacion::where('status', 'Activo')->get();
         $superEsta = Estacion::where('status', 'Activo')->where('supervisor_id', Auth::user()->id)->get();
         $userID = Auth::id();
-        $estacionesAsignadas = DB::table('visitas')
-        ->join('estacions', 'visitas.estacion_id', '=', 'estacions.id')
-        ->where('visitas.user_id', '=', $userID)
-        ->select('estacions.*')
-        ->get();
+        // $estacionesAsignadas = DB::table('visitas')
+        // ->join('estacions', 'visitas.estacion_id', '=', 'estacions.id')
+        // ->where('visitas.user_id', '=', $userID)
+        // ->select('estacions.*')
+        // ->get();
        
 
         $usuario = User::where('name', 'LIKE', '%' . $request->search . '%')->get();
@@ -95,8 +95,7 @@ class UserController extends Controller
                         ->orWhere('motivo visita', 'LIKE', '%' . $search . '%')
                         ->orWhere('observacion_visita', 'LIKE', '%' . $search . '%');
                 } else {
-                    $query->whereIn('user_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
-                        ->orWhereIn('solicita_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
+                    $query->whereIn('solicita_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
                         ->orWhereIn('estacion_id', Estacion::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
                 }
             })
@@ -142,8 +141,7 @@ class UserController extends Controller
                         ->orWhere('motivo visita', 'LIKE', '%' . $search . '%')
                         ->orWhere('observacion_visita', 'LIKE', '%' . $search . '%');
                 } else {
-                    $query->whereIn('user_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
-                        ->orWhereIn('solicita_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
+                    $query->whereIn('solicita_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
                 }
             })
                 ->where('estacion_id', $gerenEstas)
@@ -172,7 +170,7 @@ class UserController extends Controller
                 ->withQueryString();
         }
         return view('modules.sistema.visitas.index', ['visitas' => $visitas, 'estacions' => $estacions,
-         'superEsta' => $superEsta,'estacionesAsignadas'=>$estacionesAsignadas]);
+         'superEsta' => $superEsta]);
     }
 
     public function delete_permanently()

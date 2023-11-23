@@ -21,8 +21,8 @@ class CompraDelete extends Component
             Storage::disk('public')->delete($evidencia->archivo_path);
         }
         $compra->delete();
-        Notification::send($Admins, new DeletedCompraNotification($compra));
-        Notification::send($Compras, new DeletedCompraNotification($compra));
+        // Notification::send($Admins, new DeletedCompraNotification($compra));
+        // Notification::send($Compras, new DeletedCompraNotification($compra));
         session()->flash('flash.banner', 'La requisicion ha sido eliminada');
         session()->flash('flash.bannerStyle', 'success');
     }

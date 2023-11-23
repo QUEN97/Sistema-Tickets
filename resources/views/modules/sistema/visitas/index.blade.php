@@ -143,22 +143,27 @@
                         @livewire('visitas.cancel-visit', ['visitaID' => $item->id], key('cancel' . $item->id))
                     @endif
 
-                    @if (isset($item->usuario->name))
+                    @if (isset($item->usuario))
                         <hr class="h-px my-2 bg-gray-300 border-0 dark:bg-slate-400">
                         <div class="flex items-center ">
-                            @if ($item->usuario->profile_photo_path)
-                                <img class="h-10 w-10 rounded-full object-cover mr-4"
-                                    src="/storage/{{ $item->usuario->profile_photo_path }}"
-                                    alt="{{ $item->usuario->name }}" />
-                            @else
-                                <img class="h-10 w-10 rounded-full object-cover mr-4"
-                                    src="{{ $item->usuario->profile_photo_url }}" alt="{{ $item->usuario->name }}" />
-                            @endif
+                            @foreach ($item->usuario as $user)
+                                @if ($user->profile_photo_path)
+                                    <img class="h-10 w-10 rounded-full object-cover mr-4"
+                                        src="/storage/{{ $user->profile_photo_path }}" alt="{{ $user->name }}" />
+                                @else
+                                    <img class="h-10 w-10 rounded-full object-cover mr-4"
+                                        src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" />
+                                @endif
+                            @endforeach
                             <div class="text-sm">
-                                <p class="text-gray-900 dark:text-gray-400 leading-none"> {{ $item->usuario->name }}
+                                <p class="text-gray-900 dark:text-gray-400 leading-none">
+                                    @foreach ($item->usuario as $user)
+                                        {{ $user->name }}
+                                    @endforeach
                                 </p>
                                 <p class="text-gray-600 dark:text-gray-400">
                                     {{ $item->updated_at->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}
+
                                 </p>
                                 @if ($item->status != 'Completado')
                                     @livewire('visitas.finalizar-visita', ['visitaID' => $item->id], key('final' . $item->id))
