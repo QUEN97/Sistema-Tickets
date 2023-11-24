@@ -172,7 +172,7 @@
 
     @if ($cantidadTicketsProximosVencer > 0)
         <script type="text/javascript">
-            toastr.warning("EXISTE {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER", 'Tickets por vencer', {
+            toastr.error("EXISTE {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER", 'Tickets por vencer', {
                 onclick: function() {
                     document.getElementById('miModalV').classList.remove('hidden');
                     document.getElementById('miModalV').classList.add('flex');
@@ -452,7 +452,7 @@
     @endif
     @if ($cantidadTicketsSinComentar > 0)
         <script type="text/javascript">
-            toastr.info("EXISTE {{ $cantidadTicketsSinComentar }} TICKETS CON MÁS DE 3 DÍAS SIN ACTUALIZAR ",
+            toastr.warning("EXISTE {{ $cantidadTicketsSinComentar }} TICKETS CON MÁS DE 3 DÍAS SIN ACTUALIZAR ",
                 'Tickets sin comentar', {
                     onclick: function() {
                         document.getElementById('miModalC').classList.remove('hidden');
