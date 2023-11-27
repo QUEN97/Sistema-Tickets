@@ -19,11 +19,25 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <style>
+        body {
+            /* Establecer un color de fondo */
+            background-color: #f3f4f6; /* Color de fondo base */
+        }
+
+        /* Estilo para el fondo de puntitos o asteriscos */
+        .dots-background {
+            /* Utilizar un gradiente de puntos */
+            background-image: radial-gradient(#0000001c 1px, transparent 2px); /* Color y tamaño de los puntos */
+            background-size: 20px 20px; /* Tamaño de los puntos */
+        }
+    </style>
+
 </head>
 
-<body class="antialiased">
+<body class="antialiased dots-background">
     <div
-        class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+        class="relative sm:flex sm:justify-center sm:items-center min-h-screen ">
 
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <div class="flex justify-center">
