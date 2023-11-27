@@ -18,6 +18,11 @@ class Visita extends Model
     {
         return $this->belongsToMany(User::class,'user_visitas');
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_visitas')
+                    ->withPivot('llegada', 'retirada');
+    }
     public function solicita(): BelongsTo
     {
         return $this->belongsTo(User::class, 'solicita_id');

@@ -6,6 +6,7 @@ use App\Models\ArchivosVisita;
 use App\Models\User;
 use App\Models\UserVisita;
 use App\Models\Visita;
+use Carbon\Carbon;
 use Livewire\Component;
 class BarcodeScanner extends Component
 {
@@ -24,6 +25,7 @@ class BarcodeScanner extends Component
         $asignado = new UserVisita();
         $asignado->visita_id = $visita->id;
         $asignado->user_id = $this->asignado;
+        $asignado->llegada = Carbon::now();
         $asignado->save();
 
         $visita->status = 'En proceso';

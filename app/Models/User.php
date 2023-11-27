@@ -134,5 +134,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Entrada::class)->orderBy('id','DESC');
     }
+    public function visitas()
+    {
+        return $this->belongsToMany(Visita::class, 'user_visitas')
+                    ->withPivot('llegada', 'retirada');
+    }
 
 }

@@ -62,7 +62,11 @@
                     class="p-4 my-4 border-s-4 border-gray-800 shadow-lg rounded-md bg-white dark:border-gray-500 dark:bg-gray-800">
                     <div class="mb-4">
                         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                            <div>
+                            <div style="display: flex; justify-content: center;">
+                                <div class="font-bold dark:text-gray-400 mr-1">
+                                    #{{ $item->id }}
+                                </div>
+                                |
                                 @if ($item->status == 'Pendiente')
                                     <p class="text-sm text-gray-500 flex items-center">
                                         <svg width="15" height="15" viewBox="0 0 2048 2048"
@@ -114,9 +118,32 @@
                             </div>
                             <div style="display: flex; justify-content: center;">
                                 <div class="flex gap-2">
-                                    @livewire('visitas.edit-visit', ['visitaID' => $item->id], key('edit' . $item->id))
-                                    <div class="bg-black text-white dark:text-gray-400 p-1 rounded-md">
-                                        {{ $item->id }}</div>
+                                    {{-- @livewire('visitas.edit-visit', ['visitaID' => $item->id], key('edit' . $item->id)) --}}
+                                    <div class="flex items-center gap-5">
+                                        <div class="flex items-center mt-3 mb-3">
+                                            <div class="relative" x-data="{ toggle: false }">
+                                                <button class="text-gray-400 duration-300 block hover:text-gray-600"
+                                                    @click="toggle=!toggle">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 "
+                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                        <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                        <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                    </svg>
+                                                </button>
+                                                <div class="absolute z-50 flex flex-col w-max rounded-md overflow-hidden bg-white p-1 dark:bg-dark-eval-3 shadow-md top-0 right-full"
+                                                    x-cloak x-collapse x-show="toggle">
+                                                    @livewire('visitas.edit-visit', ['visitaID' => $item->id], key('edit' . $item->id))
+                                                    @livewire('visitas.reprogram-visit', ['visitaID' => $item->id], key('repro' . $item->id))
+                                                    @livewire('visitas.cancel-visit', ['visitaID' => $item->id], key('cancel' . $item->id))
+                                                    @livewire('visitas.finalizar-visita', ['visitaID' => $item->id], key('final' . $item->id))
+                                                    @livewire('visitas.show-visita', ['visitaID' => $item->id], key('show' . $item->id))
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -130,17 +157,19 @@
                         </div>
                         <p class="text-gray-70 dark:text-gray-400">{{ $item->motivo_visita }}</p>
                     </div>
-                    @if ($item->usuario == null && $item->status != 'No realizado' && $item->status != 'Cancelada')
+                    @if (
+                        $item->usuario == null ||
+                            ($item->status != 'No realizado' && $item->status != 'Cancelada' && $item->status != 'Completado'))
                         @if (Auth::user()->permiso_id == 3)
                             @livewire('visitas.barcode-scanner', ['visitaID' => $item->id], key('scan' . $item->id))
                         @endif
-                    @elseif($item->status == 'No realizado' || $item->status == 'Cancelada')
+                        {{-- @elseif($item->status == 'No realizado' || $item->status == 'Cancelada')
                         @if (Auth::user()->permiso_id == 3)
                             @livewire('visitas.reprogram-visit', ['visitaID' => $item->id], key('repro' . $item->id))
                         @endif
                     @endif
                     @if ($item->status == 'Pendiente')
-                        @livewire('visitas.cancel-visit', ['visitaID' => $item->id], key('cancel' . $item->id))
+                        @livewire('visitas.cancel-visit', ['visitaID' => $item->id], key('cancel' . $item->id)) --}}
                     @endif
 
                     @if (isset($item->usuario))
@@ -154,24 +183,29 @@
                                     <img class="h-10 w-10 rounded-full object-cover mr-4"
                                         src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" />
                                 @endif
-                            @endforeach
-                            <div class="text-sm">
-                                <p class="text-gray-900 dark:text-gray-400 leading-none">
-                                    @foreach ($item->usuario as $user)
-                                        {{ $user->name }}
-                                    @endforeach
-                                </p>
-                                <p class="text-gray-600 dark:text-gray-400">
-                                    {{ $item->updated_at->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}
 
-                                </p>
-                                @if ($item->status != 'Completado')
-                                    @livewire('visitas.finalizar-visita', ['visitaID' => $item->id], key('final' . $item->id))
-                                @endif
-                                @if ($item->status == 'Completado')
-                                    @livewire('visitas.show-visita', ['visitaID' => $item->id], key('show' . $item->id))
-                                @endif
-                            </div>
+                                <div class="text-sm">
+                                    <p class="text-gray-900 dark:text-gray-400 leading-none">
+                                        {{ $user->name }}
+                                    </p>
+                                    <p class="text-gray-600 dark:text-gray-400">
+                                        @foreach ($item->users as $visita)
+                                        <div class="text-sm font-bold text-green-500" style="display: flex; justify-content: center;">
+                                            {{ $horaLlegada = $visita->pivot->llegada }}
+                                        </div>
+                                        <div class="text-sm font-bold text-gray-500" style="display: flex; justify-content: center;">
+                                            {{ $horaRetirada = $visita->pivot->retirada }}
+                                        </div>
+                                        @endforeach
+                                    </p>
+                                    {{-- @if ($item->status != 'Completado')
+                                        @livewire('visitas.finalizar-visita', ['visitaID' => $item->id], key('final' . $item->id))
+                                    @endif
+                                    @if ($item->status == 'Completado')
+                                        @livewire('visitas.show-visita', ['visitaID' => $item->id], key('show' . $item->id))
+                                    @endif --}}
+                                </div>
+                            @endforeach
                         </div>
                     @endif
                 </blockquote>

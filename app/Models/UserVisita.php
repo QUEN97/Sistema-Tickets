@@ -10,9 +10,4 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class UserVisita extends Model
 {
     use HasFactory;
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }
