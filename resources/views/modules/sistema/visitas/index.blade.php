@@ -118,29 +118,36 @@
                             </div>
                             <div style="display: flex; justify-content: center;">
                                 <div class="flex gap-2">
-                                    {{-- @livewire('visitas.edit-visit', ['visitaID' => $item->id], key('edit' . $item->id)) --}}
-                                    <div class="flex items-center gap-5">
-                                        <div class="flex items-center mt-3 mb-3">
-                                            <div class="relative" x-data="{ toggle: false }">
-                                                <button class="text-gray-400 duration-300 block hover:text-gray-600"
-                                                    @click="toggle=!toggle">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 "
-                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                                        <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                                        <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                                    </svg>
-                                                </button>
-                                                <div class="absolute z-50 flex flex-col w-max rounded-md overflow-hidden bg-white p-1 dark:bg-dark-eval-3 shadow-md top-0 right-full"
-                                                    x-cloak x-collapse x-show="toggle">
-                                                    @livewire('visitas.edit-visit', ['visitaID' => $item->id], key('edit' . $item->id))
-                                                    @livewire('visitas.reprogram-visit', ['visitaID' => $item->id], key('repro' . $item->id))
+                                    <div class="flex items-center mt-3 mb-3">
+                                        <div class="relative" x-data="{ toggle: false }">
+                                            <button class="text-gray-400 duration-300 block hover:text-gray-600"
+                                                @click="toggle=!toggle">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 "
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                    <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                    <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                </svg>
+                                            </button>
+                                            <div class="absolute z-50 flex flex-col w-max rounded-md overflow-hidden bg-white p-1 dark:bg-dark-eval-3 shadow-md top-0 right-full"
+                                                x-cloak x-collapse x-show="toggle">
+                                                @livewire('visitas.edit-visit', ['visitaID' => $item->id], key('edit' . $item->id))
+                                                @if ($item->status == 'No realizado' || $item->status == 'Cancelada')
+                                                    @if (Auth::user()->permiso_id == 3)
+                                                        @livewire('visitas.reprogram-visit', ['visitaID' => $item->id], key('repro' . $item->id))
+                                                    @endif
+                                                @endif
+                                                @if ($item->status == 'Pendiente')
                                                     @livewire('visitas.cancel-visit', ['visitaID' => $item->id], key('cancel' . $item->id))
+                                                @endif
+                                                @if ($item->status != 'Completado' && $item->status != 'Pendiente')
                                                     @livewire('visitas.finalizar-visita', ['visitaID' => $item->id], key('final' . $item->id))
+                                                @endif
+                                                @if ($item->status == 'Completado')
                                                     @livewire('visitas.show-visita', ['visitaID' => $item->id], key('show' . $item->id))
-                                                </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -155,57 +162,62 @@
                         <div class="text-gray-600 dark:text-gray-400 font-light text-xs mb-2">
                             {{ \Carbon\Carbon::parse($item->fecha_programada)->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}
                         </div>
-                        <p class="text-gray-70 dark:text-gray-400">{{ $item->motivo_visita }}</p>
+                        <p class="text-gray-70 dark:text-gray-400" id="motivo-visita">{{ $item->motivo_visita }}</p>
+                        <a href="#" id="ver-mas">Ver más</a>
+                        <style>
+                            #ver-mas {
+                                display: none;
+                                color: blue;
+                            }
+                        </style>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                var motivoVisita = document.getElementById('motivo-visita');
+                                var verMas = document.querySelector('#ver-mas');
+
+                                // Número de caracteres permitidos antes de recortar el texto
+                                var maxLength = 150;
+
+                                if (motivoVisita.textContent.length > maxLength) {
+                                    var shortenedText = motivoVisita.textContent.substring(0, maxLength);
+                                    motivoVisita.textContent = shortenedText + '...';
+                                    verMas.style.display = 'inline';
+
+                                    verMas.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        if (motivoVisita.textContent === shortenedText + '...') {
+                                            motivoVisita.textContent = "{{ $item->motivo_visita }}";
+                                            verMas.textContent = 'Ver menos';
+                                        } else {
+                                            motivoVisita.textContent = shortenedText + '...';
+                                            verMas.textContent = 'Ver más';
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
                     </div>
                     @if (
-                        $item->usuario == null ||
-                            ($item->status != 'No realizado' && $item->status != 'Cancelada' && $item->status != 'Completado'))
+                        $item->status == 'Pendiente' ||
+                            ($item->status != 'En proceso' &&
+                                $item->status != 'No realizado' &&
+                                $item->status != 'Cancelada' &&
+                                $item->status != 'Completado'))
                         @if (Auth::user()->permiso_id == 3)
                             @livewire('visitas.barcode-scanner', ['visitaID' => $item->id], key('scan' . $item->id))
                         @endif
-                        {{-- @elseif($item->status == 'No realizado' || $item->status == 'Cancelada')
-                        @if (Auth::user()->permiso_id == 3)
-                            @livewire('visitas.reprogram-visit', ['visitaID' => $item->id], key('repro' . $item->id))
-                        @endif
-                    @endif
-                    @if ($item->status == 'Pendiente')
-                        @livewire('visitas.cancel-visit', ['visitaID' => $item->id], key('cancel' . $item->id)) --}}
                     @endif
 
                     @if (isset($item->usuario))
                         <hr class="h-px my-2 bg-gray-300 border-0 dark:bg-slate-400">
-                        <div class="flex items-center ">
-                            @foreach ($item->usuario as $user)
-                                @if ($user->profile_photo_path)
-                                    <img class="h-10 w-10 rounded-full object-cover mr-4"
-                                        src="/storage/{{ $user->profile_photo_path }}" alt="{{ $user->name }}" />
-                                @else
-                                    <img class="h-10 w-10 rounded-full object-cover mr-4"
-                                        src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" />
-                                @endif
-
-                                <div class="text-sm">
-                                    <p class="text-gray-900 dark:text-gray-400 leading-none">
-                                        {{ $user->name }}
-                                    </p>
-                                    <p class="text-gray-600 dark:text-gray-400">
-                                        @foreach ($item->users as $visita)
-                                        <div class="text-sm font-bold text-green-500" style="display: flex; justify-content: center;">
-                                            {{ $horaLlegada = $visita->pivot->llegada }}
-                                        </div>
-                                        <div class="text-sm font-bold text-gray-500" style="display: flex; justify-content: center;">
-                                            {{ $horaRetirada = $visita->pivot->retirada }}
-                                        </div>
-                                        @endforeach
-                                    </p>
-                                    {{-- @if ($item->status != 'Completado')
-                                        @livewire('visitas.finalizar-visita', ['visitaID' => $item->id], key('final' . $item->id))
-                                    @endif
-                                    @if ($item->status == 'Completado')
-                                        @livewire('visitas.show-visita', ['visitaID' => $item->id], key('show' . $item->id))
-                                    @endif --}}
-                                </div>
-                            @endforeach
+                        <div class=" {{-- min-h-[140px] --}}w-full overflow-x-scroll rounded-lg  lg:overflow-visible">
+                            <div class="flex items-center -space-x-4">
+                                @foreach ($item->usuario as $user)
+                                    <img class="relative inline-block h-12 w-12 rounded-full border-2 border-white object-cover object-center hover:z-10 focus:z-10 cursor-pointer"
+                                        src="{{ $user->profile_photo_path ? '/storage/' . $user->profile_photo_path : $user->profile_photo_url }}"
+                                        alt="{{ $user->name }}" title="{{ $user->name }}" />
+                                @endforeach
+                            </div>
                         </div>
                     @endif
                 </blockquote>

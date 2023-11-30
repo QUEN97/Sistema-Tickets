@@ -19,6 +19,8 @@ return new class extends Migration
             $table->datetime('fecha_programada'); 
             $table->string('status')->default('Pendiente');
             $table->text('observacion_visita')->nullable();
+            $table->datetime('llegada')->nullable();
+            $table->datetime('retirada')->nullable();
             $table->timestamps();
 
             $table->foreign('solicita_id')->references('id')->on('users')->onDelete('cascade');

@@ -34,11 +34,12 @@ class FinalizarVisita extends Component
 
         $visita->status = "Completado";
         $visita->observacion_visita = $this->observacion;
+        $visita->retirada = Carbon::now();
         $visita->save();
 
-        $retirada = UserVisita::where('id',$visita->id)->first();
-        $retirada->retirada = Carbon::now();
-        $retirada->save();
+        // $retirada = UserVisita::where('id',$visita->id)->first();
+        // $retirada->retirada = Carbon::now();
+        // $retirada->save();
 
         foreach ($this->evidencias as $lue) {
             $this->urlArchi = $lue->store('visitas/evidencias', 'public');

@@ -8,28 +8,40 @@ use App\Models\UserVisita;
 use App\Models\Visita;
 use Carbon\Carbon;
 use Livewire\Component;
+
 class BarcodeScanner extends Component
 {
-    public $barcode;
-    public $usuario, $asignado,$visitaID,$visita,$status;
+    public $barcode, $visitaID, $visita,$asignado;
+    public $usuarios = []; // Lista para almacenar los usuarios escaneados
 
     public function buscarUsuario()
     {
-        $this->usuario = User::where('username', $this->barcode)->first();
-        $this->visita =  Visita::findOrFail($this->visitaID);
+        $usuario = User::where('username', $this->barcode)->first();
+        if ($usuario && !in_array($usuario, $this->usuarios, true)) {
+            $this->usuarios[] = $usuario; // Agregar usuario a la lista si no existe
+        }
+        //dd($this->usuarios);
+        $this->barcode = ''; // reseteamos el input luego de escanear
+
+        $this->visita = Visita::findOrFail($this->visitaID);
     }
     public function updateVisita(Visita $visita)
     {
-        $this->asignado = $this->usuario->id;
+            foreach ($this->usuarios as $usuario) {
+                $asignado = new UserVisita();
+                $asignado->visita_id = $this->visitaID;
+                $asignado->user_id = is_array($usuario) ? ($usuario['id'] ?? null) : ($usuario->id ?? null);
+                
+                $asignado->save();
+            } //el operador null-safe (??) se utiliza para proporcionar un valor por defecto (null) si la propiedad o clave "id" no está presente ni en la matriz ni en el objeto
 
-        $asignado = new UserVisita();
-        $asignado->visita_id = $visita->id;
-        $asignado->user_id = $this->asignado;
-        $asignado->llegada = Carbon::now();
-        $asignado->save();
-
+        $visita =  Visita::findOrFail($this->visitaID);
         $visita->status = 'En proceso';
+        $visita->llegada = Carbon::now();
         $visita->save();
+
+        // Restablecer la lista de usuarios después de registrar las visitas
+        $this->usuarios = [];
 
         session()->flash('flash.banner', 'Asignación Realizada, la visita ha sido actualizada en el sistema.');
         session()->flash('flash.bannerStyle', 'success');
