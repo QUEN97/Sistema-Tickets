@@ -57,7 +57,7 @@
 
     <div class="flex flex-wrap justify-evenly">
         @forelse ($visitas as $item)
-            <div class="w-full mb-1 lg:max-w-full lg:flex rounded-lg" style="width: 450px;">
+            <div class="w-full mb-1 lg:flex rounded-lg h-fit max-w-sm">
                 <blockquote
                     class="p-4 my-4 border-s-4 border-gray-800 shadow-lg rounded-md bg-white dark:border-gray-500 dark:bg-gray-800">
                     <div class="mb-4">
@@ -162,39 +162,39 @@
                         <div class="text-gray-600 dark:text-gray-400 font-light text-xs mb-2">
                             {{ \Carbon\Carbon::parse($item->fecha_programada)->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}
                         </div>
-                        <p class="text-gray-70 dark:text-gray-400" id="motivo-visita">{{ $item->motivo_visita }}</p>
-                        <a href="#" id="ver-mas">Ver más</a>
-                        <style>
-                            #ver-mas {
-                                display: none;
-                                color: blue;
-                            }
-                        </style>
+                        @foreach ($item->fallas as $falla)
+                            <span
+                                class="inline-flex items-center gap-1 rounded-full bg-sky-600 px-2 py-1 text-xs font-semibold text-white">
+                                {{ $falla->name }}
+                            </span>
+                        @endforeach
+                        <p class="text-gray-70 dark:text-gray-400" id="motivo-visita">
+                            @if (strlen($item->motivo_visita) > 100)
+                                {{ substr($item->motivo_visita, 0, 100) }}<span id="dots">...</span><span
+                                    id="more"
+                                    style="display: none;">{{ substr($item->motivo_visita, 100) }}</span>
+                                <a href="#" onclick="mostrarMas()" id="leer-mas"
+                                    class="text-blue-500">Mostrar más</a>
+                            @else
+                                {{ $item->motivo_visita }}
+                            @endif
+                        </p>
                         <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                var motivoVisita = document.getElementById('motivo-visita');
-                                var verMas = document.querySelector('#ver-mas');
+                            function mostrarMas() {
+                                var dots = document.getElementById("dots");
+                                var moreText = document.getElementById("more");
+                                var btnText = document.getElementById("leer-mas");
 
-                                // Número de caracteres permitidos antes de recortar el texto
-                                var maxLength = 150;
-
-                                if (motivoVisita.textContent.length > maxLength) {
-                                    var shortenedText = motivoVisita.textContent.substring(0, maxLength);
-                                    motivoVisita.textContent = shortenedText + '...';
-                                    verMas.style.display = 'inline';
-
-                                    verMas.addEventListener('click', function(e) {
-                                        e.preventDefault();
-                                        if (motivoVisita.textContent === shortenedText + '...') {
-                                            motivoVisita.textContent = "{{ $item->motivo_visita }}";
-                                            verMas.textContent = 'Ver menos';
-                                        } else {
-                                            motivoVisita.textContent = shortenedText + '...';
-                                            verMas.textContent = 'Ver más';
-                                        }
-                                    });
+                                if (dots.style.display === "none") {
+                                    dots.style.display = "inline";
+                                    btnText.innerHTML = "Mostrar más";
+                                    moreText.style.display = "none";
+                                } else {
+                                    dots.style.display = "none";
+                                    btnText.innerHTML = "Mostrar menos";
+                                    moreText.style.display = "inline";
                                 }
-                            });
+                            }
                         </script>
                     </div>
                     @if (

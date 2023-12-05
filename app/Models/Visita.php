@@ -31,4 +31,11 @@ class Visita extends Model
     {
         return $this->belongsTo(Estacion::class);
     }
+    public function estavisita(): BelongsToMany
+    {
+        return $this->belongsToMany(Estacion::class,'visitas','estacion_id');
+    }
+    public function fallas(){
+        return $this->belongsToMany(Falla::class,'visita_fallas',null,'falla_id');
+    }
 }

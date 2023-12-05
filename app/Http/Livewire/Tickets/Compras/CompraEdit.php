@@ -11,6 +11,7 @@ use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\TckServicio;
 use App\Models\User;
+use App\Models\UserZona;
 use App\Notifications\EditCompraProductNotification;
 use App\Notifications\EditCompraServicioNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -87,7 +88,7 @@ class CompraEdit extends Component
     public function updateCompra()
     {
         $Admins = User::where('permiso_id', 1)->get();
-        $Compras = User::where('permiso_id', 4)->get();
+        
 
         //dd($this->carrito);
         $compra = Compra::find($this->compraID);
@@ -147,6 +148,11 @@ class CompraEdit extends Component
             }
         }
 
+        $cliente = $compra->ticket->cliente->zonas->pluck('id'); //zona del cliente
+        $Compras= User::where('permiso_id',4)
+        ->join('user_zona','users.id','=','user_zona.user_id')
+        ->whereIn('user_zona.zona_id',$cliente)->select('users.id')->get();
+        //dd($Compras);
         //actualizamos los productos actuales de la requisicion
         //dd($this->carrito);
         if (count($this->carrito) > 0) {

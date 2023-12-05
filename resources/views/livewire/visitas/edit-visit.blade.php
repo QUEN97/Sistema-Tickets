@@ -57,22 +57,22 @@
                     </select>
                     <x-input-error for="usuario"></x-input-error>
                 </div>
-                @if ($usuario)
+                 @if($usuario)
                     <div class="mb-4">
-                        <x-label value="{{ __('Usuario') }}" for="usuario" />
-                        <select id="usuario" wire:model="usuario"
-                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('usuario') ? 'is-invalid' : '' }}"
-                            name="usuario" required>
-                            <option value="">Seleccionar Usuario</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}"@if (old('usuario') == $user->id) selected @endif>
-                                    {{ $user->name }}</option>
+                        <x-label value="{{ __('Usuarios') }}"  for="usuario"/>
+                        <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
+                            @foreach ($users as $tag)
+                                <div class="flex items-center">
+                                    <input type="checkbox" wire:model="usuario" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                                    dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" value="{{ $tag->id }}"
+                                        name="names[]" id="{{ $tag->name }}" multiple>
+                                    <label for="{{ $tag->name }}"  @if (old('usuario') == $tag->id) selected @endif>{{ $tag->name }}</label>
+                                </div>
                             @endforeach
-                        </select>
-                        <x-input-error for="usuario"></x-input-error>
+                        </div>
+                        <x-input-error for="area"></x-input-error>
                     </div>
-                @endif
+                @endif 
                 <div class="mb-4">
                     <x-label value="{{ __('Estado') }}" />
                     <select id="status" wire:model="status"

@@ -34,7 +34,7 @@
                         <x-slot name="icon">
                             <x-heroicon-o-mail aria-hidden="true" class="w-5 h-5" />
                         </x-slot>
-                        <x-input withicon id="username" class="block w-full" type="text" name="username"
+                        <x-input withicon id="username" class="block w-full text-gray400 dark:text-white" type="text" name="username"
                             :value="old('username')" placeholder="{{ __('Usuario') }}" required autofocus />
                     </x-input-with-icon-wrapper>
                 </div>

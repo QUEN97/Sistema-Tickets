@@ -47,8 +47,8 @@ class EstacionEdit extends Component
         $this->validate( [
             'name' => ['required', 'max:250'],
             'numero' => ['required'],
-            'supervisor' => ['required', 'not_in:0'],
-            'gerente' => ['required', 'not_in:0'],
+            // 'supervisor' => ['required', 'not_in:0'],
+            // 'gerente' => ['required', 'not_in:0'],
             'zona' => ['required', 'not_in:0'],
             'status' => ['required', 'not_in:0'],
         ],

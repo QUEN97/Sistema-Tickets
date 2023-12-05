@@ -77,11 +77,12 @@ class UserController extends Controller
         $estacions = Estacion::where('status', 'Activo')->get();
         $superEsta = Estacion::where('status', 'Activo')->where('supervisor_id', Auth::user()->id)->get();
         $userID = Auth::id();
-        // $estacionesAsignadas = DB::table('visitas')
-        // ->join('estacions', 'visitas.estacion_id', '=', 'estacions.id')
-        // ->where('visitas.user_id', '=', $userID)
-        // ->select('estacions.*')
-        // ->get();
+        $estacionesAsignadas = DB::table('visitas')
+        ->join('estacions', 'visitas.estacion_id', '=', 'estacions.id')
+        ->join('user_visitas', 'visitas.id', '=', 'user_visitas.visita_id')
+        ->where('user_visitas.user_id', '=', $userID)
+        ->select('estacions.*')
+        ->get();
        
 
         $usuario = User::where('name', 'LIKE', '%' . $request->search . '%')->get();
@@ -109,7 +110,11 @@ class UserController extends Controller
                 ->withQueryString();
         }
         if (Auth::user()->permiso_id == 2) {
-            $superEstas = Estacion::where('status', 'Activo')->where('supervisor_id', Auth::user()->id)->first()->id;
+            $userID = Auth::id();
+            $estas = Visita::whereHas('estacion', function ($query) use ($userID) {
+                $query->where('supervisor_id', $userID);
+            })->pluck('estacion_id');
+            //dd($estas);
             $visitas = Visita::where(function ($query) use ($request, $usuario) {
                 $search = $request->input('search');
                 if ($search && $usuario->count() === 0) {
@@ -117,16 +122,18 @@ class UserController extends Controller
                         ->orWhere('motivo visita', 'LIKE', '%' . $search . '%')
                         ->orWhere('observacion_visita', 'LIKE', '%' . $search . '%');
                 } else {
-                    $query->whereIn('user_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
-                        ->orWhereIn('solicita_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
+                    $query->whereIn('solicita_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
                         ->orWhereIn('estacion_id', Estacion::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
                 }
             })
                 ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request) {
                     $filterSoli = $request->input('filter');
                     $query->where('estacion_id', $filterSoli);
+                })->where(function ($query) use ($estas, $userID) {
+                    $query->whereIn('estacion_id', $estas)
+                          ->orWhere('solicita_id', $userID);
                 })
-                ->where('estacion_id', $superEstas)
+                ->orWhere('solicita_id', $userID)
                 ->orderBy('id', 'desc')
                 ->orderBy('fecha_programada', 'desc')
                 ->paginate(10)
@@ -156,21 +163,20 @@ class UserController extends Controller
                 $search = $request->input('search');
                 if ($search && $usuario->count() === 0) {
                     $query->where('id', 'LIKE', '%' . $search . '%')
-                        ->orWhere('motivo visita', 'LIKE', '%' . $search . '%')
+                        ->orWhere('motivo_visita', 'LIKE', '%' . $search . '%')
                         ->orWhere('observacion_visita', 'LIKE', '%' . $search . '%');
-                } else {
-                    $query->whereIn('user_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'))
-                        ->orWhereIn('solicita_id', User::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
-                }
+                } 
             })
-                ->where('user_id', $userID)
+            ->whereHas('usuario', function ($query) use ($userID) {
+                $query->where('user_id', $userID);
+            })
                 ->orderBy('id', 'desc')
                 ->orderBy('fecha_programada', 'desc')
                 ->paginate(10)
                 ->withQueryString();
         }
         return view('modules.sistema.visitas.index', ['visitas' => $visitas, 'estacions' => $estacions,
-         'superEsta' => $superEsta]);
+         'superEsta' => $superEsta, 'estacionesAsignadas'=>$estacionesAsignadas]);
     }
 
     public function delete_permanently()

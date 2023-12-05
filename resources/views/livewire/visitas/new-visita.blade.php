@@ -54,11 +54,21 @@
                         <x-input-error for="estacion"></x-input-error>
                     </div>
                 @endif
-
             </div>
-
-            <div>
+            <div class="mb-2" wire:ignore>
                 <x-label value="{{ __('Motivo') }}" for="motivo" />
+                    <select id="select2" name="fallasList[ ]" 
+                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                 dark:focus:ring-offset-dark-eval-1 w-full"
+                        multiple="multiple">
+                        @foreach ($fallas as $falla)
+                            <option value="{{ $falla->id }}">{{ $falla->name }}</option>
+                        @endforeach
+                    </select>
+                <x-input-error for="motivo"></x-input-error>
+            </div>
+            <div>
+                <x-label value="{{ __('Detalles adicionales de la visita') }}" for="motivo" />
                 <textarea wire:model.defer="motivo"
                     class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('motivo') ? 'is-invalid' : '' }}"
                     name="motivo" required autocomplete="motivo">
@@ -90,4 +100,18 @@
             </x-secondary-button>
         </x-slot>
     </x-dialog-modal>
+    @push('scripts')
+        <script>
+            document.addEventListener('livewire:load', function () {
+                Livewire.hook('message.processed', (message, component) => {
+                    $('#select2').select2({
+                        placeholder: "Seleccionar motivo(s)...",
+                        allowClear: true
+                    }).on('change', function () {
+                        @this.set('fallasList', $(this).val());
+                    });
+                });
+            });
+        </script>
+    @endpush
 </div>
