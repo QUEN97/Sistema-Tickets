@@ -162,7 +162,7 @@
                         <div class="text-gray-600 dark:text-gray-400 font-light text-xs mb-2">
                             {{ \Carbon\Carbon::parse($item->fecha_programada)->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}
                         </div>
-                        <div class="border rounded-lg w-full overflow-hidden max-h-[320px] overflow-y-auto">
+                        <div class="border rounded-lg w-full overflow-hidden max-h-[320px] overflow-y-auto mb-3">
                             <details class="text-center">
                                 <summary class="bg-gray-100 dark:bg-gray-400 py-1 px-2 cursor-pointer dark:text-black">Motivo Visita</summary>
                                 <table class="table-auto w-full">
