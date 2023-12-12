@@ -170,6 +170,7 @@ class UserController extends Controller
             ->whereHas('usuario', function ($query) use ($userID) {
                 $query->where('user_id', $userID);
             })
+            ->orWhere('solicita_id', $userID)
                 ->orderBy('id', 'desc')
                 ->orderBy('fecha_programada', 'desc')
                 ->paginate(10)

@@ -162,19 +162,35 @@
                         <div class="text-gray-600 dark:text-gray-400 font-light text-xs mb-2">
                             {{ \Carbon\Carbon::parse($item->fecha_programada)->locale('es')->isoFormat('D [de] MMMM [de] YYYY H:mm:ss a') }}
                         </div>
-                        @foreach ($item->fallas as $falla)
+                        <div class="border rounded-lg w-full overflow-hidden max-h-[320px] overflow-y-auto">
+                            <details class="text-center">
+                                <summary class="bg-gray-100 dark:bg-gray-400 py-1 px-2 cursor-pointer dark:text-black">Motivo Visita</summary>
+                                <table class="table-auto w-full">
+                                    <tbody>
+                                        @foreach ($item->fallas as $falla)
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-sky-600 px-2 py-1 text-xs font-semibold text-white">
+                                            {{ $falla->name }}
+                                        </span>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </details>
+                        </div>
+                        {{-- @foreach ($item->fallas as $falla)
                             <span
                                 class="inline-flex items-center gap-1 rounded-full bg-sky-600 px-2 py-1 text-xs font-semibold text-white">
                                 {{ $falla->name }}
                             </span>
-                        @endforeach
+                        @endforeach --}}
                         <p class="text-gray-70 dark:text-gray-400" id="motivo-visita">
                             @if (strlen($item->motivo_visita) > 100)
                                 {{ substr($item->motivo_visita, 0, 100) }}<span id="dots">...</span><span
                                     id="more"
                                     style="display: none;">{{ substr($item->motivo_visita, 100) }}</span>
                                 <a href="#" onclick="mostrarMas()" id="leer-mas"
-                                    class="text-blue-500">Mostrar más</a>
+                                    class="text-blue-500">Mostrar
+                                    más</a>
                             @else
                                 {{ $item->motivo_visita }}
                             @endif

@@ -125,6 +125,11 @@
     @if ($cantidadTicketsProximosVencer > 0)
         <script type="text/javascript">
             toastr.error("EXISTE {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER", 'Tickets por vencer', {
+
+                timeOut: 0, // Desactiva el tiempo de espera automático para la notificación
+                extendedTimeOut: 0, // Desactiva el tiempo extendido de espera
+                closeButton: true, // Muestra el botón de cierre en la notificación
+
                 onclick: function() {
                     document.getElementById('miModalV').classList.remove('hidden');
                     document.getElementById('miModalV').classList.add('flex');
@@ -265,6 +270,11 @@
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function() {
                 toastr.info("EXISTE {{ $cantidadTicketsPorAtender }} TICKETS ABIERTOS", 'Tickets abiertos', {
+
+                    timeOut: 0, // Desactiva el tiempo de espera automático para la notificación
+                    extendedTimeOut: 0, // Desactiva el tiempo extendido de espera
+                    closeButton: true, // Muestra el botón de cierre en la notificación
+
                     onclick: function() {
                         document.getElementById('miModalA').classList.remove('hidden');
                         document.getElementById('miModalA').classList.add('flex');
@@ -406,6 +416,9 @@
         <script type="text/javascript">
             toastr.warning("EXISTE {{ $cantidadTicketsSinComentar }} TICKETS CON MÁS DE 3 DÍAS SIN ACTUALIZAR ",
                 'Tickets sin comentar', {
+                    timeOut: 0, // Desactiva el tiempo de espera automático para la notificación
+                    extendedTimeOut: 0, // Desactiva el tiempo extendido de espera
+                    closeButton: true, // Muestra el botón de cierre en la notificación
                     onclick: function() {
                         document.getElementById('miModalC').classList.remove('hidden');
                         document.getElementById('miModalC').classList.add('flex');

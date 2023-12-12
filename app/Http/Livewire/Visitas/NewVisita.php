@@ -22,7 +22,7 @@ class NewVisita extends Component
         // $this->users = User::where('status','Activo')->whereNotIn('permiso_id',[3,6])->get();
         $this->estacions = Estacion::where('status', 'Activo')->get();
         $this->superEsta = Estacion::where('status', 'Activo')->where('supervisor_id', Auth::user()->id)->get();
-        $this->fallas = Falla::where('servicio_id', 23)->get();
+        $this->fallas = Falla::where('status','Activo')->where('servicio_id', 23)->get();
     }
 
     public function programarVisita()

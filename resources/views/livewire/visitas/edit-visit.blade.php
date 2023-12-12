@@ -13,10 +13,12 @@
     </button>
     <x-dialog-modal wire:model="modal" id="modalRepuesto" class="flex items-center">
         <x-slot name="title">
-            {{ __('Editar Visita') }}
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-2 rounded-md text-white text-center">
+                {{ __('Editar visita') }}
+            </div>
         </x-slot>
         <x-slot name="content">
-            <div class="flex flex-wrap gap-3 justify-evenly items-center">
+            <div class="flex flex-wrap gap-3 justify-evenly items-center max-h-[320px] overflow-y-auto">
                 <div class="mb-4">
                     <x-label value="{{ __('Fecha') }}" for="fecha" />
                     <x-input wire:model="fecha" type="datetime-local" name="fecha"
@@ -94,7 +96,21 @@
                     <x-input-error for="status"></x-input-error>
                 </div>
                 <div class="mb-4">
-                    <x-label value="{{ __('Motivo') }}" for="motivo" />
+                    <x-label value="{{ __('Motivo Visita') }}" />
+                    <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
+                        @foreach ($fallas as $tag)
+                            <div class="flex items-center">
+                                <input type="checkbox" wire:model="fallasUpdate" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                                dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" value="{{ $tag->id }}"
+                                    name="names[]" id="{{ $tag->name }}" multiple>
+                                <label for="{{ $tag->name }}"  @if (old('fallasUpdate') == $tag->id) selected @endif>{{ $tag->name }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <x-input-error for="area"></x-input-error>
+                </div>
+                <div class="mb-4">
+                    <x-label value="{{ __('Observacion') }}" for="motivo" />
                     <textarea wire:model.defer="motivo"
                         class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('motivo') ? 'is-invalid' : '' }}"
                         name="motivo" required autocomplete="motivo">
