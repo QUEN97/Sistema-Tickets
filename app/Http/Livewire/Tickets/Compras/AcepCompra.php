@@ -24,6 +24,7 @@ use App\Notifications\TareaAsignadaNotification;
 use App\Notifications\TareaRequisicionNotification;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
@@ -162,7 +163,12 @@ class AcepCompra extends Component
     public function enviar(Compra $compra)
     {
         $Admins = User::where('permiso_id', 1)->get(); //Administradores
-        $Compras = User::where('permiso_id', 4)->get(); //Compras
+
+        $clienter = $compra->ticket->cliente->zonas->first()->id;
+        $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
+            $zonas->where('zona_id',$clienter);
+        })->get(); //Compras
+
         $Agente = $compra->ticket->agente; // id del agente
         $agenteMail = $compra->ticket->agente->email; //email del agente
 
@@ -296,7 +302,10 @@ class AcepCompra extends Component
     public function finish(Compra $compra)
     {
         $Admins = User::where('permiso_id', 1)->get();
-        $Compras = User::where('permiso_id', 4)->get();
+       $clienter = $compra->ticket->cliente->zonas->first()->id;
+        $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
+            $zonas->where('zona_id',$clienter);
+        })->get(); //Compras
         $Agente = $compra->ticket->agente;
 
         $catPS = $compra->productos->count() > 0 ? 'Producto' : 'Servicio';

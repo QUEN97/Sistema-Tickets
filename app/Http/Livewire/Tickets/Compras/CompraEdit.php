@@ -15,6 +15,7 @@ use App\Models\UserZona;
 use App\Notifications\EditCompraProductNotification;
 use App\Notifications\EditCompraServicioNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -148,10 +149,10 @@ class CompraEdit extends Component
             }
         }
 
-        $cliente = $compra->ticket->cliente->zonas->pluck('id'); //zona del cliente
-        $Compras= User::where('permiso_id',4)
-        ->join('user_zona','users.id','=','user_zona.user_id')
-        ->whereIn('user_zona.zona_id',$cliente)->select('users.id')->get();
+        $clienter = $compra->ticket->cliente->zonas->first()->id;
+        $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
+            $zonas->where('zona_id',$clienter);
+        })->get(); //Compras
         //dd($Compras);
         //actualizamos los productos actuales de la requisicion
         //dd($this->carrito);

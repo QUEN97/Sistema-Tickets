@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Notifications\NewCompraNotification;
 use App\Notifications\NewCompraServicioNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -114,7 +115,7 @@ class NewCompra extends Component
         //         }
         // });
         $Admins = User::where('permiso_id',1)->get();
-        $Compras = User::where('permiso_id',4)->get();
+        
         //dd($this->tipo);
         $this->validate([
             'titulo' => ['required'],
@@ -154,6 +155,8 @@ class NewCompra extends Component
         $compra->solucion=$this->solucion;
         $compra->titulo_correo=$this->titulo;
         $compra->status='Solicitado';
+        $clienter = $compra->ticket->cliente->zonas->first()->id;
+        //dd($clienter);
         $compra->save();
         //guardamos evidencias
         foreach ($this->evidencias as $lue) {
@@ -165,6 +168,10 @@ class NewCompra extends Component
             $archivo->archivo_path=$this->urlArchi;
             $archivo->save();
         }
+        $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
+            $zonas->where('zona_id',$clienter);
+        })->get();
+        //dd($Compras,$clienter);
         //guardamos productos de la compra de acuerdo al tipo
         if($this->tipo=="Producto"){
             foreach($this->carrito as $p){
