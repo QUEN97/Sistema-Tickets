@@ -140,4 +140,10 @@ class User extends Authenticatable
                     ->withPivot('llegada', 'retirada');
     }
 
+    // Método para obtener la URL de la imagen de perfil del usuario
+public function getImagenPerfilUrlAttribute()
+{
+    // Reemplaza 'imagen_perfil' con el nombre del campo en tu tabla que almacena la ruta de la imagen
+    return $this->imagen_perfil ? asset('ruta/donde/se/almacenan/las/imagenes/' . $this->imagen_perfil) : 'ruta/por/defecto/si/no/hay/imagen';
+}
 }

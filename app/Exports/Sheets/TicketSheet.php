@@ -46,11 +46,11 @@ class TicketSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, Wi
     {
         return [
             AfterSheet::class   => function (AfterSheet $event) {
-                $cellRange = 'A1:H1';
+                $cellRange = 'A1:I1';
 
                 $totalRows = $event->sheet->getHighestRow();
 
-                $celAll = 'A1:H' . $totalRows;
+                $celAll = 'A1:I' . $totalRows;
 
                 $event->sheet->getDelegate()->getStyle($cellRange)
                     ->applyFromArray([

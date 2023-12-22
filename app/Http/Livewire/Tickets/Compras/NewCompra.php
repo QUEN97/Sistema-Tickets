@@ -121,7 +121,7 @@ class NewCompra extends Component
             'titulo' => ['required'],
             'problema' => ['required'],
             'solucion' => ['required'],
-            'evidencias' => ['required'],
+            'evidencias.*' => 'required|file|max:50000', // 50000 KB (50 MB)
             'tipo' => ['required'],
             'carrito' => ['required'],
            /*  'carrito.*.prioridad' => ['required'], */
@@ -166,6 +166,7 @@ class NewCompra extends Component
             $archivo->nombre_archivo=$lue->getClientOriginalName();
             $archivo->mime_type=$lue->getMimeType();
             $archivo->archivo_path=$this->urlArchi;
+            //dd($archivo);
             $archivo->save();
         }
         $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){

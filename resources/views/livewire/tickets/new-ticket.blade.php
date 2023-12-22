@@ -94,14 +94,13 @@
                 @endif --}}
             </div>
             <div class="flex flex-wrap gap-2">
-                <div class="w-full">
-                    {{-- <x-label value="{{ __('Asunto') }}" for="asunto" /> --}}
+                {{-- <div class="w-full">
                     <div>Asunto</div>
                     <x-input wire:model="asunto" type="text" name="asunto" id="asunto"
                         class="w-full  border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 dark:text-white"
                         required  autocomplete="asunto" />
                     <x-input-error for="asunto"></x-input-error>
-                </div>
+                </div> --}}
                 <div class="w-full">
                     {{-- <x-label value="{{ __('Detalles') }}" for="mensaje" /> --}}
                     <div>Detalles</div>

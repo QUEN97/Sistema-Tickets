@@ -30,9 +30,9 @@
                 @endif
             </div>
             <div class="max-h-[320px] overflow-y-auto">
-                @if (auth()->user()->notifications->count())
+                @if ($this->notifications->count())
                     <ul class="divide-y divide-gray-100">
-                        @foreach (auth()->user()->notifications as $notification)
+                        @foreach ($this->notifications as $notification)
                             <li wire:click="readNotification('{{ $notification->id }}')" @class(['bg-blue-200' => !$notification->read_at])>
                                 <x-dropdown-link href="{{ $notification->data['url'] }}">
                                     <div class="flex">
@@ -73,10 +73,15 @@
                             <div class="border-t border-gray-100 dark:border-gray-700"></div>
                         @endforeach
                     </ul>
+                    <div class="px-4 pt-2 pb-1 flex justify-center">
+                        <button onclick="window.location.href = '{{ route('notificaciones') }}'" class="text-sm text-blue-500 font-semibold">
+                            Ver más
+                        </button>
+                    </div>
                 @else
                     <div>
                         <p align="center"><img src="{{ asset('img/logo/emptystate.svg') }}" style="max-width: 200px"
-                                alt="Sin notificaciones"></p>
+                                alt="Sin notificaciones nuevas"></p>
                     </div>
                 @endif
             </div>

@@ -46,6 +46,7 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     //Dashboard
     Route::get('/dashboard', [DashboardController::class, 'data'])->name('dashboard');
+    Route::get('/notificaciones', [DashboardController::class, 'notifs'])->name('notificaciones');
 
     //Usuarios
     Route::get('/usuarios', [UserController::class, 'index'])->name('users');

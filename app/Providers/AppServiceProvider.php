@@ -26,6 +26,14 @@ class AppServiceProvider extends ServiceProvider
             $mePertenece = Auth::user();
             $ticketsProximosVencer = 0;
             $ticketsPorAtender = 0;
+            $dia = Carbon::now();
+            $comparador = Carbon::now();
+            //creamos variable para que el TOAST se muestre sólo en un horario específico
+            $vecesToast = [
+                'inicio' => [$dia->startOfDay()->addHours(9)->toDateTimeString(), $dia->startOfDay()->addHours(9)->addRealMinutes(30)->toDateTimeString()],
+                'mitad' => [$dia->startOfDay()->addHours(13)->toDateTimeString(), $dia->startOfDay()->addHours(13)->addRealMinutes(30)->toDateTimeString()],
+                'fin' => [$dia->startOfDay()->addHours(17)->toDateTimeString(), $dia->startOfDay()->addHours(17)->addRealMinutes(30)->toDateTimeString()]
+            ];
             $now = Carbon::now();
             $mediaHora = Carbon::now()->subMinutes(30);
             $fechaActual = Carbon::now();
@@ -51,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
                 })
                 ->get();
 
-                $ticketsEnProcesoSinComentarios = Ticket::where('status', 'En proceso')
+            $ticketsEnProcesoSinComentarios = Ticket::where('status', 'En proceso')
                 ->where(function ($query) use ($now, $mePertenece) {
                     $query->where(function ($query) use ($mePertenece) {
                         if ($mePertenece->permiso_id !== 1) {
@@ -59,18 +67,24 @@ class AppServiceProvider extends ServiceProvider
                                 ->orWhere('solicitante_id', $mePertenece->id);
                         }
                     })
-                    ->where(function ($query) use ($now) {
-                        $query->whereDoesntHave('comentarios')
-                            ->orWhereHas('comentarios', function ($query) use ($now) {
-                                $query->where('created_at', '<=', $now->subDay(3));
-                            });
-                    });
+                        ->where(function ($query) use ($now) {
+                            $query->whereDoesntHave('comentarios')
+                                ->orWhereHas('comentarios', function ($query) use ($now) {
+                                    $query->where('created_at', '<=', $now->subDay(3));
+                                });
+                        });
                 })
                 ->get();
 
-            $cantidadTicketsProximosVencer = $ticketsProximosVencer->count();
-            $cantidadTicketsPorAtender = $ticketsPorAtender->count();
-            $cantidadTicketsSinComentar = $ticketsEnProcesoSinComentarios->count();
+            if (($comparador->greaterThanOrEqualTo(Carbon::create($vecesToast['inicio'][0])) && $comparador->lessThanOrEqualTo(Carbon::create($vecesToast['inicio'][1]))) || ($comparador->greaterThanOrEqualTo(Carbon::create($vecesToast['mitad'][0])) && $comparador->lessThanOrEqualTo(Carbon::create($vecesToast['mitad'][1]))) || ($comparador->greaterThanOrEqualTo(Carbon::create($vecesToast['fin'][0])) && $comparador->lessThanOrEqualTo(Carbon::create($vecesToast['fin'][1])))) {
+                $cantidadTicketsProximosVencer = $ticketsProximosVencer->count();
+                $cantidadTicketsPorAtender = $ticketsPorAtender->count();
+                $cantidadTicketsSinComentar = $ticketsEnProcesoSinComentarios->count();
+            } else {
+                $cantidadTicketsProximosVencer = 0;
+                $cantidadTicketsPorAtender = 0;
+                $cantidadTicketsSinComentar = 0;
+            }
 
             $view->with([
                 'cantidadTicketsProximosVencer' => $cantidadTicketsProximosVencer,

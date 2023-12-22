@@ -21,7 +21,6 @@
                     </textarea>
             <x-input-error for="mensaje"></x-input-error>
         </div>
-        @if ($this->status != 'Cerrado' || Auth::user()->permiso_id == 1)
                 <x-danger-button class="mr-2" wire:click="addCom({{ $tareaID }})" wire:loading.attr="disabled">
                     <div role="status" wire:loading wire:target="addCom">
                         <svg aria-hidden="true"
@@ -38,7 +37,6 @@
                     </div>
                     Aceptar
                 </x-danger-button>
-        @endif
     </div>
     {{-- comentarios de la tarea --}}
     @if ($comentarios->count() > 0)

@@ -156,10 +156,12 @@
             -moz-border-radius: 50%;
             -webkit-border-radius: 50%;
             border-radius: 50%;
-            background-color: #f1e7e7;
+            background-color: #ffffff;
             -webkit-animation-name: nieve, horiz;
             -moz-animation-name: nieve, horiz;
             animation-name: nieve, horiz;
+            opacity: 0.7;
+            filter: blur(1px);
         }
 
         .tpl-snow>div:nth-of-type(odd) {
@@ -611,7 +613,7 @@
     <div x-data="mainState" :class="{ dark: isDarkMode }" @resize.window="handleWindowResize" x-cloak>
         <x-banner />
 
-        <div class="min-h-screen text-gray-900 bg-gray-100 dark:bg-dark-eval-2 dark:text-gray-200 ">
+        <div class="min-h-screen text-gray-900 bg-white dark:bg-dark-eval-2 dark:text-gray-200 ">
             <!-- Sidebar -->
             <x-sidebar.sidebar />
 
@@ -725,7 +727,7 @@
             background-color: rgba(0, 0, 0, 0.5);
         }
     </style>
-    
+
     @if ($cantidadTicketsProximosVencer > 0)
         <script type="text/javascript">
             toastr.error("EXISTE {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER", 'Tickets por vencer', {
@@ -1153,7 +1155,6 @@
                         class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md mr-4">
                         Cerrar
                     </button>
-                    <!-- Otros botones o acciones que desees -->
                 </div>
             </div>
         </div>

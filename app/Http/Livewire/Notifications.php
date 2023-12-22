@@ -9,6 +9,7 @@ use Livewire\Component;
 class Notifications extends Component
 {
 
+    public $count = 5;
 
    public function getListeners(){
        return [
@@ -16,7 +17,10 @@ class Notifications extends Component
        ];
    }
 
- 
+   public function getNotificationsProperty(){// De aqui obtenemos la propiedad computada $this->notifications
+        return auth()->user()->notifications->take($this->count);//truncamos el limite de notificaciones a mostrar basandonos en el count
+   }
+
     public function readNotification($id)
     {
         auth()->user()->notifications->find($id)->markAsRead();

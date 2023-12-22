@@ -59,4 +59,12 @@ class DashboardController extends Controller
             'greeting'
         ));
     }
+    // public function mount()
+    // {
+    //     $this->notificacionesLeidas = Auth::user()->notifications()->whereNotNull('read_at')->get();
+    // }
+    public function notifs()
+    {
+        return view('modules.notifications.index');
+    }
 }
