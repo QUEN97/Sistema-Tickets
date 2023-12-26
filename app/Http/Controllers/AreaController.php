@@ -40,7 +40,14 @@ class AreaController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Areas::onlyTrashed()->count();
-        return view('modules.areas.areas', compact('valid','trashed','deptos','areas'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.areas.areas', compact('valid','trashed','deptos','areas'));
+        } elseif ($valid->pivot->re == 1) {
+            return view('modules.areas.areas', compact('valid','trashed','deptos','areas'));
+        }else {
+            return redirect()->route('dashboard');
+        }
     }
 
 

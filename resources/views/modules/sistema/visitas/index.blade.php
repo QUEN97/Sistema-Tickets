@@ -135,14 +135,14 @@
                                                 x-cloak x-collapse x-show="toggle">
                                                 @livewire('visitas.edit-visit', ['visitaID' => $item->id], key('edit' . $item->id))
                                                 @if ($item->status == 'No realizado' || $item->status == 'Cancelada')
-                                                    @if (Auth::user()->permiso_id == 3)
+                                                    @if (Auth::user()->permiso_id == 3 ||Auth::user()->permiso_id == 1)
                                                         @livewire('visitas.reprogram-visit', ['visitaID' => $item->id], key('repro' . $item->id))
                                                     @endif
                                                 @endif
                                                 @if ($item->status == 'Pendiente')
                                                     @livewire('visitas.cancel-visit', ['visitaID' => $item->id], key('cancel' . $item->id))
                                                 @endif
-                                                @if ($item->status != 'Completado' && $item->status != 'Pendiente')
+                                                @if ($item->status != 'Completado' && $item->status != 'Pendiente' && $item->status != 'Cancelada')
                                                     @livewire('visitas.finalizar-visita', ['visitaID' => $item->id], key('final' . $item->id))
                                                 @endif
                                                 @if ($item->status == 'Completado')

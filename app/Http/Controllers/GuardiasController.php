@@ -11,6 +11,13 @@ class GuardiasController extends Controller
     public function home(){
         $valid = Auth::user()->permiso->panels->where('id', 25)->first();
         $orden=Guardia::paginate(10);
-        return view('modules.usuarios.guardias.guardiasOrden',compact('orden','valid'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.usuarios.guardias.guardiasOrden',compact('orden','valid'));
+          } elseif ($valid->pivot->re == 1) {
+            return view('modules.usuarios.guardias.guardiasOrden',compact('orden','valid'));
+          }else {
+              return redirect()->route('dashboard');
+          }
     }
 }

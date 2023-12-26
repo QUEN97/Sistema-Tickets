@@ -22,7 +22,14 @@ class RegionController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Region::onlyTrashed()->count();
-        return view('modules.regiones.regiones',compact('trashed','valid','regiones'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.regiones.regiones',compact('trashed','valid','regiones'));
+        } elseif ($valid->pivot->re == 1) {
+            return view('modules.regiones.regiones',compact('trashed','valid','regiones'));
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 
 

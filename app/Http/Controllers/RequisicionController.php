@@ -98,7 +98,14 @@ class RequisicionController extends Controller
         if (in_array($user->permiso_id, [1, 8]) || (isset($user->areas->first()->name) && $user->areas->first()->name == 'Compras')) {
             $compras = Compra::orderBy('id', 'DESC')->paginate(10)->withQueryString();
         }
-        return view('modules.tickets.compras.compras-list', compact('compras', 'valid', 'tickets', 'clientes'));
+        
+        if (Auth::user()->permiso->id == 1) {
+             return view('modules.tickets.compras.compras-list', compact('compras', 'valid', 'tickets', 'clientes'));
+        } elseif ($valid->pivot->re == 1) {
+             return view('modules.tickets.compras.compras-list', compact('compras', 'valid', 'tickets', 'clientes'));
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
     public function edit($id)
     {

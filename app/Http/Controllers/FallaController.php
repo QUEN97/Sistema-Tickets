@@ -40,7 +40,14 @@ class FallaController extends Controller
             ->paginate(25)
             ->withQueryString();
         $trashed = Falla::onlyTrashed()->count();
-        return view('modules.fallas.fallas',compact('fallas','trashed','servicios','valid'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.fallas.fallas',compact('fallas','trashed','servicios','valid'));
+          } elseif ($valid->pivot->re == 1) {
+            return view('modules.fallas.fallas',compact('fallas','trashed','servicios','valid'));
+          }else {
+              return redirect()->route('dashboard');
+          }
     }
 
 

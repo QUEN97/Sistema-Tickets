@@ -24,7 +24,14 @@ class DepartamentoController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Departamento::onlyTrashed()->count();
-        return view('modules.departamentos.departamentos',compact('valid','trashed','deptos'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.departamentos.departamentos',compact('valid','trashed','deptos'));
+          } elseif ($valid->pivot->re == 1) {
+            return view('modules.departamentos.departamentos',compact('valid','trashed','deptos'));
+          }else {
+              return redirect()->route('dashboard');
+          }
     }
 
 

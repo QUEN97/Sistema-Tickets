@@ -22,7 +22,14 @@ class TiposController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Tipo::onlyTrashed()->count();
-        return view('modules.tipos.tipos',compact('tipos','trashed','valid'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.tipos.tipos',compact('tipos','trashed','valid'));
+      } elseif ($valid->pivot->re == 1) {
+            return view('modules.tipos.tipos',compact('tipos','trashed','valid'));
+      } else {
+          return redirect()->route('dashboard');
+      }
     }
 
 

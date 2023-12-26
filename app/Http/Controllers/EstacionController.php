@@ -107,7 +107,14 @@ class EstacionController extends Controller
         }
         $trashed = Estacion::onlyTrashed()->count();
         $valid = Auth::user()->permiso->panels->where('id', 8)->first();
-        return view('modules.estaciones.estaciones', compact( 'trashed', 'valid','zonas','estaciones'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.estaciones.estaciones', compact( 'trashed', 'valid','zonas','estaciones'));
+          } elseif ($valid->pivot->re == 1) {
+            return view('modules.estaciones.estaciones', compact( 'trashed', 'valid','zonas','estaciones'));
+          }else {
+              return redirect()->route('dashboard');
+          }
     }
 
     public function destroy(Estacion $estacion)

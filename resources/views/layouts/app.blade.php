@@ -23,7 +23,7 @@
             display: none;
         }
 
-        /* body {
+        /*body {
             background: grey;
             overflow-x: hidden;
         }
@@ -578,13 +578,13 @@
         } */
     </style>
 
-
     <!--Select 2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     {{-- Toast --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/toastr.css') }}">
     <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css" />
+
 
     @livewireStyles
 
@@ -603,17 +603,17 @@
 <body class="font-sans antialiased text-gray-900 dark:text-gray-200">
 
     <!--Para los pillines que se quieren pasar de listos-->
-    {{-- <script type='text/javascript'>
+    <script type='text/javascript'>
         $(function() {
             $(document).bind("contextmenu", function(e) {
                 return false;
             });
         });
-    </script> --}}
+    </script>
     <div x-data="mainState" :class="{ dark: isDarkMode }" @resize.window="handleWindowResize" x-cloak>
         <x-banner />
 
-        <div class="min-h-screen text-gray-900 bg-white dark:bg-dark-eval-2 dark:text-gray-200 ">
+        <div class="min-h-screen text-gray-900 bg-gray-100 dark:bg-dark-eval-2 dark:text-gray-200">
             <!-- Sidebar -->
             <x-sidebar.sidebar />
 
@@ -706,7 +706,10 @@
 
     @livewireScripts
 
+    {{-- Livewire sortable CDN --}}
+    <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v0.x.x/dist/livewire-sortable.js"></script>
 
+    {{-- script para las notificaciones a los usuarios --}}
     @auth
         <script>
             window.onload = function() {
@@ -731,11 +734,9 @@
     @if ($cantidadTicketsProximosVencer > 0)
         <script type="text/javascript">
             toastr.error("EXISTE {{ $cantidadTicketsProximosVencer }} TICKETS PRÓXIMOS A VENCER", 'Tickets por vencer', {
-
                 timeOut: 0, // Desactiva el tiempo de espera automático para la notificación
                 extendedTimeOut: 0, // Desactiva el tiempo extendido de espera
                 closeButton: true, // Muestra el botón de cierre en la notificación
-
                 onclick: function() {
                     document.getElementById('miModalV').classList.remove('hidden');
                     document.getElementById('miModalV').classList.add('flex');
@@ -876,11 +877,9 @@
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function() {
                 toastr.info("EXISTE {{ $cantidadTicketsPorAtender }} TICKETS ABIERTOS", 'Tickets abiertos', {
-
                     timeOut: 0, // Desactiva el tiempo de espera automático para la notificación
                     extendedTimeOut: 0, // Desactiva el tiempo extendido de espera
                     closeButton: true, // Muestra el botón de cierre en la notificación
-
                     onclick: function() {
                         document.getElementById('miModalA').classList.remove('hidden');
                         document.getElementById('miModalA').classList.add('flex');
@@ -1155,6 +1154,7 @@
                         class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md mr-4">
                         Cerrar
                     </button>
+                    <!-- Otros botones o acciones que desees -->
                 </div>
             </div>
         </div>

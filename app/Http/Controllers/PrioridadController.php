@@ -38,7 +38,14 @@ class PrioridadController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Prioridad::onlyTrashed()->count();
-        return view('modules.prioridades.prioridades',compact('prioridades','trashed','tipos','valid'));
+        
+        if (Auth::user()->permiso->id == 1) {
+           return view('modules.prioridades.prioridades',compact('prioridades','trashed','tipos','valid'));
+        } elseif ($valid->pivot->re == 1) {
+           return view('modules.prioridades.prioridades',compact('prioridades','trashed','tipos','valid'));
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 
 

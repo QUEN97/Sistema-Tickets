@@ -12,6 +12,31 @@
 
     </x-slot>
     <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+        <div class="flex gap-1 flex-col mb-2">
+            <form action="{{ route('serviciosTCK') }}" method="GET">
+                <div class="flex">
+                    <div class="relative">
+                        <label for="search" class="sr-only">Buscar</label>
+                        <input type="text" name="search" id="search"
+                            class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white"
+                            placeholder="Buscar..." value="{{ request('search') }}">
+                        <div class="absolute top-0 left-0 mt-3 ml-3">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.5 9a6.5 6.5 0 10-13 0 6.5 6.5 0 0013 0z" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"></path>
+                                <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
+
+                </div>
+            </form>
+        </div>
         @if ($servicios->count() > 0)
             <table>
                 <thead>
@@ -26,7 +51,7 @@
                         </th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                            Status
+                            Descripción
                         </th>
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
@@ -67,11 +92,9 @@
                                 <div class="w-full flex justify-center gap-2">
                                     <span
                                         class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
-                                        Status
+                                        Descripción
                                     </span>
-                                    <div class="py-1 px-2 bg-green-700 text-white rounded-md">
-                                        Activo
-                                    </div>
+                                    {{ $servicio->descripcion }}
                                 </div>
                             </th>
                             <th

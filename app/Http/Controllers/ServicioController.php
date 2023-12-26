@@ -39,7 +39,14 @@ class ServicioController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Servicio::onlyTrashed()->count();
-        return view('modules.servicios.servicios', compact('list', 'trashed','areas','valid'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.servicios.servicios', compact('list', 'trashed','areas','valid'));
+       } elseif ($valid->pivot->re == 1) {
+            return view('modules.servicios.servicios', compact('list', 'trashed','areas','valid'));
+       } else {
+           return redirect()->route('dashboard');
+       }
     }
 
 

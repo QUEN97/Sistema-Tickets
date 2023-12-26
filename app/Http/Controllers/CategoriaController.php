@@ -32,7 +32,14 @@ class CategoriaController extends Controller
         ->paginate(10)
         ->withQueryString();
         $trashed = Categoria::onlyTrashed()->count();
-        return view ('modules.productos.categorias.categorias', compact('categorias','trashed','valid'));
+        
+        if (Auth::user()->permiso->id == 1) {
+            return view ('modules.productos.categorias.categorias', compact('categorias','trashed','valid'));
+        } elseif ($valid->pivot->re == 1) {
+            return view ('modules.productos.categorias.categorias', compact('categorias','trashed','valid'));
+        }else {
+            return redirect()->route('dashboard');
+        }
     }
     public function trashed_categorias()
     {
@@ -86,7 +93,14 @@ public function marcas(Request $request){
             ->paginate(25)
             ->withQueryString();
     $trashed = Marca::onlyTrashed()->count();
-    return view('modules.productos.marcas.index',compact('marcas','trashed','valid'));
+    
+    if (Auth::user()->permiso->id == 1) {
+        return view('modules.productos.marcas.index',compact('marcas','trashed','valid'));
+    } elseif ($valid->pivot->re == 1) {
+        return view('modules.productos.marcas.index',compact('marcas','trashed','valid'));
+    }else {
+        return redirect()->route('dashboard');
+    }
 }
 public function trashed_marcas()
     {
@@ -121,9 +135,28 @@ public function delete_permanentlyM()
     return redirect()->back();
 }
 
-public function servicios(){
+public function servicios(Request $request){
     $valid = Auth::user()->permiso->panels->where('id', 22)->first();
-    $servicios=TckServicio::paginate(10);
-    return view('modules.productos.servicios.servicios',compact('servicios','valid'));
+    // $servicios=TckServicio::paginate(10);
+    $servicios = TckServicio::where(function ($query) use ($request) {
+        $search = $request->input('search');
+        if ($search) {
+            $query->where('id', 'LIKE', '%' . $search . '%')
+                ->orWhere('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('descripcion', 'LIKE', '%' . $search . '%')
+                ->orWhere('prioridad', 'LIKE', '%' . $search . '%');
+        } 
+    })
+    ->orderBy('id', 'DESC')
+    ->paginate(20)
+    ->withQueryString();
+    
+    if (Auth::user()->permiso->id == 1) {
+        return view('modules.productos.servicios.servicios',compact('servicios','valid'));
+    } elseif ($valid->pivot->re == 1) {
+        return view('modules.productos.servicios.servicios',compact('servicios','valid'));
+    }else {
+        return redirect()->route('dashboard');
+    }
 }
 }

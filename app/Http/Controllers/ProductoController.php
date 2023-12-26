@@ -45,7 +45,14 @@ class ProductoController extends Controller
             ->paginate(10)
             ->withQueryString();
         $trashed = Producto::onlyTrashed()->count();
-        return view('modules.productos.existencias.productos',compact('productos','trashed','valid','categos'));
+        
+        if (Auth::user()->permiso->id == 1) {
+             return view('modules.productos.existencias.productos',compact('productos','trashed','valid','categos'));
+         } elseif ($valid->pivot->re == 1) {
+             return view('modules.productos.existencias.productos',compact('productos','trashed','valid','categos'));
+         } else {
+             return redirect()->route('dashboard');
+         }
     }
 
     public function destroy(Producto $producto)

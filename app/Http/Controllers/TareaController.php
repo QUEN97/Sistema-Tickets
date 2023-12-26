@@ -114,8 +114,13 @@ class TareaController extends Controller
                 ->paginate(10)
                 ->withQueryString();
         }
-
-
-        return view('modules.tickets.tareas.tareas-list', compact('tareasList', 'agentes', 'valid'));
+       
+        if (Auth::user()->permiso->id == 1) {
+             return view('modules.tickets.tareas.tareas-list', compact('tareasList', 'agentes', 'valid'));
+       } elseif ($valid->pivot->re == 1) {
+             return view('modules.tickets.tareas.tareas-list', compact('tareasList', 'agentes', 'valid'));
+       } else {
+           return redirect()->route('dashboard');
+       }
     }
 }

@@ -15,7 +15,8 @@ class FinalizarVisita extends Component
 
     public $modal = false;
     public $visitaID, $visitaEstacion, $observacion, $evidencias = [], $urlArchi;
-    //funcion para mostrar el modal con el nombre del área a eliminar
+    public $rating;
+
     public function ConfirmVisita(Visita $visita)
     {
         $this->visitaEstacion = $visita->estacion->name;
@@ -56,6 +57,11 @@ class FinalizarVisita extends Component
         session()->flash('flash.bannerStyle', 'success');
 
         return redirect(request()->header('Referer'));
+    }
+    // Función para establecer la valoración
+    public function setRating($value)
+    {
+        $this->rating = $value;
     }
     public function render()
     {
