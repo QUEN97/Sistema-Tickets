@@ -650,5 +650,4 @@ class Tickets extends Component
         $this->tareasCount = Tarea::whereIn('ticket_id', $tickets->pluck('id'))->count();
         return view('livewire.tickets.tickets',compact('tickets'));
     }
-
 }

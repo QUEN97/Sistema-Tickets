@@ -192,15 +192,23 @@
                             'gap-2 min-[720px]:absolute min-[720px]:top-full min-[720px]:group-hover/buttons:top-0 transition-[top] duration-300' :
                             'relative gap-1 w-fit'">
                         <button class="p-1 text-gray-400 duration-300"
-                            :class="menu ? 'block hover:text-gray-600' : 'hidden'" @click="drop=!drop">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 " viewBox="0 0 24 24"
-                                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                            </svg>
+                            :class="{ 'block hover:text-gray-600': menu, 'hidden': !menu }" @click="drop=!drop">
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                </svg>
+                                @if (Auth::user()->permiso_id !== 2 && Auth::user()->permiso_id !== 3 && Auth::user()->permiso_id !== 6)
+                                    @if ($tck->compras->count() || $tck->tareas->count())
+                                        <span
+                                            class="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"></span>
+                                    @endif
+                                @endif
+                            </div>
                         </button>
                         <div :class="menu
                             ?
@@ -245,7 +253,7 @@
                                     </div>
                                     <a :class="menu ? 'flex gap-1' : 'tooltip'"
                                         href="{{ route('tck.tarea', $tck->id) }}">
-                                        @if ($tareasCount)
+                                        @if ($tck->tareas->count())
                                             <div class="relative">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

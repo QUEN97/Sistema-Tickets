@@ -70,7 +70,7 @@
                             @livewire('tickets.reasignar', ['ticketID' => $tck->id])
                         @endif
                         <a class="tooltip" href="{{ route('tck.tarea', $tck->id) }}">
-                            @if (isset($tareasCount))
+                            @if ($tareasCount)
                                 <div class="relative">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor"
