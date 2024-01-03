@@ -38,10 +38,10 @@ class AdminNotify extends Notification
     public function toDatabase(object $notifiable): array
     {
         $photo = isset($this->ticket->cliente->profile_photo_path) && !empty($this->ticket->cliente->profile_photo_path)
-        ? $this->ticket->cliente->profile_photo_path
+        ? url($this->ticket->cliente->profile_photo_path)
         : $this->ticket->cliente->profile_photo_url;
         return [
-            'url' => route('tickets', $this->ticket->id),
+            'url' => route('tck.ver', $this->ticket->id),
             'photo' => $photo,
             'user' => $this->ticket->cliente->name,
             'message' => ", ha generado el ticket #{$this->ticket->id}, '{$this->ticket->falla->name}', y se le ha asignado a {$this->ticket->agente->name}"

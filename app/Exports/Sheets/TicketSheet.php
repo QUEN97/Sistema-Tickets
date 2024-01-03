@@ -31,7 +31,7 @@ class TicketSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, Wi
 
     public function view(): View
     {
-        $tickets = Ticket::all();
+        $tickets = Ticket::where('status','!=','Cerrado')->get();
         return view('excels.tickets.TicketsSheets', ['tickets' => $tickets]);
     }
 

@@ -35,15 +35,25 @@ class TicketController extends Controller
     }
 
     //Vista Detalles y comentarios de ticket
-    public function ver($request )
+    public function ver($ticketID)
     {
-        $ticketID = $request;
+        // Obtén el ticket por su ID
         $tck = Ticket::findOrFail($ticketID);
+    
+        // Verifica si el usuario autenticado es el propietario del ticket
+        // if ($tck->user_id !== auth()->user()->id && $tck->solicitante_id !== auth()->user()->id && auth()->user()->permiso_id !== 1 && auth()->user()->permiso_id !== 4 && auth()->user()->permiso_id !== 8) {
+        //     abort(403, 'No tienes permisos para ver este ticket.');
+        // }
+    
+        // Ahora que sabemos que el usuario tiene permisos, obtenemos los datos adicionales
         $ticketOwner = $tck->solicitante_id;
-        $comentarios = Comentario::where([['ticket_id', $ticketID],['tipo','Comentario']])->orderBy('id', 'desc')->get();
-        $comReasignados=Comentario::where([['ticket_id', $ticketID],['tipo','Reasignacion']])->orderBy('id', 'desc')->get();
-        $comAbierto=Comentario::where([['ticket_id', $ticketID],['tipo','Abrir']])->orderBy('id', 'desc')->get();
-        return view('modules.tickets.detalles.ver', compact('ticketID', 'tck', 'comentarios', 'ticketOwner','comReasignados','comAbierto'));
+        $comentarios = Comentario::where([['ticket_id', $ticketID], ['tipo', 'Comentario']])->orderBy('id', 'desc')->get();
+        $comReasignados = Comentario::where([['ticket_id', $ticketID], ['tipo', 'Reasignacion']])->orderBy('id', 'desc')->get();
+        $comAbierto = Comentario::where([['ticket_id', $ticketID], ['tipo', 'Abrir']])->orderBy('id', 'desc')->get();
+        $tareasCount = Tarea::where('ticket_id', $tck->id)->count();
+    
+        // Retornar la vista con los datos necesarios
+        return view('modules.tickets.detalles.ver', compact('ticketID', 'tck', 'comentarios', 'ticketOwner', 'comReasignados', 'comAbierto','tareasCount'));
     }
 
     //Vista editar ticket
@@ -52,7 +62,8 @@ class TicketController extends Controller
         $ticketID = $request;
         $tck = Ticket::findOrFail($ticketID);
         $evidenciaArc = $tck->archivos;
-        return view('modules.tickets.detalles.editar', compact('ticketID', 'tck', 'evidenciaArc'));
+        $tareasCount = Tarea::where('ticket_id', $tck->id)->count();
+        return view('modules.tickets.detalles.editar', compact('ticketID', 'tck', 'evidenciaArc','tareasCount'));
     }
 
     //Eliminar Evidencias Tickets
@@ -82,14 +93,14 @@ class TicketController extends Controller
     {
         $ticketID = $request;
         $tck = Ticket::findOrFail($ticketID);
-        $task=Tarea::where('ticket_id', $ticketID)->get()->first();
+        $task = Tarea::where('ticket_id', $ticketID)->get()->first();
         if ($task) {
             $solicitaTarea = $task->user_id;
         } else {
-            $solicitaTarea = null; 
+            $solicitaTarea = null;
         }
         $tareas = Tarea::where('ticket_id', $ticketID)->orderBy('id', 'desc')->paginate(5);
-        return view('modules.tickets.tareas.index', compact('ticketID', 'tck', 'tareas','solicitaTarea'));
+        return view('modules.tickets.tareas.index', compact('ticketID', 'tck', 'tareas', 'solicitaTarea'));
     }
 
     //Compras
@@ -97,7 +108,8 @@ class TicketController extends Controller
     {
         $ticketID = $request;
         $tck = Ticket::findOrFail($ticketID);
-        return view('modules.tickets.compras.compras', compact('ticketID', 'tck'));
+        $tareasCount = Tarea::where('ticket_id', $tck->id)->count();
+        return view('modules.tickets.compras.compras', compact('ticketID', 'tck','tareasCount'));
     }
 
     //Almácen
@@ -105,14 +117,14 @@ class TicketController extends Controller
     {
         $valid = Auth::user()->permiso->panels->where('id', 5)->first();
         $productos = AlmacenCi::select('*')->paginate(10);
-        return view('modules.productos.almacen.cis', compact('productos','valid'));
+        return view('modules.productos.almacen.cis', compact('productos', 'valid'));
     }
 
     public function exportTickets()
-{
-    // Retrieve the tickets data as needed
-    $tickets = Ticket::all();
+    {
+        // Retrieve the tickets data as needed
+        $tickets = Ticket::all();
 
-    return Excel::download(new TicketsExport($tickets), 'TICKETS.xlsx');
-}
+        return Excel::download(new TicketsExport($tickets), 'TICKETS.xlsx');
+    }
 }

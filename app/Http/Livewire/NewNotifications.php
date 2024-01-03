@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 class NewNotifications extends Component
 {
     use WithPagination;
+    public $showModal = false;
     public function render(Request $request)
     {
         if($request->query('search')!=null){

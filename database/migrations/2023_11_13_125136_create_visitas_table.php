@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('motivo_visita');
             $table->datetime('fecha_programada'); 
             $table->string('status')->default('Pendiente');
+            $table->string('archivo')->nullable();
             $table->text('observacion_visita')->nullable();
             $table->datetime('llegada')->nullable();
             $table->datetime('retirada')->nullable();

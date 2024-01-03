@@ -218,9 +218,10 @@
                                     @livewire('tickets.compras.compra-detail', ['compraID' => $compra->id])
                                     @if ($compra->status != 'Completado')
                                         @if (
-                                            (Auth::user()->permiso_id == 1 && $compra->status == 'Solicitado') ||
+                                            (Auth::user()->permiso_id == 1 && $compra->status == 'Solicitado') || 
                                                 (Auth::user()->permiso_id == 4 && $compra->status != 'Solicitado') ||
-                                                (Auth::user()->permiso_id == 5 && $compra->status != 'Solicitado' && $compra->status != 'Aprobado'))
+                                                (Auth::user()->permiso_id == 5 && $compra->status != 'Solicitado' && $compra->status != 'Aprobado' && $compra->status != 'Enviado a compras')
+                                                ||  (Auth::user()->permiso_id == 8 && $compra->status != 'Solicitado' && $compra->status != 'Aprobado' && $compra->status != 'Enviado a compras'))
                                             <div>
                                                 <a href="{{ route('req.edit', $compra->id) }}" class="tooltip">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"

@@ -33,6 +33,8 @@ class CompraReject extends Component
         $statPS = $compra->productos->count() > 0 ? 'Rechazado' : 'Rechazado';
 
         $tarea = $compra->tareas->first();
+        
+        if ($tarea) {
         $tarea->status = 'Cerrado';
         $tarea->fecha_cierre = Carbon::now();
         $tarea->save();
@@ -42,6 +44,7 @@ class CompraReject extends Component
         $comt->comentario = $catPS.' '.$statPS.','.' '. $this->observacion;
         $comt->statustarea = $tarea->status;
         $comt->save();
+        }
         
         $agent = $compra->ticket->agente;
         //dd($agent);

@@ -71,6 +71,17 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    public function delete_permanently()
+    {
+        $user = User::withTrashed()->find(request()->id);
+        if ($user == null) {
+            abort(404);
+        }
+
+        $user->forceDelete();
+        return redirect()->back();
+    }
+
     public function visita_users(Request $request)
     {
         $this->filterSoli = $request->input('filterSoli') == 'Estación' ? null : $request->input('filterSoli');
@@ -178,16 +189,5 @@ class UserController extends Controller
         }
         return view('modules.sistema.visitas.index', ['visitas' => $visitas, 'estacions' => $estacions,
          'superEsta' => $superEsta, 'estacionesAsignadas'=>$estacionesAsignadas]);
-    }
-
-    public function delete_permanently()
-    {
-        $user = User::withTrashed()->find(request()->id);
-        if ($user == null) {
-            abort(404);
-        }
-
-        $user->forceDelete();
-        return redirect()->back();
     }
 }

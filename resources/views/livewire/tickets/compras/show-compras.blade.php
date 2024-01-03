@@ -1,10 +1,23 @@
 <div x-data="{ modelOpen: false }">
-    <button @click="modelOpen =!modelOpen" wire:loading.attr="disabled" aria-label="reasignar-usuario" class="tooltip">
-        <svg class="w-6 h-6 text-gray-400 hover:text-indigo-500 transition duration-300" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-bag" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z"></path>
-            <path d="M9 11v-5a3 3 0 0 1 6 0v5"></path>
-         </svg>
+    <button @click="modelOpen =!modelOpen" wire:loading.attr="disabled" aria-label="reasignar-usuario" class="tooltip ">
+         @if($comprasCount)
+         <div class="relative">
+            <svg class="w-6 h-6" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="13.33" cy="29.75" r="2.25" fill="currentColor" class="clr-i-outline clr-i-outline-path-1"/>
+                <circle cx="27" cy="29.75" r="2.25" fill="currentColor" class="clr-i-outline clr-i-outline-path-2"/>
+                <path fill="currentColor" d="M33.08 5.37a1 1 0 0 0-.77-.37H11.49l.65 2H31l-2.67 12h-15L8.76 4.53a1 1 0 0 0-.66-.65L4 2.62a1 1 0 1 0-.59 1.92L7 5.64l4.59 14.5l-1.64 1.34l-.13.13A2.66 2.66 0 0 0 9.74 25A2.75 2.75 0 0 0 12 26h16.69a1 1 0 0 0 0-2H11.84a.67.67 0 0 1-.56-1l2.41-2h15.44a1 1 0 0 0 1-.78l3.17-14a1 1 0 0 0-.22-.85" class="clr-i-outline clr-i-outline-path-3"/>
+                <path fill="none" d="M0 0h36v36H0z"/>
+            </svg>
+             <span class="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"> </span>
+         </div>
+         @else
+         <svg class="w-6 h-6" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="13.33" cy="29.75" r="2.25" fill="currentColor" class="clr-i-outline clr-i-outline-path-1"/>
+            <circle cx="27" cy="29.75" r="2.25" fill="currentColor" class="clr-i-outline clr-i-outline-path-2"/>
+            <path fill="currentColor" d="M33.08 5.37a1 1 0 0 0-.77-.37H11.49l.65 2H31l-2.67 12h-15L8.76 4.53a1 1 0 0 0-.66-.65L4 2.62a1 1 0 1 0-.59 1.92L7 5.64l4.59 14.5l-1.64 1.34l-.13.13A2.66 2.66 0 0 0 9.74 25A2.75 2.75 0 0 0 12 26h16.69a1 1 0 0 0 0-2H11.84a.67.67 0 0 1-.56-1l2.41-2h15.44a1 1 0 0 0 1-.78l3.17-14a1 1 0 0 0-.22-.85" class="clr-i-outline clr-i-outline-path-3"/>
+            <path fill="none" d="M0 0h36v36H0z"/>
+        </svg>
+         @endif
          <span class="tooltiptext">Requisiciones</span>
     </button>
     <div x-show="modelOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">

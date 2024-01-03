@@ -39,7 +39,7 @@ class TicketClienteComentarioNotification extends Notification implements Should
     public function toDatabase(object $notifiable): array
     {
         $photo = isset($this->ticket->agente->profile_photo_path) && !empty($this->ticket->agente->profile_photo_path)
-        ? $this->ticket->agente->profile_photo_path
+        ? url($this->ticket->agente->profile_photo_path)
         : $this->ticket->agente->profile_photo_url;
         return [
             'url' => route('tck.ver', $this->ticket->id),

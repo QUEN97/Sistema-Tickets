@@ -44,7 +44,7 @@ class TicketAsignadoNotificacion extends Notification implements ShouldBroadcast
         ? $this->ticket->cliente->profile_photo_path
         : $this->ticket->cliente->profile_photo_url;
         return [
-            'url' => route('tickets', $this->ticket->id),
+            'url' => route('tck.ver', $this->ticket->id),
             'photo' => $photo,
             'user' => $this->ticket->cliente->name,
             'message' => ", necesita tu apoyo con el ticket #{$this->ticket->id}, '{$this->ticket->falla->name}'."

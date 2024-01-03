@@ -9,9 +9,10 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ShowCompras extends Component
 {
-    public $ticketID,$compras,$modal=false;
+    public $ticketID,$compras,$modal=false,$comprasCount;
     public function mount(){
         $this->compras=Compra::where('ticket_id',$this->ticketID)->orderBy('id', 'desc')->get();
+        $this->comprasCount=Compra::where('ticket_id',$this->ticketID)->count();
     }
     public function deleteCompra(Compra $compra){
         //dd($compra->evidencias);

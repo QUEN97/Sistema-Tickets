@@ -29,4 +29,9 @@ class AllNotifications extends Component
     {
         auth()->user()->notifications->find($id)->markAsRead();
     }
+
+    public function deleteNotification($id)
+    {
+        auth()->user()->notifications->find($id)->delete();
+    }
 }

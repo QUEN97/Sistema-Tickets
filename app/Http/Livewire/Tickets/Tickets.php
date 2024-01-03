@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Tickets;
 
+use App\Models\Compra;
 use App\Models\Estacion;
 use App\Models\Tarea;
 use App\Models\Ticket;
@@ -17,7 +18,7 @@ use Carbon\Carbon;
 
 class Tickets extends Component
 {
-    public $c,$zonas,$orden;
+    public $c,$zonas,$orden,$comprasCount,$tareasCount;
     public $perPage = 10;
     public $search = '';
     public $orderBy = 'id';
@@ -83,6 +84,7 @@ class Tickets extends Component
                                 }
                             })->whereBetween('created_at',[$request->start,$request->end." 23:59:59"])->orderBy('id',$this->orden)->orderBy('fecha_cierre','desc')->paginate(10)->withQueryString();
                     }
+                   
                 } else {
                     if(isset($request->zona) && $request->zona!=null){
                         $estaciones=Zona::find($request->zona)->estacions;
@@ -170,7 +172,7 @@ class Tickets extends Component
                 }
             }
             
-            
+           
         }
         //lista de los tickets de las estaciones que ve el supervisor y los de él mismo
         if($user->permiso_id==2){
@@ -644,6 +646,8 @@ class Tickets extends Component
         }
         //dd($tickets);
         //dd($request->zona);
+        $this->comprasCount = Compra::whereIn('ticket_id', $tickets->pluck('id'))->count();
+        $this->tareasCount = Tarea::whereIn('ticket_id', $tickets->pluck('id'))->count();
         return view('livewire.tickets.tickets',compact('tickets'));
     }
 
