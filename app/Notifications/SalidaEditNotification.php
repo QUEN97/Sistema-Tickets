@@ -43,9 +43,11 @@ class SalidaEditNotification extends Notification
     ->join('folios_salidas', 'salidas.folio_id', '=', 'folios_salidas.id')
     ->select('folios_salidas.*')
     ->first();
+    $user = Auth::user();
         
         return [
             'url' => route('folios.salidas'),
+            'userid' => $user,
             'user' => Auth::user()->name,
             'message' =>", ha actualizado la  SALIDA de productos en el almacén, FOLIO: {$folio->folio}",
         ];

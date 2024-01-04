@@ -40,12 +40,9 @@ class TicketAgenteComentarioNotification extends Notification implements ShouldB
 
     public function toDatabase(object $notifiable): array
     {
-        $photo = isset($this->ticket->cliente->profile_photo_path) && !empty($this->ticket->cliente->profile_photo_path)
-        ? $this->ticket->cliente->profile_photo_path
-        : $this->ticket->cliente->profile_photo_url;
         return [
             'url' => route('tck.ver', $this->ticket->id),
-            'photo' => $photo,
+            'userid' => $this->ticket->cliente->toArray(),
             'user' => $this->ticket->cliente->name,
             'message' => ", ha realizado un nuevo comentario para el ticket 
             #{$this->ticket->id}, ESTADO: {$this->ticket->status}." 

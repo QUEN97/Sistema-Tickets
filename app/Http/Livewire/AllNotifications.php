@@ -28,6 +28,7 @@ class AllNotifications extends Component
     public function readNotification($id)
     {
         auth()->user()->notifications->find($id)->markAsRead();
+        return view('livewire.all-notifications');
     }
 
     public function deleteNotification($id)

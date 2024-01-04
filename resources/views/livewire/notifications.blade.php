@@ -36,12 +36,22 @@
                             <li wire:click="readNotification('{{ $notification->id }}')" @class(['bg-blue-200' => !$notification->read_at])>
                                 <x-dropdown-link href="{{ $notification->data['url'] }}">
                                     <div class="flex">
-                                        {{-- @if (isset($notification->data['photo']))
-                                            <!-- Verifica si la propiedad "photo" existe -->
-                                            <img class="h-10 w-10 rounded-full object-cover"
-                                                src="{!! $notification->data['photo'] !!}"
-                                                alt="{{ $notification->data['user'] }}">
-                                        @endif --}}
+                                        @if (isset($notification->data['userid']))
+                                            @if (isset($notification->data['userid']['profile_photo_path']))
+                                                <!-- Verifica si la propiedad "profile_photo_path" existe -->
+                                                <figure class="flex-shrink-0 justify-center items-center">
+                                                    <img class="h-10 w-10 rounded-full object-cover"
+                                                        src="/storage/{{ $notification->data['userid']['profile_photo_path'] }}"
+                                                        alt="{{ $notification->data['user'] }}">
+                                                </figure>
+                                            @else
+                                                <figure class="flex-shrink-0 justify-center items-center">
+                                                    <img class="h-10 w-10 rounded-full object-cover"
+                                                        src="{{ $notification->data['userid']['profile_photo_url'] }}"
+                                                        alt="{{ $notification->data['user'] }}">
+                                                </figure>
+                                            @endif
+                                        @endif
                                         <div class="flex-1 ml-4">
                                             @if (isset($notification->data['user']))
                                                 <!-- Verifica si la propiedad "user" existe -->
@@ -74,7 +84,8 @@
                         @endforeach
                     </ul>
                     <div class="px-4 pt-2 pb-1 flex justify-center">
-                        <button onclick="window.location.href = '{{ route('notificaciones') }}'" class="text-sm text-blue-500 font-semibold">
+                        <button onclick="window.location.href = '{{ route('notificaciones') }}'"
+                            class="text-sm text-blue-500 font-semibold">
                             Ver más
                         </button>
                     </div>

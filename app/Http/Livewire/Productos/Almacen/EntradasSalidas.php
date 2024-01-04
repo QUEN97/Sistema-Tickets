@@ -30,10 +30,10 @@ class EntradasSalidas extends Component
     public $tipo, $motivo, $productosEntradaSalida, $estaciones, $carrito, $tck, $productosSerie, $prod, $series = [];
     public function mount()
     {
-        $this->tck = Ticket::select('id','solicitante_id')->where('status', 'En proceso')->get();
+        $this->tck = Ticket::select('id','solicitante_id')->get();
         $this->productosEntradaSalida = Producto::select('id', 'name', 'product_photo_path')->get();
         $this->productosSerie = ProductoSerieEntrada::select('id', 'producto_entrada_id', 'serie')->get();
-        $this->estaciones = Estacion::select('id', 'name','user_id')->get();
+        $this->estaciones = Estacion::select('id', 'name','user_id')->orderBy('name')->get();
         foreach ($this->productosEntradaSalida as $p) {
             $alm = AlmacenCi::where('producto_id', $p->id)->get();
             $p->show = false;

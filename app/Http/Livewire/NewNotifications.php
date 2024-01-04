@@ -26,5 +26,6 @@ class NewNotifications extends Component
     public function readNotification($id)
     {
         auth()->user()->notifications->find($id)->markAsRead();
+        return redirect(request()->header('Referer'));
     }
 }

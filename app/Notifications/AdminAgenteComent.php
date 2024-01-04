@@ -39,6 +39,7 @@ class AdminAgenteComent extends Notification
    {
        return [
            'url' => route('tck.ver', $this->ticket->id),
+           'userid' =>  $this->ticket->agente->toArray(),
            'user' => $this->ticket->agente->name,
            'message' => ", ha realizado un nuevo comentario para el ticket 
            #{$this->ticket->id}, ESTADO: {$this->ticket->status}." 

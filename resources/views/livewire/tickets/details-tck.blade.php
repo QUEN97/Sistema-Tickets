@@ -29,35 +29,41 @@
             >
             
                 <div class="flex items-start justify-between space-x-4">
-                    <div class="flex flex-wrap gap-2 sm:gap-4">
+                    <div class="flex flex-wrap gap-2 sm:gap-4 bg-dark-eval-1 p-1 rounded-md text-white text-center mb-2">
                         <h1 class="text-xl font-medium">{{ __('Ticket #').$ticketID }}</h1>
                         <h2 class="text-lg">Fecha de creación: <strong class="text-base">{{$tck->created_at}}</strong></h2>
                     </div>
-                    <button @click="modelOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
+                    <div class="flex justify-center items-center my-2">
+                        <a href="{{route('tck.ver',$tck->id)}}" class="w-fit flex gap-2 bg-gray-400 dark:bg-sky-700 px-2 py-1 text-white rounded-md">
+                            <svg class="w-6 h-6" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M12 18c-.328 0 -.652 -.017 -.97 -.05c-3.172 -.332 -5.85 -2.315 -8.03 -5.95c2.4 -4 5.4 -6 9 -6c3.465 0 6.374 1.853 8.727 5.558" /><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M20.2 20.2l1.8 1.8" /></svg>
+                            Más detalles
+                        </a>
+                    </div>
+                    {{-- <button @click="modelOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="w-6 h-6 text-gray-400 hover:text-orange-800 transition duration-300" viewBox="0 0 320 512" >
                             <path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/>
                         </svg>
-                    </button>
+                    </button> --}}
                 </div>
-                <div class="flex justify-center items-center my-2">
-                    <a href="{{route('tck.ver',$tck->id)}}" class="w-fit flex gap-2 bg-blue-600 dark:bg-sky-700 px-2 py-1 text-white rounded-md">
+                {{-- <div class="flex justify-center items-center my-2">
+                    <a href="{{route('tck.ver',$tck->id)}}" class="w-fit flex gap-2 bg-gray-400 dark:bg-sky-700 px-2 py-1 text-white rounded-md">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M12 18c-.328 0 -.652 -.017 -.97 -.05c-3.172 -.332 -5.85 -2.315 -8.03 -5.95c2.4 -4 5.4 -6 9 -6c3.465 0 6.374 1.853 8.727 5.558" /><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M20.2 20.2l1.8 1.8" /></svg>
                         Más detalles
                     </a>
-                </div>
+                </div> --}}
                 <div>
-                    <div class="flex gap-2 flex-wrap pt-2">
+                    <div class="flex gap-2 flex-wrap items-center">
                         <h2 class="text-lg">Falla:</h2>
                         <div class="text-base"><strong>{{$tck->falla->name}}</strong></div>
                     </div>
                     <div class=" flex flex-wrap justify-evenly pb-4">
                         <div>
                             <h2 class="text-lg">Cliente:</h2>
-                            <div class=" text-base">{{$tck->cliente->name}}</div>
+                            <div class=" text-base"><strong>{{$tck->cliente->name}}</strong></div>
                         </div>
                         <div>
                             <h2 class="text-lg">Agente asignado:</h2>
-                            <div class="text-base">{{$tck->agente->name}}</div>
+                            <div class="text-base"><strong>{{$tck->agente->name}}</strong></div>
                         </div>
                     </div>
                     
@@ -65,7 +71,7 @@
                     <div class="w-full">
                         <x-label value="{{ __('Detalles') }}" for="mensaje" />
                         <textarea disabled 
-                                class="resize-none w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('mensaje') ? 'is-invalid' : '' }} resize-none"
+                                class=" w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('mensaje') ? 'is-invalid' : '' }} "
                                 name="mensaje" required autofocus autocomplete="mensaje">{{$tck->mensaje}}
                         </textarea>
                     </div>
@@ -78,102 +84,220 @@
                                 </svg>
                                 {{ __('Archivos Almacenados') }}
                             </label>
-                            <div class="flex justyfy-venly flex-wrap gap-3 py-2">
-                                @foreach ($tck->archivos as $antigArch)
+                            <div class="flex justify-evenly flex-wrap gap-3 py-2">
+                                @forelse ($tck->archivos as $antigArch)
                                     @if ($antigArch->flag_trash == 0)
-                                        <div class="p-1">
-                                            @if ($antigArch->mime_type == "image/png" || $antigArch->mime_type == "image/jpg" || $antigArch->mime_type == "image/jpeg" 
-                                                                    || $antigArch->mime_type == "image/webp")
-                                                <a href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank" data-lightbox="imagenes-edit-{{ $antigArch->repuesto_id }}" data-title="{{ $antigArch->nombre_archivo }}"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
-                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para visualizar" data-bs-placement="top">
-                                                        <img class="w-full" src="{{ asset('storage/'.$antigArch->archivo_path) }}">
+                                        <div class="relative p-1">
+                                            @if (
+                                                $antigArch->mime_type == 'image/png' ||
+                                                    $antigArch->mime_type == 'image/jpg' ||
+                                                    $antigArch->mime_type == 'image/jpeg' ||
+                                                    $antigArch->mime_type == 'image/webp')
+                                                <a href="{{ asset('storage/' . $antigArch->archivo_path) }}"
+                                                    data-lightbox="imagenes-edit-{{ $antigArch->repuesto_id }}"
+                                                    data-title="{{ $antigArch->nombre_archivo }}" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Visualizar" class="text-xs">
+                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0"
+                                                        data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                                        data-bs-content="Presione para visualizar" data-bs-placement="top">
+                                                        <img class="w-full"
+                                                            src="{{ asset('storage/' . $antigArch->archivo_path) }}">
                                                         <p class="break-all">{{ $antigArch->nombre_archivo }}</p>
                                                         @if (strlen($antigArch->size) == 4)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 1). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  5)
+                                                        @elseif (strlen($antigArch->size) == 5)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 2). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  6)
+                                                        @elseif (strlen($antigArch->size) == 6)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 3). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 3) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  7)
+                                                        @elseif (strlen($antigArch->size) == 7)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 1). ' ' .'MB') }}
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'MB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  8)
+                                                        @elseif (strlen($antigArch->size) == 8)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 2). ' ' .'MB') }}
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'MB') }}
                                                             </p>
                                                         @endif
-                                                        </figure>
+                                                    </figure>
                                                 </a>
-                                            @elseif ($antigArch->mime_type == "application/pdf")
-                                                <a href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
-                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
-                                                        <img class="w-100" src="{{ asset('img/icons/pdf.png') }}">
+                                            @elseif ($antigArch->mime_type == 'video/mp4')
+                                                <a href="{{ asset('storage/' . $antigArch->archivo_path) }}"
+                                                    data-title="{{ $antigArch->nombre_archivo }}" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Visualizar" class="text-xs">
+                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0">
+                                                        <img class="w-100"
+                                                            src="{{ asset('img/icons/videos_video_media_cinema_1725.png') }}">
+                                                        <p class="break-all">{{ $antigArch->nombre_archivo }}</p>
+                                                        @if (strlen($antigArch->size) == 4)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 5)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 6)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 3) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 7)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'MB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 8)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'MB') }}
+                                                            </p>
+                                                        @endif
+                                                    </figure>
+                                                </a>
+                                            @elseif ($antigArch->mime_type == 'application/pdf')
+                                                <a href="{{ asset('storage/' . $antigArch->archivo_path) }}" download=""
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar"
+                                                    class="text-xs">
+                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0"
+                                                        data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                                        data-bs-content="Presione para descargar" data-bs-placement="top">
+                                                        <img class="w-100" src="{{ asset('img/icons/file-type-pdf2.svg') }}">
                                                         <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
                                                         @if (strlen($antigArch->size) == 4)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 1). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  5)
+                                                        @elseif (strlen($antigArch->size) == 5)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 2). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  6)
+                                                        @elseif (strlen($antigArch->size) == 6)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 3). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 3) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  7)
+                                                        @elseif (strlen($antigArch->size) == 7)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 1). ' ' .'MB') }}
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'MB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  8)
+                                                        @elseif (strlen($antigArch->size) == 8)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 2). ' ' .'MB') }}
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'MB') }}
                                                             </p>
                                                         @endif
-                                                        </figure>
+                                                    </figure>
                                                 </a>
-                                            @elseif ($antigArch->mime_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-                                                <a  href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
-                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
-                                                        <img class="w-100" src="{{ asset('img/icons/word-2019.svg') }}">
+                                            @elseif ($antigArch->mime_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                                                <a href="{{ asset('storage/' . $antigArch->archivo_path) }}" download=""
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar"
+                                                    class="text-xs">
+                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0"
+                                                        data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                                        data-bs-content="Presione para descargar" data-bs-placement="top">
+                                                        <img class="w-100" src="{{ asset('img/icons/file-type-word.svg') }}">
                                                         <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
                                                         @if (strlen($antigArch->size) == 4)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 1). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  5)
+                                                        @elseif (strlen($antigArch->size) == 5)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 2). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  6)
+                                                        @elseif (strlen($antigArch->size) == 6)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 3). ' ' .'KB') }}
+                                                                {{ __(substr($antigArch->size, 0, 3) . ' ' . 'KB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  7)
+                                                        @elseif (strlen($antigArch->size) == 7)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 1). ' ' .'MB') }}
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'MB') }}
                                                             </p>
-                                                        @elseif (strlen($antigArch->size) ==  8)
+                                                        @elseif (strlen($antigArch->size) == 8)
                                                             <p>
-                                                                {{ __(substr($antigArch->size, 0, 2). ' ' .'MB') }}
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'MB') }}
                                                             </p>
                                                         @endif
-                                                        </figure>
+                                                    </figure>
+                                                </a>
+                                                @elseif ($antigArch->mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                                                <a href="{{ asset('storage/' . $antigArch->archivo_path) }}" download=""
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar"
+                                                    class="text-xs">
+                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0"
+                                                        data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                                        data-bs-content="Presione para descargar" data-bs-placement="top">
+                                                        <img class="w-100" src="{{ asset('img/icons/file-type-excel.svg') }}">
+                                                        <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
+                                                        @if (strlen($antigArch->size) == 4)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 5)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 6)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 3) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 7)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'MB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 8)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'MB') }}
+                                                            </p>
+                                                        @endif
+                                                    </figure>
+                                                </a>
+                                                @elseif ($antigArch->mime_type == 'application/zip' || $antigArch->mime_type == 'application/vnd.rar')
+                                                <a href="{{ asset('storage/' . $antigArch->archivo_path) }}" download=""
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar"
+                                                    class="text-xs">
+                                                    <figure class="d-inline-block max-w-[90px]" tabindex="0"
+                                                        data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                                        data-bs-content="Presione para descargar" data-bs-placement="top">
+                                                        <img class="w-100" src="{{ asset('img/icons/file-type-zip2.svg') }}">
+                                                        <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
+                                                        @if (strlen($antigArch->size) == 4)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 5)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 6)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 3) . ' ' . 'KB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 7)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 1) . ' ' . 'MB') }}
+                                                            </p>
+                                                        @elseif (strlen($antigArch->size) == 8)
+                                                            <p>
+                                                                {{ __(substr($antigArch->size, 0, 2) . ' ' . 'MB') }}
+                                                            </p>
+                                                        @endif
+                                                    </figure>
                                                 </a>
                                             @endif
+                                            {{-- <form action="{{ route('tck.destroy', ['id' => $antigArch->id]) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="bg-red-500 rounded-lg p-1 text-sm text-white">
+                                                    Eliminar archivo
+                                                </button>
+                                            </form> --}}
                                         </div>
                                     @endif
-                                @endforeach
+                                @empty
+                                    sin registros
+                                @endforelse
                             </div>
                         @else
                             <div class="flex flex-col justify-center items-center gap-3 py-6 text-gray-400">
@@ -186,6 +310,11 @@
                             </div>
                         @endif
                     </div>
+                </div>
+                <div class="flex justify-end items-end mt-3">
+                    <x-secondary-button @click="modelOpen = false" >
+                        Cerrar
+                    </x-secondary-button>
                 </div>
             </div>
         </div>

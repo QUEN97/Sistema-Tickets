@@ -36,12 +36,10 @@ class NewCompraServicioNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
-        $photo = isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path)
-        ? Auth::user()->profile_photo_path
-        : Auth::user()->profile_photo_url;
+        $user = Auth::user();
         return [
             'url' => route('requisiciones'),
-            'photo' => $photo,
+            'userid' => $user,
             'user' => Auth::user()->name,
             'message' => ", ha creado una requisición de Servicios #{$this->compra->id}, 
             en el ticket #{$this->compra->ticket_id}, '{$this->compra->titulo_correo}' "  

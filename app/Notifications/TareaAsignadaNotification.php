@@ -36,13 +36,10 @@ class TareaAsignadaNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
-        $photo = isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path)
-        ? Auth::user()->profile_photo_path
-        : Auth::user()->profile_photo_url;
-
+        $user = Auth::user();
         return [
             'url' => route('tareas'),
-            'photo' => $photo,
+            'userid' => $user,
             'user' => "El " .  Auth::user()->permiso->titulo_permiso . " " . Auth::user()->name,
             'message' => ", te ha creado la tarea #{$this->tarea->id}, en el ticket #{$this->tarea->ticket_id}."
         ];

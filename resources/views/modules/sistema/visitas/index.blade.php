@@ -148,6 +148,9 @@
                                                 @if ($item->status == 'Completado')
                                                     @livewire('visitas.show-visita', ['visitaID' => $item->id], key('show' . $item->id))
                                                 @endif
+                                                {{-- @if ($item->archivo!=null)
+                                                    <a href="{{asset('storage/'.$item->archivo)}}" target="_blank">Hoja de servicio</a>
+                                                @endif --}}
                                             </div>
                                         </div>
                                     </div>

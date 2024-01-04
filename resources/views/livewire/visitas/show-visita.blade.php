@@ -120,13 +120,18 @@
                                                     </div>
                                                 @endif
                                             @endforeach
+                                            
                                         </div>
                                     @endif
                                 </div>
                             @endif
                         </div>
+                        <div class="text-blue-900 font-bold  flex items-center gap-2 hover:text-gray-600">
+                           <a href="{{asset('storage/'.$visita->archivo)}}" target="_blank" >Hoja de servicio</a> 
+                        </div>
                     </div>
                 </div>
+
                 <hr class="h-px my-2 bg-gray-300 border-0 dark:bg-slate-400">
                 <div class="mb-2">{{ __('Tiempo: ') }}
                     @if ($this->horas > 0)

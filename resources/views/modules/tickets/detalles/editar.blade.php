@@ -251,14 +251,78 @@
                                             @endif
                                         </figure>
                                     </a>
+                                    @elseif ($antigArch->mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                                    <a href="{{ asset('storage/' . $antigArch->archivo_path) }}" download=""
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar"
+                                        class="text-xs">
+                                        <figure class="d-inline-block max-w-[90px]" tabindex="0"
+                                            data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                            data-bs-content="Presione para descargar" data-bs-placement="top">
+                                            <img class="w-100" src="{{ asset('img/icons/file-type-excel.svg') }}">
+                                            <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
+                                            @if (strlen($antigArch->size) == 4)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 1) . ' ' . 'KB') }}
+                                                </p>
+                                            @elseif (strlen($antigArch->size) == 5)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 2) . ' ' . 'KB') }}
+                                                </p>
+                                            @elseif (strlen($antigArch->size) == 6)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 3) . ' ' . 'KB') }}
+                                                </p>
+                                            @elseif (strlen($antigArch->size) == 7)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 1) . ' ' . 'MB') }}
+                                                </p>
+                                            @elseif (strlen($antigArch->size) == 8)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 2) . ' ' . 'MB') }}
+                                                </p>
+                                            @endif
+                                        </figure>
+                                    </a>
+                                    @elseif ($antigArch->mime_type == 'application/zip' || $antigArch->mime_type == 'application/vnd.rar')
+                                    <a href="{{ asset('storage/' . $antigArch->archivo_path) }}" download=""
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar"
+                                        class="text-xs">
+                                        <figure class="d-inline-block max-w-[90px]" tabindex="0"
+                                            data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                            data-bs-content="Presione para descargar" data-bs-placement="top">
+                                            <img class="w-100" src="{{ asset('img/icons/file-type-zip2.svg') }}">
+                                            <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
+                                            @if (strlen($antigArch->size) == 4)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 1) . ' ' . 'KB') }}
+                                                </p>
+                                            @elseif (strlen($antigArch->size) == 5)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 2) . ' ' . 'KB') }}
+                                                </p>
+                                            @elseif (strlen($antigArch->size) == 6)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 3) . ' ' . 'KB') }}
+                                                </p>
+                                            @elseif (strlen($antigArch->size) == 7)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 1) . ' ' . 'MB') }}
+                                                </p>
+                                            @elseif (strlen($antigArch->size) == 8)
+                                                <p>
+                                                    {{ __(substr($antigArch->size, 0, 2) . ' ' . 'MB') }}
+                                                </p>
+                                            @endif
+                                        </figure>
+                                    </a>
                                 @endif
-                                <form action="{{ route('tck.destroy', ['id' => $antigArch->id]) }}" method="POST">
+                                {{-- <form action="{{ route('tck.destroy', ['id' => $antigArch->id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="bg-red-500 rounded-lg p-1 text-sm text-white">
                                         Eliminar archivo
                                     </button>
-                                </form>
+                                </form> --}}
                             </div>
                         @endif
                     @empty

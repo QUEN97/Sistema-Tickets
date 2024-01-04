@@ -44,9 +44,11 @@ class EntradaNotification extends Notification
     ->join('folios_entradas', 'entradas.folio_id', '=', 'folios_entradas.id')
     ->select('folios_entradas.*')
     ->first();
+    $user = Auth::user();
         
         return [
             'url' => route('folios.entradas'),
+            'userid' =>$user,
             'user' => Auth::user()->name,
             'message' =>", ha generado  ENTRADA de productos en el almacén, FOLIO: {$folio->folio}",
         ];
