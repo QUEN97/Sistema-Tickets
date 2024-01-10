@@ -62,7 +62,7 @@
                                                         {{ __('Fecha:') }}
                                                         {{ $entrada->created_at }}
                                                     </div>
-                                                    <div class="relative" x-data="{toggle:false}" >
+                                                    <div class="relative" x-data="{toggle:false}">
                                                         <button class="text-gray-400 duration-300 block hover:text-gray-600" @click="toggle=!toggle">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 " viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -86,7 +86,7 @@
                                                                     </a>
                                                                     @livewire('folios.entradas.lock', ['entradaID' => $entrada->id])
                                                             @endif
-                                                            <a href="{{asset('Storage/'.$entrada->pdf)}}" target="_blank" rel="noopener noreferrer" class="flex gap-1 items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                            <a href="{{asset('storage/'.$entrada->pdf)}}" target="_blank" rel="noopener noreferrer" class="flex gap-1 items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M64 464h32v48H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0h165.5c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3V288h-48V160h-80c-17.7 0-32-14.3-32-32V48H64c-8.8 0-16 7.2-16 16v384c0 8.8 7.2 16 16 16zm112-112h32c30.9 0 56 25.1 56 56s-25.1 56-56 56h-16v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V368c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24h-16v48h16zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-32c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16v-64c0-8.8-7.2-16-16-16h-16v96h16zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V368z"/>
                                                                 </svg>
@@ -103,7 +103,7 @@
                                             </div>
                                         </div>
                                         {{-- <button
-                                            onclick="window.open('{{ asset('Storage/' . $entrada->pdf) }}', '_blank')">
+                                            onclick="window.open('{{ asset('storage/' . $entrada->pdf) }}', '_blank')">
                                             <svg class="w-12 h-12" viewBox="0 0 32 32"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path fill="#909090"
@@ -122,7 +122,8 @@
                                             </svg>
                                         </button> --}}
                                     </div>
-                                     <div @click="open = !open" class='flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-t-md'>
+                                    <div class='w-full border border-gray-100 dark:border-slate-700 rounded-md overflow-hidden' x-data="{open:false}">
+                                        <div @click="open = !open" class='flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-t-md'>
                                             <div class=' px-2 transform transition duration-300 ease-in-out' :class="{'rotate-90': open,'text-blue-500':open }">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 512 512">
                                                     <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z"/>
@@ -155,7 +156,7 @@
                                                                  <th  class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                                      <div class="flex justify-center items-center">
                                                                          <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                                             <img src="{{ asset('storage/' . $producto->producto->archivo_path) }}" alt="" class="w-full">
+                                                                             <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}" alt="" class="w-full">
                                                                          </figure>
                                                                      </div>
                                                                  </th>

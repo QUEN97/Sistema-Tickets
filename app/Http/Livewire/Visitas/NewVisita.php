@@ -6,8 +6,10 @@ use App\Models\Estacion;
 use App\Models\Falla;
 use App\Models\User;
 use App\Models\Visita;
+use App\Notifications\NotifiNewVisita;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 
 class NewVisita extends Component
@@ -20,7 +22,7 @@ class NewVisita extends Component
     public function mount()
     {
         // $this->users = User::where('status','Activo')->whereNotIn('permiso_id',[3,6])->get();
-        $this->estacions = Estacion::where('status', 'Activo')->get();
+        $this->estacions = Estacion::where('status', 'Activo')->orderBy('name')->get();
         $this->superEsta = Estacion::where('status', 'Activo')->where('supervisor_id', Auth::user()->id)->get();
         $this->fallas = Falla::where('status','Activo')->where('servicio_id', 23)->get();
     }
@@ -94,6 +96,17 @@ class NewVisita extends Component
             ]));
             $visita->fallas()->sync($this->fallasList);
         }
+
+        $Admins = User::where('permiso_id',1)->where('status','Activo')->get();
+        $Agents = User::where('permiso_id',5)->where('status','Activo')->get();
+        $Estas = Estacion::where('supervisor_id',auth()->user()->id)->first()->id;
+
+        if (Auth::user()->permiso_id == 1) {
+            Notification::send($Agents, new NotifiNewVisita($visita));
+        }// } elseif (Auth::user()->permiso_id == 4) {
+        //     Notification::send($Admins, new ComprasRequiNotification($compra));
+        //     Notification::send($Agente, new AgenteCompraEnviadaNotification($compra));
+        // }
 
         session()->flash('flash.banner', 'Nueva Visita, la visita  ha sido registrada en el sistema.');
         session()->flash('flash.bannerStyle', 'success');

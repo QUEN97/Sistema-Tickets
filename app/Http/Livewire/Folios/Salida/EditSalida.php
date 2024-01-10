@@ -98,8 +98,10 @@ class EditSalida extends Component
     public function PDF($id){
         $hora=Carbon::now();
         $table=Salida::find($id);
+        $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
+        $ticket = $table->productos->first()->ticket->agente->name;
         $archivo='Folios/'.$table->folio->folio.' '.Auth::user()->name.''.$hora->hour.'-'.$hora->minute.'-'.$hora->second.'.pdf';
-        $pdf=Pdf::loadView('modules.folios.PDF',['folio'=>$table,'tipo'=>'Salida', 'archivo' => $archivo]);
+        $pdf=Pdf::loadView('modules.folios.PDF',['folio'=>$table,'tipo'=>'Salida', 'archivo' => $archivo, 'resEntrega' => $resEntrega, 'name' => $ticket]);
         Storage::disk('public')->put($archivo,$pdf->output());
         $table->pdf=$archivo;
         $table->save();

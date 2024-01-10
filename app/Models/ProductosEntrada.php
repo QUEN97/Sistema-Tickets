@@ -23,4 +23,8 @@ class ProductosEntrada extends Model
     {
         return $this->hasOne(ProductoSerieEntrada::class,'producto_entrada_id');
     }
+    public function ticket():BelongsTo
+    {
+        return $this->belongsTo(Ticket::class);
+    }
 }

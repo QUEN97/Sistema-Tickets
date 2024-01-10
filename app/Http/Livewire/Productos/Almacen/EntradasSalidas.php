@@ -30,10 +30,10 @@ class EntradasSalidas extends Component
     public $tipo, $motivo, $productosEntradaSalida, $estaciones, $carrito, $tck, $productosSerie, $prod, $series = [];
     public function mount()
     {
-        $this->tck = Ticket::select('id','solicitante_id')->get();
+        $this->tck = Ticket::select('id', 'solicitante_id')->get();
         $this->productosEntradaSalida = Producto::select('id', 'name', 'product_photo_path')->get();
         $this->productosSerie = ProductoSerieEntrada::select('id', 'producto_entrada_id', 'serie')->get();
-        $this->estaciones = Estacion::select('id', 'name','user_id')->orderBy('name')->get();
+        $this->estaciones = Estacion::select('id', 'name', 'user_id')->orderBy('name')->get();
         foreach ($this->productosEntradaSalida as $p) {
             $alm = AlmacenCi::where('producto_id', $p->id)->get();
             $p->show = false;
@@ -106,11 +106,15 @@ class EntradasSalidas extends Component
         $hora = Carbon::now();
         if ($tipo == 'salida') {
             $table = Salida::find($id);
+            $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
+            $ticket = $table->productos->first()->ticket->agente->name; 
         } else {
             $table = Entrada::find($id);
+            $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
+            $ticket = $table->productos->first()->ticket->agente->name; 
         }
         $archivo = 'Folios/' . $table->folio->folio . ' ' . Auth::user()->name . '' . $hora->hour . '-' . $hora->minute . '-' . $hora->second . '.pdf';
-        $pdf = Pdf::loadView('modules.folios.PDF', ['folio' => $table, 'tipo' => $this->tipo, 'archivo' => $archivo]);
+        $pdf = Pdf::loadView('modules.folios.PDF', ['folio' => $table, 'tipo' => $this->tipo, 'archivo' => $archivo, 'resEntrega' => $resEntrega, 'name' => $ticket]);
         Storage::disk('public')->put($archivo, $pdf->output());
         $table->pdf = $archivo;
         $table->save();
@@ -119,8 +123,8 @@ class EntradasSalidas extends Component
 
     public function operacion()
     {
-        $Admins = User::where('status','Activo')->where('permiso_id',1)->get();
-        $Compras = User::where('status','Activo')->where('permiso_id',4)->get();
+        $Admins = User::where('status', 'Activo')->where('permiso_id', 1)->get();
+        $Compras = User::where('status', 'Activo')->where('permiso_id', 4)->get();
         $user = Auth::user();
         $folio = "";
         $this->validate([

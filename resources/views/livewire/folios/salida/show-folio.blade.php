@@ -62,7 +62,7 @@
                                                         {{ __('Fecha:') }}
                                                         {{ $salida->created_at }}
                                                     </div>
-                                                    <div class="relative" x-data="{toggle:false}" >
+                                                    <div class="relative" x-data="{toggle:false}" @click.outside="toggle=false">
                                                         <button class="text-gray-400 duration-300 block hover:text-gray-600" @click="toggle=!toggle">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 " viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -137,7 +137,7 @@
                                                                  <th  class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                                      <div class="flex justify-center items-center">
                                                                          <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                                             <img src="{{ asset('storage/' . $producto->producto->archivo_path) }}" alt="" class="w-full">
+                                                                             <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}" alt="" class="w-full">
                                                                          </figure>
                                                                      </div>
                                                                  </th>

@@ -603,13 +603,13 @@
 <body class="font-sans antialiased text-gray-900 dark:text-gray-200">
 
     <!--Para los pillines que se quieren pasar de listos-->
-    <script type='text/javascript'>
+    {{-- <script type='text/javascript'>
         $(function() {
             $(document).bind("contextmenu", function(e) {
                 return false;
             });
         });
-    </script>
+    </script> --}}
     <div x-data="mainState" :class="{ dark: isDarkMode }" @resize.window="handleWindowResize" x-cloak>
         <x-banner />
 
