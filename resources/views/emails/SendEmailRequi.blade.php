@@ -335,12 +335,19 @@
                                                                 <div style="font-family: Arial, sans-serif">
                                                                     <div class
                                                                         style="font-size: 12px; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 18px; color: #555555; line-height: 1.5;">
-                                                                        <p
-                                                                            style="margin: 0; mso-line-height-alt: 18px; letter-spacing: normal;">
-                                                                            <strong>CONSULTAR EVIDENCIAS: </strong><a href="{{ asset('storage/' . $mailDataU['archivo']) }}"
-                                                                                target="_blank"
-                                                                                style="text-decoration: underline;"
-                                                                                rel="noopener">{{ $mailDataU['evidencias'] }}</a>
+                                                                        <p style="margin: 0; mso-line-height-alt: 18px; letter-spacing: normal;">
+                                                                            <strong>CONSULTAR EVIDENCIAS:</strong>
+                                                                            @foreach ($mailDataU['evidencias'] as $index => $evidencia)
+                                                                                <a href="{{ asset('storage/' . $mailDataU['archivo'][$index]) }}"
+                                                                                   target="_blank"
+                                                                                   style="text-decoration: underline;"
+                                                                                   rel="noopener">
+                                                                                    {{ $evidencia }}
+                                                                                </a>
+                                                                                @if (!$loop->last)
+                                                                                    , <!-- Add a comma if it's not the last iteration -->
+                                                                                @endif
+                                                                            @endforeach
                                                                         </p>
                                                                     </div>
                                                                 </div>

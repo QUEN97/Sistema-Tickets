@@ -32,18 +32,18 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class AcepCompra extends Component
 {
-    public $compraID, $status, $permiso,$personal,
+    public $compraID, $status, $permiso, $personal,
         $asignado, $emailAddress = [], $emailAddressServ = [],
-        $open = false,$mailPS,$bccEmails, $mensaje_opcion, $mensaje;
+        $open = false, $mailPS, $bccEmails, $mensaje_opcion, $mensaje;
 
     public function mount()
     {
-        $compra=Compra::findOrFail($this->compraID);
+        $compra = Compra::findOrFail($this->compraID);
         $cliente = $compra->ticket->cliente->zonas->pluck('id');
 
-        $this->personal = User::where('permiso_id',4)
-        ->join('user_zona','users.id','=','user_zona.user_id')
-        ->whereIn('user_zona.zona_id',$cliente)->select('users.id')->get();
+        $this->personal = User::where('permiso_id', 4)
+            ->join('user_zona', 'users.id', '=', 'user_zona.user_id')
+            ->whereIn('user_zona.zona_id', $cliente)->select('users.id')->get();
         //dd($this->personal);
         $catego = null;
         foreach ($compra->productos as $prod) {
@@ -53,7 +53,7 @@ class AcepCompra extends Component
         $emailAddress = [];
         foreach ($correosZona as $correoZona) {
             $email = $correoZona->correo->correo;
-            if (!in_array($email, $emailAddress)) {//se verifica si ya existe en el array utilizando in_array. Si ya existe, no se agrega nuevamente, lo que evita duplicados en los arrays.
+            if (!in_array($email, $emailAddress)) { //se verifica si ya existe en el array utilizando in_array. Si ya existe, no se agrega nuevamente, lo que evita duplicados en los arrays.
                 $emailAddress[] = $email;
             }
         }
@@ -61,7 +61,7 @@ class AcepCompra extends Component
         $emailAddressServ = [];
         foreach ($correosServicio as $correoServicio) {
             $email = $correoServicio->correo->correo;
-            if (!in_array($email, $emailAddressServ)) {//se verifica si ya existe en el array utilizando in_array. Si ya existe, no se agrega nuevamente, lo que evita duplicados en los arrays.
+            if (!in_array($email, $emailAddressServ)) { //se verifica si ya existe en el array utilizando in_array. Si ya existe, no se agrega nuevamente, lo que evita duplicados en los arrays.
                 $emailAddressServ[] = $email;
             }
         }
@@ -165,8 +165,8 @@ class AcepCompra extends Component
         $Admins = User::where('permiso_id', 1)->get(); //Administradores
 
         $clienter = $compra->ticket->cliente->zonas->first()->id;
-        $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
-            $zonas->where('zona_id',$clienter);
+        $Compras = User::where([['permiso_id', 4], ['status', 'Activo']])->whereHas('zonas', function (Builder $zonas) use ($clienter) {
+            $zonas->where('zona_id', $clienter);
         })->get(); //Compras
 
         $Agente = $compra->ticket->agente; // id del agente
@@ -209,11 +209,13 @@ class AcepCompra extends Component
         }
         //dd($this->emailAddressServ);
 
-        foreach ($compra->evidencias as $ev) { //mediante este foreach anidado obtenemos del array el nombre de la evidencia
-            $evidencias = $ev->nombre_archivo;
-        }
-        foreach ($compra->evidencias as $ev) { //mediante este foreach anidado obtenemos del array la ruta de la evidencia
-            $evidenciaspath = $ev->archivo_path;
+        $evidencias = [];
+        $evidenciaspath = [];
+
+        foreach ($compra->evidencias as $ev) {
+            // Cobtenemos nombre y ruta de las evidencias adjuntas en el correo
+            $evidencias[] = $ev->nombre_archivo;
+            $evidenciaspath[] = $ev->archivo_path;
         }
 
         $catPS = $compra->productos->count() > 0 ? 'Producto' : 'Servicio';
@@ -235,7 +237,7 @@ class AcepCompra extends Component
         $comt = new ComentarioTarea();
         $comt->tarea_id = $tarea->id;
         $comt->user_id = Auth::user()->id;
-        $comt->comentario = 'Dando seguimiento a la requisición, se informa que el/los'.' '.$catPS.' '.'han sido solicitados al departamento de compras';
+        $comt->comentario = 'Dando seguimiento a la requisición, se informa que el/los' . ' ' . $catPS . ' ' . 'han sido solicitados al departamento de compras';
         $comt->statustarea = $tarea->status;
         $comt->save();
 
@@ -268,18 +270,18 @@ class AcepCompra extends Component
         ];
 
         //Correo
-        if($clienter == 3){//Occidente
-        Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
-            ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
-            ->send(new SendEmailRequi($mailDataU)); //Pasamos la propiedades a la vista del correo
-        }elseif($clienter == 4 || $clienter == 1){//Sureste
+        if ($clienter == 3) { //Occidente
             Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
-            ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
-            ->send(new SendEmailRequisicion($mailDataU)); //Pasamos la propiedades a la vista del correo
-        }elseif($clienter == 2){//Guatemala
+                ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
+                ->send(new SendEmailRequi($mailDataU)); //Pasamos la propiedades a la vista del correo
+        } elseif ($clienter == 4 || $clienter == 1) { //Sureste
             Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
-            ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
-            ->send(new SendEmailRequiGT($mailDataU)); //Pasamos la propiedades a la vista del correo
+                ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
+                ->send(new SendEmailRequisicion($mailDataU)); //Pasamos la propiedades a la vista del correo
+        } elseif ($clienter == 2) { //Guatemala
+            Mail::to($mailPS) // dependiendo si son productos o servicios establecemos los correos
+                ->cc($bccEmails) // se usa un array porque de otro modo no es posible el envio multiple
+                ->send(new SendEmailRequiGT($mailDataU)); //Pasamos la propiedades a la vista del correo
         }
 
         // Notificaciones por sistema
@@ -302,9 +304,9 @@ class AcepCompra extends Component
     public function finish(Compra $compra)
     {
         $Admins = User::where('permiso_id', 1)->get();
-       $clienter = $compra->ticket->cliente->zonas->first()->id;
-        $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
-            $zonas->where('zona_id',$clienter);
+        $clienter = $compra->ticket->cliente->zonas->first()->id;
+        $Compras = User::where([['permiso_id', 4], ['status', 'Activo']])->whereHas('zonas', function (Builder $zonas) use ($clienter) {
+            $zonas->where('zona_id', $clienter);
         })->get(); //Compras
         $Agente = $compra->ticket->agente;
 
@@ -323,7 +325,7 @@ class AcepCompra extends Component
         $comt = new ComentarioTarea();
         $comt->tarea_id = $tarea->id;
         $comt->user_id = Auth::user()->id;
-        $comt->comentario = $catPS.' '.$statPS;
+        $comt->comentario = $catPS . ' ' . $statPS;
         $comt->statustarea = $tarea->status;
         $comt->save();
 
