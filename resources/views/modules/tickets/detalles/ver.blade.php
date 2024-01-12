@@ -8,15 +8,15 @@
                     <span class="dark:text-white">#{{ $ticketID }}</span>
                 </li>
                 <li class="mb-2"><strong class="dark:text-white">Estado:</strong>
-                    @if ($tck->status == 'Abierto')
+                    @if ($tck->status == 'Abierto' && $tck->vencido == 0)
                         <span class="bg-green-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
                         </span>
-                    @elseif ($tck->status == 'En proceso')
+                    @elseif ($tck->status == 'En proceso' && $tck->vencido == 0)
                         <span class="bg-orange-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
                         </span>
-                    @elseif ($tck->status == 'Vencido')
+                    @elseif ($tck->vencido == 1)
                         <span class="bg-red-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
                         </span>
@@ -128,7 +128,7 @@
                     @if (
                         !(Auth::id() == $ticketOwner && $tck->status == 'Abierto') ||
                             Auth::id() == $tck->user_id ||
-                            (Auth::id() != $ticketOwner && Auth::id() != $tck->solicitante_id))
+                            (Auth::id() != $ticketOwner && Auth::id() != $tck->solicitante_id) || $ticketOwner == $tck->user_id)
                         @livewire('tickets.comentarios', ['ticketID' => $tck->id])
                     @endif
                 @endif

@@ -1,17 +1,7 @@
 <div class="p-6 flex flex-col gap-6 bg-white rounded-md shadow-md dark:bg-dark-eval-1">
     <div class="ml-2 flex gap-2 flex-col relative">
-        <div class="text-right">
-            <button type="button" onclick="window.location.href = '{{ route('export.excel') }}'"
-                class=" text-gray-400 border rounded-md p-1.5 w-fit transition duration-300 hover:bg-gray-400 hover:text-white dark:bg-dark-eval-0 dark:border-dark-eval-0 dark:hover:bg-dark-eval-2 dark:hover:border-gray-500">
-                <svg width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#20744a" fill-rule="evenodd"
-                        d="M28.781 4.405h-10.13V2.018L2 4.588v22.527l16.651 2.868v-3.538h10.13A1.162 1.162 0 0 0 30 25.349V5.5a1.162 1.162 0 0 0-1.219-1.095Zm.16 21.126H18.617l-.017-1.889h2.487v-2.2h-2.506l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2h10.411Z" />
-                    <path fill="#20744a"
-                        d="M22.487 7.439h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323z" />
-                    <path fill="#fff" fill-rule="evenodd"
-                        d="m6.347 10.673l2.146-.123l1.349 3.709l1.594-3.862l2.146-.123l-2.606 5.266l2.606 5.279l-2.269-.153l-1.532-4.024l-1.533 3.871l-2.085-.184l2.422-4.663l-2.238-4.993z" />
-                </svg>
-            </button>
+        <div class="flex gap-2 items-center justify-end">
+            @livewire('tickets.export-tck')
             <button type="button" aria-label="btn-orden"
                 class=" text-gray-400 border rounded-md p-1.5 w-fit transition duration-300 hover:bg-gray-400 hover:text-white dark:bg-dark-eval-0 dark:border-dark-eval-0 dark:hover:bg-dark-eval-2 dark:hover:border-gray-500"
                 wire:click="changeOrden">
@@ -118,9 +108,9 @@
     <div class="flex flex-wrap gap-2 justify-evenly">
         @forelse ($tickets as $tck)
             <div :class="$wire.c || 'w-full flex  flex-wrap-reverse md:flex-nowrap gap-2 justify-end items-center'"
-                @if ($tck->status == 'Abierto') class=" group/buttons border-2 border-green-500 dark:border-green-700 rounded-md " @endif
-                @if ($tck->status == 'En proceso') class=" group/buttons border-2 border-yellow-500 rounded-md" @endif
-                @if ($tck->status == 'Vencido') class=" group/buttons border-2 border-red-500 rounded-md"
+                @if ($tck->status == 'Abierto' && $tck->vencido == 0) class=" group/buttons border-2 border-green-500 dark:border-green-700 rounded-md " @endif
+                @if ($tck->status == 'En proceso' && $tck->vencido == 0) class=" group/buttons border-2 border-yellow-500 rounded-md" @endif
+                @if ($tck->vencido == 1) class=" group/buttons border-2 border-red-500 rounded-md"
                 @else
                     class=" group/buttons border-2 rounded-md" @endif>
                 <div
@@ -130,9 +120,9 @@
                         <div class=" px-1">
                             #{{ $tck->id }}
                         </div>
-                        <div @if ($tck->status == 'Abierto') class="bg-green-500 text-white p-1 " @endif
-                            @if ($tck->status == 'En proceso') class="bg-yellow-500 text-white p-1" @endif
-                            @if ($tck->status == 'Vencido') class="bg-red-500 text-white p-1" @endif
+                        <div @if ($tck->status == 'Abierto' && $tck->vencido == 0 ) class="bg-green-500 text-white p-1 rounded-sm" @endif
+                            @if ($tck->status == 'En proceso' && $tck->vencido == 0) class="bg-yellow-500 text-white p-1 rounded-sm" @endif
+                            @if ($tck->vencido == 1) class="bg-red-500 text-white p-1 rounded-sm" @endif
                             @if ($tck->status == 'Cerrado' || $tck->status == 'Por abrir') class="bg-gray-500 text-white p-1" @endif>
                             {{ $tck->status }}
                         </div>

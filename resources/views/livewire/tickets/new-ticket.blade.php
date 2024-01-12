@@ -2,7 +2,7 @@
     <div class="">
         <x-button wire:click="$set('modal',true)" class="dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700">
             {{ __('Añadir Ticket') }}
-            </x-button>
+        </x-button>
     </div>
 
     <x-dialog-modal wire:model="modal" id="modalRepuesto" class="flex items-center">
@@ -23,15 +23,21 @@
                             </select>
                             <x-input-error for="departamento"></x-input-error>
                         </div> --}}
-                
+
                 <div>
                     <x-label value="{{ __('Área') }}" for="area" />
-                    <select id="area" name="area"
-                        class="rounded-md dark:bg-slate-800 dark:border-gray-700" wire:model="area">
+                    <select id="area" name="area" class="rounded-md dark:bg-slate-800 dark:border-gray-700"
+                        wire:model="area">
                         <option value="">Seleccionar Área</option>
-                        @foreach ($areas as $area)
-                            <option value="{{ $area->id }}">{{ $area->name }}</option>
-                        @endforeach
+                        @if (auth()->user() && in_array(auth()->user()->id, $usersSistemas->pluck('id')->toArray()))
+                            @foreach ($areasSistem as $sistem)
+                                <option value="{{ $sistem->id }}">{{ $sistem->name }}</option>
+                            @endforeach
+                        @else
+                            @foreach ($areas as $area)
+                                <option value="{{ $area->id }}">{{ $area->name }}</option>
+                            @endforeach
+                        @endif
                     </select>
                     <x-input-error for="area"></x-input-error>
                 </div>
@@ -106,7 +112,7 @@
                     <div>Detalles</div>
                     <textarea wire:model="mensaje"
                         class="resize-none w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('mensaje') ? 'is-invalid' : '' }} resize-none"
-                        name="mensaje" required  autocomplete="mensaje">
+                        name="mensaje" required autocomplete="mensaje">
                     </textarea>
                     <x-input-error for="mensaje"></x-input-error>
                 </div>
@@ -155,19 +161,18 @@
         </x-slot>
     </x-dialog-modal>
     @push('scripts')
-    <script>
-        document.addEventListener('livewire:load',()=>{
-            Livewire.hook('message.processed',(message,component)=>{
+        <script>
+            document.addEventListener('livewire:load', () => {
+                Livewire.hook('message.processed', (message, component) => {
 
-                $('#fallaSelect').select2({
-                    placeholder: "Seleccionar falla",
-                    allowClear: true,
-                }).on('change', function() {
-                    @this.set('falla', $(this).val());
+                    $('#fallaSelect').select2({
+                        placeholder: "Seleccionar falla",
+                        allowClear: true,
+                    }).on('change', function() {
+                        @this.set('falla', $(this).val());
+                    });
                 });
             });
-        });
-        
-    </script>
-@endpush
+        </script>
+    @endpush
 </div>

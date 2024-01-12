@@ -37,7 +37,7 @@ class CloseExpiredTickets extends Command
     foreach ($tickets as $ticket) {
         DB::beginTransaction();
         try {
-            $ticket->status = 'Vencido';
+            $ticket->vencido = 1;
             $ticket->save();
 
             DB::commit();

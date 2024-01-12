@@ -8,15 +8,15 @@
                     <span class="dark:text-white">#{{ $ticketID }}</span>
                 </li>
                 <li class="mb-2"><strong class="dark:text-white">Status:</strong>
-                    @if ($tck->status == 'Abierto')
+                    @if ($tck->status == 'Abierto' && $tck->vencido == 0)
                         <span class="bg-green-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
                         </span>
-                    @elseif ($tck->status == 'En proceso')
+                    @elseif ($tck->status == 'En proceso' && $tck->vencido == 0)
                         <span class="bg-orange-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
                         </span>
-                    @elseif ($tck->status == 'Vencido')
+                    @elseif ($tck->vencido == 1)
                         <span class="bg-red-400 p-1 rounded-md text-white">
                             {{ $tck->status }}
                         </span>

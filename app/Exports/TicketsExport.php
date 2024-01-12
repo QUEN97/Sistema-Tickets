@@ -25,6 +25,7 @@ class TicketsExport implements WithMultipleSheets
         $sheets[] = new TicketSheet ($this->tickets);
 
         return $sheets;
+        
     }
  
 }

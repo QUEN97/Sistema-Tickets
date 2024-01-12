@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('mensaje',10000);
             $table->string('status')->default('Abierto');
             $table->timestamp('fecha_cierre')->nullable();
+            $table->boolean('vencido')->default(0);
             $table->timestamp('cerrado')->nullable();
             $table->timestamps();
             $table->foreign('falla_id')->references('id')->on('fallas')->onDelete('cascade');

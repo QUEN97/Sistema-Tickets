@@ -56,7 +56,6 @@ class UserTable extends Component
                 $filterSoli = $request->input('filter');
                 $query->where('permiso_id', $filterSoli);
             })
-            ->where('id','!=',1)
             ->orderBy('name')
             ->paginate(25)
             ->withQueryString();

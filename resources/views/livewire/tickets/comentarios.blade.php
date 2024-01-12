@@ -14,7 +14,7 @@
         </x-slot>
         <x-slot name="content">
             @if ($tck->status != 'Cerrado')
-                @if (Auth::id() != $ticketOwner)
+                @if (Auth::id() != $ticketOwner || $ticketOwner == $tck->user_id)
                     <div class="flex flex-wrap gap-3 justify-evenly items-center">
                         <div>
                             <x-label value="{{ __('Status del ticket') }}" for="status" />
@@ -23,7 +23,9 @@
                                 <option hidden value="" selected>Seleccionar status</option>
                                 <option value="Abierto"@if (Auth::id() == $ticketOwner || Auth::id() == $agente) hidden @endif>Abierto</option>
                                 <option value="En proceso">En proceso</option>
-                                <option value="Cerrado"@if (Auth::id() == $ticketOwner) hidden @endif>Cerrado</option>
+                                <option value="Cerrado"@if (Auth::id() == $ticketOwner && $ticketOwner != $tck->user_id) 
+                                    hidden 
+                                @endif>Cerrado</option>
                             </select>
                             <x-input-error for="status"></x-input-error>
                         </div>

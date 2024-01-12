@@ -12,6 +12,7 @@ use App\Models\Holiday;
 use App\Models\Servicio;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Models\UserArea;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AdminNotify;
 use App\Notifications\TicketAsignadoNotificacion;
@@ -33,8 +34,8 @@ class NewTicket extends Component
 
     public function mount()
     {
-    //    $this->closeExpiredTickets();
-    // $this->servicios=Servicio::all();
+        //    $this->closeExpiredTickets();
+        // $this->servicios=Servicio::all();
     }
 
     public function updatedArea($id)
@@ -54,7 +55,7 @@ class NewTicket extends Component
         // $falla=Falla::find($val);
         // $this->servicio=$falla->servicio->id;
         // $this->area=$falla->servicio->area->id;
-        $this->personal=Areas::find($this->area)->users;
+        $this->personal = Areas::find($this->area)->users;
     }
 
     //función para encontrar el agente con menor cant. de tcks asignados el día de hoy
@@ -63,7 +64,7 @@ class NewTicket extends Component
         $desocupado = [];
         $disponible = [];
         foreach ($this->personal as $key => $personal) {
-            if ($personal->status === 'Activo' && $personal->id !== 154 && $personal->permiso_id == 5)  { // Revisa el status del usuario, excluimos al usuario de Guatemala
+            if ($personal->status === 'Activo' && $personal->id !== 154 && $personal->permiso_id == 5 || $personal->permiso_id == 8) { // Revisa el status del usuario, excluimos al usuario de Guatemala
                 $desocupado[$key]['id'] = $personal->id;
                 $desocupado[$key]['cant'] = $personal->ticketsHoy->count();
             }
@@ -98,21 +99,21 @@ class NewTicket extends Component
         $dia = Carbon::now(); //Obtenemos el dia actual
         $Festivo = $this->esDiaFestivo($dia); //llamamos a los dias festivos del sistema
         $regionId = Auth::user()->region_id; // obtenemos la region del usuario autenticado
-        $Admins = User::where('permiso_id',1)->get();
+        $Admins = User::where('permiso_id', 1)->get();
 
         $this->validate([ //Valida los campos requeridos y crea un nuevo registro de ticket en la base de datos.
             'area' => ['required', 'not_in:0'],
             'servicio' => ['required', 'not_in:0'],
             'falla' => ['required', 'not_in:0'],
             // 'asignado' => ['required', 'not_in:0'], //retiramos la validación para que el sistema no marque error ya que se asigna en automatico con la funcion agenteDisponible()
-            'asunto' => ['required'],
+            //'asunto' => ['required'],
             'mensaje' => ['required'],
         ], [
             'area.required' => 'Seleccione un área',
             'servicio.required' => 'Seleccione un servicio',
             'falla.required' => 'Seleccione una falla',
             // 'asignado.required' => 'Seleccione un agente del área',
-            'asunto.required' => 'El asunto es requerido',
+            //'asunto.required' => 'El asunto es requerido',
             'mensaje.required' => 'Ingrese los detalles del problema',
         ]);
 
@@ -127,12 +128,12 @@ class NewTicket extends Component
             return redirect()->route('tickets');
         }
         //dd($this->asignado);
-        $guardia=Guardia::where('status','Esta semana')->first();
+        $guardia = Guardia::where('status', 'Esta semana')->first();
         $ticket = new Ticket();
         $ticket->falla_id = $this->falla;
         $ticket->user_id = $this->asignado;
         $ticket->solicitante_id = Auth::user()->id;
-        $ticket->asunto = $this->asunto;
+        //$ticket->asunto = $this->asunto;
         $ticket->mensaje = $this->mensaje;
         $ticket->save();
 
@@ -145,23 +146,23 @@ class NewTicket extends Component
             if ($dia->greaterThanOrEqualTo($inicio) && $dia->lessThanOrEqualTo($limite)) {
                 $ticket->fecha_cierre = $cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
                 $ticket->save();
-            }elseif($dia->dayOfWeek==6 && $dia->greaterThanOrEqualTo($limite)){
-                $ticket->user_id=$guardia->user_id;
+            } elseif ($dia->dayOfWeek == 6 && $dia->greaterThanOrEqualTo($limite)) {
+                $ticket->user_id = $guardia->user_id;
                 $ticket->save();
-            }else {
+            } else {
                 $ticket->status = 'Por abrir';
                 $ticket->save();
             }
         } else { //si es domingo
             // $ticket->status = 'Por abrir';
             // $ticket->save();
-            $limite=Carbon::today()->addHour(22);
-            if($dia->lessThanOrEqualTo($limite)){
-                $ticket->user_id=$guardia->user_id;
-                $ticket->fecha_cierre=$cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
+            $limite = Carbon::today()->addHour(22);
+            if ($dia->lessThanOrEqualTo($limite)) {
+                $ticket->user_id = $guardia->user_id;
+                $ticket->fecha_cierre = $cierre->addHours(Falla::find($this->falla)->prioridad->tiempo);
                 $ticket->save();
-            }else{
-                $ticket->status='Por abrir';
+            } else {
+                $ticket->status = 'Por abrir';
                 $ticket->save();
             }
         }
@@ -184,14 +185,14 @@ class NewTicket extends Component
         }
 
         $this->emit('ticketCreated');
-        
+
         $agent = User::find($ticket['user_id']);
         $agent->notify(new TicketAsignadoNotificacion($ticket));
         Notification::send($Admins, new AdminNotify($ticket));
 
-    //    Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); 
-       session()->flash('flash.banner', 'Nuevo Ticket, el ticket se ha creado y asignado correctamente.');
-       session()->flash('flash.bannerStyle', 'success');
+        //    Alert::success('Nuevo Ticket', "El Ticket ha sido agregado al sistema"); 
+        session()->flash('flash.banner', 'Nuevo Ticket, el ticket se ha creado y asignado correctamente.');
+        session()->flash('flash.bannerStyle', 'success');
 
         return redirect()->route('tickets');
     }
@@ -219,9 +220,19 @@ class NewTicket extends Component
 
     public function render()
     {
-        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [ 1, 2, 6, 10])->get();
+        $usersSistemas = DB::table('users')
+            ->join('user_areas', 'users.id', '=', 'user_areas.user_id')
+            ->join('areas', 'user_areas.area_id', '=', 'areas.id')
+            ->where('areas.departamento_id', '=', 1)
+            ->select('users.id')
+            ->get();
+
+        $areas = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [1, 2, 6, 10])->get();
+        $areasSistem = Areas::where('status', 'Activo')->where('departamento_id', 1)->whereNotIn('id', [1, 6, 10])->get();
         return view('livewire.tickets.new-ticket', [
             'areas' => $areas,
+            'areasSistem' => $areasSistem,
+            'usersSistemas' => $usersSistemas,
         ]);
     }
 }
