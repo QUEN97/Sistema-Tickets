@@ -244,7 +244,7 @@ class AcepCompra extends Component
         // Propiedades para el correo
         $mailDataU = [
             'ticket' => $compra->ticket->id, //Atraves de la compra obtenemos el ID del ticket 
-            'asunto' => $compra->titulo_correo, //Asunto del correo
+            'asunto' => mb_strtoupper($compra->titulo_correo), //Asunto del correo
             'solicitadopor' => $compra->ticket->cliente->name, // Usuario Cliente, quien creo el ticket
             'verificadopor' => $compra->ticket->agente->name, // Usuario agente, quien lleva seguimiento del ticket (Asignado)
             'areacliente' => $areaCliente, //Área del cliente

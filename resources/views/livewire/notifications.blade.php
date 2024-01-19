@@ -9,8 +9,8 @@
                 </svg>
             @else
                 <div class="top-0 absolute left-3">
-                    <p class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
-                        {{ __(Auth::user()->unreadNotifications->count()) }}
+                    <p class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-1 text-xs text-white animate-ping">
+                        
                     </p>
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

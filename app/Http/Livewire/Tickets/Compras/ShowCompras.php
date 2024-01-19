@@ -9,16 +9,21 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ShowCompras extends Component
 {
-    public $ticketID,$compras,$modal=false,$comprasCount;
+    public $ticketID,$compras,$modal=false,$comprasCount,$compra;
     public function mount(){
         $this->compras=Compra::where('ticket_id',$this->ticketID)->orderBy('id', 'desc')->get();
         $this->comprasCount=Compra::where('ticket_id',$this->ticketID)->count();
+        foreach ($this->compras as $compra) {
+            $compra->documentoNombre = basename($compra->documento);
+        }
     }
     public function deleteCompra(Compra $compra){
         //dd($compra->evidencias);
         Storage::disk('public')->delete($compra->documento);
-        foreach($compra->evidencias as $ev){
-            Storage::disk('public')->delete($ev->product_photo_path);
+        if ($compra->evidencias->isNotEmpty()) {
+            foreach ($compra->evidencias as $evidencia) {
+                Storage::disk('public')->delete($evidencia->archivo_path);
+            }
         }
         $compra->delete();
         Alert::warning('Eliminado','La requisición ha sido eliminada permanentemente');

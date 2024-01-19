@@ -175,7 +175,7 @@
                                         @endif
                                     </figure>
                                 </a>
-                                @elseif ($antigArch->mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                                @elseif ($antigArch->mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $antigArch->mime_type =='application/vnd.ms-excel')
                                 <a href="{{ asset('storage/' . $antigArch->archivo_path) }}" download=""
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar"
                                     class="text-xs">

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Ticket;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Builder::macro('search', function($field,$string){
+        //     return $string ? $this->where($field, 'like','%'.$string.'%') : $this;
+        // });
+        
         view()->composer('layouts.app', function ($view) {
             $mePertenece = Auth::user();
             $ticketsProximosVencer = 0;
@@ -59,20 +64,20 @@ class AppServiceProvider extends ServiceProvider
                 })
                 ->get();
 
-            $ticketsEnProcesoSinComentarios = Ticket::where('status', 'En proceso')
-                ->where(function ($query) use ($now, $mePertenece) {
-                    $query->where(function ($query) use ($mePertenece) {
-                        if ($mePertenece->permiso_id !== 1) {
+                $ticketsEnProcesoSinComentarios = Ticket::where('status', 'En proceso')
+                ->where(function ($query) use ($mePertenece) {
+                    if ($mePertenece->permiso_id !== 1) {
+                        $query->where(function ($query) use ($mePertenece) {
                             $query->where('user_id', $mePertenece->id)
                                 ->orWhere('solicitante_id', $mePertenece->id);
-                        }
-                    })
-                        ->where(function ($query) use ($now) {
-                            $query->whereDoesntHave('comentarios')
-                                ->orWhereHas('comentarios', function ($query) use ($now) {
-                                    $query->where('created_at', '<=', $now->subDay(3));
-                                });
                         });
+                    }
+                })
+                ->whereDoesntHave('comentarios', function ($query) use ($now) {
+                    $query->where('created_at', '>=', $now->subDay(3));
+                })
+                ->orWhereHas('comentarios', function ($query) use ($now) {
+                    $query->orderBy('created_at', 'desc')->take(1)->where('created_at', '<', $now->subDay(3));
                 })
                 ->get();
 

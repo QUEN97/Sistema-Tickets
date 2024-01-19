@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('producto_entrada_id');
             $table->string('serie');
+            $table->boolean('ha_salido')->default(0);
             $table->timestamps();
 
             $table->foreign('producto_entrada_id')->references('id')->on('productos_entradas')->onDelete('cascade');

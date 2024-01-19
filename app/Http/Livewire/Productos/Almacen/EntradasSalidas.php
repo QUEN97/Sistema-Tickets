@@ -19,6 +19,7 @@ use App\Notifications\EntradaNotification;
 use App\Notifications\SalidaNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -27,13 +28,20 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class EntradasSalidas extends Component
 {
-    public $tipo, $motivo, $productosEntradaSalida, $estaciones, $carrito, $tck, $productosSerie, $prod, $series = [];
+    public $tipo, $motivo, $productosEntradaSalida, $usuarios, $carrito, $tck, $productosSerie, $prod, $series = [];
     public function mount()
     {
-        $this->tck = Ticket::select('id', 'solicitante_id')->get();
+        // Recuperar tickets con compras relacionadas que tengan productos asociados
+        $this->tck = Ticket::whereHas('compras', function (Builder $compras) {
+            $compras->whereHas('productos');
+        })->orderBy('id', 'asc')->get();
+
+        // Recuperar todos los productos de entrada y salida que tienen los IDs obtenidos
         $this->productosEntradaSalida = Producto::select('id', 'name', 'product_photo_path')->get();
+            $this->series = [];
         $this->productosSerie = ProductoSerieEntrada::select('id', 'producto_entrada_id', 'serie')->get();
-        $this->estaciones = Estacion::select('id', 'name', 'user_id')->orderBy('name')->get();
+        //dd($this->usuarios);
+        //$this->estaciones = Estacion::select('id', 'name', 'user_id')->orderBy('name')->get();
         foreach ($this->productosEntradaSalida as $p) {
             $alm = AlmacenCi::where('producto_id', $p->id)->get();
             $p->show = false;
@@ -47,7 +55,10 @@ class EntradasSalidas extends Component
             }
         }
         foreach (ProductosEntrada::all() as $pr) {
-            array_push($this->series, ['id' => $pr->id, 'producto' => $pr->producto_id, 'serie' => isset($pr->serie->serie) ? $pr->serie->serie : 'sin serie']);
+            // Verificar si existe la serie antes de agregar al array
+            if ($pr->serie2 && isset($pr->serie2->serie)) {
+                array_push($this->series, ['id' => $pr->id, 'producto' => $pr->producto_id, 'serie' => $pr->serie2->serie]);
+            }
         }
     }
     public function numero($number)
@@ -107,11 +118,11 @@ class EntradasSalidas extends Component
         if ($tipo == 'salida') {
             $table = Salida::find($id);
             $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
-            $ticket = $table->productos->first()->ticket->agente->name; 
+            $ticket = $table->productos->first()->ticket->agente->name;
         } else {
             $table = Entrada::find($id);
             $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
-            $ticket = $table->productos->first()->ticket->agente->name; 
+            $ticket = $table->productos->first()->ticket->agente->name;
         }
         $archivo = 'Folios/' . $table->folio->folio . ' ' . Auth::user()->name . '' . $hora->hour . '-' . $hora->minute . '-' . $hora->second . '.pdf';
         $pdf = Pdf::loadView('modules.folios.PDF', ['folio' => $table, 'tipo' => $this->tipo, 'archivo' => $archivo, 'resEntrega' => $resEntrega, 'name' => $ticket]);
@@ -130,22 +141,22 @@ class EntradasSalidas extends Component
         $this->validate([
             'tipo' => ['required'],
             'motivo' => ['required'],
-            'carrito' => ['required'],
-            'carrito.*.*' => ['required'],
+            //'carrito' => ['required'],
+            //'carrito.*.*' => ['required'],
             'carrito.*.prod' => ['required'],
-            'carrito.*.cantsol' => ['required', 'gt:0'],
-            'carrito.*.estacion' => ['required'],
+            //'carrito.*.cantsol' => ['required', 'gt:0'],
+            //'carrito.*.estacion' => ['required'],
             'carrito.*.observacion' => ['required'],
             'carrito.*.serie' => ['nullable'],
         ], [
             'tipo.required' => 'Seleccione la operacion a realizar',
             'motivo.required' => 'Ingrese el motivo de la operacion a realizar',
-            'carrito.required' => 'Seleccione al menos un producto',
-            'carrito.*.*.required' => 'Complete toda la información de cada producto',
+            //'carrito.required' => 'Seleccione al menos un producto',
+            //'carrito.*.*.required' => 'Complete toda la información de cada producto',
             'carrito.*.prod.required' => 'Seleccione un producto',
-            'carrito.*.cantsol.required' => 'Ingrese una catidad para los productos seleccionados',
-            'carrito.*.cantsol.gt' => 'La cantidad debe de ser mayor a cero',
-            'carrito.*.estacion' => 'Seleccione una estación',
+            //'carrito.*.cantsol.required' => 'Ingrese una catidad para los productos seleccionados',
+            //'carrito.*.cantsol.gt' => 'La cantidad debe de ser mayor a cero',
+            //'carrito.*.estacion' => 'Seleccione una estación',
             'carrito.*.observacion' => 'Ingrese una observacion para cada producto seleccionado',
         ]);
         if ($this->tipo == 'salida') {
@@ -170,15 +181,15 @@ class EntradasSalidas extends Component
             if ($pAlm->count() > 0) {
                 $updateAlma = AlmacenCi::find($pAlm->first()->id);
                 $this->tipo == 'entrada'
-                    ? $updateAlma->stock += $p['cantsol']
-                    : $updateAlma->stock -= $p['cantsol'];
+                    ? $updateAlma->stock += 1
+                    : $updateAlma->stock -= 1;
                 $updateAlma->save();
             } else {
                 $newpAlm = new AlmacenCi();
                 $newpAlm->producto_id = $p['prod'];
                 $newpAlm->stock_base = $p['cantsol'];
                 $this->tipo == 'entrada'
-                    ? $newpAlm->stock = $p['cantsol']
+                    ? $newpAlm->stock = 1
                     : $newpAlm->stock = 0;
                 $newpAlm->save();
             }
@@ -186,11 +197,11 @@ class EntradasSalidas extends Component
             if ($this->tipo == 'entrada') {
                 $pe = new ProductosEntrada();
                 $pe->producto_id = $p['prod'];
-                $pe->cantidad = $p['cantsol'];
+                $pe->cantidad = 1;
                 $pe->entrada_id = $entrada->id;
-                if ($p['estacion'] != 'NULL') {
-                    $pe->estacion_id = $p['estacion'];
-                }
+                // if ($p['estacion'] != 'NULL') {
+                //     $pe->estacion_id = $p['estacion'];
+                // }
                 if ($p['tck'] != 'NULL') {
                     $pe->ticket_id = $p['tck'];
                 }
@@ -206,11 +217,11 @@ class EntradasSalidas extends Component
             } else {
                 $ps = new ProductosSalida();
                 $ps->producto_id = $p['prod'];
-                $ps->cantidad = $p['cantsol'];
+                $ps->cantidad = 1;
                 $ps->salida_id = $salida->id;
-                if ($p['estacion'] != 'NULL') {
-                    $ps->estacion_id = $p['estacion'];
-                }
+                // if ($p['estacion'] != 'NULL') {
+                //     $ps->estacion_id = $p['estacion'];
+                // }
                 if ($p['tck'] != 'NULL') {
                     $ps->ticket_id = $p['tck'];
                 }
@@ -223,8 +234,8 @@ class EntradasSalidas extends Component
 
                 Notification::send($Admins, new SalidaNotification($ps));
                 Notification::send($Compras, new SalidaNotification($ps));
-                // Eliminar la serie del producto cuando es una salida
-                ProductoSerieEntrada::where('serie', $p['serie'])->delete();
+                // Cambiar el valor de 'ha_salido' a 1 en lugar de eliminar el registro
+                ProductoSerieEntrada::where('serie', $p['serie'])->update(['ha_salido' => 1]);
             }
         }
 

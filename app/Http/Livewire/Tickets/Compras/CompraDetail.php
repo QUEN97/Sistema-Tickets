@@ -10,6 +10,9 @@ class CompraDetail extends Component
     public $compraID,$compra,$modal=false;
     public function mount(){
         $this->compra=Compra::find($this->compraID);
+        if ($this->compra) {
+            $this->compra->documentoNombre = basename($this->compra->documento);
+        }
     }
     // public function showCompra(Compra $compra){
     //     $this->compra = $compra;

@@ -133,7 +133,7 @@
         <thead>
             <tr class="bg-gray">
                 <th>#TICKET</th>
-                <th>ESTACIÓN</th>
+                <th>CLIENTE</th>
                 <th>EQUIPO/MATERIAL</th>
                 <th>UNIDAD</th>
                 <th>CANTIDAD</th>
@@ -144,7 +144,7 @@
             @foreach ($folio->productos as $producto)
                 <tr class="arial text-sm">
                     <th>{{ isset($producto->ticket->id) ? '#' . $producto->ticket->id : 'S/N' }}</th>
-                    <th>{{ isset($producto->estacion->name) ? $producto->estacion->name : 'S/N' }}</th>
+                    <th>{{ isset($producto->ticket->cliente->name) ? $producto->ticket->cliente->name : 'S/N' }}</th>
                     <th>{{ $producto->producto->name }}</th>
                     <th>{{ $producto->producto->unidad }}</th>
                     <th>{{ $producto->cantidad }}</th>
@@ -164,7 +164,7 @@
             <th width="65%"></th>
             <th>
                 <hr>
-                NOMBE Y FIRMA DEL SOLICITANTE
+                NOMBRE Y FIRMA DEL SOLICITANTE
             </th>
         </tr>
     </table>

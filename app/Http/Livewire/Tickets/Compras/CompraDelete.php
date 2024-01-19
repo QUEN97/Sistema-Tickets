@@ -16,9 +16,10 @@ class CompraDelete extends Component
         $Admins = User::where('permiso_id',1)->where('id','!=',auth()->id())->get();
         $Compras = User::where('permiso_id',4)->where('id','!=',auth()->id())->get();
         Storage::disk('public')->delete($compra->documento);
-        foreach($compra->evidencias as $evidencia)
-        {
-            Storage::disk('public')->delete($evidencia->archivo_path);
+        if ($compra->evidencias->isNotEmpty()) {
+            foreach ($compra->evidencias as $evidencia) {
+                Storage::disk('public')->delete($evidencia->archivo_path);
+            }
         }
         $compra->delete();
         // Notification::send($Admins, new DeletedCompraNotification($compra));

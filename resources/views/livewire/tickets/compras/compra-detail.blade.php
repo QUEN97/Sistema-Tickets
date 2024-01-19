@@ -28,9 +28,9 @@
             >
             
                 <div class="flex items-center justify-between mb-1 border-b py-2">
-                    <h1 class="text-xl font-medium">Requisición # {{$compraID}}</h1>
+                    <h1 class="text-xl font-bold text-blue-800">Requisición # {{$compraID}}</h1>
                     <button @click="modelOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="w-6 h-6 text-gray-400 hover:text-orange-800 transition duration-300" viewBox="0 0 320 512" >
+                        <svg xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="w-6 h-6 text-gray-400 hover:text-red-800 transition duration-300" viewBox="0 0 320 512" >
                             <path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/>
                         </svg>
                     </button>
@@ -38,47 +38,47 @@
                 <div class="flex flex-col gap-1 mt-1">
                     <div class=" flex flex-wrap justify-evenly gap-1 pb-2">
                         <div>
-                            <h2>Agente solicitante:</h2>
-                            <div class="text-lg">{{$compra->ticket->agente->name}}</div>
+                            <h2 class="font-bold text-blue-800">Agente solicitante:</h2>
+                            <div class="font-bold">{{$compra->ticket->agente->name}}</div>
                         </div>
                         <div>
                             <div>
-                                <h2>Cliente:</h2>
-                                <div class="text-lg">{{$compra->ticket->cliente->name}}</div>
+                                <h2 class="font-bold text-blue-800">Cliente:</h2>
+                                <div class="font-bold">{{$compra->ticket->cliente->name}}</div>
                             </div>
                         </div>
                         <div>
                             <div class=" text-center">
                                 @if ($compra->productos->count() > 0)
-                                    <h2>Cantidad de productos:</h2>
-                                    <div class="text-lg">{{$compra->productos->count()}}</div>
+                                    <h2 class="font-bold text-blue-800">Cantidad de productos:</h2>
+                                    <div class="font-bold">{{$compra->productos->count()}}</div>
                                 @else
-                                    <h2>Cantidad de servicios:</h2>
-                                    <div class="text-lg">{{$compra->servicios->count()}}</div>
+                                    <h2 class="font-bold text-blue-800">Cantidad de servicios:</h2>
+                                    <div class="font-bold">{{$compra->servicios->count()}}</div>
                                 @endif
                             </div>
                         </div>
                     </div>
                     <div class="my-1 flex justify-center">
-                        <a href="{{asset('storage/'.$compra->documento)}}" target="_blank" class="px-2 py-1 rounded-md flex items-center gap-1 bg-red-700 text-white hover:bg-red-800 transition duration-300">
+                        <a href="{{asset('storage/'.$compra->documento)}}" target="_blank" class="px-2 py-1 rounded-md flex items-center gap-1 bg-gray-400 text-white hover:bg-gray-800 transition duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 384 512">
                                 <path d="M64 464c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16H224v80c0 17.7 14.3 32 32 32h80V448c0 8.8-7.2 16-16 16H64zM64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V154.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0H64zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120z"/>
                             </svg>
-                            Ver archivo PDF
+                            {{ $compra->documentoNombre }}
                         </a>
                     </div>
                     <div class="flex flex-col gap-2 max-h-72 overflow-auto">
                         <div class="text-start">
-                            <h2 class=" text-sm font-bold">Problema detectado:</h2>
+                            <h2 class="font-bold text-blue-800">Problema detectado:</h2>
                             <p>{{$compra->problema}}</p>
                         </div>
                         <div class="text-start">
-                            <h2 class=" text-sm font-bold">Solución:</h2>
+                            <h2 class="font-bold text-blue-800">Solución:</h2>
                             <p>{{$compra->solucion}}</p>
                         </div>
                         @if (isset($compra->mensaje_opcion))
                         <div class="text-start">
-                            <h2 class=" text-sm font-bold">Nota:</h2>
+                            <h2 class="font-bold text-blue-800">Nota:</h2>
                             <p>{{$compra->mensaje_opcion}}</p>
                         </div>
                         @endif
@@ -224,11 +224,11 @@
                         {{-- Evidencias en BD --}}
                         <div>
                             @if ($compra->evidencias->count() > 0)
-                                <label class="flex justify-center gap-3 items-center text-white bg-amber-600 p-1">
+                                <label class="flex justify-center gap-3 items-center text-white bg-gray-600 p-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                         <path d="M384 480h48c11.4 0 21.9-6 27.6-15.9l112-192c5.8-9.9 5.8-22.1 .1-32.1S555.5 224 544 224H144c-11.4 0-21.9 6-27.6 15.9L48 357.1V96c0-8.8 7.2-16 16-16H181.5c4.2 0 8.3 1.7 11.3 4.7l26.5 26.5c21 21 49.5 32.8 79.2 32.8H416c8.8 0 16 7.2 16 16v32h48V160c0-35.3-28.7-64-64-64H298.5c-17 0-33.3-6.7-45.3-18.7L226.7 50.7c-12-12-28.3-18.7-45.3-18.7H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H87.7 384z"/>
                                     </svg>
-                                    {{ __('Archivos Almacenados') }}
+                                    {{ __('Evidencias') }}
                                 </label>
                                 <div class="flex justyfy-venly flex-wrap gap-3 py-2">
                                     @foreach ($compra->evidencias as $antigArch)
@@ -241,6 +241,14 @@
                                                         <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para visualizar" data-bs-placement="top">
                                                             <img class="w-full" src="{{ asset('storage/'.$antigArch->archivo_path) }}">
                                                             <p class="break-all">{{ $antigArch->nombre_archivo }}</p>
+                                                        </figure>
+                                                    </a>
+                                                    @elseif ($antigArch->mime_type == 'video/mp4')
+                                                    <a href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
+                                                        <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
+                                                            <img class="w-100" src="{{ asset('img/icons/pdf.png') }}">
+                                                            <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
                                                         </figure>
                                                     </a>
                                                 @elseif ($antigArch->mime_type == "application/pdf")
@@ -256,6 +264,22 @@
                                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
                                                         <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
                                                             <img class="w-100" src="{{ asset('img/icons/word-2019.svg') }}">
+                                                            <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
+                                                        </figure>
+                                                    </a>
+                                                    @elseif ($antigArch->mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $antigArch->mime_type =='application/vnd.ms-excel')
+                                                    <a  href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
+                                                        <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
+                                                            <img class="w-100" src="{{ asset('img/icons/file-type-excel.svg') }}">
+                                                            <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
+                                                        </figure>
+                                                    </a>
+                                                    @elseif ($antigArch->mime_type == 'application/zip' || $antigArch->mime_type == 'application/vnd.rar')
+                                                    <a  href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
+                                                        <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
+                                                            <img class="w-100" src="{{ asset('img/icons/file-type-excel.svg') }}">
                                                             <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
                                                         </figure>
                                                     </a>

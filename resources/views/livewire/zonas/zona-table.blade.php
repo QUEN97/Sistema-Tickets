@@ -1,210 +1,73 @@
-<div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
-    <div class="w-full">
-        <div class="flex gap-1 flex-col mb-2">
-            <form action="{{ route('zonas') }}" method="GET">
-                <div class="flex">
-                    <div class="relative">
-                        <label for="search" class="sr-only">Buscar</label>
-                        <input type="text" name="search" id="search"
-                            class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white"
-                            placeholder="Buscar..." value="{{ request('search') }}">
-                        <div class="absolute top-0 left-0 mt-3 ml-3">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.5 9a6.5 6.5 0 10-13 0 6.5 6.5 0 0013 0z" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="2"></path>
-                                <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <button type="submit"
-                        class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
-
-                </div>
-            </form>
-            
+<div>
+    <div class="py-4 space-y-4">
+        <div>
+            <x-input wire:model="search" type="text" class="w-full sm:w-1/2 lg:w-1/4" placeholder="Buscar zonas..."/>
         </div>
-        <table
-            class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th
-                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Id</th>
-                    <th
-                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Nombre</th>
-                    <th
-                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Status</th>
-                    <th
-                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Fecha de Registro</th>
-                    @if ($zonasSups->isnotEmpty() || Auth::user()->permiso_id != 1)
-                        @if ($valid->pivot->vermas == 1 || $valid->pivot->ed == 1 || $valid->pivot->de == 1)
-                            <th
-                                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                                Opciones</th>
-                        @endif
-                    @elseif (Auth::user()->permiso_id == 1)
-                        <th
-                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                            Opciones</th>
-                    @endif
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                @if (Auth::user()->permiso_id == 2)
-                    @forelse ($zonasSups as $zona)
-                        <tr>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Fecha
-                                    de Registro</span>
-                                {{ $zona->id }}
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
-                                <div class="text-sm">
-                                    <div class="font-medium text-gray-700 uppercase">{{ $zona->name }}</div>
-                                </div>
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Status</span>
-                                @if ($zona->status == 'Activo')
-                                    <span
-                                        class="rounded bg-green-200 py-1 px-3 text-xs text-green-500 font-bold">{{ $zona->status }}</span>
-                                @else
-                                    <span
-                                        class="rounded bg-red-200 py-1 px-3 text-xs text-red-500 font-bold">{{ $zona->status }}</span>
+      <div class="flex-col space-y-4">
+        <x-table>
+            <x-slot name="head">
+                <x-heading sortable wire:click="sortBy('id')" :direction="$sortField === 'id' ? $sortDirection : null">ID</x-heading>
+                <x-heading sortable wire:click="sortBy('name')" :direction="$sortField === 'name' ? $sortDirection : null">NOMBRE</x-heading>
+                <x-heading sortable wire:click="sortBy('status')" :direction="$sortField === 'status' ? $sortDirection : null">ESTADO</x-heading>
+                <x-heading sortable wire:click="sortBy('created_at')" :direction="$sortField === 'created_at' ? $sortDirection : null">FECHA REGISTRO</x-heading>
+                <x-heading >OPCIONES</x-heading>
+            </x-slot>
+            <x-slot name="body">
+                @forelse($zonas as $zona)
+                <x-row wire:loading.class.delay="opacity-75">
+                    <x-cell>{{ $zona->id }} </x-cell>
+                    <x-cell>{{ $zona->name }}</x-cell>
+                    <x-cell>
+                        <span class="rounded bg-{{ $zona->status_color }}-200 py-1 px-3 text-xs text-{{ $zona->status_color }}-500 font-bold">
+                            {{ $zona->status }}
+                        </span> 
+                    </x-cell>
+                    <x-cell> {{ $zona->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }} </x-cell>
+                    <x-cell>
+                        <div class="flex gap-2 justify-center items-center">
+                            <div>
+                                @if ($valid->pivot->ed == 1)
+                                    @livewire('zonas.zona-edit', ['zona_id' => $zona->id], key('ed'.$zona->id))
                                 @endif
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Fecha
-                                    de Registro</span>
-                                {{ $zona->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800  border border-b block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
-                                <div class="grid grid-cols-2">
-                                    <div>
-                                        @if ($valid->pivot->ed == 1)
-                                            @livewire('zonas.zona-edit', ['zona_id' => $zona->id])
-                                        @endif
-                                    </div>
-                                    <div>
-                                        @if ($valid->pivot->vermas == 1)
-                                            @livewire('zonas.show-zona', ['zona_show_id' => $zona->id])
-                                        @endif
-                                    </div>
-                                    <div>
-                                        @if ($valid->pivot->de == 1)
-                                            @livewire('zonas.zona-delete', ['zonaID' => $zona->id])
-                                        @endif
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static"
-                                colspan="4">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin
-                                    registros</span>
-                                {{ __('No hay zonas registradas') }}
-                            </td>
-                        </tr>
-                    @endforelse
-                @elseif (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
-                    @forelse($zonas as $zona)
-                        <tr>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                {{ $zona->id }}
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Nombre</span>
-                                <div class="text-sm">
-                                    <div class="font-medium text-gray-700 uppercase">{{ $zona->name }}</div>
-                                </div>
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Status</span>
-                                @if ($zona->status == 'Activo')
-                                    <span
-                                        class="rounded bg-green-200 py-1 px-3 text-xs text-green-500 font-bold">{{ $zona->status }}</span>
-                                @else
-                                    <span
-                                        class="rounded bg-red-200 py-1 px-3 text-xs text-red-500 font-bold">{{ $zona->status }}</span>
+                            </div>
+                            <div>
+                                @if ($valid->pivot->vermas == 1)
+                                    @livewire('zonas.show-zona', ['zona_show_id' => $zona->id], key('show'.$zona->id))
                                 @endif
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Fecha
-                                    de Registro</span>
-                                {{ $zona->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800  border border-b block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
-                                <div class="grid grid-cols-3">
-                                    <div>
-                                        @if ($valid->pivot->vermas == 1)
-                                            @livewire('zonas.show-zona', ['zona_show_id' => $zona->id])
-                                        @endif
-                                    </div>
-                                    <div>
-                                        @if ($valid->pivot->ed == 1)
-                                            @livewire('zonas.zona-edit', ['zona_id' => $zona->id])
-                                        @endif
-                                    </div>
-                                    <div>
-                                        @if ($valid->pivot->de == 1)
-                                            @livewire('zonas.zona-delete', ['zonaID' => $zona->id])
-                                        @endif
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static"
-                                colspan="4">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin
-                                    registros</span>
-                                {{ __('No hay zonas registradas') }}
-                            </td>
-                        </tr>
-                    @endforelse
-                @endif
-            </tbody>
-        </table>
-        @if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
-            <div class="mt-2 mb-2 mr-2" wire:ignore>
-                {{ $zonas->appends($_GET)->links() }}
+                            </div>
+                            <div>
+                                @if ($valid->pivot->de == 1)
+                                    @livewire('zonas.zona-delete', ['zonaID' => $zona->id], key('del'.$zona->id))
+                                @endif
+                            </div>
+                        </div>
+                    </x-cell>
+                </x-row>
+                @empty
+                <x-row>
+                    <x-cell colspan="5">
+                        <div class="flex justify-center items-center space-x-2">
+                            <x-icons.inbox class="w-8 h-8 text-gray-300"/>
+                            <span class="py-8 font-medium text-gray-400 text-xl">No se encontraron resultados...</span>
+                        </div>
+                    </x-cell>
+                </x-row>
+                @endforelse
+            </x-slot>
+        </x-table>
+        <div class="py-4 px-3">
+            <div class="flex space-x-4 items-center mb3">
+                <x-label class="text-sm font-medium text-gray-600">Mostrar</x-label>
+                <select wire:model.live="perPage" class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-indigo-500">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
             </div>
-        @else
-        @endif
-
+            {{ $zonas->links() }}
+        </div>
+      </div>
     </div>
 </div>

@@ -19,10 +19,11 @@ class ExportTck extends Component
     {
         $this->validate(['tipo' => ['required']], ['tipo.required' => 'Seleccione una opción']);
         if ($this->tipo == 'gral') {
+            $currentMonth = Carbon::now()->month;
             if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 8) {
                 //Usuarios Administrador o Auditoría
                 //Todos los tickets
-                $tickets = Ticket::all();
+                $tickets = Ticket::whereMonth('created_at', $currentMonth)->orderBy('created_at', 'desc')->get();
             } elseif (Auth::user()->permiso_id == 2) {
                 // Usuarios Supervisores
                 // Obtenemos el ID de la zona a la que pertenece el supervisor
@@ -41,9 +42,13 @@ class ExportTck extends Component
                         ->from('estacions')
                         ->where('supervisor_id', Auth::user()->id);
                 })
-                    ->whereIn('solicitante_id', $tckSupers->pluck('id'))
-                    ->orWhereIn('user_id', $tckSupers->pluck('id'))
-                    ->get();
+                ->whereMonth('created_at', $currentMonth)
+                ->orderBy('created_at', 'desc')
+                ->where(function ($query) use ($tckSupers) {
+                    $query->whereIn('solicitante_id', $tckSupers->pluck('id'))
+                          ->orWhereIn('user_id', $tckSupers->pluck('id'));
+                })
+                ->get();
             } elseif (Auth::user()->permiso_id == 4) {
                 // Usuarios Compras
                 // Obtenemos el ID de la zona a la que pertenece el personal de Compras
@@ -58,13 +63,17 @@ class ExportTck extends Component
                 //dd($tckComp);
                 // Devuelve los tickets de los usuarios en la misma zona que el personal de Compras
                 $tickets = Ticket::whereIn('solicitante_id', $tckComp->pluck('id'))
-                    ->get();
+                ->whereMonth('created_at', $currentMonth)->orderBy('created_at', 'desc')->get();
             }elseif (Auth::user()->permiso_id != 1 && Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 7 && Auth::user()->permiso_id != 8 && Auth::user()->permiso_id != 4) {
                 // Usuarios 
                 // Devuelve los tickets de los usuarios 
-                $tickets = Ticket::where('solicitante_id', Auth::user()->id)
-                ->orWhere('user_id',Auth::user()->id)
-                    ->get();
+                $tickets = Ticket::whereMonth('created_at', $currentMonth)
+                ->orderBy('created_at', 'desc')
+                ->where(function ($query) {
+                    $query->where('solicitante_id', Auth::user()->id)
+                          ->orWhere('user_id', Auth::user()->id);
+                })
+                ->get();
             }
         } else {
             $this->validate([
@@ -77,7 +86,7 @@ class ExportTck extends Component
             if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 8) {
                 //Usuarios Administrador o Auditoría
                 //Todos los tickets
-                $tickets = Ticket::whereBetween('created_at', [$this->dateIn, $this->dateEnd . ' 23:59:00'])->get();
+                $tickets = Ticket::where('status', '!=', 'Cerrado')->whereBetween('created_at', [$this->dateIn, $this->dateEnd . ' 23:59:00'])->get();
             } elseif (Auth::user()->permiso_id == 2) {
                 // Usuarios Supervisores
                 // Obtenemos el ID de la zona a la que pertenece el supervisor
@@ -95,6 +104,7 @@ class ExportTck extends Component
                     $query->whereIn('solicitante_id', $tckSupers->pluck('id'))
                           ->orWhereIn('user_id', $tckSupers->pluck('id'));
                 })
+                ->where('status', '!=', 'Cerrado')
                 ->whereBetween('created_at', [Carbon::parse($this->dateIn), Carbon::parse($this->dateEnd)->endOfDay()])
                 ->get();
             } elseif (Auth::user()->permiso_id == 4) {
@@ -111,6 +121,7 @@ class ExportTck extends Component
                 //dd($tckComp);
                 // Devuelve los tickets de los usuarios en la misma zona que el personal de Compras
                 $tickets = Ticket::whereIn('solicitante_id', $tckComp->pluck('id'))
+                ->where('status', '!=', 'Cerrado')
                 ->whereBetween('created_at', [Carbon::parse($this->dateIn), Carbon::parse($this->dateEnd)->endOfDay()])
                     ->get();
             }elseif (Auth::user()->permiso_id != 1 && Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 7 && Auth::user()->permiso_id != 8 && Auth::user()->permiso_id != 4) {
@@ -120,6 +131,7 @@ class ExportTck extends Component
                     $query->where('solicitante_id', Auth::user()->id)
                           ->orWhere('user_id', Auth::user()->id);
                 })
+                ->where('status', '!=', 'Cerrado')
                 ->whereBetween('created_at', [Carbon::parse($this->dateIn), Carbon::parse($this->dateEnd)->endOfDay()])
                 ->get();
             }

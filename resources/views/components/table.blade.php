@@ -1,15 +1,17 @@
-<table class="table table-striped text-center" style="width: 100%;">
+<div class="align-middle min-w-full overflow-x-auto shadow overflow-hidden sm:rounded-lg">
+  <table class="min-w-full divide-y divide-gray-200">
 
-  <thead class="table-thead-color">
-
-      <tr>
-        {{ $head }}
-      </tr>
-
-  </thead>
-
-  <tbody class="table-light">
-      {{ $body }}
-  </tbody>
-
-</table>
+    <thead>
+  
+        <tr>
+          {{ $head }}
+        </tr>
+  
+    </thead>
+  
+    <tbody class="bg-white divide-y divide-gray-200">
+        {{ $body }}
+    </tbody>
+  
+  </table>
+</div>
