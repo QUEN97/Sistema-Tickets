@@ -38,10 +38,10 @@
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             Stock actual
                         </th>
-                        <th
+                        {{-- <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             Stock sugerido
-                        </th>
+                        </th> --}}
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             Fecha de actualización
@@ -95,7 +95,7 @@
                                     {{ $producto->stock }}
                                 </div>
                             </th>
-                            <th
+                            {{-- <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
                                     <span
@@ -104,7 +104,7 @@
                                     </span>
                                     {{ $producto->stock_base }}
                                 </div>
-                            </th>
+                            </th> --}}
                             <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">

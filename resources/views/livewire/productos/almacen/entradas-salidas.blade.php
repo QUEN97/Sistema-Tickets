@@ -198,7 +198,7 @@
                             const ser = {!! json_encode($series) !!};
                             console.log(prod);
                         </script>
-                        <div class="flex justify-center items-center">
+                        <div class="flex flex-wrap justify-center items-center">
                             <template x-for="prod in carrito" :key="prod.id">
                                 <div class=" py-3  border-b border-gray-400 relative">
                                     <template x-if="prod.id>1">
