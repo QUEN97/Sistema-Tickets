@@ -10,7 +10,7 @@
             <div>
                 <div class="hidden lg:grid lg:grid-cols-6 items-center text-center py-2 px-3 text-white font-bold bg-gray-400 dark:bg-slate-600">
                     <span>#Ticket</span>
-                    <span>Estación</span>
+                    {{-- <span>Estación</span> --}}
                     <span>Equipo/material</span>
                     <span>Cantidad</span>
                     <span>Observación</span>
@@ -46,11 +46,11 @@
                                 </select>
                                 <x-input-error for="clase"></x-input-error>
                             </div>
-                            <div class="w-full">
+                            {{-- <div class="w-full">
                                 <x-label value="{{__('Estación')}}" for="estacion{{$productos[$key]['id']}}" class="block lg:hidden"/>
                                 <select id="estacion{{$productos[$key]['id']}}" wire:model.defer="productos.{{$key}}.est"
                                         class="w-full border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700  {{ $errors->has('clase') ? 'is-invalid' : '' }}" 
-                                        name="clase" required aria-required="true"{{--  @change="filter(event)" --}}>
+                                        name="clase" required aria-required="true">
                                     <option value="" hidden selected>Seleccione estación</option>
                                     <option value="NULL" >Sin estación</option>
                                     @foreach ($estaciones as $est)
@@ -58,7 +58,7 @@
                                     @endforeach
                                 </select>
                                 <x-input-error for="clase"></x-input-error>
-                            </div>
+                            </div> --}}
                             <div class="w-full text-center">
                                 <x-label value="{{__('Equipo/material:')}}" class="block lg:hidden"/>
                                 <span>{{$pr->producto->name}}</span>
@@ -93,11 +93,11 @@
         </div>
     </div>
     <div 
-        x-data="{productos:prod,estaciones:est,tickets:tck,contador:1,
-            carrito:[{id:1,tck:'',estacion:'',prod:'',observacion:'',cantsol:'',serie:''}],
+        x-data="{productos:prod,tickets:tck,contador:1,
+            carrito:[{id:1,tck:'',prod:'',observacion:'',cantsol:'',serie:''}],
             addChild(){
                 this.contador++;
-                this.carrito.push({id:this.contador,tck:'',estacion:'',prod:'',observacion:'',cantsol:'',serie:''})
+                this.carrito.push({id:this.contador,tck:'',prod:'',observacion:'',cantsol:'',serie:''})
             },
             remove(id){
                 this.carrito=this.carrito.filter((item)=>item.id!==id);
@@ -182,7 +182,7 @@
                     <template x-for="prod in carrito" :key="prod.id">
                         <div class="w-full h-fit flex max-lg:flex-wrap gap-1 items-start py-3  border-b border-gray-400 ">
                             <div class="flex flex-wrap gap-2 lg:grid lg:grid-cols-6 justify-items-center items-center">
-                                <div class="flex flex-col">
+                                {{-- <div class="flex flex-col">
                                     <label :for="`s${prod.id}`" class="font-medium text-sm text-gray-700 dark:text-gray-300">{{__('Estación')}}</label>
                                     <select :name="`s${prod.id}`" :id="`s${prod.id}`" x-model="prod.estacion"
                                         class="w-full border-gray-300 max-w-[185px] focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1">
@@ -192,7 +192,7 @@
                                             <option :value="estacion.id" x-text="estacion.name"></option>
                                         </template>
                                     </select>
-                                </div>
+                                </div> --}}
                                 <div>
                                     <label :for="`t${prod.id}`" class="font-medium text-sm text-gray-700 dark:text-gray-300">{{__('Ticket')}}</label>
                                     <select :name="`t${prod.id}`" :id="`t${prod.id}`" x-model="prod.tck"
@@ -261,11 +261,11 @@
                                     class="w-full border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700"
                                     name="observacion" id="obs{{$productos[$key]['id']}}">
                                         <option value="" hidden>Seleccione una opción</option>
-                                        <option value="Nuevo">Nuevo</option>
-                                        <option value="Usado">Usado</option>
-                                        <option value="Reparado">Reparado</option>
-                                        <option value="Dañado">Dañado</option>
-                                        <option value="Retorno">Retorno</option>
+                                        <option value="NUEVO">NUEVO</option>
+                                        <option value="USADO">USADO</option>
+                                        <option value="REPARADO">REPARADO</option>
+                                        <option value="DAÑADO">DAÑADO</option>
+                                        <option value="RETORNO">RETORNO</option>
                                     </select>
                                 </div>
                                 <div class="w-full">
@@ -296,7 +296,6 @@
             </div>
             <script>
                 const prod={!!json_encode($listProductos)!!};
-                const est={!!json_encode($estaciones)!!};
                 const tck={!!json_encode($tickets)!!}
             </script>
         </div>

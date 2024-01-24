@@ -45,9 +45,9 @@ class EditEntrada extends Component
             if($pr['tck']!='NULL'){
                 $reg->ticket_id=$pr['tck'];
             }
-            if($pr['est']!='NULL'){
-                $reg->estacion_id=$pr['est'];
-            }
+            // if($pr['est']!='NULL'){
+            //     $reg->estacion_id=$pr['est'];
+            // }
             //actualizamos el stock del producto
             $almCi=AlmacenCi::where('producto_id',$pr['producto'])->first();
             $almCi->stock-=$reg->cantidad;
@@ -68,9 +68,9 @@ class EditEntrada extends Component
             if($pr['tck']!='NULL'){
                 $newReg->ticket_id=$pr['tck'];
             }
-            if($pr['estacion']!='NULL'){
-                $newReg->estacion_id=$pr['estacion'];
-            }
+            // if($pr['estacion']!='NULL'){
+            //     $newReg->estacion_id=$pr['estacion'];
+            // }
             $newReg->cantidad=$pr['cantsol'];
             $newReg->observacion=$pr['observacion'];
             $newReg->save();
@@ -94,7 +94,7 @@ class EditEntrada extends Component
     public function PDF($id){
         $hora=Carbon::now();
         $table=Entrada::find($id);
-        $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
+        $resEntrega = $table->productos->first()->ticket->cliente->zonas->first()->regions[0]->id;
         $ticket = $table->productos->first()->ticket->agente->name; 
         $archivo='Folios/'.$table->folio->folio.' '.Auth::user()->name.''.$hora->hour.'-'.$hora->minute.'-'.$hora->second.'.pdf';
         $pdf=Pdf::loadView('modules.folios.PDF',['folio'=>$table,'tipo'=>'Entrada','archivo' => $archivo, 'resEntrega' => $resEntrega, 'name' => $ticket]);
@@ -117,7 +117,6 @@ class EditEntrada extends Component
             $this->productos[$key]=[
                 'id'=>$pr->id,
                 'producto'=>$pr->producto_id,
-                'est'=>$pr->estacion_id,
                 'obs'=>$pr->observacion,
                 'cant'=>$pr->cantidad,
                 'tck'=>$pr->ticket_id,

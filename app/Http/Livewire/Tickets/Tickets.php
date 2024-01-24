@@ -79,7 +79,11 @@ class Tickets extends Component
                             ->where(function ($query) use ($request,$usuario) {
                                 if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                     $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                        ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                    ->orWhereHas('falla',function(Builder $fallas)use($tck){
+                                        $fallas->where('name', 'LIKE', '%' . $tck . '%');
+                                    })
+                                    //->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                                    ->get();                
                                     }else{
                                         $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->when(Auth::user()->permiso_id==5,function ($q2)use($tck){
                                             $q2->orWhereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')));
@@ -109,7 +113,11 @@ class Tickets extends Component
                         ->where(function ($query) use ($request,$usuario) {
                             if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                 $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                    ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                ->orWhereHas('falla',function(Builder $fallas)use($tck){
+                                    $fallas->where('name', 'LIKE', '%' . $tck . '%');
+                                })
+                                //->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                                ->get();                
                                 }else{
                                     $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->when(Auth::user()->permiso_id==5,function ($q2)use($tck){
                                         $q2->orWhereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')));
@@ -140,7 +148,11 @@ class Tickets extends Component
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                             $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                            ->orWhereHas('falla',function(Builder $fallas)use($tck){
+                                $fallas->where('name', 'LIKE', '%' . $tck . '%');
+                            })
+                            //->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                            ->get();               
                             }else{
                                 $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->when(Auth::user()->permiso_id==5,function ($q2)use($tck){
                                     $q2->orWhereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')));
@@ -170,7 +182,11 @@ class Tickets extends Component
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                             $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                            ->orWhereHas('falla',function(Builder $fallas)use($tck){
+                                $fallas->where('name', 'LIKE', '%' . $tck . '%');
+                            })
+                            //->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                            ->get();               
                             }else{
                                 $query->whereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->when(Auth::user()->permiso_id==5,function ($q2)use($tck){
                                     $q2->orWhereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')));
@@ -193,7 +209,11 @@ class Tickets extends Component
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                 $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                ->orWhereHas('falla',function(Builder $fallas)use($tck){
+                                    $fallas->where('name', 'LIKE', '%' . $tck . '%');
+                                })
+                                //->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                                ->get();                 
                             }else{
                                 $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
                                 ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
@@ -205,7 +225,11 @@ class Tickets extends Component
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                 $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                ->orWhereHas('falla',function(Builder $fallas)use($tck){
+                                    $fallas->where('name', 'LIKE', '%' . $tck . '%');
+                                })
+                                //->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                                ->get();                 
                             }else{
                                 $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
                                 ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
@@ -219,7 +243,11 @@ class Tickets extends Component
                     ->where(function ($query) use ($request,$usuario) {
                         if (($tck = $request->tck) && ($usuario->count() == 0)) {
                                 $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                                ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                                ->orWhereHas('falla',function(Builder $fallas)use($tck){
+                                    $fallas->where('name', 'LIKE', '%' . $tck . '%');
+                                })
+                                //->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                                ->get();               
                             }else{
                                 $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
                                 ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();
@@ -230,7 +258,11 @@ class Tickets extends Component
                 ->where(function ($query) use ($request,$usuario) {
                     if (($tck = $request->tck) && ($usuario->count() == 0)) {
                             $query->orWhere('id', 'LIKE', '%' . $tck . '%')
-                            ->orWhere('asunto', 'LIKE', '%' . $tck . '%')->get();                
+                            ->orWhereHas('falla',function(Builder $fallas)use($tck){
+                                $fallas->where('name', 'LIKE', '%' . $tck . '%');
+                            })
+                            //->orWhere('asunto', 'LIKE', '%' . $tck . '%')
+                            ->get();                 
                         }else{
                             $query->whereIn('solicitante_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))
                             ->orWhereIn('user_id',(User::where('name', 'LIKE', '%' . $tck . '%')->pluck('id')))->get();

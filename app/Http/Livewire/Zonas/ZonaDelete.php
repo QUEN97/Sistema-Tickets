@@ -17,7 +17,7 @@ class ZonaDelete extends Component
     public function DeleteZona($id){
         $supplierDel=Zona::find($id);
         $supplierDel->status="Inactivo";
-        $supplierDel->save();
+        $supplierDel->delete();
         return redirect()->route('zonas');
     }
     public function render()

@@ -32,9 +32,7 @@ class EntradasSalidas extends Component
     public function mount()
     {
         // Recuperar tickets con compras relacionadas que tengan productos asociados
-        $this->tck = Ticket::whereHas('compras', function (Builder $compras) {
-            $compras->whereHas('productos');
-        })->orderBy('id', 'asc')->get();
+        $this->tck = Ticket::whereHas('compras')->orderBy('id', 'asc')->get();
 
         // Recuperar todos los productos de entrada y salida que tienen los IDs obtenidos
         $this->productosEntradaSalida = Producto::select('id', 'name', 'product_photo_path')->get();
@@ -117,11 +115,12 @@ class EntradasSalidas extends Component
         $hora = Carbon::now();
         if ($tipo == 'salida') {
             $table = Salida::find($id);
-            $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
+            $resEntrega = $table->productos->first()->ticket->cliente->zonas->first()->regions[0]->id;
             $ticket = $table->productos->first()->ticket->agente->name;
         } else {
             $table = Entrada::find($id);
-            $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
+            $resEntrega = $table->productos->first()->ticket->cliente->zonas->first()->regions[0]->id;
+            dd($resEntrega);
             $ticket = $table->productos->first()->ticket->agente->name;
         }
         $archivo = 'Folios/' . $table->folio->folio . ' ' . Auth::user()->name . '' . $hora->hour . '-' . $hora->minute . '-' . $hora->second . '.pdf';
@@ -187,7 +186,7 @@ class EntradasSalidas extends Component
             } else {
                 $newpAlm = new AlmacenCi();
                 $newpAlm->producto_id = $p['prod'];
-                $newpAlm->stock_base = $p['cantsol'];
+                $newpAlm->stock_base = 1;
                 $this->tipo == 'entrada'
                     ? $newpAlm->stock = 1
                     : $newpAlm->stock = 0;
