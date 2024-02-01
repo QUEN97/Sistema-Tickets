@@ -7,7 +7,7 @@
             </x-card-greet-header>
         </div>
     </x-slot>
-    <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+    {{-- <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <div class="flex gap-1 flex-col">
             <form action="{{ route('requisiciones') }}" method="GET">
                 <div class="flex">
@@ -236,8 +236,6 @@
                                         @endif
                                     @endif
 
-
-                                    {{-- @livewire('departamentos.delete-depto',['deptoID'=>$compra->id]) --}}
                                     @if (Auth::user()->permiso_id == 1 || Auth::user()->permiso_id == 4)
                                         @livewire('tickets.compras.acep-compra', ['compraID' => $compra->id, 'status' => $compra->status])
                                     @endif
@@ -249,8 +247,6 @@
                                             @livewire('tickets.compras.compra-reject', ['compraID' => $compra->id])
                                         @endif
                                     @endif
-
-
                                 </div>
                             </th>
                         </tr>
@@ -269,5 +265,6 @@
                 <span class="text-2xl">No hay datos registrados</span>
             </div>
         @endif
-    </div>
+    </div> --}}
+    @livewire('tickets.compras.compra-table')
 </x-app-layout>

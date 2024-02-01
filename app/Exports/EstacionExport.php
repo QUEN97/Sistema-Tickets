@@ -2,32 +2,23 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
-use App\Exports\Sheets\EstacionSheet;
-use App\Exports\Sheets\EstacionProductoSheet;
+use App\Models\Estacion;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use \Maatwebsite\Excel\Sheet;
+use Maatwebsite\Excel\Concerns\FromQuery;
 
-class EstacionExport implements WithMultipleSheets
+class EstacionExport implements FromQuery
 {
     use Exportable;
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function __construct($ini, $fin)
+
+    protected $estaciones;
+
+    public function __construct($estaciones)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
+        $this->estaciones=$estaciones;
     }
 
-    public function sheets(): array
-    {
-        $sheets = [];
-
-        $sheets[] = new EstacionSheet($this->ini, $this->fin);
-        $sheets[] = new EstacionProductoSheet($this->ini, $this->fin);
-
-        return $sheets;
-    }
+   public function query()
+   {
+    return Estacion::query()->whereKey($this->estaciones);
+   }
 }

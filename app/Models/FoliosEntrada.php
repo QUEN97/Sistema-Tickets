@@ -10,6 +10,13 @@ class FoliosEntrada extends Model
 {
     use HasFactory;
 
+    public function scopeSearch($query, $value){
+        $query->where('id', 'like', "%{$value}%")
+            ->orWhere('folio', 'like', "%{$value}%")
+            ->orWhere('created_at', 'like', "%{$value}%")
+            ->orWhere('updated_at', 'like', "%{$value}%");
+    }
+
     public function entradas():HasMany
     {
         return  $this->hasMany(Entrada::class,'folio_id')->orderBy('id','DESC');

@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class CorreosCompra extends Model
 {
     use HasFactory;
+
+    public function scopeSearch($query, $value){
+        $query->where('id', 'like', "%{$value}%")
+            ->orWhere('correo', 'like', "%{$value}%")
+            ->orWhere('created_at', 'like', "%{$value}%");
+    }
+
     public function correosZona():HasMany
     {
         return $this->hasMany(CorreosZona::class);

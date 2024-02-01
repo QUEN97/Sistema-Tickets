@@ -166,7 +166,7 @@
         </div>
     @endif
     @if ($status == 'Enviado a compras'  && auth()->user()->permiso_id==4)
-        <button type="button" wire:click="finish({{ $compraID }})" class="tooltip">
+        <button type="button" wire:click="finish({{ $compraID }})" wire:loading.attr="disabled" class="tooltip">
             <div role="status" wire:loading wire:target="completar">
                 <svg aria-hidden="true"
                     class="inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white"

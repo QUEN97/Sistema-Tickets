@@ -13,8 +13,40 @@ class Estacion extends Model
 
     use HasFactory;
     protected $fillable = [
-        'name', 'user_id', 'zona_id', 'supervisor_id','num_estacion'
+        'name', 'user_id', 'zona_id', 'supervisor_id', 'num_estacion'
     ];
+
+    public function scopeSearch($query, $value)
+    {
+        $query->where(function ($query) use ($value) {
+            $query->where('id', 'like', "%{$value}%")
+                ->orWhere('name', 'like', "%{$value}%")
+                ->orWhere('num_estacion', 'like', "%{$value}%")
+                ->orWhere('status', 'like', "%{$value}%")
+                ->orWhere('created_at', 'like', "%{$value}%");
+        })->orWhere(function ($query) use ($value) {
+            $query->whereIn('zona_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('zonas')
+                    ->where('name', 'LIKE', "%{$value}%");
+            })->orWhereIn('user_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('users')
+                    ->where('name', 'LIKE', "%{$value}%");
+            })->orWhereIn('supervisor_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('users')
+                    ->where('name', 'LIKE', "%{$value}%");
+            });
+        });
+    }
+    public function getStatusColorAttribute()
+    {
+        return [
+            'Activo' => 'green',
+            'Inactivo' => 'red',
+        ][$this->status] ?? 'gray';
+    }
 
     public function zona()
     {
@@ -25,21 +57,9 @@ class Estacion extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function supervisor()
     {
         return $this->belongsTo(User::class, 'supervisor_id');
-    }
-    public function productos()
-    {
-        return $this->belongsToMany(Producto::class)->withPivot('id', 'supervisor_id', 'stock', 'created_at', 'status', 'flag_trash')->using(EstacionProducto::class);
-    }
-    public function repuestos()
-    {
-        return $this->hasMany(Repuesto::class);
-    }
-    public function solicituds()
-    {
-        return $this->hasMany(Solicitud::class);
     }
 }

@@ -10,23 +10,23 @@ class RegionController extends Controller
 {
     public function home(Request $request){
         $valid = Auth::user()->permiso->panels->where('id', 9)->first();
-        $regiones = Region::where(function ($query) use ($request) {
-                $search = $request->input('search');
-                if ($search) {
-                    $query->where('id', 'LIKE', '%' . $search . '%')
-                        ->orWhere('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', 'LIKE', '%' . $search . '%');
-                } 
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(10)
-            ->withQueryString();
+        // $regiones = Region::where(function ($query) use ($request) {
+        //         $search = $request->input('search');
+        //         if ($search) {
+        //             $query->where('id', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('name', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('status', 'LIKE', '%' . $search . '%');
+        //         } 
+        //     })
+        //     ->orderBy('id', 'desc')
+        //     ->paginate(10)
+        //     ->withQueryString();
         $trashed = Region::onlyTrashed()->count();
         
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.regiones.regiones',compact('trashed','valid','regiones'));
+            return view('modules.regiones.regiones',compact('trashed','valid'));
         } elseif ($valid->pivot->re == 1) {
-            return view('modules.regiones.regiones',compact('trashed','valid','regiones'));
+            return view('modules.regiones.regiones',compact('trashed','valid'));
         } else {
             return redirect()->route('dashboard');
         }

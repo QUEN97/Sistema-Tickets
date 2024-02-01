@@ -21,7 +21,23 @@ class Falla extends Model
             set: fn (string $value) => mb_strtoupper($value),
         );
     }
-
+    public function scopeSearch($query, $value){
+        $query->where('id', 'like', "%{$value}%")
+            ->orWhere('name', 'like', "%{$value}%")
+            ->orWhere('status', 'like', "%{$value}%")
+            ->orWhere('created_at', 'like', "%{$value}%")
+            ->orWhereIn('servicio_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('servicios')
+                    ->where('name', 'LIKE', "%{$value}%");
+            });
+    }
+    public function getStatusColorAttribute(){
+        return[
+            'Activo' => 'green',
+            'Inactivo' => 'red',
+        ][$this->status] ?? 'gray';
+    }
     public function servicio(): BelongsTo
     {
         return $this->belongsTo(Servicio::class);

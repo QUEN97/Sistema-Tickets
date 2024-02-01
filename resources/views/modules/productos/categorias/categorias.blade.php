@@ -25,7 +25,7 @@
         </div>
     </x-slot>
 
-    <div
+    {{-- <div
         class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
         <div class="w-full">
             <div class="flex gap-1 flex-col mb-2">
@@ -140,5 +140,8 @@
                 {{ $categorias->appends($_GET)->links() }}
             </div>
         </div>
+    </div> --}}
+    <div>
+        @livewire('productos.categorias.cate-table')
     </div>
 </x-app-layout>

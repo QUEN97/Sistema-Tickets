@@ -15,6 +15,25 @@ class Prioridad extends Model
 
     protected $table="prioridades";
 
+    public function scopeSearch($query, $value){
+        $query->where('id', 'like', "%{$value}%")
+            ->orWhere('name', 'like', "%{$value}%")
+            ->orWhere('tiempo', 'like', "%{$value}%")
+            ->orWhere('status', 'like', "%{$value}%")
+            ->orWhere('created_at', 'like', "%{$value}%")
+            ->orWhereIn('tipo_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('tipos')
+                    ->where('name', 'LIKE', "%{$value}%");
+            });
+    }
+    public function getStatusColorAttribute(){
+        return[
+            'Activo' => 'green',
+            'Inactivo' => 'red',
+        ][$this->status] ?? 'gray';
+    }
+
     public function clase():BelongsTo{
 
         return $this->belongsTo(Tipo::class,'tipo_id');

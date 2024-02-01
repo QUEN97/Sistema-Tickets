@@ -21,6 +21,48 @@ class Ticket extends Model
             );
         }
 
+        public function scopeSearch($query, $value)
+    {
+        $query->where(function ($query) use ($value) {
+            $query->where('id', 'like', "%{$value}%")
+                ->orWhere('mensaje', 'like', "%{$value}%")
+                ->orWhere('status', 'like', "%{$value}%")
+                ->orWhere('created_at', 'like', "%{$value}%");
+        })->orWhere(function ($query) use ($value) {
+            $query->whereIn('falla_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('fallas')
+                    ->where('name', 'LIKE', "%{$value}%");
+            })->orWhereIn('user_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('users')
+                    ->where('name', 'LIKE', "%{$value}%");
+            })->orWhereIn('solicitante_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('users')
+                    ->where('name', 'LIKE', "%{$value}%");
+            })
+            ->orWhereHas('falla', function ($subquery) use ($value) {
+                $subquery->whereHas('prioridad', function ($userQuery) use ($value) {
+                    $userQuery->where('name', 'LIKE', "%{$value}%");
+                });
+            })
+            ->orWhereHas('agente', function ($subquery) use ($value) {
+                $subquery->whereHas('areas', function ($userQuery) use ($value) {
+                    $userQuery->where('name', 'LIKE', "%{$value}%");
+                });
+            });
+        });
+    }
+    public function getStatusColorAttribute()
+    {
+        return [
+            'Abierto' => 'green',
+            'En proceso' => 'yellow',
+            'Cerrado' => 'indigo',
+        ][$this->status] ?? 'gray';
+    }
+
     public function falla(): BelongsTo
     {
         return $this->belongsTo(Falla::class);

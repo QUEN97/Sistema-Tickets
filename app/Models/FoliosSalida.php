@@ -12,6 +12,13 @@ class FoliosSalida extends Model
     use HasFactory;
     use SoftDeletes;
 
+    public function scopeSearch($query, $value){
+        $query->where('id', 'like', "%{$value}%")
+            ->orWhere('folio', 'like', "%{$value}%")
+            ->orWhere('created_at', 'like', "%{$value}%")
+            ->orWhere('updated_at', 'like', "%{$value}%");
+    }
+
     public function salidas():HasMany
     {
         return $this->hasMany(Salida::class,'folio_id')->orderBy('id','DESC');

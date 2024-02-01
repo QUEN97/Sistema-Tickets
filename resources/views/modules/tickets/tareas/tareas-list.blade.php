@@ -7,7 +7,7 @@
             </x-card-greet-header>
         </div>
     </x-slot>
-    <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+    {{-- <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <div class="flex gap-1 flex-col">
             <form action="{{ route('tareas') }}" method="GET">
                 <div class="flex">
@@ -58,10 +58,6 @@
             <table>
                 <thead>
                     <tr>
-                        {{-- <th
-                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                            ID
-                        </th> --}}
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             Origen
@@ -100,16 +96,6 @@
                     @foreach ($tareasList as $tarea)
                         <tr
                             class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0 dark:bg-slate-800 dark:lg:hover:bg-slate-600">
-                            {{-- <th
-                                class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                <div class="w-full flex justify-center gap-2">
-                                    <span
-                                        class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
-                                        ID
-                                    </span>
-                                    {{ $tarea->id }}
-                                </div>
-                            </th> --}}
                             <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
@@ -201,7 +187,6 @@
                             <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
-                                    {{-- @livewire('tickets.tareas.tarea-detail', ['tareaID' => $tarea->id]) --}}
                                     @livewire('tickets.tareas.show-tarea', ['tareaID' => $tarea->id], key('show' . $tarea->id))
 
                                     @if ($tarea->status != 'Cerrado' || Auth::user()->permiso_id == 1)
@@ -233,5 +218,6 @@
                     <span class="">No hay tickets registrados.</span>
             </div>
         @endif
-    </div>
+    </div> --}}
+    @livewire('tickets.tareas.tarea-table')
 </x-app-layout>

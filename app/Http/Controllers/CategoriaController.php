@@ -20,23 +20,23 @@ class CategoriaController extends Controller
     {
         $valid = Auth::user()->permiso->panels->where('id', 13)->first();
 
-        $categorias = Categoria::where(function ($query) use ($request) {
-            $search = $request->input('search');
-            if ($search) {
-                $query->where('id', 'LIKE', '%' . $search . '%')
-                    ->orWhere('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('status', 'LIKE', '%' . $search . '%');
-            } 
-        })
-        ->orderBy('id', 'asc')
-        ->paginate(10)
-        ->withQueryString();
+        // $categorias = Categoria::where(function ($query) use ($request) {
+        //     $search = $request->input('search');
+        //     if ($search) {
+        //         $query->where('id', 'LIKE', '%' . $search . '%')
+        //             ->orWhere('name', 'LIKE', '%' . $search . '%')
+        //             ->orWhere('status', 'LIKE', '%' . $search . '%');
+        //     } 
+        // })
+        // ->orderBy('id', 'asc')
+        // ->paginate(10)
+        // ->withQueryString();
         $trashed = Categoria::onlyTrashed()->count();
         
         if (Auth::user()->permiso->id == 1) {
-            return view ('modules.productos.categorias.categorias', compact('categorias','trashed','valid'));
+            return view ('modules.productos.categorias.categorias', compact('trashed','valid'));
         } elseif ($valid->pivot->re == 1) {
-            return view ('modules.productos.categorias.categorias', compact('categorias','trashed','valid'));
+            return view ('modules.productos.categorias.categorias', compact('trashed','valid'));
         }else {
             return redirect()->route('dashboard');
         }
@@ -81,23 +81,23 @@ public function delete_permanently()
 public function marcas(Request $request){
     $valid = Auth::user()->permiso->panels->where('id', 14)->first();
 
-        $marcas = Marca::where(function ($query) use ($request) {
-                $search = $request->input('search');
-                if ($search) {
-                    $query->where('id', 'LIKE', '%' . $search . '%')
-                        ->orWhere('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', 'LIKE', '%' . $search . '%');
-                } 
-            })
-            ->orderBy('id', 'asc')
-            ->paginate(25)
-            ->withQueryString();
+        // $marcas = Marca::where(function ($query) use ($request) {
+        //         $search = $request->input('search');
+        //         if ($search) {
+        //             $query->where('id', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('name', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('status', 'LIKE', '%' . $search . '%');
+        //         } 
+        //     })
+        //     ->orderBy('id', 'asc')
+        //     ->paginate(25)
+        //     ->withQueryString();
     $trashed = Marca::onlyTrashed()->count();
     
     if (Auth::user()->permiso->id == 1) {
-        return view('modules.productos.marcas.index',compact('marcas','trashed','valid'));
+        return view('modules.productos.marcas.index',compact('trashed','valid'));
     } elseif ($valid->pivot->re == 1) {
-        return view('modules.productos.marcas.index',compact('marcas','trashed','valid'));
+        return view('modules.productos.marcas.index',compact('trashed','valid'));
     }else {
         return redirect()->route('dashboard');
     }
@@ -138,23 +138,23 @@ public function delete_permanentlyM()
 public function servicios(Request $request){
     $valid = Auth::user()->permiso->panels->where('id', 22)->first();
     // $servicios=TckServicio::paginate(10);
-    $servicios = TckServicio::where(function ($query) use ($request) {
-        $search = $request->input('search');
-        if ($search) {
-            $query->where('id', 'LIKE', '%' . $search . '%')
-                ->orWhere('name', 'LIKE', '%' . $search . '%')
-                ->orWhere('descripcion', 'LIKE', '%' . $search . '%')
-                ->orWhere('prioridad', 'LIKE', '%' . $search . '%');
-        } 
-    })
-    ->orderBy('id', 'DESC')
-    ->paginate(20)
-    ->withQueryString();
+    // $servicios = TckServicio::where(function ($query) use ($request) {
+    //     $search = $request->input('search');
+    //     if ($search) {
+    //         $query->where('id', 'LIKE', '%' . $search . '%')
+    //             ->orWhere('name', 'LIKE', '%' . $search . '%')
+    //             ->orWhere('descripcion', 'LIKE', '%' . $search . '%')
+    //             ->orWhere('prioridad', 'LIKE', '%' . $search . '%');
+    //     } 
+    // })
+    // ->orderBy('id', 'DESC')
+    // ->paginate(20)
+    // ->withQueryString();
     
     if (Auth::user()->permiso->id == 1) {
-        return view('modules.productos.servicios.servicios',compact('servicios','valid'));
+        return view('modules.productos.servicios.servicios',compact('valid'));
     } elseif ($valid->pivot->re == 1) {
-        return view('modules.productos.servicios.servicios',compact('servicios','valid'));
+        return view('modules.productos.servicios.servicios',compact('valid'));
     }else {
         return redirect()->route('dashboard');
     }

@@ -2,29 +2,23 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
-use App\Exports\Sheets\CategoriaSheet;
+use App\Models\Categoria;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\FromQuery;
 
-class CategoriaExtport implements WithMultipleSheets
+class CategoriaExtport implements FromQuery
 {
     use Exportable;
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function __construct($ini, $fin)
+
+    protected $categorias;
+
+    public function __construct($categorias)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
+        $this->categorias=$categorias;
     }
 
-    public function sheets(): array
-    {
-        $sheets = [];
-
-        $sheets[] = new CategoriaSheet($this->ini, $this->fin);
-
-        return $sheets;
-    }
+   public function query()
+   {
+    return Categoria::query()->whereKey($this->categorias);
+   }
 }

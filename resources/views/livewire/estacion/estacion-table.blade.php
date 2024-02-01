@@ -1,126 +1,113 @@
-<div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-    <div class="w-full flex pb-4">
-        <div class="w-3/6 mx-1">
-            <label for="search">Busqueda:</label>
-            <input wire:model.debounce.300ms="search" type="text"
-                class="block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-eval-0 dark:text-white dark:border-gray-900"
-                placeholder="Buscar estaciones...">
-        </div>
-        <div class="w-1/6 relative mx-1">
-            <label for="filterZonas">Filtrar:</label>
-            <select wire:model="filterZonas" id="filterZonas"
-                class="block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-eval-0 dark:text-white dark:border-gray-900">
-                <option value="">Todos</option>
-                @foreach ($zonas as $zona)
-                    <option value="{{ $zona->id }}">{{ $zona->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="w-1/6 relative mx-1">
-            <label for="orderBy">Ordenar por:</label>
-            <select wire:model="orderBy"
-                class="block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-eval-0 dark:text-white dark:border-gray-900"
-                id="grid-state">
-                <option value="id">ID</option>
-                <option value="name">Nombre</option>
-            </select>
-        </div>
-        <div class="w-1/6 relative mx-1">
-            <label for="orderAsc">Orden:</label>
-            <select wire:model="orderAsc"
-                class="block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-eval-0 dark:text-white dark:border-gray-900"
-                id="grid-state">
-                <option value="1">Ascendente</option>
-                <option value="0">Descendente</option>
-            </select>
-        </div>
-        <div class="w-1/6 relative mx-1">
-            <label for="perPage">Mostrar:</label>
-            <select wire:model="perPage"
-                class="block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-eval-0 dark:text-white dark:border-gray-900"
-                id="grid-state">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-            </select>
-        </div>
-    </div>
+<div>
+    <div class="py-4 space-y-4">
+        {{-- Filtros --}}
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            {{-- Barra de Busqueda --}}
+            <div>
+                <x-input wire:model="search" type="text" class="w-auto" placeholder="Buscar estaciones..." />
+            </div>
+            {{-- Acciones Masivas --}}
+            @if ($checked)
+                <x-dropdown align="right" width="60">
+                    <x-slot name="trigger">
+                        <button type="button"
+                            class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                            Seleccionados
+                            <span
+                                class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-gray-800 bg-gray-200 rounded-full">
+                                {{ count($checked) }}
+                            </span>
+                        </button>
+                    </x-slot>
 
-   <div>
-        <table class="border-collapse w-full  bg-white text-center">
-            <thead>
-                <tr>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        ID
-                    </th>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        Nombre
-                    </th>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        #Estación
-                    </th>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        Gerente
-                    </th>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        Supervisor
-                    </th>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        Zona
-                    </th>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        Fecha de Registro
-                    </th>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        Status
-                    </th>
-                    <th class="p-3 font-bold uppercase bg-gray-800 text-white  hidden lg:table-cell dark:bg-slate-700">
-                        Opciones
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($estaciones as $esta)
-                    <tr
-                        class="bg-white lg:hover:bg-blue-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0 dark:bg-slate-800 dark:lg:hover:bg-slate-600">
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
-                                <span
-                                    class="lg:hidden rounded-sm bg-black p-1 text-xs text-white font-bold uppercase dark:bg-gray-200 dark:text-black">
-                                    ID
-                                </span>
-                                {{ $esta->id }}
+                    <x-slot name="content">
+                        <div class="w-60">
+                            <!-- Encabezado -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Opciones') }}
                             </div>
-                        </th>
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
-                                <span
-                                    class="lg:hidden rounded-sm bg-black p-1 text-xs text-white font-bold uppercase dark:bg-gray-200 dark:text-black">
-                                    Nombre
-                                </span>
-                                {{ $esta->name }}
+                            <!-- Eliminar y Exportar-->
+                            <div>
+                                @if ($valid->pivot->de == 1)
+                                    <x-dropdown-link href="#" wire:click="deleteEstaciones">
+                                        {{ __('Eliminar Estación') }}
+                                    </x-dropdown-link>
+                                @endif
+                                <x-dropdown-link href="#" wire:click="exportSelected">
+                                    {{ __('Exportar a Excel') }}
+                                </x-dropdown-link>
                             </div>
-                        </th>
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
-                                <span
-                                    class="lg:hidden rounded-sm bg-black p-1 text-xs text-white font-bold uppercase dark:bg-gray-200 dark:text-black">
-                                    Número
-                                </span>
-                                {{ $esta->num_estacion }}
-                            </div>
-                        </th>
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
-                                <span
-                                    class="lg:hidden rounded-sm bg-black p-1 text-xs text-white font-bold uppercase dark:bg-gray-200 dark:text-black">
-                                    Gerente
-                                </span>
+                        </div>
+                    </x-slot>
+                </x-dropdown>
+            @endif
+            {{-- Filtro de Fechas --}}
+            <div class="flex items-center">
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                        </svg>
+                    </div>
+                    <input type="date" name="start" id="from_date" wire:model="from_date"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <span class="mx-4 text-gray-500">a</span>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                        </svg>
+                    </div>
+                    <input type="date" name="end" id="to_date" wire:model="to_date"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <button wire:click="clearDateFilters" class="mx-4 text-gray-500">x</button>
+            </div>
+        </div>
+        @if ($selectPage)
+            @if ($selectAll)
+                <div class="text-gray-400 text-xs">
+                    Se han seleccionado <strong>{{ $estaciones->total() }}</strong> elementos.
+                </div>
+            @else
+                <div class="text-gray-400 text-xs">
+                    Se han seleccionado <strong>{{ count($checked) }}</strong> elementos, ¿Deseas seleccionar los
+                    <strong>{{ $estaciones->total() }}</strong>?
+                    <a href="#" class="text-blue-500 hover:underline" wire:click="selectAll">Seleccionar todo</a>
+                </div>
+            @endif
+        @endif
+
+        <div class="flex-col space-y-4">
+            {{-- Componente tabla --}}
+            <x-table>
+                <x-slot name="head">
+                    {{-- Componente Heading  --}}
+                    <x-heading><x-input type="checkbox" wire:model="selectPage" /></x-heading>
+                    <x-heading sortable wire:click="sortBy('id')" :direction="$sortField === 'id' ? $sortDirection : null">ID</x-heading>
+                    <x-heading sortable wire:click="sortBy('name')" :direction="$sortField === 'name' ? $sortDirection : null">ESTACIÓN</x-heading>
+                    <x-heading sortable wire:click="sortBy('user_id')" :direction="$sortField === 'user_id' ? $sortDirection : null">GERENTE</x-heading>
+                    <x-heading sortable wire:click="sortBy('supervisor_id')" :direction="$sortField === 'supervisor_id' ? $sortDirection : null">SUPERVISOR</x-heading>
+                    <x-heading sortable wire:click="sortBy('zona_id')" :direction="$sortField === 'zona_id' ? $sortDirection : null">ZONA</x-heading>
+                    <x-heading sortable wire:click="sortBy('status')" :direction="$sortField === 'status' ? $sortDirection : null">ESTADO</x-heading>
+                    {{-- <x-heading sortable wire:click="sortBy('created_at')" :direction="$sortField === 'created_at' ? $sortDirection : null">FECHA REGISTRO</x-heading> --}}
+                    <x-heading>OPCIONES</x-heading>
+                </x-slot>
+                <x-slot name="body">
+                    @forelse($estaciones as $esta)
+                        {{-- Componente Row --}}
+                        <x-row wire:loading.class.delay="opacity-75">
+                            {{-- Componente Column --}}
+                            <x-cell> <x-input type="checkbox" value="{{ $esta->id }}" wire:model="checked" />
+                            </x-cell>
+                            <x-cell>{{ $esta->id }} </x-cell>
+                            <x-cell>{{ $esta->name }}</x-cell>
+                            <x-cell>
                                 @if ($esta->user_id != 0 || $esta->user_id != null)
                                     @if ($esta->user->permiso_id == 3 && $esta->user->status == 'Activo')
                                         {{ $esta->user->name }}
@@ -144,15 +131,8 @@
                                         {{ __('Sin Gerente') }}
                                     </p>
                                 @endif
-                            </div>
-                        </th>
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
-                                <span
-                                    class="lg:hidden rounded-sm bg-black p-1 text-xs text-white font-bold uppercase dark:bg-gray-200 dark:text-black">
-                                    Supervisor
-                                </span>
+                            </x-cell>
+                            <x-cell>
                                 @if ($esta->supervisor_id != 0 || $esta->supervisor_id != null)
                                     @if ($esta->supervisor->permiso_id == 2 && $esta->supervisor->status == 'Activo')
                                         {{ $esta->supervisor->name }}
@@ -176,15 +156,8 @@
                                         {{ __('Sin Supervisor') }}
                                     </p>
                                 @endif
-                            </div>
-                        </th>
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
-                                <span
-                                    class="lg:hidden rounded-sm bg-black p-1 text-xs text-white font-bold uppercase dark:bg-gray-200 dark:text-black">
-                                    Zona
-                                </span>
+                            </x-cell>
+                            <x-cell>
                                 @if ($esta->zona->status == 'Inactivo')
                                     <p class="text-red-500">
                                         {{ $esta->zona->name }}
@@ -203,48 +176,63 @@
                                 @else
                                     {{ $esta->zona->name }}
                                 @endif
-                            </div>
-                        </th>
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
+                            </x-cell>
+                            <x-cell>
                                 <span
-                                    class="lg:hidden rounded-sm bg-black p-1 text-xs text-white font-bold uppercase dark:bg-gray-200 dark:text-black">
-                                    Fecha
+                                    class="rounded bg-{{ $esta->status_color }}-200 py-1 px-3 text-xs text-{{ $esta->status_color }}-500 font-bold">
+                                    {{ $esta->status }}
                                 </span>
-                                {{ $esta->created_at->locale('es')->isoFormat('D / MMMM / YYYY H:mm:ss a') }}
-                            </div>
-                        </th>
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
-                                <span
-                                    class="lg:hidden rounded-sm bg-black p-1 text-xs text-white font-bold uppercase dark:bg-gray-200 dark:text-black">
-                                    Status
-                                </span>
-                                @if ($esta->status == 'Activo')
-                                    <span
-                                        class="rounded bg-green-200 py-1 px-3 text-xs text-green-500 font-bold">{{ $esta->status }}</span>
-                                @else
-                                    <span
-                                        class="rounded bg-red-200 py-1 px-3 text-xs text-red-500 font-bold">{{ $esta->status }}</span>
-                                @endif
-                            </div>
-                        </th>
-                        <th
-                            class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                            <div class="w-full flex justify-center gap-2">
-                                    @livewire('estacion.show-estacion', ['estacion_show_id' => $esta->id], key('show' . $esta->id))
-                                    @livewire('estacion.estacion-edit', ['estacion_id' => $esta->id], key('edit' . $esta->id))
-                                    @livewire('estacion.estacion-delete', ['estaID' => $esta->id], key('delete' . $esta->id))
-                            </div>
-                        </th>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div class="mt-2">
-            {{ $estaciones->links() }}
+                            </x-cell>
+                            {{-- <x-cell> {{ $esta->created_at->locale('es')->isoFormat('D  MMMM  YYYY') }}
+                            </x-cell> --}}
+                            <x-cell>
+                                <div class="flex gap-2 justify-center items-center">
+                                    <div>
+                                        @if ($valid->pivot->vermas == 1)
+                                            @livewire('estacion.show-estacion', ['estacion_show_id' => $esta->id], key('show'.$esta->id))
+                                        @endif
+                                    </div>
+                                    <div>
+                                        @if ($valid->pivot->ed == 1)
+                                            @livewire('estacion.estacion-edit', ['estacion_id' => $esta->id], key('ed'.$esta->id))
+                                        @endif
+                                    </div>
+                                    <div>
+                                        @if ($valid->pivot->de == 1)
+                                            @livewire('estacion.estacion-delete', ['estaID' => $esta->id], key('del'.$esta->id))
+                                        @endif
+                                    </div>
+                                </div>
+                            </x-cell>
+                        </x-row>
+                    @empty
+                        <x-row>
+                            <x-cell colspan="8">
+                                <div class="flex justify-center items-center space-x-2">
+                                    <x-icons.inbox class="w-8 h-8 text-gray-300" />
+                                    <span class="py-8 font-medium text-gray-400 text-xl">No se encontraron
+                                        resultados...</span>
+                                </div>
+                            </x-cell>
+                        </x-row>
+                    @endforelse
+                </x-slot>
+            </x-table>
+            {{-- Paginación y contenido por página --}}
+            <div class="py-4 px-3">
+                <div class="flex space-x-4 items-center mb3">
+                    <x-label class="text-sm font-medium text-gray-600">Mostrar</x-label>
+                    <select wire:model.live="perPage"
+                        class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-indigo-500">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                {{ $estaciones->links() }}
+            </div>
         </div>
     </div>
 </div>

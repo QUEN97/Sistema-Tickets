@@ -26,7 +26,7 @@
             </div>
         </div>
     </x-slot>
-    <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+    {{-- <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         @if ($tipos->count() > 0)
             <div class="grid grid-cols-3 mb-2 mt-2">
                 <div class="ml-2">
@@ -163,5 +163,8 @@
                 <span class="text-2xl">No hay datos registrados</span>
             </div>
         @endif
+    </div> --}}
+    <div>
+        @livewire('tipos.tipo-table')
     </div>
 </x-app-layout>

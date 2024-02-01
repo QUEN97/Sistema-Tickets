@@ -26,7 +26,7 @@
             </div>
         </div>
     </x-slot>
-    <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+    {{-- <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <div class="flex gap-1 flex-col">
             <form action="{{ route('prioridades') }}" method="GET">
                 <div class="flex">
@@ -209,5 +209,8 @@
             </div>
         @endif
 
+    </div> --}}
+    <div>
+        @livewire('prioridades.prioridad-table')
     </div>
 </x-app-layout>

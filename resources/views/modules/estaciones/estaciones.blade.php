@@ -27,7 +27,7 @@
         </div>
     </x-slot>
 
-    <div
+    {{-- <div
         class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
         <div class="w-full">
             <div class="flex gap-1 flex-col mb-3">
@@ -53,24 +53,6 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="relative">
-                            <label for="search" class="sr-only">Buscar</label>
-                            <input type="text" name="search" id="search"
-                                class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white"
-                                placeholder="Buscar..." value="{{ request('search') }}">
-                            <div class="absolute top-0 left-0 mt-3 ml-3">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M16.5 9a6.5 6.5 0 10-13 0 6.5 6.5 0 0013 0z" stroke-linecap="round"
-                                        stroke-linejoin="round" stroke-width="2"></path>
-                                    <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2">
-                                    </path>
-                                </svg>
-                            </div>
-                        </div>
-                        <button type="submit"
-                            class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
                     </div>
                 </form>
             </div>
@@ -248,6 +230,9 @@
                 {{ $estaciones->appends($_GET)->links() }}
             </div>
         </div>
+    </div> --}}
+    <div>
+        @livewire('estacion.estacion-table')
     </div>
 
 </x-app-layout>

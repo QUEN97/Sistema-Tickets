@@ -11,24 +11,12 @@ class DepartamentoController extends Controller
 {
     public function home(Request $request){
         $valid = Auth::user()->permiso->panels->where('id', 7)->first();
-
-        $deptos = Departamento::where(function ($query) use ($request) {
-                $search = $request->input('search');
-                if ($search) {
-                    $query->where('id', 'LIKE', '%' . $search . '%')
-                        ->orWhere('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', 'LIKE', '%' . $search . '%');
-                } 
-            })
-            ->orderBy('id', 'asc')
-            ->paginate(10)
-            ->withQueryString();
         $trashed = Departamento::onlyTrashed()->count();
         
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.departamentos.departamentos',compact('valid','trashed','deptos'));
+            return view('modules.departamentos.departamentos',compact('valid','trashed'));
           } elseif ($valid->pivot->re == 1) {
-            return view('modules.departamentos.departamentos',compact('valid','trashed','deptos'));
+            return view('modules.departamentos.departamentos',compact('valid','trashed'));
           }else {
               return redirect()->route('dashboard');
           }

@@ -30,7 +30,7 @@ class ZonaTable extends Component
     public function render()
     {
         $this->valid = Auth::user()->permiso->panels->where('id', 12)->first();
-        
+
         //$trashed = Zona::onlyTrashed()->count();
         return view('livewire.zonas.zona-table', [
             'trashed' => Zona::onlyTrashed()->count(),
@@ -58,7 +58,7 @@ class ZonaTable extends Component
         $this->selectAll = true;
         $this->checked = $this->zonasQuery->pluck('id');
     }
-    
+
     public function updatedPerPage()
     {
         $this->resetPage();
@@ -84,21 +84,21 @@ class ZonaTable extends Component
     {
         $user = Auth::user();
 
-return Zona::search($this->search)
-    ->when($user->permiso_id == 1, function ($query) {
-        // Si el usuario es un administrador, no aplicamos restricciones
-        return $query;
-    }, function ($query) use ($user) {
-        // Si el usuario es un supervisor, filtramos por sus zonas asignadas
-        $zones = $user->zonas->pluck('id')->toArray();
-        return $query->whereIn('zonas.id', $zones);
-    })
-    ->when($this->sortField, function ($query) {
-        return $query->orderBy($this->sortField, $this->sortDirection);
-    })
-    ->when($this->from_date && $this->to_date, function ($query) {
-        return $query->whereBetween('created_at', [$this->from_date, $this->to_date . " 23:59:59"]);
-    });
+        return Zona::search($this->search)
+            ->when($user->permiso_id == 1 || $user->permiso_id == 5, function ($query) {
+                // Si el usuario es un administrador, no aplicamos restricciones
+                return $query;
+            }, function ($query) use ($user) {
+                // Si el usuario es un supervisor, filtramos por sus zonas asignadas
+                $zones = $user->zonas->pluck('id')->toArray();
+                return $query->whereIn('zonas.id', $zones);
+            })
+            ->when($this->sortField, function ($query) {
+                return $query->orderBy($this->sortField, $this->sortDirection);
+            })
+            ->when($this->from_date && $this->to_date, function ($query) {
+                return $query->whereBetween('created_at', [$this->from_date, $this->to_date . " 23:59:59"]);
+            });
     }
 
     public function sortBy($field)
@@ -120,8 +120,8 @@ return Zona::search($this->search)
     {
         Zona::whereKey($this->checked)->delete();
         $this->checked = [];
-        $this->selectAll=false;
-        $this->selectPage=false;
+        $this->selectAll = false;
+        $this->selectPage = false;
         session()->flash('flash.banner', 'ELIMINADO, la zona  ha sido eliminada del sistema.');
         session()->flash('flash.bannerStyle', 'success');
         return redirect(request()->header('Referer'));

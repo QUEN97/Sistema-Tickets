@@ -21,6 +21,19 @@ class Marca extends Model
         );
     }
 
+    public function scopeSearch($query, $value){
+        $query->where('id', 'like', "%{$value}%")
+            ->orWhere('name', 'like', "%{$value}%")
+            ->orWhere('status', 'like', "%{$value}%")
+            ->orWhere('created_at', 'like', "%{$value}%");
+    }
+    public function getStatusColorAttribute(){
+        return[
+            'Activo' => 'green',
+            'Inactivo' => 'red',
+        ][$this->status] ?? 'gray';
+    }
+
     public function productos():HasMany{
         return $this->hasMany(Producto::class);
     }

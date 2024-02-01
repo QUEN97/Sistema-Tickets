@@ -17,6 +17,18 @@ class TckServicio extends Model
             set:fn(string $value)=> mb_strtoupper($value),
         );
     }
+    public function scopeSearch($query, $value){
+        $query->where('id', 'like', "%{$value}%")
+            ->orWhere('name', 'like', "%{$value}%")
+            ->orWhere('descripcion', 'like', "%{$value}%")
+            ->orWhere('created_at', 'like', "%{$value}%");
+    }
+    public function getStatusColorAttribute(){
+        return[
+            'Activo' => 'green',
+            'Inactivo' => 'red',
+        ][$this->status] ?? 'gray';
+    }
     public function compras():HasMany
     {
         return $this->hasMany(CompraServicio::class,'servicio_id');

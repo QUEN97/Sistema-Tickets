@@ -9,42 +9,19 @@ use Illuminate\Support\Facades\Auth;
 
 class AreaController extends Controller
 {
-    public $filterSoli;
-    public $deptos;
+    // public $filterSoli;
+    // public $deptos;
 
     public function home(Request $request)
     {
 
         $valid = Auth::user()->permiso->panels->where('id', 6)->first();
-
-        $this->filterSoli = $request->input('filterSoli') == 'Todos' ? null : $request->input('filterSoli');
-
-        $deptos = Departamento::where('status', 'Activo')->get();
-        $depto = Departamento::where('name', 'LIKE', '%' . $request->search . '%')->get();
-
-        $areas = Areas::where(function ($query) use ($request, $depto) {
-            $search = $request->input('search');
-            if ($search && $depto->count() === 0) {
-                $query->where('id', 'LIKE', '%' . $search . '%')
-                    ->orWhere('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('status', 'LIKE', '%' . $search . '%');
-            } else {
-                $query->whereIn('departamento_id', Departamento::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
-            }
-        })
-            ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request) {
-                $filterSoli = $request->input('filter');
-                $query->where('departamento_id', $filterSoli);
-            })
-            ->orderBy('id', 'asc')
-            ->paginate(10)
-            ->withQueryString();
         $trashed = Areas::onlyTrashed()->count();
         
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.areas.areas', compact('valid','trashed','deptos','areas'));
+            return view('modules.areas.areas', compact('valid','trashed'));
         } elseif ($valid->pivot->re == 1) {
-            return view('modules.areas.areas', compact('valid','trashed','deptos','areas'));
+            return view('modules.areas.areas', compact('valid','trashed'));
         }else {
             return redirect()->route('dashboard');
         }

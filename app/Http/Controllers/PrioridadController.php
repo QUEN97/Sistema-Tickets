@@ -14,35 +14,35 @@ class PrioridadController extends Controller
 
     public function home(Request $request){
         $valid = Auth::user()->permiso->panels->where('id', 17)->first();
-        $this->filterSoli = $request->input('filterSoli') == 'Tipos' ? null : $request->input('filterSoli');
+        // $this->filterSoli = $request->input('filterSoli') == 'Tipos' ? null : $request->input('filterSoli');
 
-        $tipos = Tipo::where('status', 'Activo')->get();
-        $tipo=Tipo::where('name', 'LIKE', '%' . $request->search . '%')->get();
+        // $tipos = Tipo::where('status', 'Activo')->get();
+        // $tipo=Tipo::where('name', 'LIKE', '%' . $request->search . '%')->get();
 
-        $prioridades = Prioridad::where(function ($query) use ($request, $tipo) {
-                $search = $request->input('search');
-                if ($search && $tipo->count() === 0) {
-                    $query->where('id', 'LIKE', '%' . $search . '%')
-                        ->orWhere('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('tiempo', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', 'LIKE', '%' . $search . '%');
-                } else {
-                    $query->whereIn('tipo_id', Tipo::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
-                }
-            })
-            ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request){
-                $filterSoli = $request->input('filter');
-                $query->where('tipo_id', $filterSoli);
-            })
-            ->orderBy('id', 'asc')
-            ->paginate(10)
-            ->withQueryString();
+        // $prioridades = Prioridad::where(function ($query) use ($request, $tipo) {
+        //         $search = $request->input('search');
+        //         if ($search && $tipo->count() === 0) {
+        //             $query->where('id', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('name', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('tiempo', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('status', 'LIKE', '%' . $search . '%');
+        //         } else {
+        //             $query->whereIn('tipo_id', Tipo::where('name', 'LIKE', '%' . $search . '%')->pluck('id'));
+        //         }
+        //     })
+        //     ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request){
+        //         $filterSoli = $request->input('filter');
+        //         $query->where('tipo_id', $filterSoli);
+        //     })
+        //     ->orderBy('id', 'asc')
+        //     ->paginate(10)
+        //     ->withQueryString();
         $trashed = Prioridad::onlyTrashed()->count();
         
         if (Auth::user()->permiso->id == 1) {
-           return view('modules.prioridades.prioridades',compact('prioridades','trashed','tipos','valid'));
+           return view('modules.prioridades.prioridades',compact('trashed','valid'));
         } elseif ($valid->pivot->re == 1) {
-           return view('modules.prioridades.prioridades',compact('prioridades','trashed','tipos','valid'));
+           return view('modules.prioridades.prioridades',compact('trashed','valid'));
         } else {
             return redirect()->route('dashboard');
         }

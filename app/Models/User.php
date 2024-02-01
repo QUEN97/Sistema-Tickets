@@ -70,8 +70,36 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-   
-    
+    public function scopeSearch($query, $value)
+    {
+        $query->where(function ($query) use ($value) {
+            $query->where('id', 'like', "%{$value}%")
+                ->orWhere('name', 'like', "%{$value}%")
+                ->orWhere('username', 'like', "%{$value}%")
+                ->orWhere('email', 'like', "%{$value}%")
+                ->orWhere('status', 'like', "%{$value}%")
+                ->orWhere('created_at', 'like', "%{$value}%");
+        })->orWhere(function ($query) use ($value) {
+            $query->whereIn('permiso_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('permisos')
+                    ->where('titulo_permiso', 'LIKE', "%{$value}%");
+            });
+        })->orWhereHas('zonas', function ($query) use ($value) {
+            $query->where('name', 'like', "%{$value}%");
+        })
+            ->orWhereHas('areas', function ($query) use ($value) {
+                $query->where('name', 'like', "%{$value}%");
+            });
+    }
+    public function getStatusColorAttribute()
+    {
+        return [
+            'Activo' => 'green',
+            'Inactivo' => 'red',
+        ][$this->status] ?? 'gray';
+    }
+
 
     public function permiso()
     {
@@ -98,52 +126,57 @@ class User extends Authenticatable
         return $this->belongsTo(Tarea::class);
     }
 
-    public function areas(){
-        return $this->belongsToMany(Areas::class,'user_areas',null,'area_id');
+    public function areas()
+    {
+        return $this->belongsToMany(Areas::class, 'user_areas', null, 'area_id');
     }
 
-    public function region(){
+    public function region()
+    {
         return $this->belongsTo(Region::class);
     }
 
-    public function tickets():HasMany{
+    public function tickets(): HasMany
+    {
         return $this->hasMany(Ticket::class);
     }
-    public function tckGen():HasMany
+    public function tckGen(): HasMany
     {
-        return $this->hasMany(Ticket::class,'solicitante_id');
+        return $this->hasMany(Ticket::class, 'solicitante_id');
     }
-    public function ticketsHoy(){  //asignamos tickets de manera equitativa, sin que se reinicie cada dia
-        $fechaHoy=Carbon::now();
-        $hoy=$fechaHoy->format('Y-m-d');
-        $ayer=$fechaHoy->subDay()->format('Y-m-d');
-        return $this->hasMany(Ticket::class)->whereBetween('created_at',[$ayer.' 00:00:00',$hoy.' 23:59:00']);
+    public function ticketsHoy()
+    {  //asignamos tickets de manera equitativa, sin que se reinicie cada dia
+        $fechaHoy = Carbon::now();
+        $hoy = $fechaHoy->format('Y-m-d');
+        $ayer = $fechaHoy->subDay()->format('Y-m-d');
+        return $this->hasMany(Ticket::class)->whereBetween('created_at', [$ayer . ' 00:00:00', $hoy . ' 23:59:00']);
     }
-    public function tareasHoy(){  //asignamos tareas de manera equitativa, sin que se reinicie cada dia
-        $fechaHoy=Carbon::now();
-        $hoy=$fechaHoy->format('Y-m-d');
-        $ayer=$fechaHoy->subDay()->format('Y-m-d');
-        return $this->hasMany(Tarea::class)->whereBetween('created_at',[$ayer.' 00:00:00',$hoy.' 23:59:00']);
+    public function tareasHoy()
+    {  //asignamos tareas de manera equitativa, sin que se reinicie cada dia
+        $fechaHoy = Carbon::now();
+        $hoy = $fechaHoy->format('Y-m-d');
+        $ayer = $fechaHoy->subDay()->format('Y-m-d');
+        return $this->hasMany(Tarea::class)->whereBetween('created_at', [$ayer . ' 00:00:00', $hoy . ' 23:59:00']);
     }
 
-    public function salidas():HasMany
+    public function salidas(): HasMany
     {
-        return $this->hasMany(Salida::class)->orderBy('id','DESC');
+        return $this->hasMany(Salida::class)->orderBy('id', 'DESC');
     }
-    public function entradas():HasMany
+    public function entradas(): HasMany
     {
-        return $this->hasMany(Entrada::class)->orderBy('id','DESC');
+        return $this->hasMany(Entrada::class)->orderBy('id', 'DESC');
     }
     public function visitas()
     {
         return $this->belongsToMany(Visita::class, 'user_visitas')
-                    ->withPivot('llegada', 'retirada');
+            ->withPivot('llegada', 'retirada');
     }
 
     // Método para obtener la URL de la imagen de perfil del usuario
-public function getImagenPerfilUrlAttribute()
-{
-    // Reemplaza 'imagen_perfil' con el nombre del campo en tu tabla que almacena la ruta de la imagen
-    return $this->imagen_perfil ? asset('ruta/donde/se/almacenan/las/imagenes/' . $this->imagen_perfil) : 'ruta/por/defecto/si/no/hay/imagen';
-}
+    public function getImagenPerfilUrlAttribute()
+    {
+        // Reemplaza 'imagen_perfil' con el nombre del campo en tu tabla que almacena la ruta de la imagen
+        return $this->imagen_perfil ? asset('ruta/donde/se/almacenan/las/imagenes/' . $this->imagen_perfil) : 'ruta/por/defecto/si/no/hay/imagen';
+    }
 }

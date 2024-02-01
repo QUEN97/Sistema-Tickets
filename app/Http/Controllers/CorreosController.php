@@ -15,12 +15,12 @@ class CorreosController extends Controller
     public function home(){
         $valid = Auth::user()->permiso->panels->where('id', 23)->first();
 
-        $emails=CorreosCompra::paginate(15);
+        // $emails=CorreosCompra::paginate(15);
         
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.correos.correos',compact('emails','valid'));
+            return view('modules.correos.correos',compact('valid'));
         } elseif ($valid->pivot->re == 1) {
-            return view('modules.correos.correos',compact('emails','valid'));
+            return view('modules.correos.correos',compact('valid'));
         }else {
             return redirect()->route('dashboard');
         }
@@ -28,14 +28,14 @@ class CorreosController extends Controller
     public function asignados(){
         $valid = Auth::user()->permiso->panels->where('id', 23)->first();
 
-        $categorias=Categoria::paginate(15);
-        $correos=CorreosZona::all();
-        $servicios=CorreosServicio::all()->count();
+        // $categorias=Categoria::paginate(15);
+        // $correos=CorreosZona::all();
+        // $servicios=CorreosServicio::all()->count();
         
         if (Auth::user()->permiso->id == 1) {
-          return view('modules.correos.asignados',compact('categorias','correos','servicios','valid'));
+          return view('modules.correos.asignados',compact('valid'));
         } elseif ($valid->pivot->re == 1) {
-          return view('modules.correos.asignados',compact('categorias','correos','servicios','valid'));
+          return view('modules.correos.asignados',compact('valid'));
         }else {
             return redirect()->route('dashboard');
         }

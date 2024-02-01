@@ -1,338 +1,202 @@
-<div
-    class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md lg:flex-row md:justify-between dark:bg-dark-eval-1">
-    <div class="w-full">
-        <div class="flex gap-1 flex-col">
-            <form action="{{ route('users') }}" method="GET">
-                <div class="flex mb-3">
-                    <div class="relative mr-4">
-                        <label for="filter" class="sr-only">Filtrar por departamento</label>
-                        <select name="filter" id="filter"
-                            class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white">
-                            <option value="">Todos</option>
-                            @foreach ($permisos as $permiso)
-                                <option value="{{ $permiso->id }}"
-                                    {{ request('filter') == $permiso->id ? 'selected' : '' }}>
-                                    {{ $permiso->titulo_permiso }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <div class="absolute top-0 left-0 mt-3 ml-3">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M6 8H2a2 2 0 00-2 2v12a2 2 0 002 2h4a2 2 0 002-2V10a2 2 0 00-2-2zm0 0V4a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h12m-6 0a2 2 0 00-2 2v8a2 2 0 002 2h4a2 2 0 002-2v-8a2 2 0 00-2-2h-4a2 2 0 00-2 2z"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <label for="search" class="sr-only">Buscar</label>
-                        <input type="text" name="search" id="search"
-                            class="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-gray-500 focus:ring-gray-500 dark:bg-dark-eval-0 dark:border-gray-700 dark:text-white"
-                            placeholder="Buscar..." value="{{ request('search') }}">
-                        <div class="absolute top-0 left-0 mt-3 ml-3">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.5 9a6.5 6.5 0 10-13 0 6.5 6.5 0 0013 0z" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="2"></path>
-                                <path d="M22 22L18 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <button type="submit"
-                        class="ml-4 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700">Buscar</button>
+<div>
+    <div class="py-4 space-y-4">
+        {{-- Filtros --}}
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            {{-- Barra de Busqueda --}}
+            <div>
+                <x-input wire:model="search" type="text" class="w-auto" placeholder="Buscar usuarios..." />
+            </div>
+            {{-- Acciones Masivas --}}
+            @if ($checked)
+                <x-dropdown align="right" width="60">
+                    <x-slot name="trigger">
+                        <button type="button"
+                            class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                            Seleccionados
+                            <span
+                                class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-gray-800 bg-gray-200 rounded-full">
+                                {{ count($checked) }}
+                            </span>
+                        </button>
+                    </x-slot>
 
-                </div>
-            </form>
-        </div>
-        <table
-            class="border-collapse w-full  bg-white text-center text-sm text-gray-500  dark:bg-dark-eval-0 dark:text-gray-400">
-            <thead class="bg-gray-50">
-                <tr>
-                <tr>
-                    <th
-                        class=" p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Usuario</th>
-                    {{-- <th
-                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Email</th> --}}
-                    <th
-                        class=" p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Zona/Área</th>
-                    <th
-                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Status</th>
-                    <th
-                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Disponibilidad</th>
-                    <th
-                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                        Opciones</th>
-                </tr>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100 ">
-                @if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
-                    @forelse ($users as $user)
-                        <tr>
-                            <th class="flex gap-3 px-6 py-4 font-normal text-gray-900 ">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Usuario</span>
-                                <div class="relative h-10 w-10">
-                                    @if ($user->profile_photo_path)
-                                        <div
-                                            onclick="window.location.href='{{ asset('/storage/' . $user->profile_photo_path) }}'">
-                                            <img class="h-10 w-10 rounded-full object-cover"
-                                                src="/storage/{{ $user->profile_photo_path }}"
-                                                alt="{{ $user->name }}" />
-                                        </div>
-                                    @else
-                                        <div onclick="window.location.href='{{ asset($user->profile_photo_url) }}'">
-                                            <img class="object-cover w-10 h-10 rounded-full"
-                                                src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" />
-                                        </div>
-                                    @endif
-                                    @if (Cache::has('user-is-online-' . $user->id))
-                                        <span
-                                            class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
-                                    @else
-                                        <span
-                                            class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-red-600 ring ring-white"></span>
-                                    @endif
-                                </div>
-                                <div class="text-sm">
-                                    <div class="font-medium text-gray-700">{{ $user->name }}</div>
-                                    <div class="text-gray-400">{{ $user->permiso->titulo_permiso }}</div>
-                                </div>
-                            </th>
-                            {{-- <td
-                                class="w-full lg:w-auto p-3 dark:text-gray-400 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Email</span>
-                                {{ $user->email }}
-                            </td> --}}
-                            <td
-                                class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Zonas</span>
-                                <div class="flex flex-wrap">
-                                    {{-- @if ($user->zonas->count() > 0) --}}
-                                    @foreach ($user->zonas as $zona)
-                                        <span
-                                            class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600  dark:bg-red-900 dark:text-red-300">
-                                            {{ $zona->name }}
-                                        </span>
-                                    @endforeach
-                                {{-- @else --}}
-                                    @foreach ($user->areas as $area)
-                                        <span
-                                            class="inline-flex items-center gap-1 rounded-full bg-sky-600 px-2 py-1 text-xs font-semibold text-white">
-                                            {{ $area->name }}
-                                        </span>
-                                    @endforeach
-                                {{-- @endif --}}
-                                </div>
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Status</span>
-                                @if (Cache::has('user-is-online-' . $user->id))
-                                    <span
-                                        class="inline-flex items-center m-2 px-3 py-1 bg-green-200 rounded-full text-sm font-semibold text-green-600  dark:bg-green-900 dark:text-green-300">
-                                        <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24">
-                                            <path d="M0 0h24v24H0V0z" fill="none" />
-                                            <path
-                                                d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
-                                        </svg>
-                                        <span class="ml-1">
-                                            Online
-                                        </span>
-                                    </span>
-                                @else
-                                    <span
-                                        class="inline-flex items-center m-2 px-2 py-1 bg-gray-200 rounded-full text-sm font-semibold text-gray-600  dark:bg-gray-900 dark:text-gray-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-                                        </svg>
-                                        <span class="ml-1">
-                                            Offline
-                                        </span>
-                                    </span>
-                                    <br>
-                                    @if ($user->last_seen)
-                                        <span class="dark:text-gray-400 text-xs">
-                                            Últ. vez: {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
-                                        </span>
-                                    @endif
+                    <x-slot name="content">
+                        <div class="w-60">
+                            <!-- Encabezado -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Opciones') }}
+                            </div>
+                            <!-- Eliminar y Exportar-->
+                            <div>
+                                @if ($valid->pivot->de == 1)
+                                    <x-dropdown-link href="#" wire:click="deleteUsuarios">
+                                        {{ __('Eliminar Usuario') }}
+                                    </x-dropdown-link>
                                 @endif
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Disponibilidad</span>
-                                @if ($user->status == 'Activo')
-                                    <span
-                                        class="rounded bg-green-200 py-1 px-3 text-xs text-green-500 font-bold  dark:bg-green-900 dark:text-green-300">{{ $user->status }}</span>
-                                @else
-                                    <span
-                                        class="rounded bg-red-200 py-1 px-3 text-xs text-red-500 font-bold  dark:bg-red-900 dark:text-red-300">{{ $user->status }}</span>
-                                @endif
-                            </td>
-                            @if ($valid->pivot->vermas == 1 || $valid->pivot->ed == 1 || $valid->pivot->de == 1)
-                                <td
-                                    class="w-full lg:w-auto p-3 border border-b block lg:table-cell relative lg:static dark:border-gray-800">
-                                    <span
-                                        class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Opciones</span>
-                                    <div class="grid grid-cols-3">
-                                        <div>
-                                            @if ($valid->pivot->ed == 1)
-                                                @livewire('usuarios.user-edit', ['user_edit_id' => $user->id])
-                                            @endif
-                                        </div>
-                                        <div>
-                                            @if ($valid->pivot->vermas == 1)
-                                                @livewire('usuarios.show-user', ['user_show_id' => $user->id])
-                                            @endif
-                                        </div>
-                                        <div>
-                                            @if ($valid->pivot->de == 1)
-                                                @livewire('usuarios.user-delete', ['userID' => $user->id])
-                                            @endif
-                                        </div>
-                                    </div>
-                                </td>
-                            @endif
-                        </tr>
-                    @empty
-                        <tr>
-                            <td class="w-full lg:w-auto p-3  text-center border border-b  block lg:table-cell relative lg:static"
-                                colspan="6">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Sin
-                                    registros</span>
-                                {{ __('No hay usuarios registrados') }}
-                            </td>
-                        </tr>
-                    @endforelse
-                @elseif (Auth::user()->permiso_id == 2)
-                    @foreach ($isSupervi as $user)
-                        <tr>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Nombre</span>
-                                <div class="text-sm">
-                                    <div class="font-medium text-gray-700 dark:text-gray-400">{{ $user->name }}
-                                    </div>
-                                    <div class="text-gray-400 dark:ttext-gray-400">
-                                        {{ $user->permiso->titulo_permiso }}
-                                    </div>
-                                </div>
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 dark:text-gray-400 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Email</span>
-                                {{ $user->email }}
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Zonas</span>
-                                @foreach ($user->zonas as $zona)
-                                    <span
-                                        class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600  dark:bg-red-900 dark:text-red-300">
-                                        {{ $zona->name }}
-                                    </span>
-                                @endforeach
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Status</span>
-                                @if (Cache::has('user-is-online-' . $user->id))
-                                    <span
-                                        class="inline-flex items-center m-2 px-3 py-1 bg-green-200 rounded-full text-sm font-semibold text-green-600  dark:bg-green-900 dark:text-green-300">
-                                        <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24">
-                                            <path d="M0 0h24v24H0V0z" fill="none" />
-                                            <path
-                                                d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
-                                        </svg>
-                                        <span class="ml-1">
-                                            Online
-                                        </span>
-                                    </span>
-                                @else
-                                    <span
-                                        class="inline-flex items-center m-2 px-2 py-1 bg-gray-200 rounded-full text-sm font-semibold text-gray-600  dark:bg-gray-900 dark:text-gray-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-                                        </svg>
-                                        <span class="ml-1">
-                                            Offline
-                                        </span>
-                                    </span>
-                                    <br>
-                                    @if ($user->last_seen)
-                                        <span class="dark:text-gray-400 text-xs">
-                                            Últ. vez: {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
-                                        </span>
-                                    @endif
-                                @endif
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-center border border-b  block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Disponibilidad</span>
-                                @if ($user->status == 'Activo')
-                                    <span
-                                        class="rounded bg-green-200 py-1 px-3 text-xs text-green-500 font-bold  dark:bg-green-900 dark:text-green-300">{{ $user->status }}</span>
-                                @else
-                                    <span
-                                        class="rounded bg-red-200 py-1 px-3 text-xs text-red-500 font-bold  dark:bg-red-900 dark:text-red-300">{{ $user->status }}</span>
-                                @endif
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800  border border-b block lg:table-cell relative lg:static dark:border-gray-800">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Opciones</span>
-                                <div class="grid grid-cols-3">
-                                    <div>
-                                        @if ($valid->pivot->ed == 1)
-                                            @livewire('usuarios.user-edit', ['user_edit_id' => $user->id])
-                                        @endif
-                                    </div>
-                                    <div>
-                                        @if ($valid->pivot->vermas == 1)
-                                            @livewire('usuarios.show-user', ['user_show_id' => $user->id])
-                                        @endif
-                                    </div>
-                                    <div>
-                                        @if ($valid->pivot->de == 1)
-                                            @livewire('usuarios.user-delete', ['userID' => $user->id])
-                                        @endif
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-            </tbody>
-        </table>
-        <div class="mt-2 mr-2 mb-2">
-            @if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3)
-                {{ $users->appends($_GET)->links() }}
-            @elseif(Auth::user()->permiso_id == 2)
-                {{ $isSupervi->appends($_GET)->links() }}
+                                <x-dropdown-link href="#" wire:click="exportSelected">
+                                    {{ __('Exportar a Excel') }}
+                                </x-dropdown-link>
+                            </div>
+                        </div>
+                    </x-slot>
+                </x-dropdown>
             @endif
+            {{-- Filtro de Fechas --}}
+            <div class="flex items-center">
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                        </svg>
+                    </div>
+                    <input type="date" name="start" id="from_date" wire:model="from_date"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <span class="mx-4 text-gray-500">a</span>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                        </svg>
+                    </div>
+                    <input type="date" name="end" id="to_date" wire:model="to_date"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <button wire:click="clearDateFilters" class="mx-4 text-gray-500">x</button>
+            </div>
+        </div>
+        @if ($selectPage)
+            @if ($selectAll)
+                <div class="text-gray-400 text-xs">
+                    Se han seleccionado <strong>{{ $usuarios->total() }}</strong> elementos.
+                </div>
+            @else
+                <div class="text-gray-400 text-xs">
+                    Se han seleccionado <strong>{{ count($checked) }}</strong> elementos, ¿Deseas seleccionar los
+                    <strong>{{ $usuarios->total() }}</strong>?
+                    <a href="#" class="text-blue-500 hover:underline" wire:click="selectAll">Seleccionar todo</a>
+                </div>
+            @endif
+        @endif
+
+        <div class="flex-col space-y-4">
+            {{-- Componente tabla --}}
+            <x-table>
+                <x-slot name="head">
+                    {{-- Componente Heading  --}}
+                    <x-heading><x-input type="checkbox" wire:model="selectPage" /></x-heading>
+                    <x-heading sortable wire:click="sortBy('id')" :direction="$sortField === 'id' ? $sortDirection : null">ID</x-heading>
+                    <x-heading sortable wire:click="sortBy('name')" :direction="$sortField === 'name' ? $sortDirection : null">USUARIO</x-heading>
+                    <x-heading >ZONA/ÁREA</x-heading>
+                    <x-heading >DISPONIBILIDAD</x-heading>
+                    <x-heading sortable wire:click="sortBy('status')" :direction="$sortField === 'status' ? $sortDirection : null">ESTADO</x-heading>
+                    <x-heading>OPCIONES</x-heading>
+                </x-slot>
+                <x-slot name="body">
+                    @forelse($usuarios as $user)
+                    {{-- Componente Row --}}
+                    <x-row wire:loading.class.delay="opacity-75">
+                        {{-- Componente Column --}}
+                        <x-cell> <x-input type="checkbox" value="{{ $user->id }}" wire:model="checked" />
+                        </x-cell>
+                        <x-cell>{{ $user->id }} </x-cell>
+                        <x-cell>{{ $user->name }}</x-cell>
+                        <x-cell><div class="flex flex-wrap">
+                            {{-- @if ($user->zonas->count() > 0) --}}
+                            @foreach ($user->zonas as $zona)
+                                <span
+                                    class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600  dark:bg-gray-300 dark:text-gray-900">
+                                    {{ $zona->name }}
+                                </span>
+                            @endforeach
+                        {{-- @else --}}
+                            @foreach ($user->areas as $area)
+                                <span
+                                    class="inline-flex items-center gap-1 rounded-full bg-sky-600 px-2 py-1 text-xs font-semibold text-white dark:bg-gray-900 dark:text-gray-300">
+                                    {{ $area->name }}
+                                </span>
+                            @endforeach
+                        {{-- @endif --}}
+                        </div></x-cell>
+                        <x-cell>@if (Cache::has('user-is-online-' . $user->id))
+                            <span
+                                class="inline-flex items-center m-2 px-3 py-1 bg-green-200 rounded-full text-sm font-semibold text-green-600  dark:bg-green-900 dark:text-green-300">
+                                <span class="ml-1">
+                                    Online
+                                </span>
+                            </span>
+                        @else
+                            <span
+                                class="inline-flex items-center m-2 px-2 py-1 bg-gray-200 rounded-full text-sm font-semibold text-gray-600  dark:bg-gray-900 dark:text-gray-300">
+                                <span class="ml-1">
+                                    Offline
+                                </span>
+                            </span>
+                            <br>
+                            @if ($user->last_seen)
+                                <span class="dark:text-gray-400 text-xs">
+                                    Últ. vez: {{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}
+                                </span>
+                            @endif
+                        @endif</x-cell>
+                        <x-cell>
+                            <span
+                                class="rounded bg-{{ $user->status_color }}-200 py-1 px-3 text-xs text-{{ $user->status_color }}-500 font-bold dark:bg-green-900 dark:text-green-300">
+                                {{ $user->status }}
+                            </span>
+                        </x-cell>
+                        <x-cell>
+                            <div class="flex gap-2 justify-center items-center">
+                                <div>
+                                    @if ($valid->pivot->ed == 1)
+                                        @livewire('usuarios.user-edit', ['user_edit_id' => $user->id], key('ed'.$user->id))
+                                    @endif
+                                </div>
+                                <div>
+                                    @if ($valid->pivot->vermas == 1)
+                                        @livewire('usuarios.show-user', ['user_show_id' => $user->id], key('show'.$user->id))
+                                    @endif
+                                </div>
+                                <div>
+                                    @if ($valid->pivot->de == 1)
+                                        @livewire('usuarios.user-delete', ['userID' => $user->id], key('del'.$user->id))
+                                    @endif
+                                </div>
+                            </div>
+                        </x-cell>
+                    </x-row>
+                @empty
+                    <x-row>
+                        <x-cell colspan="7">
+                            <div class="flex justify-center items-center space-x-2">
+                                <x-icons.inbox class="w-8 h-8 text-gray-300" />
+                                <span class="py-8 font-medium text-gray-400 text-xl">No se encontraron
+                                    resultados...</span>
+                            </div>
+                        </x-cell>
+                    </x-row>
+                @endforelse
+                </x-slot>
+            </x-table>
+            {{-- Paginación y contenido por página --}}
+            <div class="py-4 px-3">
+                <div class="flex space-x-4 items-center mb3">
+                    <x-label class="text-sm font-medium text-gray-600">Mostrar</x-label>
+                    <select wire:model.live="perPage"
+                        class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-indigo-500">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                {{ $usuarios->links() }}
+            </div>
         </div>
     </div>
 </div>

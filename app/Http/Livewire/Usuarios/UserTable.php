@@ -2,66 +2,126 @@
 
 namespace App\Http\Livewire\Usuarios;
 
-use App\Models\Departamento;
-use App\Models\Permiso;
+use App\Exports\UserExport;
 use App\Models\User;
-use App\Models\Zona;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class UserTable extends Component
 {
-    public function render(Request $request)
+    use WithPagination;
+
+    public $valid;
+    public $search = '';
+    public $sortField;
+    public $sortDirection = 'asc';
+    public $perPage = 5;
+    public $from_date = "";
+    public $to_date = "";
+    public $checked = [];
+    public $selectPage = false;
+    public $selectAll = false;
+
+    public function render()
     {
         $this->valid = Auth::user()->permiso->panels->where('id', 4)->first();
 
-        $zon=DB::table('user_zona')->where('user_id',Auth::user()->id)/* ->first()->zona_id */;
-        $IDzonas=$zon->pluck('zona_id');
-        $isSupervi=User::join('user_zona as uz','users.id','uz.user_id')->whereIn('uz.zona_id',$IDzonas)
-        ->where('users.permiso_id',3)->select('users.*')->paginate(5);
-
-        $zonas = Zona::where('status', 'Activo')->get();
-
-        // $users = User::where([
-        //     ['name', '!=', Null],
-        //     [function ($query) use ($request) {
-        //         if (($s = $request->s)) {
-        //             $query->orWhere('name', 'LIKE', '%' . $s . '%')
-        //                 ->orWhere('email', 'LIKE', '%' . $s . '%')
-        //                 ->get();
-        //         }
-        //     }]
-        // ])->where('id','!=',1)->paginate(5); //ocultamos el usuario desarrollo para tener acceso seguro al sistema
-        //                                                     //->with(['zonas']) eliminado por duplicacion de archivos y no permitia el search
-
-        $this->filterSoli = $request->input('filterSoli') == 'Todos' ? null : $request->input('filterSoli');
-
-        $permisos = Permiso::all();
-        $permiso=Permiso::where('titulo_permiso', 'LIKE', '%' . $request->search . '%')->get();
-//dd($permisos);
-        $users = User::where(function ($query) use ($request, $permiso) {
-                $search = $request->input('search');
-                if ($search && $permiso->count() === 0) {
-                    $query->where('id', 'LIKE', '%' . $search . '%')
-                        ->orWhere('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('email', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', 'LIKE', '%' . $search . '%');
-                } else {
-                    $query->whereIn('permiso_id', Permiso::where('titulo_permiso', 'LIKE', '%' . $search . '%')->pluck('id'));
-                }
-            })
-            ->when($request->has('filter') && $request->input('filter') != '', function ($query) use ($request){
-                $filterSoli = $request->input('filter');
-                $query->where('permiso_id', $filterSoli);
-            })
-            ->orderBy('name')
-            ->paginate(25)
-            ->withQueryString();
-
-        $trashed = User::onlyTrashed()->count();
-
-        return view('livewire.usuarios.user-table', compact('zonas','users','trashed','isSupervi','permisos'));
+        return view('livewire.usuarios.user-table', [
+            'trashed' => User::onlyTrashed()->count(),
+            'usuarios' => $this->usuarios,
+        ]);
     }
+     //Cycle Hooks
+     public function updatedSelectPage($value)
+     {
+         if ($value) {
+             $this->checked = $this->usuarios->pluck('id');
+         } else {
+             $this->checked = [];
+         }
+     }
+ 
+     public function updatedChecked()
+     {
+         $this->selectPage = false;
+     }
+ 
+     public function selectAll()
+     {
+         $this->selectAll = true;
+         $this->checked = $this->usuariosQuery->pluck('id');
+     }
+ 
+     public function updatedPerPage()
+     {
+         $this->resetPage();
+     }
+     public function updatedSearch()
+     {
+         $this->resetPage();
+     }
+     public function clearDateFilters()
+     {
+         $this->from_date = '';
+         $this->to_date = '';
+         $this->resetPage(); // Opcional: reinicia la paginación si es necesario
+     }
+ 
+     //Obtener los datos y paginación
+     public function getUsuariosProperty()
+     {
+         return  $this->usuariosQuery->paginate($this->perPage);
+     }
+ 
+     public function getUsuariosQueryProperty()
+{
+    $user = Auth::user();
+
+    return User::search($this->search)
+        ->when($user->permiso_id == 1 || $user->permiso_id == 5, function ($query) {
+            // Si el usuario es un administrador, no aplicamos restricciones
+            return $query;
+        },function ($query) use ($user) {
+            // Si el usuario no es un administrador, filtramos por usuarios que compartan zonas
+            $userZonas = $user->zonas->pluck('id')->toArray();
+            return $query->whereHas('zonas', function ($subQuery) use ($userZonas) {
+                $subQuery->whereIn('zonas.id', $userZonas);
+            })->where('users.id', '<>', $user->id);
+        })
+        ->when($this->sortField, function ($query) {
+            return $query->orderBy($this->sortField, $this->sortDirection);
+        })
+        ->when($this->from_date && $this->to_date, function ($query) {
+            return $query->whereBetween('created_at', [$this->from_date, $this->to_date . " 23:59:59"]);
+        });
+}
+ 
+     public function sortBy($field)
+     {
+         $this->sortDirection = $this->sortField === $field
+             ? $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc' : 'asc';
+ 
+         $this->sortField = $field;
+     }
+ 
+     //Exportar a excel
+     public function exportSelected()
+     {
+         return (new UserExport($this->checked))->download('USUARIOS.xlsx');
+     }
+ 
+     //Eliminación multiple
+     public function deleteUsuarios()
+     {
+         User::whereKey($this->checked)->delete();
+         $this->checked = [];
+         $this->selectAll = false;
+         $this->selectPage = false;
+         session()->flash('flash.banner', 'ELIMINADO, la estación ha sido eliminada del sistema.');
+         session()->flash('flash.bannerStyle', 'success');
+         return redirect(request()->header('Referer'));
+     }
 }

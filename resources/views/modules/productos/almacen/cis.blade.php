@@ -17,7 +17,7 @@
         </div>
 
     </x-slot>
-    <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+    {{-- <div class="p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         @if ($productos->count() > 0)
             <table>
                 <thead>
@@ -38,10 +38,6 @@
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             Stock actual
                         </th>
-                        {{-- <th
-                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                            Stock sugerido
-                        </th> --}}
                         <th
                             class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                             Fecha de actualización
@@ -82,7 +78,6 @@
                                 <div class="text-sm">
                                     <div class="font-medium text-gray-700 dark:text-gray-400">
                                         {{ $producto->producto->name }}</div>
-                                    {{-- <div class="text-gray-400 dark:ttext-gray-400">{{$producto->serie->serie}}</div> --}}
                                 </div>
                             </td>
                             <th
@@ -95,16 +90,6 @@
                                     {{ $producto->stock }}
                                 </div>
                             </th>
-                            {{-- <th
-                                class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                <div class="w-full flex justify-center gap-2">
-                                    <span
-                                        class="lg:hidden bg-blue-200 p-1 text-xs font-bold uppercase dark:bg-blue-600 dark:text-white">
-                                        Status
-                                    </span>
-                                    {{ $producto->stock_base }}
-                                </div>
-                            </th> --}}
                             <th
                                 class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                 <div class="w-full flex justify-center gap-2">
@@ -148,5 +133,8 @@
                 <span class="text-2xl">No hay productos registrados en el almacén</span>
             </div>
         @endif
+    </div> --}}
+    <div>
+        @livewire('productos.almacen.almacen-table')
     </div>
 </x-app-layout>

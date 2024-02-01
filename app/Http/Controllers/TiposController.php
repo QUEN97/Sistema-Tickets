@@ -10,23 +10,23 @@ class TiposController extends Controller
 {
     public function home(Request $request){
         $valid = Auth::user()->permiso->panels->where('id', 19)->first();
-        $tipos = Tipo::where(function ($query) use ($request) {
-                $search = $request->input('search');
-                if ($search) {
-                    $query->where('id', 'LIKE', '%' . $search . '%')
-                        ->orWhere('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', 'LIKE', '%' . $search . '%');
-                } 
-            })
-            ->orderBy('id', 'asc')
-            ->paginate(10)
-            ->withQueryString();
+        // $tipos = Tipo::where(function ($query) use ($request) {
+        //         $search = $request->input('search');
+        //         if ($search) {
+        //             $query->where('id', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('name', 'LIKE', '%' . $search . '%')
+        //                 ->orWhere('status', 'LIKE', '%' . $search . '%');
+        //         } 
+        //     })
+        //     ->orderBy('id', 'asc')
+        //     ->paginate(10)
+        //     ->withQueryString();
         $trashed = Tipo::onlyTrashed()->count();
         
         if (Auth::user()->permiso->id == 1) {
-            return view('modules.tipos.tipos',compact('tipos','trashed','valid'));
+            return view('modules.tipos.tipos',compact('trashed','valid'));
       } elseif ($valid->pivot->re == 1) {
-            return view('modules.tipos.tipos',compact('tipos','trashed','valid'));
+            return view('modules.tipos.tipos',compact('trashed','valid'));
       } else {
           return redirect()->route('dashboard');
       }
