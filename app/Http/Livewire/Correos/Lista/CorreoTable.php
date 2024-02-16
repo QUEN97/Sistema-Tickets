@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Correos\Lista;
 
 use App\Exports\CorreosExport;
 use App\Models\CorreosCompra;
+use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -94,11 +95,11 @@ class CorreoTable extends Component
         $this->sortField = $field;
     }
 
-    //Exportar a excel
-    public function exportSelected()
-    {
-        return (new CorreosExport($this->checked))->download('CORREOS.xlsx');
-    }
+     //Exportar a excel
+     public function exportSelected()
+     {
+         return Excel::download(new CorreosExport($this->checked), 'CORREOS.xlsx');
+     }
 
     //Eliminación multiple
     public function deleteCorreos()

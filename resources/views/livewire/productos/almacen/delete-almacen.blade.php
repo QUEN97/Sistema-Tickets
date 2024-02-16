@@ -1,4 +1,3 @@
-<div>
     <div x-data="{ modelOpen: false }">
         <button @click="modelOpen =!modelOpen" wire:loading.attr="disabled" aria-label="reasignar-usuario" class="tooltip">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-6 h-6 text-gray-400 hover:text-red-500 transition duration-300 bi bi-trash3-fill" viewBox="0 0 16 16">

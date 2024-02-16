@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AlmacenTable extends Component
 {
@@ -97,7 +98,7 @@ class AlmacenTable extends Component
     //Exportar a excel
     public function exportSelected()
     {
-        return (new AlmacenExport($this->checked))->download('ALMACÉN.xlsx');
+        return Excel::download(new AlmacenExport($this->checked), 'ALMACEN CIS.xlsx');
     }
 
     //Eliminación multiple

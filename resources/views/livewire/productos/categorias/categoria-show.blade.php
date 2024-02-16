@@ -17,44 +17,27 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="w-full rounded overflow-hidden shadow-lg">
-                {{-- <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> --}}
-                <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2 text-black">{{ $this->titulo_categoria }}</div>
-                    <div class="px-2">
-                        <div class="flex -mx-2 bg-indigo-300 p-2 rounded-md">
-                            <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Productos:</span>
-                                <span class="text-xs">{{ $this->productos }}</span>
-                            </div>
-                            <div class="w-1/3 px-2">
-                                <span class="text-gray-700">Status:</span>
-                                <span class="text-xs">
-                                    @if ($status = 'Activo')
-                                    <span class="text-green-700"> {{ $this->status }}</span>
-                                    @else
-                                    <span class="text-red-700"> {{ $this->status }}</span>
-                                    @endif
-                                </span>
-                            </div>
-                            <div class="w-1/3 px-2">
-                                <span class="text-gray-700"> Registro:</span>
-                                <span class="text-xs">{{ $this->created_at }}</span>
-                            </div>
-                        </div>
+            <div class="overflow-hidden max-h-96 overflow-y-auto">
+                <fieldset class="border dark:border-gray-500 p-2 mb-2">
+                    <legend class="font-bold">Detalles de la Categoría</legend>
+                    <div>
+                        <span><strong>Nombre: </strong>{{$this->titulo_categoria}}</span>
+                        <span><strong>Productos: </strong>{{$this->productos}}</span>
                     </div>
-                </div>
+                    <div class="mt-2 flex flex-wrap gap-3">
+                        <span><strong>Estado: </strong>{{$this->status}}</span>
+                    </div>
+                </fieldset>
                 @if ($productos_tabla->isnotEmpty())
                     <div class="border rounded-lg overflow-hidden max-h-[320px] overflow-y-auto">
                         <details>
-                            <summary class="bg-gray-100 py-2 px-4 cursor-pointer">Click para mostrar/ocultar
+                            <summary class="bg-gray-100 dark:bg-slate-800 py-2 px-4 cursor-pointer">Click para mostrar/ocultar
                                 Productos en esta Categoria</summary>
                             <table class="table-auto w-full">
                                 <thead>
                                     <tr>
                                         <th class="px-4 py-2">Nombre</th>
                                         <th class="px-4 py-2">Status</th>
-                                        <th class="px-4 py-2">Disponibilidad</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -72,17 +55,6 @@
                                                     <i
                                                         class="text-red-500"></i>
                                                     {{ $producto->status }}
-                                                @endif</span>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <span class="text-xs">@if ($producto->flag_trash == 0)
-                                                    <i
-                                                        class="text-green-500"></i>
-                                                    {{ __('En Sistema') }}
-                                                @else
-                                                    <i
-                                                        class="text-red-500"></i>
-                                                    {{ __('En Papelera') }}
                                                 @endif</span>
                                             </td>
                                         </tr>

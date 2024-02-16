@@ -2,13 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\ServicioSheet;
 use App\Models\Servicio;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ServicioExport implements FromQuery
+class ServicioExport implements WithMultipleSheets
 {
-    use Exportable;
 
     protected $servicios;
 
@@ -17,8 +18,10 @@ class ServicioExport implements FromQuery
         $this->servicios=$servicios;
     }
 
-   public function query()
-   {
-    return Servicio::query()->whereKey($this->servicios);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new ServicioSheet($this->servicios));
+        return $sheet;
+    }
 }

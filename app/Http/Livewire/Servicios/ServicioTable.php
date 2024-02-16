@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ServicioTable extends Component
 {
@@ -96,10 +97,10 @@ class ServicioTable extends Component
     }
 
     //Exportar a excel
-    public function exportSelected()
-    {
-        return (new ServicioExport($this->checked))->download('SERVICIOS.xlsx');
-    }
+   public function exportSelected()
+   {
+       return Excel::download(new ServicioExport($this->checked), 'SERVICIOS.xlsx');
+   }
 
     //Eliminación multiple
     public function deleteServicios()

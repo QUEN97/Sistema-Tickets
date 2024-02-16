@@ -19,49 +19,6 @@
         </x-slot>
 
         <x-slot name="content">
-            {{-- <div class="w-full rounded overflow-hidden shadow-lg">
-                <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2 ">{{ $this->titulo_estacion }}</div>
-                    <div class="font-bold text-sm mb-2 ">No. {{ $this->numero }}</div>
-                    <div class="px-2">
-                        <div class="flex -mx-2 bg-gray-300 p-2 rounded-md">
-                            <div class="w-1/3 px-2">
-                                <span class="dark:text-black">Gerente: </span>
-                                @if ($gerentestat == 'Inactivo')
-                                    <p class="text-red-500">
-                                        <span class="text-xs">{{ $this->gerente }}</span>
-                                    </p>
-                                @else
-                                    <span class="text-xs dark:text-black"> {{ $this->gerente }}</span>
-                                @endif
-                            </div>
-                            <div class="w-1/3 px-2">
-                                <span class="dark:text-black">Supervisor:</span>
-                                @if ($supervisorstat == 'Inactivo')
-                                    <p class="text-red-500">
-                                        <span class="text-xs"> {{ $this->supervisor }}</span>
-                                    </p>
-                                @else
-                                    <span class="text-xs dark:text-black"> {{ $this->supervisor }}</span>
-                                @endif
-                            </div>
-                            <div class="w-1/3 px-2">
-                                <span class="dark:text-black">Status:</span>
-                                <span class="text-xs dark:text-black">{{ $this->status }}</span>
-                            </div>
-                            <div class="w-1/3 dark:text-black"> Registro:</span>
-                                <span class="text-xs dark:text-black">{{ $this->created_at }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="px-6 pt-4 pb-2">
-                    <span class="text-indigo-500 font-bold">Zona:</span>
-                    <span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $this->zonas }}</span>
-                </div>
-                <img class="w-full" src="{{ asset('img/logo/fullpower.png') }}" alt="">
-            </div> --}}
             <div class="overflow-hidden max-h-96 overflow-y-auto">
                 <fieldset class="border dark:border-gray-500 p-2">
                     <legend class="font-bold">Detalles de la Estación</legend>

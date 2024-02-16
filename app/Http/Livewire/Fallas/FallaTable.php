@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Fallas;
 use App\Exports\FallaExport;
 use App\Models\Falla;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -100,7 +101,7 @@ class FallaTable extends Component
      //Exportar a excel
      public function exportSelected()
      {
-         return (new FallaExport($this->checked))->download('FALLAS.xlsx');
+         return Excel::download(new FallaExport($this->checked), 'FALLAS.xlsx');
      }
  
      //Eliminación multiple

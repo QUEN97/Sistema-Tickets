@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TipoTable extends Component
 {
@@ -95,10 +96,10 @@ class TipoTable extends Component
      }
  
      //Exportar a excel
-     public function exportSelected()
-     {
-         return (new TipoExport($this->checked))->download('TIPOS.xlsx');
-     }
+   public function exportSelected()
+   {
+       return Excel::download(new TipoExport($this->checked), 'TIPOS TICKET.xlsx');
+   }
  
      //Eliminación multiple
      public function deleteTipos()

@@ -8,6 +8,7 @@ use App\Models\Areas;
 use App\Models\Categoria;
 use Livewire\Component;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
@@ -100,7 +101,7 @@ class CateTable extends Component
     //Exportar a excel
     public function exportSelected()
     {
-        return (new CategoriaExtport($this->checked))->download('CATEGORÍAS.xlsx');
+        return Excel::download(new CategoriaExtport($this->checked), 'CATEGORÍAS.xlsx');
     }
 
     //Eliminación multiple

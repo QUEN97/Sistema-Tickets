@@ -2,13 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\CorreoSheet;
 use App\Models\CorreosCompra;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class CorreosExport implements FromQuery
+class CorreosExport implements WithMultipleSheets
 {
-    use Exportable;
 
     protected $correos;
 
@@ -17,8 +18,10 @@ class CorreosExport implements FromQuery
         $this->correos=$correos;
     }
 
-   public function query()
-   {
-    return CorreosCompra::query()->whereKey($this->correos);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new CorreoSheet($this->correos));
+        return $sheet;
+    }
 }

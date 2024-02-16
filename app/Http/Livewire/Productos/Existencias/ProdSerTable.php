@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Productos\Existencias;
 use App\Exports\ProdSerExport;
 use App\Models\TckServicio;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -90,11 +91,11 @@ class ProdSerTable extends Component
          $this->sortField = $field;
      }
  
-     //Exportar a excel
-     public function exportSelected()
-     {
-         return (new ProdSerExport($this->checked))->download('SERVICIOS-REQUISICIÓN.xlsx');
-     }
+       //Exportar a excel
+       public function exportSelected()
+       {
+           return Excel::download(new ProdSerExport($this->checked), 'SERVICIOS COMPRA.xlsx');
+       }
  
      //Eliminación multiple
      public function deleteTckservicios()

@@ -2,6 +2,8 @@
 
 namespace App\Exports\Sheets;
 
+use App\Models\Categoria;
+use App\Models\Departamento;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -13,32 +15,24 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use App\Models\Categoria;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class CategoriaSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
 {
-    private $ini;
-    private $fin;
+    private $categorias;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($ini, $fin)
+    public function __construct($categorias)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
+        $this->categorias = $categorias;
     }
 
     public function view(): View
     {
         return view('excels.categoria.CategoriaSheet', [
-            'catego' => Categoria::select('id', 'name as titulo_categoria', 'status', 'created_at')
-                        ->selectRaw('(select count(1) as solicitudes from solicituds where solicituds.categoria_id = categorias.id and solicituds.deleted_at is null) as solici')
-                        ->selectRaw('(select count(1) as productos from productos where productos.categoria_id = categorias.id and productos.deleted_at is null) as produs')
-                        ->whereBetween('created_at', [$this->ini, $this->fin])
-                        ->where('deleted_at', null)
-                        ->get()
+            'categorias' => Categoria::whereIn('id', $this->categorias)->get()
         ]);
     }
 
@@ -53,11 +47,11 @@ class CategoriaSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize,
     {
         return [
             AfterSheet::class   => function(AfterSheet $event){
-                $cellRange = 'A1:F1';
+                $cellRange = 'A1:D1';
 
                 $totalRows = $event->sheet->getHighestRow();
 
-                $celAll = 'A1:F'.$totalRows;
+                $celAll = 'A1:D'.$totalRows;
 
                 $event->sheet->getDelegate()->getStyle($cellRange)
                             ->applyFromArray([
@@ -95,6 +89,7 @@ class CategoriaSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize,
 
     public function title(): string
     {
-        return 'Categorias';
+        
+            return 'CATEGORÍAS';
     }
 }

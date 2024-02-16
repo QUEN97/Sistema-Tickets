@@ -82,7 +82,7 @@ class UserTable extends Component
     $user = Auth::user();
 
     return User::search($this->search)
-        ->when($user->permiso_id == 1 || $user->permiso_id == 5, function ($query) {
+        ->when($user->permiso_id == 1 || $user->permiso_id == 5 || $user->permiso_id == 8, function ($query) {
             // Si el usuario es un administrador, no aplicamos restricciones
             return $query;
         },function ($query) use ($user) {

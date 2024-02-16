@@ -12,7 +12,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
+            <div class="rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
                 <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <x-label value="{{ __('Nombre de la Categoria') }}" />

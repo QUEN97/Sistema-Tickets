@@ -37,9 +37,6 @@
                                         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
                                             Status
                                         </th>
-                                        <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                            Fecha de registro
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,11 +59,6 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                            </th>
-                                            <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                                <div>
-                                                    {{$falla->created_at}}
-                                                </div>
                                             </th>
                                         </tr>
                                     @endforeach

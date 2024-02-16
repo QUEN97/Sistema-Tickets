@@ -1,29 +1,21 @@
 <table>
     <thead>
         <tr>
-            <th>{{ __('No. De Categoría') }}</th>
-            <th>{{ __('Categoria') }}</th>
-            <th>{{ __('Cant. Productos') }}</th>
-            <th>{{ __('Cant. Solicitudes') }}</th>
-            <th>{{ __('Status') }}</th>
-            <th>{{ __('Creado') }}</th>
+            <th>{{ __('ID') }}</th>
+            <th>{{ __('NOMBRE') }}</th>
+            <th>{{ __('ESTADO') }}</th>
+            <th>{{ __('FECHA') }}</th>
         </tr>
     </thead>
     <tbody>
         {{-- {{dd($catego);}} --}}
-        @foreach ($catego as $item)
+        @foreach ($categorias as $item)
             <tr>
                 <td>
                     {{ $item->id }}
                 </td>
                 <td>
-                    {{ $item->titulo_categoria }}
-                </td>
-                <td>
-                    {{ $item->produs }}
-                </td>
-                <td>
-                    {{ $item->solici }}
+                    {{ $item->name }}
                 </td>
                 <td>
                     {{ $item->status }}

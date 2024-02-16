@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Productos\Existencias;
 
 use App\Exports\ProdExport;
 use App\Models\Producto;
+use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -97,9 +98,9 @@ class ProdTable extends Component
  
      //Exportar a excel
      public function exportSelected()
-     {
-         return (new ProdExport($this->checked))->download('PRODUCTOS.xlsx');
-     }
+   {
+       return Excel::download(new ProdExport($this->checked), 'PRODUCTOS.xlsx');
+   }
  
      //Eliminación multiple
      public function deleteProductos()

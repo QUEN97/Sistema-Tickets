@@ -2,6 +2,7 @@
 
 namespace App\Exports\Sheets;
 
+use App\Models\Producto;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -13,27 +14,24 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use App\Models\Producto;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class ProductoSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
 {
-    private $ini;
-    private $fin;
+    private $productos;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($ini, $fin)
+    public function __construct($productos)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
+        $this->productos = $productos;
     }
 
     public function view(): View
     {
         return view('excels.producto.ProductoSheet', [
-            'produc' => Producto::whereBetween('created_at', [$this->ini, $this->fin])->get()
+            'productos' => Producto::whereIn('id', $this->productos)->get()
         ]);
     }
 
@@ -48,11 +46,11 @@ class ProductoSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, 
     {
         return [
             AfterSheet::class   => function(AfterSheet $event){
-                $cellRange = 'A1:G1';
+                $cellRange = 'A1:J1';
 
                 $totalRows = $event->sheet->getHighestRow();
 
-                $celAll = 'A1:G'.$totalRows;
+                $celAll = 'A1:J'.$totalRows;
 
                 $event->sheet->getDelegate()->getStyle($cellRange)
                             ->applyFromArray([
@@ -90,6 +88,7 @@ class ProductoSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, 
 
     public function title(): string
     {
-        return 'Productos';
+        
+            return 'PRODUCTOS';
     }
 }

@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Compra;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class ComprasExport implements FromQuery
 {

@@ -40,7 +40,7 @@
             >
             
                 <div class="flex items-center justify-between space-x-4">
-                    <h1 class="text-xl font-medium">Nuevo servicio</h1>
+                    <h1 class="text-xl font-medium">Editar Servicio Compra</h1>
                 </div>
                 <div class="flex flex-col justify-center gap-2 py-3">
                     <div>

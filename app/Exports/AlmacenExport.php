@@ -2,14 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\AlmCisSheet;
 use App\Models\AlmacenCi;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class AlmacenExport implements FromQuery
+class AlmacenExport implements WithMultipleSheets
 {
-    use Exportable;
-
     protected $almacenes;
 
     public function __construct($almacenes)
@@ -17,8 +17,10 @@ class AlmacenExport implements FromQuery
         $this->almacenes=$almacenes;
     }
 
-   public function query()
-   {
-    return AlmacenCi::query()->whereKey($this->almacenes);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new AlmCisSheet($this->almacenes));
+        return $sheet;
+    }
 }

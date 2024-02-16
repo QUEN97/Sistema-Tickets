@@ -6,6 +6,7 @@ use App\Exports\MarcaExport;
 use App\Models\Marca;
 use Livewire\Component;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
@@ -95,11 +96,11 @@ class MarcaTable extends Component
          $this->sortField = $field;
      }
  
-     //Exportar a excel
-     public function exportSelected()
-     {
-         return (new MarcaExport($this->checked))->download('MARCAS.xlsx');
-     }
+   //Exportar a excel
+   public function exportSelected()
+   {
+       return Excel::download(new MarcaExport($this->checked), 'MARCAS.xlsx');
+   }
  
      //Eliminación multiple
      public function deleteMarcas()

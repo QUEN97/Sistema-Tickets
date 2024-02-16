@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Tarea;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class TareasExport implements FromQuery
 {

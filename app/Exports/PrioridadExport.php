@@ -2,14 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\PrioridadSheet;
 use App\Models\Prioridad;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class PrioridadExport implements FromQuery
+class PrioridadExport implements WithMultipleSheets
 {
-    use Exportable;
-
     protected $prioridades;
 
     public function __construct($prioridades)
@@ -17,8 +17,10 @@ class PrioridadExport implements FromQuery
         $this->prioridades=$prioridades;
     }
 
-   public function query()
-   {
-    return Prioridad::query()->whereKey($this->prioridades);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new PrioridadSheet($this->prioridades));
+        return $sheet;
+    }
 }

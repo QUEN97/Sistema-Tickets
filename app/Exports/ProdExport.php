@@ -2,13 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\ProductoSheet;
 use App\Models\Producto;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ProdExport implements FromQuery
+class ProdExport implements WithMultipleSheets
 {
-    use Exportable;
 
     protected $productos;
 
@@ -17,8 +18,10 @@ class ProdExport implements FromQuery
         $this->productos=$productos;
     }
 
-   public function query()
-   {
-    return Producto::query()->whereKey($this->productos);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new ProductoSheet($this->productos));
+        return $sheet;
+    }
 }

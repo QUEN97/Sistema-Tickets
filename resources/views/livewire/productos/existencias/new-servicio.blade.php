@@ -2,7 +2,7 @@
     <div class="">
         <x-button  @click="modelOpen =!modelOpen" class="dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700">
             <i class="fa-solid fa-plus"></i>
-            {{ __('Añadir servicio') }}
+            {{ __('Añadir Servicio Compra') }}
             </x-button>
     </div>
     {{-- <button @click="modelOpen =!modelOpen" wire:loading.attr="disabled" aria-label="reasignar-usuario" class="tooltip">
@@ -37,7 +37,7 @@
             >
             
                 <div class="flex items-center justify-between space-x-4">
-                    <h1 class="text-xl font-medium">Nuevo servicio</h1>
+                    <h1 class="text-xl font-medium">Nuevo Servicio Compra</h1>
                 </div>
                 <div class="flex flex-col justify-center gap-2 py-3">
                     <div>

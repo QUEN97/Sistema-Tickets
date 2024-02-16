@@ -2,13 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\TipoSheet;
 use App\Models\Tipo;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class TipoExport implements FromQuery
+class TipoExport implements WithMultipleSheets
 {
-    use Exportable;
 
     protected $tipos;
 
@@ -17,8 +18,10 @@ class TipoExport implements FromQuery
         $this->tipos=$tipos;
     }
 
-   public function query()
-   {
-    return Tipo::query()->whereKey($this->tipos);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new TipoSheet($this->tipos));
+        return $sheet;
+    }
 }

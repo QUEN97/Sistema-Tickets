@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PrioridadTable extends Component
 {
@@ -95,11 +96,11 @@ class PrioridadTable extends Component
          $this->sortField = $field;
      }
  
-     //Exportar a excel
-     public function exportSelected()
-     {
-         return (new PrioridadExport($this->checked))->download('PRIORIDADES.xlsx');
-     }
+   //Exportar a excel
+   public function exportSelected()
+   {
+       return Excel::download(new PrioridadExport($this->checked), 'PRIORIDADES.xlsx');
+   }
  
      //Eliminación multiple
      public function deleteFallas()
