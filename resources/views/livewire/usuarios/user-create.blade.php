@@ -7,7 +7,7 @@
 
     <x-dialog-modal wire:model="newgUsuario" id="modalUsuario" class="flex items-center">
         <x-slot name="title">
-            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-1 rounded-md text-white text-center">
                 {{ __('Nuevo Usuario') }}
             </div>
         </x-slot>
@@ -19,8 +19,8 @@
                     <span
                         class="bg-green-100 text-green-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ __('Datos Personales') }}</span>
                 </div>
-                <div class=" px-4 pt-3 pb-4 mb-2 flex gap-2">
-                    <div class="md:w-1/2 px-3 mb-6 md:mb-2">
+                <div class="flex flex-wrap gap-3 justify-evenly items-center">
+                    <div class="md:w-1/2 px-3 mb-2 md:mb-2">
                         <x-label value="{{ __('Nombre') }}" />
                         <x-input wire:model.defer="name"
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:border-gray-600 dark:bg-dark-eval-1
@@ -28,7 +28,7 @@
                             type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
                         <x-input-error for="name"></x-input-error>
                     </div>
-                    <div class="md:w-1/2 px-3">
+                    <div class="md:w-1/2 px-3 mb-2 md:mb-2">
                         <x-label value="{{ __('Usuario') }}" />
                         <x-input wire:model.defer="username"
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
@@ -62,8 +62,8 @@
                         class="bg-green-100 text-green-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ __('Datos Cuenta') }}</span>
                 </div>
 
-                <div class="flex gap-2 mb-3">
-                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                <div class="flex flex-wrap gap-3 justify-evenly items-center">
+                    <div class="md:w-1/2 px-3 mb-2 md:mb-0">
                         <x-label value="{{ __('Rol') }}" />
                         <select id="permiso" wire:model="permiso" 
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 dark:border-gray-700 {{ $errors->has('permiso') ? 'is-invalid' : '' }}"
@@ -76,7 +76,7 @@
                         <x-input-error for="permiso"></x-input-error>
                     </div>
                     {{-- @if ($zonau) --}}
-                        <div class="md:w-1/2 px-3 mb-6 md:mb-0" wire:ignore>
+                        <div class="md:w-1/2 px-3 mb-2 md:mb-0" wire:ignore>
                             <x-label value="{{ __('Zona') }}" />
                             <select id="select2" name="zonasList[ ]"
                                 class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
@@ -90,7 +90,7 @@
                         </div>
                     {{-- @endif --}}
                 </div>
-                <div class="flex gap-2 mb-3">
+                <div class="flex flex-wrap gap-3 justify-evenly items-center">
                     {{-- @if ($areau) --}}
                         <div class="md:w-1/2 px-3 mb-6 md:mb-0" wire:ignore>
                             <x-label value="{{ __('Area') }}" />
@@ -137,7 +137,7 @@
                     <span
                         class="bg-green-100 text-green-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ __('Datos Acceso') }}</span>
                 </div>
-                <div class="flex gap-2 mb-3 pt-3">
+                <div class="flex flex-wrap gap-3 justify-evenly items-center">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <x-label value="{{ __('Contraseña') }}" />
                         <x-input wire:model.defer="password"

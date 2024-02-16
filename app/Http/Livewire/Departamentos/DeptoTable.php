@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Departamentos;
 use App\Exports\DeptoExport;
 use App\Models\Departamento;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -98,9 +99,9 @@ class DeptoTable extends Component
   
       //Exportar a excel
       public function exportSelected()
-      {
-          return (new DeptoExport($this->checked))->download('DEPARTAMENTOS.xlsx');
-      }
+     {
+         return Excel::download(new DeptoExport($this->checked), 'DEPARTAMENTOS.xlsx');
+     }
   
       //Eliminación multiple
       public function deleteDeptos()

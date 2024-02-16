@@ -18,6 +18,20 @@
                             dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" />
                 <x-input-error for="vence"></x-input-error>
             </div>
+            <div>
+                <x-label value="{{ __('Vencido:') }}" />
+                <select id="vencido" wire:model.defer="vencido"
+                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('vencido') ? 'is-invalid' : '' }}"
+                    name="vencido" required aria-required="true">
+                    <option hidden value="">Seleccionar Status</option>
+                    <option value="0" @if ($vencido == 0) {{ 'selected' }} @endif>
+                        Sin Vencer</option>
+                    <option value="1" @if ($vencido == 1) {{ 'selected' }} @endif>
+                        Vencido</option>
+                </select>
+                <x-input-error for="vencido"></x-input-error>
+            </div>
         </div>
         @if ($this->cerrado != NULL)
             <div class=" mb-2">

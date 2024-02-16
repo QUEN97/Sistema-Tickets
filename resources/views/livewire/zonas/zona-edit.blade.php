@@ -12,7 +12,7 @@
 
     <x-dialog-modal wire:model="EditZona" id="EditZona{{ $zona_id }}" class="flex items-center">
         <x-slot name="title">
-            <div class="bg-dark-eval-1 dark:bg-gray-600 p-4 rounded-md text-white text-center">
+            <div class="bg-dark-eval-1 dark:bg-gray-600 p-1 rounded-md text-white text-center">
                 {{ __('Editar Zona') }}
             </div>
         </x-slot>
@@ -29,7 +29,7 @@
                 <div class="mb-3 mr-2 col-6" wire:ignore>
                     <x-label value="{{ __('Status') }}" />
                     <select id="status" wire:model="status"
-                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm {{ $errors->has('status') ? 'is-invalid' : '' }}"
+                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 {{ $errors->has('status') ? 'is-invalid' : '' }}"
                         name="status" required aria-required="true">
                         <option hidden value="">Seleccionar Status</option>
                         <option value="Activo" @if ($status == 'Activo') {{ 'selected' }} @endif>
@@ -42,7 +42,7 @@
                 <div class="mb-3 mr-2 col-6">
                     <x-label value="{{ __('Región') }}" />
                     <select wire:model="regionsUpdate"
-                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm {{ $errors->has('status') ? 'is-invalid' : '' }}"
+                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-slate-800 {{ $errors->has('status') ? 'is-invalid' : '' }}"
                         name="status" required aria-required="true">
                         <option value="">Seleccionar región</option>
                         @foreach ($regions as $tag)

@@ -18,18 +18,20 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="bg-white dark:bg-gray-600 shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
+            <div class="shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2 max-h-[300px] min-w-[120px] overflow-y-auto">
                 <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <x-label value="{{ __('Nombre') }}" />
-                        <x-input wire:model="name" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('name') ? 'is-invalid' : '' }}" type="text"
-                            name="name" :value="old('name')" required autofocus autocomplete="name" />
+                        <x-input wire:model="name"
+                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('name') ? 'is-invalid' : '' }}"
+                            type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
                         <x-input-error for="name"></x-input-error>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <x-label value="{{ __('Usuario') }}" />
-                        <x-input wire:model.defer="username" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        <x-input wire:model.defer="username"
+                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('username') ? 'is-invalid' : '' }}"
                             type="text" name="username" :value="old('username')" required autofocus
                             autocomplete="username" />
@@ -39,13 +41,14 @@
                 <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-full px-3">
                         <x-label value="{{ __('Correo Electrónico') }}" />
-                        <x-input wire:model.defer="email" class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        <x-input wire:model.defer="email"
+                            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('email') ? 'is-invalid' : '' }}"
                             type="email" name="email" :value="old('email')" required />
                         <x-input-error for="email"></x-input-error>
                     </div>
                 </div>
-                <div class="-mx-3 md:flex mb-2 flex gap-2">
+                <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <x-label value="{{ __('Rol') }}" />
                         <select id="role" wire:model="role"
@@ -61,39 +64,43 @@
                         <x-input-error for="role"></x-input-error>
                     </div>
                     {{-- @if ($areau) --}}
-                        <div class="mb-3 col-6">
-                            <x-label value="{{ __('Area') }}" />
-                            <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
-                                @foreach ($areas as $tag)
-                                    <div class="flex items-center">
-                                        <input type="checkbox" wire:model="areasUpdate" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" value="{{ $tag->id }}"
-                                            name="names[]" id="{{ $tag->name }}" multiple>
-                                        <label for="{{ $tag->name }}"  @if (old('areasUpdate') == $tag->id) selected @endif>{{ $tag->name }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <x-input-error for="area"></x-input-error>
+                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                        <x-label value="{{ __('Area') }}" />
+                        <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
+                            @foreach ($areas as $tag)
+                                <div class="flex items-center">
+                                    <input type="checkbox" wire:model="areasUpdate"
+                                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1"
+                                        value="{{ $tag->id }}" name="names[]" id="{{ $tag->name }}" multiple>
+                                    <label for="{{ $tag->name }}"
+                                        @if (old('areasUpdate') == $tag->id) selected @endif>{{ $tag->name }}</label>
+                                </div>
+                            @endforeach
                         </div>
+                        <x-input-error for="area"></x-input-error>
+                    </div>
                     {{-- @endif
                     @if ($zonau) --}}
-                        <div class="mb-3 col-6">
-                            <x-label value="{{ __('Zona') }}" />
-                            <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
-                                @foreach ($zonas as $tag)
-                                    <div class="flex items-center">
-                                        <input type="checkbox" wire:model="zonasUpdate" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1" value="{{ $tag->id }}"
-                                            name="names[]" id="{{ $tag->name }}" multiple>
-                                        <label for="{{ $tag->name }}" @if (old('zonasUpdate') == $tag->id) selected @endif>{{ $tag->name }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <x-input-error for="zona"></x-input-error>
+                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                        <x-label value="{{ __('Zona') }}" />
+                        <div class="max-h-[100px] min-w-[120px] overflow-y-auto">
+                            @foreach ($zonas as $tag)
+                                <div class="flex items-center">
+                                    <input type="checkbox" wire:model="zonasUpdate"
+                                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1"
+                                        value="{{ $tag->id }}" name="names[]" id="{{ $tag->name }}" multiple>
+                                    <label for="{{ $tag->name }}"
+                                        @if (old('zonasUpdate') == $tag->id) selected @endif>{{ $tag->name }}</label>
+                                </div>
+                            @endforeach
                         </div>
+                        <x-input-error for="zona"></x-input-error>
+                    </div>
                     {{-- @endif --}}
                 </div>
-                <div class="flex gap-2 mb-3">
+                <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <x-label value="{{ __('Región') }}" />
                         <select id="region" wire:model="region"
@@ -118,6 +125,8 @@
                                 Activo</option>
                             <option value="Hora Comida" @if ($status == 'Hora Comida') {{ 'selected' }} @endif>
                                 Hora Comida</option>
+                            <option value="Vacaciones" @if ($status == 'Vacaciones') {{ 'selected' }} @endif>
+                                Vacaciones</option>
                             <option value="En Viaje" @if ($status == 'En Viaje') {{ 'selected' }} @endif>
                                 En Viaje</option>
                             <option value="Inactivo" @if ($status == 'Inactivo') {{ 'selected' }} @endif>
@@ -129,7 +138,8 @@
                 <div class="-mx-3 md:flex mb-2">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <x-label value="{{ __('Contraseña') }}" />
-                        <x-input wire:model="password" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        <x-input wire:model="password"
+                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('password') ? 'is-invalid' : '' }}"
                             type="password" name="password" required autocomplete="new-password"
                             wire:keydown.enter="addUsuario" />
@@ -137,7 +147,8 @@
                     </div>
                     <div class="md:w-1/2 px-3">
                         <x-label value="{{ __('Confirmar Contraseña') }}" />
-                        <x-input class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                        <x-input
+                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
                         dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"
                             type="password" wire:model="password_confirmation" name="password_confirmation" required
                             autocomplete="new-password" wire:keydown.enter="addUsuario" />

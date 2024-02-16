@@ -2,23 +2,25 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\ZonaSheet;
 use App\Models\Zona;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ZonaExport implements FromQuery
+class ZonaExport implements WithMultipleSheets
 {
-    use Exportable;
-
     protected $zonas;
 
     public function __construct($zonas)
     {
-        $this->zonas=$zonas;
+        $this->zonas = $zonas;
     }
 
-   public function query()
-   {
-    return Zona::query()->whereKey($this->zonas);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new ZonaSheet($this->zonas));
+        return $sheet;
+    }
 }

@@ -3,14 +3,13 @@
         <tr>
             <th>{{ __('ID') }}</th>
             <th>{{ __('NOMBRE') }}</th>
-            <th>{{ __('TOTAL GERENTES') }}</th>
-            <th>{{ __('TOTAL SUPERVISORES') }}</th>
-            <th>{{ __('TOTAL ESTACIONES') }}</th>
+            <th>{{ __('DEPARTAMENTO') }}</th>
+            <th>{{ __('ESTADO') }}</th>
             <th>{{ __('FECHA') }}</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($zonas as $item)
+        @foreach ($areas as $item)
             <tr>
                 <td>
                     {{ $item->id }}
@@ -19,13 +18,10 @@
                     {{ $item->name }}
                 </td>
                 <td>
-                    {{ $item->users->where('permiso_id', 3)->count() }}
+                    {{ $item->departamento->name }}
                 </td>
                 <td>
-                    {{ $item->users->where('permiso_id', 2)->count() }}
-                </td>
-                <td>
-                    {{ $item->estacions->count() }}
+                    {{ $item->status}}
                 </td>
                 <td>
                     {{ $item->created_at }}

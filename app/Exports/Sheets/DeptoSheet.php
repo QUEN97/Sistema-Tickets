@@ -2,6 +2,7 @@
 
 namespace App\Exports\Sheets;
 
+use App\Models\Departamento;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -13,32 +14,24 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use App\Models\Estacion;
-use App\Models\Producto;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class EstacionProductoSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
+class DeptoSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
 {
-    private $ini;
-    private $fin;
+    private $departamentos;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($ini, $fin)
+    public function __construct($departamentos)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
+        $this->departamentos = $departamentos;
     }
 
     public function view(): View
     {
-        /* dd(Estacion::join('estacion_producto as ep','ep.estacion_id','estacions.id')
-                    ->join('productos as p','p.id','ep.producto_id')
-                    ->select('p.name as producto','estacions.*')->get()); */
-        return view('excels.estacion.EstacionProductoSheet', [
-            'estac' => Estacion::whereBetween('created_at', [$this->ini, $this->fin])->get(),
-            'producto' => Producto::select('id','name')->get()
+        return view('excels.departamento.DeptoSheet', [
+            'departamentos' => Departamento::whereIn('id', $this->departamentos)->get()
         ]);
     }
 
@@ -53,37 +46,11 @@ class EstacionProductoSheet implements WithTitle, FromView, WithStyles, ShouldAu
     {
         return [
             AfterSheet::class   => function(AfterSheet $event){
-                $cellRange = 'A5:G5';
+                $cellRange = 'A1:D1';
 
                 $totalRows = $event->sheet->getHighestRow();
 
-                $celAll = 'A5:G'.$totalRows;
-
-                $event->sheet->getDelegate()->getStyle('A1')
-                            ->applyFromArray([
-                                'font' => [
-                                    'bold' => true,
-                                    'name' => 'Arial',
-                                    'size' => 14,
-                                    'color' => [
-                                        'rgb' => 'ffffff'
-                                    ],
-                                ],
-                                'borders' => [
-                                    'allBorders' => [
-                                        'borderStyle' => Border::BORDER_MEDIUM,
-                                        'color' => ['argb' => 'ff000000'],
-                                    ]
-                                ],
-                                'alignment' => [
-                                    'horizontal' => Alignment::HORIZONTAL_CENTER,
-                                    'vertical' => Alignment::VERTICAL_CENTER,
-                                ],
-                                'fill' => [
-                                    'fillType' => Fill::FILL_SOLID,
-                                    'color' => ['argb' => 'ffcc0000'],
-                                ],
-                            ]);
+                $celAll = 'A1:D'.$totalRows;
 
                 $event->sheet->getDelegate()->getStyle($cellRange)
                             ->applyFromArray([
@@ -121,6 +88,7 @@ class EstacionProductoSheet implements WithTitle, FromView, WithStyles, ShouldAu
 
     public function title(): string
     {
-        return 'Productos en Almacen';
+        
+            return 'DEPARTAMENTOS';
     }
 }

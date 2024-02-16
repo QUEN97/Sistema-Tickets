@@ -19,7 +19,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="w-full rounded overflow-hidden shadow-lg">
+            {{-- <div class="w-full rounded overflow-hidden shadow-lg">
                 <div class="px-6 py-4">
                     <div class="font-bold text-xl mb-2 ">{{ $this->titulo_estacion }}</div>
                     <div class="font-bold text-sm mb-2 ">No. {{ $this->numero }}</div>
@@ -61,6 +61,20 @@
                         class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $this->zonas }}</span>
                 </div>
                 <img class="w-full" src="{{ asset('img/logo/fullpower.png') }}" alt="">
+            </div> --}}
+            <div class="overflow-hidden max-h-96 overflow-y-auto">
+                <fieldset class="border dark:border-gray-500 p-2">
+                    <legend class="font-bold">Detalles de la Estación</legend>
+                    <div>
+                        <span><strong>Estación: </strong>{{$this->titulo_estacion}}</span>
+                        <span><strong>Numero Estación: </strong>{{$this->numero==null?'POR DEFINIR':$this->numero}}</span>
+                    </div>
+                    <div class="mt-2 flex flex-wrap gap-3">
+                        <span><strong>Gerente: </strong>{{$this->gerente==null?'POR DEFINIR':$this->gerente}}</span>
+                        <span><strong>Supervisor: </strong>{{$this->supervisor==null?'POR DEFINIR':$this->supervisor}}</span>
+                        <span><strong>Zonas: </strong>{{$this->zonas==null?'POR DEFINIR':$this->zonas}}</span>
+                    </div>
+                </fieldset>
             </div>
         </x-slot>
 

@@ -13,8 +13,8 @@ use Livewire\Component;
 
 class ShowZona extends Component
 {
-    public $ShowgZona, $db;
-    public $zona_show_id, $gerent, $produ, $productos, $prods;
+    public $ShowgZona, $db, $dbsup;
+    public $zona_show_id, $gerent, $supervi;
     public $name, $ubicacion, $created_at, $gerentes, $estacions, $status;
 
     public function mount()
@@ -30,43 +30,30 @@ class ShowZona extends Component
         $this->name = $zona->name;
         $this->created_at = Carbon::parse($zona['created_at'])->isoFormat('D MMMM Y  h:mm:ss A ');
 
-         foreach ($zona->users as $lue) {
-             if ($lue->permiso_id == 3) {
-                 $this->gerentes = $zona->users->count();
-             } else {
-                 $this->gerentes = 0;
-             }
-         }
-        // $this->gerentes = 0;
-        // foreach ($zona->users as $lue) {
-        //     if ($lue->permiso_id == 3) {
-        //         $this->gerentes++;
-        //     }
-        // }
+        foreach ($zona->users as $lue) {
+            if ($lue->permiso_id == 3) {
+                $this->gerentes = $zona->users->count();
+            } else {
+                $this->gerentes = 0;
+            }
+        }
 
         $this->db = User::join('user_zona as uz', 'users.id', 'uz.user_id')->where('uz.zona_id', $this->zona_show_id)
             ->where('users.permiso_id', 3)->select('users.*')->count();
+        $this->dbsup = User::join('user_zona as uz', 'users.id', 'uz.user_id')->where('uz.zona_id', $this->zona_show_id)
+            ->where('users.permiso_id', 2)->select('users.*')->count();
         // dd($this->db);
-         if ($this->db != 0) {
-             $this->gerent = $this->db;
-         } else {
-             $this->gerent = "Sin Gerentes en esta Zona.";
-         }
-        // if (isset($this->db)) {
-        //     $this->gerent = $this->db;
-        // } else {
-        //     $this->gerent = "Sin Gerentes en esta Zona";
-        // }
+        if ($this->db != 0) {
+            $this->gerent = $this->db;
+        } else {
+            $this->gerent = "Sin Gerentes en esta Zona.";
+        }
+        if ($this->dbsup != 0) {
+            $this->supervi = $this->dbsup;
+        } else {
+            $this->supervi = "Sin Supervisores en esta Zona.";
+        }
 
-        // $this->produ = $zona->productos->count();
-        // $this->produ = Producto::join('producto_zona as pz', 'productos.id', 'pz.producto_id')->where('pz.zona_id', $this->zona_show_id)
-        // ->select('productos.*')->count();
-        // // dd($this->produ->get());
-        // if ($this->produ != 0) {
-        //     $this->prods = $this->produ;
-        // } else {
-        //     $this->prods = "Sin Productos en esta Zona.";
-        // }
 
         if (Auth::user()->permiso_id == 2) {
             $this->estaciones = $zona->estacions->where('supervisor_id', Auth::user()->id)->count();
@@ -90,13 +77,11 @@ class ShowZona extends Component
     {
         $this->users = User::join('user_zona as uz', 'users.id', 'uz.user_id')->where('uz.zona_id', $this->zona_show_id)
             ->where('users.permiso_id', 3)->select('users.*')->get();
-
         $this->estaciones = Estacion::where('zona_id', $this->zona_show_id)->get();
 
-        $this->isSuper = Estacion::where('zona_id', $this->zona_show_id)->where('supervisor_id', Auth::user()->id)->get();
-
-        // $this->productos = Producto::join('producto_zona as pz', 'productos.id', 'pz.producto_id')->where('pz.zona_id', $this->zona_show_id)
-        // ->select('productos.*')->get();
+        $this->isSuper = User::join('user_zona as uz', 'users.id', 'uz.user_id')->where('uz.zona_id', $this->zona_show_id)
+            ->where('users.permiso_id', 2)->select('users.*')->get();
+       
 
         return view('livewire.zonas.show-zona');
     }

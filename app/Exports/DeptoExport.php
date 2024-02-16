@@ -2,13 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\DeptoSheet;
 use App\Models\Departamento;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class DeptoExport implements FromQuery
+class DeptoExport implements WithMultipleSheets
 {
-    use Exportable;
 
     protected $departamentos;
 
@@ -17,8 +18,10 @@ class DeptoExport implements FromQuery
         $this->departamentos=$departamentos;
     }
 
-   public function query()
-   {
-    return Departamento::query()->whereKey($this->departamentos);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new DeptoSheet($this->departamentos));
+        return $sheet;
+    }
 }

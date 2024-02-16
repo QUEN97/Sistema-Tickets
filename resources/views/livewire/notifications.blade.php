@@ -1,4 +1,4 @@
-<div>
+<div class="hidden md:flex items-center justify-center">
     <x-dropdown align="right" width="80">
         <x-slot name="trigger">
             @if (Auth::user()->unreadNotifications->count() == 0)

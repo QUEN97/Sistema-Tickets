@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Zonas;
 
 use App\Exports\ZonaExport;
 use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Zona;
 use Livewire\Component;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class ZonaTable extends Component
     public $checked = [];
     public $selectPage = false;
     public $selectAll = false;
+
 
     //protected $queryString = ['sortField', 'sortDirection'];
     public function render()
@@ -83,7 +85,6 @@ class ZonaTable extends Component
     public function getZonasQueryProperty()
     {
         $user = Auth::user();
-
         return Zona::search($this->search)
             ->when($user->permiso_id == 1 || $user->permiso_id == 5, function ($query) {
                 // Si el usuario es un administrador, no aplicamos restricciones
@@ -112,7 +113,7 @@ class ZonaTable extends Component
     //Exportar a excel
     public function exportSelected()
     {
-        return (new ZonaExport($this->checked))->download('ZONAS.xlsx');
+        return Excel::download(new ZonaExport($this->checked), 'ZONAS.xlsx');
     }
 
     //Eliminación multiple

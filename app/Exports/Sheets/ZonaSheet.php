@@ -19,27 +19,19 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class ZonaSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
 {
-    private $ini;
-    private $fin;
-    private $zonaSelec;
+    private $zonas;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($ini, $fin, $zonaSelec)
+    public function __construct($zonas)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
-        $this->zonaSelec = $zonaSelec;
+        $this->zonas = $zonas;
     }
 
     public function view(): View
     {
         return view('excels.zona.ZonaSheet', [
-            'zonas' => Zona::whereBetween('zonas.created_at', [$this->ini, $this->fin])->get(),
-            'productos'=>Zona::join('producto_zona as pz','pz.zona_id','zonas.id')
-                        ->selectRaw('COUNT(pz.id) AS total_productos, zonas.name')
-                        ->groupBy('zonas.name')
-                        ->whereBetween('zonas.created_at', [$this->ini, $this->fin])->get()
+            'zonas' => Zona::whereIn('id', $this->zonas)->get()
         ]);
     }
 
@@ -96,10 +88,7 @@ class ZonaSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, With
 
     public function title(): string
     {
-        if ($this->zonaSelec == 'Todos') {
-            return 'Zonas';
-        } else {
-            return 'Zonas - '.$this->zonaSelec;
-        }
+        
+            return 'ZONAS';
     }
 }

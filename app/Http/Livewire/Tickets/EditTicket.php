@@ -19,7 +19,7 @@ class EditTicket extends Component
     use WithFileUploads;
     public $ticketID,$fallas,$falla,$area,$servicios,$servicio,$agentes,$agente,$cliente,$clientes,
     $asunto,$mensaje,$status,$modal=false,$departamento,
-    $vence,$creado,$cerrado;
+    $vence,$creado,$cerrado,$vencido;
     public $evidencias=[],$evidenciaArc,$urlArchi;
     public function mount(){
         $tck = Ticket::find($this->ticketID);
@@ -39,6 +39,7 @@ class EditTicket extends Component
         $this->asunto=$tck->asunto;
         $this->mensaje=$tck->mensaje;
         $this->status=$tck->status;
+        $this->vencido=$tck->vencido;
 
         $fecha_cierre = Carbon::parse($tck->fecha_cierre);
         $this->vence=$fecha_cierre->format('Y-m-d\TH:i:s');
@@ -92,6 +93,7 @@ class EditTicket extends Component
         $tck->asunto=$this->asunto;
         $tck->mensaje=$this->mensaje;
         $tck->status=$this->status;
+        $tck->vencido=$this->vencido;
         $tck->created_at=$this->creado;
         $tck->fecha_cierre=$cierre->addHours($falla->prioridad->tiempo);
         $tck->save();

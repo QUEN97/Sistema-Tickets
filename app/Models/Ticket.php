@@ -59,7 +59,7 @@ class Ticket extends Model
         return [
             'Abierto' => 'green',
             'En proceso' => 'yellow',
-            'Cerrado' => 'indigo',
+            'Cerrado' => 'gray',
         ][$this->status] ?? 'gray';
     }
 

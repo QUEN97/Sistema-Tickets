@@ -2,6 +2,7 @@
 
 namespace App\Exports\Sheets;
 
+use App\Models\Areas;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -13,68 +14,26 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use App\Models\Solicitud;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-// class SolicitudContsSheet implements FromQuery, WithTitle, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithEvents
-class SolicitudContsSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
+class AreaSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
 {
-    private $ini;
-    private $fin;
+    private $areas;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($ini, $fin, $statSelec)
+    public function __construct($areas)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
-        $this->statSelec = $statSelec;
+        $this->areas = $areas;
     }
 
     public function view(): View
     {
-        if ($this->statSelec == 'Todos') {
-            return view('excels.solicitudContsSheet', [
-                'solici' => Solicitud::selectRaw('estacion_id, COUNT(categoria_id) as cantidad')
-                            ->whereBetween('created_at', [$this->ini, $this->fin])
-                            ->groupBy('estacion_id')
-                            ->get()
-            ]);
-        } else {
-            return view('excels.solicitudContsSheet', [
-                'solici' => Solicitud::selectRaw('estacion_id, COUNT(categoria_id) as cantidad')
-                            ->whereBetween('created_at', [$this->ini, $this->fin])
-                            ->where('status', $this->statSelec)
-                            ->groupBy('estacion_id')
-                            ->get()
-            ]);
-        }
+        return view('excels.area.AreaSheet', [
+            'areas' => Areas::whereIn('id', $this->areas)->get()
+        ]);
     }
-
-    // public function query()
-    // {
-    //     return Solicitud::query()
-    //             ->selectRaw('estacion_id, COUNT(categoria_id) as cantidad')
-    //             ->whereBetween('created_at', [$this->ini, $this->fin])
-    //             ->groupBy('estacion_id');
-    // }
-
-    // public function headings(): array
-    // {
-    //     return [
-    //         'Estación',
-    //         'Cant. Categorias',
-    //     ];
-    // }
-
-    // public function map($solicitud): array
-    // {
-    //     return [
-    //         $solicitud->estacion->titulo_estacion,
-    //         $solicitud->cantidad
-    //     ];
-    // }
 
     public function styles(Worksheet $sheet)
     {
@@ -87,11 +46,11 @@ class SolicitudContsSheet implements WithTitle, FromView, WithStyles, ShouldAuto
     {
         return [
             AfterSheet::class   => function(AfterSheet $event){
-                $cellRange = 'A1:B1';
+                $cellRange = 'A1:E1';
 
                 $totalRows = $event->sheet->getHighestRow();
 
-                $celAll = 'A1:B'.$totalRows;
+                $celAll = 'A1:E'.$totalRows;
 
                 $event->sheet->getDelegate()->getStyle($cellRange)
                             ->applyFromArray([
@@ -129,6 +88,7 @@ class SolicitudContsSheet implements WithTitle, FromView, WithStyles, ShouldAuto
 
     public function title(): string
     {
-        return 'Cantidad de Categorias';
+        
+            return 'ÁREAS';
     }
 }

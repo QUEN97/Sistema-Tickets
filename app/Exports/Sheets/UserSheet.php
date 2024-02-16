@@ -2,6 +2,7 @@
 
 namespace App\Exports\Sheets;
 
+use App\Models\User;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -13,37 +14,25 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use App\Models\Repuesto;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class RepuestoSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
+class UserSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
 {
-    private $ini;
-    private $fin;
-    private $repuesSelec;
+    private $usuarios;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($ini, $fin, $repuesSelec)
+    public function __construct($usuarios)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
-        $this->repuesSelec = $repuesSelec;
+        $this->usuarios = $usuarios;
     }
 
     public function view(): View
     {
-        
-        if ($this->repuesSelec == 'Todos') {
-            return view('excels.repuesto.RepuestoSheet', [
-                'repues' => Repuesto::whereBetween('created_at', [$this->ini, $this->fin])->get()
-            ]);
-        } else {
-            return view('excels.repuesto.RepuestoSheet', [
-                'repues' => Repuesto::whereBetween('created_at', [$this->ini, $this->fin])->where('status', $this->repuesSelec)->get()
-            ]);
-        }
+        return view('excels.usuario.UserSheet', [
+            'usuarios' => User::whereIn('id', $this->usuarios)->get()
+        ]);
     }
 
     public function styles(Worksheet $sheet)
@@ -99,10 +88,7 @@ class RepuestoSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, 
 
     public function title(): string
     {
-        if ($this->repuesSelec == 'Todos') {
-            return 'Repuestos';
-        } else {
-            return 'Repuestos - '.$this->repuesSelec;
-        }
+        
+            return 'USUARIOS';
     }
 }

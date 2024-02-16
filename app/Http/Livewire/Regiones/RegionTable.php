@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Regiones;
 
 use App\Exports\RegionExport;
 use App\Models\Region;
+use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class RegionTable extends Component
     public $checked = [];
     public $selectPage = false;
     public $selectAll = false;
-    
+
     public function render()
     {
         $this->valid = Auth::user()->permiso->panels->where('id', 9)->first();
@@ -99,7 +100,7 @@ class RegionTable extends Component
     //Exportar a excel
     public function exportSelected()
     {
-        return (new RegionExport($this->checked))->download('REGIONES.xlsx');
+        return Excel::download(new RegionExport($this->checked), 'REGIONES.xlsx');
     }
 
     //Eliminación multiple

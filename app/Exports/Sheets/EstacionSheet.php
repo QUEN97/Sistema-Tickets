@@ -2,6 +2,7 @@
 
 namespace App\Exports\Sheets;
 
+use App\Models\Estacion;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -13,30 +14,24 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use App\Models\Estacion;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class EstacionSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, WithEvents
 {
-    private $ini;
-    private $fin;
+    private $estaciones;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($ini, $fin)
+    public function __construct($estaciones)
     {
-        $this->ini = $ini;
-        $this->fin = $fin;
+        $this->estaciones = $estaciones;
     }
 
     public function view(): View
     {
-        //dd(DB::table('estacion_producto as ep')->selectRaw('COUNT(ep.producto_id) AS total, ep.estacion_id AS estacion')->groupBy('ep.estacion_id')->get());
         return view('excels.estacion.EstacionSheet', [
-            'estac' => Estacion::whereBetween('created_at', [$this->ini, $this->fin])->get(),
-            'total' => DB::table('estacion_producto as ep')->selectRaw('COUNT(ep.producto_id) AS total, ep.estacion_id AS estacion')->groupBy('ep.estacion_id')->get()
+            'estaciones' => Estacion::whereIn('id', $this->estaciones)->get()
         ]);
     }
 
@@ -51,11 +46,11 @@ class EstacionSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, 
     {
         return [
             AfterSheet::class   => function(AfterSheet $event){
-                $cellRange = 'A1:H1';
+                $cellRange = 'A1:F1';
 
                 $totalRows = $event->sheet->getHighestRow();
 
-                $celAll = 'A1:H'.$totalRows;
+                $celAll = 'A1:F'.$totalRows;
 
                 $event->sheet->getDelegate()->getStyle($cellRange)
                             ->applyFromArray([
@@ -93,6 +88,7 @@ class EstacionSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, 
 
     public function title(): string
     {
-        return 'Estaciones';
+        
+            return 'ESTACIONES';
     }
 }

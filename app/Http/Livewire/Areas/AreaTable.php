@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Areas;
 
 use App\Exports\AreaExport;
 use App\Models\Areas;
+use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -95,11 +96,11 @@ class AreaTable extends Component
         $this->sortField = $field;
     }
 
-    //Exportar a excel
-    public function exportSelected()
-    {
-        return (new AreaExport($this->checked))->download('ÁREAS.xlsx');
-    }
+     //Exportar a excel
+     public function exportSelected()
+     {
+         return Excel::download(new AreaExport($this->checked), 'ÁREAS.xlsx');
+     }
 
     //Eliminación multiple
     public function deleteAreas()

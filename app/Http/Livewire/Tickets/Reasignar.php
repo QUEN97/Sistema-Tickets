@@ -15,7 +15,7 @@ class Reasignar extends Component
     public function mount()
     {
         $ticket = Ticket::find($this->ticketID);
-        $this->personal = $ticket->falla->servicio->area->users;
+        $this->personal = $ticket->falla->servicio->area->users()->where('status', 'Activo')->get();
         $this->asignado = $ticket->user_id;
     }
     public function changeAgente(Ticket $tck)

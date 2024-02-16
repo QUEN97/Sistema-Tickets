@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Estacion;
 use App\Exports\EstacionExport;
 use App\Models\Estacion;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -112,11 +113,11 @@ class EstacionTable extends Component
         $this->sortField = $field;
     }
 
-    //Exportar a excel
-    public function exportSelected()
-    {
-        return (new EstacionExport($this->checked))->download('ESTACIONES.xlsx');
-    }
+       //Exportar a excel
+       public function exportSelected()
+       {
+           return Excel::download(new EstacionExport($this->checked), 'ESTACIONES.xlsx');
+       }
 
     //Eliminación multiple
     public function deleteEstaciones()

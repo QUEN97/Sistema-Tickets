@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Usuarios;
 
 use App\Exports\UserExport;
 use App\Models\User;
+use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -110,7 +111,7 @@ class UserTable extends Component
      //Exportar a excel
      public function exportSelected()
      {
-         return (new UserExport($this->checked))->download('USUARIOS.xlsx');
+         return Excel::download(new UserExport($this->checked), 'USUARIOS.xlsx');
      }
  
      //Eliminación multiple

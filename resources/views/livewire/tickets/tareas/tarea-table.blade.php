@@ -89,11 +89,12 @@
                 <x-slot name="head">
                     {{-- Componente Heading  --}}
                     <x-heading><x-input type="checkbox" wire:model="selectPage" /></x-heading>
-                    <x-heading sortable wire:click="sortBy('id')" :direction="$sortField === 'id' ? $sortDirection : null">ID</x-heading>
+                    {{-- <x-heading sortable wire:click="sortBy('id')" :direction="$sortField === 'id' ? $sortDirection : null">ID</x-heading> --}}
                     <x-heading sortable wire:click="sortBy('id')" :direction="$sortField === 'id' ? $sortDirection : null">TAREA</x-heading>
                     <x-heading sortable wire:click="sortBy('ticket_id')" :direction="$sortField === 'ticket_id' ? $sortDirection : null">TICKET</x-heading>
                     <x-heading sortable wire:click="sortBy('user_id')" :direction="$sortField === 'user_id' ? $sortDirection : null">AGENTE</x-heading>
                     <x-heading sortable wire:click="sortBy('user_asignado')" :direction="$sortField === 'user_asignado' ? $sortDirection : null">ASIGNADO</x-heading>
+                    <x-heading sortable wire:click="sortBy('asunto')" :direction="$sortField === 'asunto' ? $sortDirection : null">ASUNTO</x-heading>
                     <x-heading sortable wire:click="sortBy('status')" :direction="$sortField === 'status' ? $sortDirection : null">ESTADO</x-heading>
                     <x-heading sortable wire:click="sortBy('created_at')" :direction="$sortField === 'created_at' ? $sortDirection : null">FECHA REGISTRO</x-heading>
                     <x-heading sortable wire:click="sortBy('updated_at')" :direction="$sortField === 'updated_at' ? $sortDirection : null">FECHA ACTUALIZACIÓN</x-heading>
@@ -106,11 +107,12 @@
                             {{-- Componente Column --}}
                             <x-cell> <x-input type="checkbox" value="{{ $tarea->id }}" wire:model="checked" />
                             </x-cell>
-                            <x-cell>{{ $tarea->id }} </x-cell>
-                            <x-cell>{{ $tarea->id }} </x-cell>
-                            <x-cell>{{ $tarea->ticket->id }}</x-cell>
+                            {{-- <x-cell>#{{ $tarea->id }} </x-cell> --}}
+                            <x-cell>#{{ $tarea->id }} </x-cell>
+                            <x-cell>#{{ $tarea->ticket->id }}</x-cell>
                             <x-cell>{{ $tarea->ticket->agente->name }}</x-cell>
                             <x-cell>{{ $tarea->user->name }}</x-cell>
+                            <x-cell>{{ $tarea->asunto }}</x-cell>
                             <x-cell>
                                 <span
                                     class="rounded bg-{{ $tarea->status_color }}-200 py-1 px-3 text-xs text-{{ $tarea->status_color }}-500 font-bold">
@@ -131,7 +133,7 @@
                                                 <a href="{{ route('tck.tarea', $tarea->ticket_id) }}" class="tooltip">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="w-6 h-6 text-gray-400 hover:text-indigo-500 transition duration-300">
+                                                        class="w-6 h-6 text-gray-400">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                                     </svg>

@@ -2,13 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\RegionSheet;
 use App\Models\Region;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class RegionExport implements FromQuery
+class RegionExport implements WithMultipleSheets
 {
-    use Exportable;
 
     protected $regiones;
 
@@ -17,8 +18,10 @@ class RegionExport implements FromQuery
         $this->regiones=$regiones;
     }
 
-   public function query()
-   {
-    return Region::query()->whereKey($this->regiones);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new RegionSheet($this->regiones));
+        return $sheet;
+    }
 }

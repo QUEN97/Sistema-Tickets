@@ -105,8 +105,8 @@
                             {{-- Componente Column --}}
                             <x-cell> <x-input type="checkbox" value="{{ $compra->id }}" wire:model="checked" />
                             </x-cell>
-                            <x-cell>{{ $compra->id }} </x-cell>
-                            <x-cell>{{ $compra->ticket_id }}</x-cell>
+                            <x-cell>#{{ $compra->id }} </x-cell>
+                            <x-cell>#{{ $compra->ticket_id }}</x-cell>
                             <x-cell>{{ $compra->ticket->agente->name }}</x-cell>
                             <x-cell>{{ $compra->ticket->cliente->name }}</x-cell>
                             <x-cell>

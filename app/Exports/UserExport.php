@@ -2,14 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\UserSheet;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class UserExport implements FromQuery
+class UserExport implements WithMultipleSheets
 {
-    use Exportable;
-
     protected $usuarios;
 
     public function __construct($usuarios)
@@ -17,8 +17,10 @@ class UserExport implements FromQuery
         $this->usuarios=$usuarios;
     }
 
-   public function query()
-   {
-    return User::query()->whereKey($this->usuarios);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new UserSheet($this->usuarios));
+        return $sheet;
+    }
 }

@@ -1,21 +1,19 @@
 <table>
     <thead>
         <tr>
-            <th>{{ __('No. De Estación') }}</th>
-            <th>{{ __('Estación') }}</th>
-            <th>{{ __('Gerente') }}</th>
-            <th>{{ __('Supervisor') }}</th>
-            <th>{{ __('Zona') }}</th>
-            {{-- <th>{{ __('Ubicación') }}</th> --}}
-            <th>{{ __('Cant. de Productos') }}</th>
-            <th>{{ __('Creado') }}</th>
+            <th>{{ __('NO. ESTACIÓN') }}</th>
+            <th>{{ __('ESTACIÓN') }}</th>
+            <th>{{ __('GERENTE') }}</th>
+            <th>{{ __('SUPERVISOR') }}</th>
+            <th>{{ __('ZONA') }}</th>
+            <th>{{ __('FECHA') }}</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($estac as $item)
+        @foreach ($estaciones as $item)
             <tr>
                 <td>
-                    {{ $item->id }}
+                    {{ $item->num_estacion }}
                 </td>
                 <td>
                     {{ $item->name }}
@@ -36,23 +34,6 @@
                 </td>
                 <td>
                     {{ $item->zona->name }}
-                </td>
-                {{-- <td>
-                    {{ $item->ubicacion }}
-                </td> --}}
-                <td>
-                    @foreach ($total as $tl)
-                        @if ($item->id== $tl->estacion)
-                            {{$tl->total}}
-                        @endif
-                    @endforeach
-                    {{-- @foreach ($item->productos as $val)
-                        @if ($val->where('flag_trash', 0)->count() == 0 || $val->pivot->where('flag_trash', 0)->count() == null || $val->pivot == null)
-                            {{ __('Sin Productos') }}
-                        @else
-                            {{ $val->where('flag_trash', 0)->where('estacion_id',$item->id)->count() }}
-                        @endif
-                    @endforeach --}}
                 </td>
                 <td>
                     {{ $item->created_at }}
