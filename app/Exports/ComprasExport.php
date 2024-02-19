@@ -2,14 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\CompraSheet;
 use App\Models\Compra;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ComprasExport implements FromQuery
+class ComprasExport implements WithMultipleSheets
 {
-    use Exportable;
 
     protected $compras;
 
@@ -18,8 +18,10 @@ class ComprasExport implements FromQuery
         $this->compras=$compras;
     }
 
-   public function query()
-   {
-    return Compra::query()->whereKey($this->compras);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new CompraSheet($this->compras));
+        return $sheet;
+    }
 }

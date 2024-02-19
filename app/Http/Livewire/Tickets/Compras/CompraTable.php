@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompraTable extends Component
 {
@@ -134,11 +135,11 @@ class CompraTable extends Component
         $this->sortField = $field;
     }
 
-    //Exportar a excel
-    public function exportSelected()
-    {
-        return (new ComprasExport($this->checked))->download('COMPRAS.xlsx');
-    }
+     //Exportar a excel
+     public function exportSelected()
+     {
+         return Excel::download(new ComprasExport($this->checked), 'REQUISICIONES.xlsx');
+     }
 
     //Eliminación multiple
     public function deleteCompras()

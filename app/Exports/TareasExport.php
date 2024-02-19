@@ -2,14 +2,14 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\TareaSheet;
 use App\Models\Tarea;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class TareasExport implements FromQuery
+class TareasExport implements WithMultipleSheets
 {
-    use Exportable;
 
     protected $tareas;
 
@@ -18,8 +18,10 @@ class TareasExport implements FromQuery
         $this->tareas=$tareas;
     }
 
-   public function query()
-   {
-    return Tarea::query()->whereKey($this->tareas);
-   }
+    public function sheets(): array
+    {
+        $sheet=[];
+        array_push($sheet,new TareaSheet($this->tareas));
+        return $sheet;
+    }
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TareaTable extends Component
 {
@@ -73,7 +74,7 @@ class TareaTable extends Component
      //Obtener los datos y paginación
      public function getTareasProperty()
      {
-         return  $this->tareasQuery->paginate($this->perPage);
+         return  $this->getTareasQueryProperty()->orderBy('created_at', 'desc')->paginate($this->perPage);
      }
  
      public function getTareasQueryProperty()
@@ -100,7 +101,7 @@ class TareaTable extends Component
                  } else {
                      // Si el usuario es un agente, filtramos por sus tareas asignadas
                      $userId = Auth::user()->id;
-                     $query->where('ticket_id', $userId);
+                     $query->where('user_id', $userId)->orWhere('user_asignado',$userId);
                  }
              })
              ->when($this->sortField, function ($query) {
@@ -122,7 +123,7 @@ class TareaTable extends Component
      //Exportar a excel
      public function exportSelected()
      {
-         return (new TareasExport($this->checked))->download('TAREAS.xlsx');
+         return Excel::download(new TareasExport($this->checked), 'TAREAS.xlsx');
      }
  
      //Eliminación multiple

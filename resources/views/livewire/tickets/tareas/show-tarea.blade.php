@@ -18,108 +18,34 @@
             </div>
         </x-slot>
         <x-slot name="content">
-            <div class=" justify-center content-center max-h-[220px] overflow-y-auto">
-                <div class="rounded-lg overflow-hidden mb-1">
-                    <details>
-                        <summary class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 cursor-pointer text-center">
-                            Info. Ticket #{{ $this->idticket }}
-                        </summary>
-                        <table class="table-auto w-full">
-                            <thead class="bg-gray-50 dark:bg-dark-eval-2">
-                                <tr>
-                                    <th
-                                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                                        Vence</th>
-                                    <th
-                                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                                        Cliente</th>
-                                    <th
-                                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                                        Asunto</th>
-                                    <th
-                                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                                        Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                                <tr>
-                                    <td
-                                        class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
-                                        <span
-                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                        {{ $this->vencetck }}
-                                    </td>
-                                    <td
-                                        class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
-                                        <span
-                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                        {{ $this->solicitatck }}
-                                    </td>
-                                    <td
-                                        class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
-                                        <span
-                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                        {{ $this->asuntotck }}
-                                    </td>
-                                    <td
-                                        class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
-                                        <span
-                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                        {{ $this->mensajetck }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </details>
+            <div class="max-h-[320px] overflow-y-auto">
+                <div class="overflow-hidden max-h-96 overflow-y-auto">
+                    <fieldset class="border border-l-dark-eval-1 dark:border-gray-500 p-2">
+                        <legend class="font-bold">TICKET:</legend>
+                        <div>
+                            <span><strong>#: </strong>{{$this->idticket}}</span>
+                            <span><strong>CLIENTE: </strong>{{ $this->solicitatck }}</span>
+                        </div>
+                        <div class="mt-2 flex flex-wrap gap-3">
+                            <span><strong>DESCRIPCIÓN: </strong>{{$this->mensajetck}}</span>
+                            <span><strong>VENCIMIENTO: </strong>{{$this->vencetck}}</span>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border border-l-dark-eval-1 dark:border-gray-500 p-2">
+                        <legend class="font-bold">TAREA:</legend>
+                        <div>
+                            <span><strong>#: </strong>{{$this->tareaID}}</span>
+                            <span><strong>ASIGNADO: </strong>{{ $this->user_asignado }}</span>
+                        </div>
+                        <div class="mt-2 flex flex-wrap gap-3">
+                            <span><strong>ASUNTO: </strong>{{$this->asunto}}</span>
+                            <span><strong>DESCRIPCIÓN: </strong>{{$this->mensaje}}</span>
+                        </div>
+                    </fieldset>
                 </div>
-                <hr>
-                <div class="rounded-lg overflow-hidden mt-1">
-                    <details>
-                        <summary class="bg-gray-100 dark:bg-dark-eval-2 py-2 px-4 cursor-pointer text-center">
-                            Info. Tarea #{{ $this->tareaID; }}
-                        </summary>
-                        <table class="table-auto w-full">
-                            <thead class="bg-gray-50 dark:bg-dark-eval-2">
-                                <tr>
-                                    <th
-                                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                                        Agente</th>
-                                    <th
-                                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                                        Asunto</th>
-                                    <th
-                                        class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell dark:bg-dark-eval-2 dark:text-gray-300 dark:border-gray-700">
-                                        Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                                <tr>
-                                    <td
-                                        class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
-                                        <span
-                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                        {{ $this->user_asignado }}
-                                    </td>
-                                    <td
-                                        class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
-                                        <span
-                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                        {{ $this->asunto }}
-                                    </td>
-                                    <td
-                                        class="w-full lg:w-auto p-3   dark:text-white text-center border border-b  block lg:table-cell relative lg:static">
-                                        <span
-                                            class="lg:hidden absolute top-0 left-0 bg-gray-300 px-1 py-1 text-xs font-bold uppercase">Id</span>
-                                        {{ $this->mensaje }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </details>
+                <div class="dark:bg-dark-eval-0 p-2 rounded-md mt-2">
+                    @livewire('tickets.tareas.comentarios-tarea', ['tareaID' => $tareaID], key('comentarios'.$tareaID))
                 </div>
-            </div>
-            <div class="dark:bg-dark-eval-0 p-2 rounded-md mt-2">
-                @livewire('tickets.tareas.comentarios-tarea', ['tareaID' => $tareaID], key('comentarios'.$tareaID))
             </div>
         </x-slot>
 
