@@ -39,7 +39,7 @@
                                 <select id="ticket{{$productos[$key]['id']}}" wire:model.defer="productos.{{$key}}.tck"
                                         class="w-full border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700  {{ $errors->has('clase') ? 'is-invalid' : '' }}" 
                                         name="clase" required aria-required="true"{{--  @change="filter(event)" --}}>
-                                        <option value="NULL" >Sin ticket</option>
+                                        
                                     @foreach ($tickets as $ticket)
                                         <option value="{{$ticket->id}}">#{{$ticket->id}}</option>
                                     @endforeach
@@ -72,11 +72,11 @@
                                 <select wire:model.defer="productos.{{$key}}.obs"
                                 class="w-full border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700"
                                 name="observacion" id="obs{{$productos[$key]['id']}}">
-                                    <option value="Nuevo">Nuevo</option>
-                                    <option value="Usado">Usado</option>
-                                    <option value="Reparado">Reparado</option>
-                                    <option value="Dañado">Dañado</option>
-                                    <option value="Retorno">Retorno</option>
+                                    <option value="NUEVO">NUEVO</option>
+                                    <option value="USADO">USADO</option>
+                                    <option value="REPARADO">REPARADO</option>
+                                    <option value="DAÑADO">DAÑADO</option>
+                                    <option value="RETORNO">RETORNO</option>
                                 </select>
                             </div>
         

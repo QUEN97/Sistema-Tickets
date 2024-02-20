@@ -39,7 +39,7 @@ class EditSalida extends Component
         }
     }
     public function updateEntrada(){
-        $Admins = User::where('status', 'Activo')->where('permiso_id', 1)->get();
+		  $Admins = User::where('status', 'Activo')->where('permiso_id', 1)->get();
         $Compras = User::where('status', 'Activo')->where('permiso_id', 4)->get();
         //dd($this->carrito);
         foreach($this->productos as $pr){
@@ -48,9 +48,9 @@ class EditSalida extends Component
             if($pr['tck']!='NULL'){
                 $reg->ticket_id=$pr['tck'];
             }
-            if($pr['est']!='NULL'){
+            /* if($pr['est']!='NULL'){
                 $reg->estacion_id=$pr['est'];
-            }
+            } */
 
             $almCi=AlmacenCi::where('producto_id',$pr['producto'])->first();
             $almCi->stock-=$reg->cantidad;
@@ -82,7 +82,7 @@ class EditSalida extends Component
             $newSerie->serie=$serieEntrada->serie->serie;
             $newSerie->save();
         }
-        Notification::send($Admins, new SalidaEditNotification($reg));
+		Notification::send($Admins, new SalidaEditNotification($reg));
         Notification::send($Compras, new SalidaEditNotification($reg));
         $pdf=$this->PDF($this->salidaID);
         $nameArchivo=$this->salida->folio->folio.' '.Auth::user()->name.'.pdf';
@@ -90,7 +90,7 @@ class EditSalida extends Component
         return response()->streamDownload(function()use ($pdf){print($pdf);},$nameArchivo);
     }
     public function refresh(){
-        session()->flash('flash.banner', ' Cambios Guardados, la SALIDA ha sido actualizada');
+		session()->flash('flash.banner', ' Cambios Guardados, la SALIDA ha sido actualizada');
         session()->flash('flash.bannerStyle', 'success');
         //recargamos la página
         return redirect(request()->header('Referer'));
@@ -98,7 +98,7 @@ class EditSalida extends Component
     public function PDF($id){
         $hora=Carbon::now();
         $table=Salida::find($id);
-        $resEntrega = $table->usuario->zonas->first()->regions[0]->id;
+        $resEntrega = $table->productos->first()->ticket->cliente->zonas->first()->regions[0]->id;
         $ticket = $table->productos->first()->ticket->agente->name;
         $archivo='Folios/'.$table->folio->folio.' '.Auth::user()->name.''.$hora->hour.'-'.$hora->minute.'-'.$hora->second.'.pdf';
         $pdf=Pdf::loadView('modules.folios.PDF',['folio'=>$table,'tipo'=>'Salida', 'archivo' => $archivo, 'resEntrega' => $resEntrega, 'name' => $ticket]);

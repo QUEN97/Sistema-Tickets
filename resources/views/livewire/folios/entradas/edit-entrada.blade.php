@@ -52,7 +52,7 @@
                                         class="w-full border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700  {{ $errors->has('clase') ? 'is-invalid' : '' }}" 
                                         name="clase" required aria-required="true">
                                     <option value="" hidden selected>Seleccione estación</option>
-                                    <option value="NULL" >Sin estación</option>
+                                    
                                     @foreach ($estaciones as $est)
                                         <option value="{{$est->id}}">{{$est->name}}</option>
                                     @endforeach
@@ -92,12 +92,13 @@
             </div>
         </div>
     </div>
-    <div 
+    <div wire:ignore 
         x-data="{productos:prod,tickets:tck,contador:1,
             carrito:[{id:1,tck:'',prod:'',observacion:'',cantsol:'',serie:''}],
             addChild(){
                 this.contador++;
-                this.carrito.push({id:this.contador,tck:'',prod:'',observacion:'',cantsol:'',serie:''})
+                this.carrito.push({id:this.contador,tck:'',prod:'',observacion:'',cantsol:'',serie:''});
+                //console.log(this.carrito);
             },
             remove(id){
                 this.carrito=this.carrito.filter((item)=>item.id!==id);
@@ -206,7 +207,15 @@
                                 </div>
                                 <div>
                                     <label :for="`p${prod.id}`" class="font-medium text-sm text-gray-700 dark:text-gray-300">{{__('Producto')}}</label>
-                                    <div x-data="selectConfigs()" :id="`p${prod.id}`" class="borderflex flex-col items-center relative">
+                                    <select :name="`p${prod.id}`"
+                                                    :id="`SprodS${prod.id}`" x-model="prod.prod"
+                                        class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1">
+                                        <option value="" hidden selected>Seleccione producto</option>
+                                        <template x-for="pr in productos" :key="pr.id + 'Psl'">
+                                            <option :value="pr.id" x-text="pr.name"></option>
+                                        </template>
+                                    </select>
+                                    {{-- <div x-data="selectConfigs()" :id="`p${prod.id}`" class="borderflex flex-col items-center relative">
                                         <div class="h-full">
                                             <div @click.away="close()" class="h-full border border-gray-300 flex focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1">
                                                 <input placeholder="Seleccionar producto"
@@ -225,10 +234,6 @@
                                                                 <path d="M6 9l6 6l6 -6"></path>
                                                             </svg>
                                                         </div>
-                                                        {{-- <svg  xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <polyline x-show="!isOpen()" points="18 15 12 20 6 15"></polyline>
-                                                            <polyline x-show="isOpen()" points="18 15 12 9 6 15"></polyline>
-                                                        </svg> --}}
                                                     </button>
                                                 </div>
                                             </div>
@@ -247,7 +252,7 @@
                                             </template>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="relative">
                                     <label :for="`base${prod.id}`" class="font-medium text-sm text-gray-700 dark:text-gray-300">{{__('Cantidad')}}</label>

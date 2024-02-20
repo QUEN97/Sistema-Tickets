@@ -164,8 +164,8 @@
                                                                      <div>
                                                                          {{$producto->producto->name}}
                                                                      </div>
-                                                                     <div>
-                                                                        {{ $producto->serie->serie }}
+																	<div class="text-sm text-gray-400 font-bold">
+                                                                         {{$producto->serie->serie}}
                                                                      </div>
                                                                  </th>
                                                                  <th  class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">

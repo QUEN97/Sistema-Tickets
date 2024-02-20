@@ -29,10 +29,10 @@ class EditEntrada extends Component
         //si el usuario es admin se muestran todos los tickets si no, se muesran los del usuario
         $user->permiso_id!=1&&$user->permiso_id!=4
         ?$this->tickets=$user->tickets
-        :$this->tickets=Ticket::select('id')->orderBy('id','DESC')->get();
+        :$this->tickets=Ticket::whereHas('compras')->orderBy('id','DESC')->get();
         
-        $this->estaciones=Estacion::select('id','name')->get();
-        $this->listProductos=Producto::select('id','name','product_photo_path')->get();
+        $this->estaciones=User::select('id','name')->get();
+        $this->listProductos=Producto::select('id','name','product_photo_path')->orderBy('name','ASC')->get();
         //dd($this->motivo);
     }
     public function updateEntrada(){
@@ -45,9 +45,9 @@ class EditEntrada extends Component
             if($pr['tck']!='NULL'){
                 $reg->ticket_id=$pr['tck'];
             }
-            // if($pr['est']!='NULL'){
-            //     $reg->estacion_id=$pr['est'];
-            // }
+            if($pr['est']!='NULL'){
+                $reg->estacion_id=$pr['est'];
+            }
             //actualizamos el stock del producto
             $almCi=AlmacenCi::where('producto_id',$pr['producto'])->first();
             $almCi->stock-=$reg->cantidad;
@@ -68,9 +68,9 @@ class EditEntrada extends Component
             if($pr['tck']!='NULL'){
                 $newReg->ticket_id=$pr['tck'];
             }
-            // if($pr['estacion']!='NULL'){
-            //     $newReg->estacion_id=$pr['estacion'];
-            // }
+            /* if($pr['estacion']!='NULL'){
+                $newReg->estacion_id=$pr['estacion'];
+            } */
             $newReg->cantidad=$pr['cantsol'];
             $newReg->observacion=$pr['observacion'];
             $newReg->save();
@@ -117,6 +117,7 @@ class EditEntrada extends Component
             $this->productos[$key]=[
                 'id'=>$pr->id,
                 'producto'=>$pr->producto_id,
+                'est'=>$pr->estacion_id,
                 'obs'=>$pr->observacion,
                 'cant'=>$pr->cantidad,
                 'tck'=>$pr->ticket_id,
