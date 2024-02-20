@@ -81,11 +81,13 @@
                 <x-input-error for="evidencias"></x-input-error>
     
                 <!-- Progress Bar -->
+                <p x-text="progress" x-show="isUploading"></p>
                 <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 mb-2 dark:bg-gray-700">
                     <div class="bg-red-600 h-2.5 rounded-full dark:bg-red-500 transition-[width] duration-500"  x-bind:style="`width:${progress}%`"></div>
                 </div>
             </div>
         </div>
+		<span class="text-gray-400 text-sm">Tamaño máximo archivos de video <strong>16 MB</strong>.</span>
     </div>
     <div class=" mt-4 p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         <h2 class="text-lg text-center mb-2 font-bold">DATOS DE LA REQUISICIÓN</h2>
@@ -132,11 +134,11 @@
                             <h2>Seleccione sus productos</h2>
                         </div>
                         <div class="flex flex-wrap gap-3 justify-center max-h-80 overflow-auto" wire:ignore>
-                            <template x-for="pr in filterProd()">
+                            <template x-for="pr in filterProd()" :key="pr.id">
                                 <div x-data="{toggle:false}" class="h-fit felx flex-col justify-center items-center gap-1 max-w-[15rem] text-center border-2 py-2 px-3 rounded-md" :class="pr.selected?'border-blue-600 bg-blue-900 text-white':'border-gray-300 bg-gray-300 dark:bg-dark-eval-3 dark:border-dark-eval-3'">
                                     <div class="flex flex-row items-center gap-0.5 relative w-full">
                                         <input type="checkbox" :value="`${pr.id}`" name="carrito[]" :id="`${pr.name}`" class="hidden">
-                                        <div class="w-full" @click="toggle=!toggle">
+                                        <div class="w-full">
                                             <label :for="`${pr.name}`" class="break-all w-full cursor-pointer" @click="pr.selected=!pr.selected">
                                                 <div class="flex justify-center items-center">
                                                     <figure class="w-[5rem] h-[5rem] overflow-hidden rounded-full flex justify-center items-center">
@@ -177,7 +179,7 @@
                                 {{-- <p x-text="serv.id"></p> --}}
                                 <div class="flex flex-row items-center gap-0.5 relative w-full">
                                     <input type="checkbox" :value="`${serv.id}`" name="carrito[]" :id="`${serv.name}`" class="hidden">
-                                    <div class="w-full" @click="toggle=!toggle">
+                                    <div class="w-full">
                                         <label :for="`${serv.name}`" class="break-all w-full cursor-pointer" @click="serv.selected=!serv.selected">
                                             <p x-text="serv.name"></p>
                                         </label>
@@ -471,3 +473,4 @@
     </div>
 
 </div>
+

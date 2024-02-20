@@ -60,7 +60,7 @@
                                                 <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
                                             </figure>
                                         </a>
-                                        @elseif ($antigArch->mime_type == "video/mp4")
+                                    @elseif ($antigArch->mime_type == "video/mp4")
                                         <a  href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
                                             <figure class="d-inline-block max-w-[160px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
@@ -152,10 +152,30 @@
             </div>
         </div>
     </div>
-    <div class="mt-3 p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1" x-data="{productos:[],servicios:[],buscador:false,tipo:@entangle('tipo'),
-    filter(event){
+    <div class="mt-3 p-6 flex flex-col gap-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1" x-data="{productos:[],servicios:serv,buscador:false,tipo:@entangle('tipo'),showProd:false,showServ:false,showSearch:false,filtro:'',
+    {{-- filter(event){
         this.buscador=true;
-        this.productos=list.filter(item=>item.clase_id==event.target.value);
+        this.productos=list.filter(item=>item.categoria_id==event.target.value);
+        console.log(list,event.target.value,list.filter(item=>item.clase_id==event.target.value));
+    }, --}}
+    chargeProd(event){
+        this.productos = list.filter((item)=> item.categoria_id==event.target.value);
+        $wire.set('categoria',event.target.value);
+        this.showSearch=true;
+    },
+    filterServ(){
+        return this.servicios.length>0
+                ? this.servicios.filter(serv => {
+                    return (serv.name.toLowerCase().includes(this.filtro.toLowerCase())); 
+                })
+                : {}
+    },
+    filterProd(){
+        return this.productos
+                ? this.productos.filter(pr => {
+                    return (pr.name.toLowerCase().includes(this.filtro.toLowerCase())); 
+                })
+                : {}
     },
     search(event){
         this.tipo=='prod'
@@ -170,9 +190,18 @@
         $wire.set('newCarrito',car);
         $wire.updateCompra();
     },
-    {{-- saveService(){
-        console.log(this.servicios);
-    } --}}
+    prod(){
+        this.showServ=false;
+        this.showProd=true;
+    },
+    serv(){
+        this.showServ=true;
+        this.showProd=false;
+        this.showSearch=false;
+        this.productos=[];
+        $wire.set('categoria','');
+        this.servicios=serv;
+    },
 }">
         <div>
             <h2 class="text-center font-bold text-lg">IINGRESAR NUEVA INFORMACIÓN</h2>
@@ -185,171 +214,136 @@
                     x-on:livewire-upload-progress="progress = $event.detail.progress">
                 <h2 class="font-bold text-lg border-b border-gray-400 w-full mb-2">Evidencias</h2>
                 <input type="file" wire:model="evidencias" class=" pb-2 flex flex-wrap file:text-sm file:font-semibold file:bg-blue-300 file:text-blue-700 hover:file:bg-blue-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0"
-                multiple name="evidencias" required autocomplete="evidencias" accept="image/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                multiple name="evidencias" required autocomplete="evidencias" accept="video/*, image/*, .pdf, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                 <x-input-error for="evidencias"></x-input-error>
 
                 <!-- Progress Bar -->
                 <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 mb-2 dark:bg-gray-700">
                     <div class="bg-red-600 h-2.5 rounded-full dark:bg-red-500 transition-[width] duration-500"  x-bind:style="`width:${progress}%`"></div>
                 </div>
+        </div>
+        <x-card-warn>
+            <span>En caso de cambiar la requisición de <i>producto</i> a <i>servicio</i> o viceversa, primero elimine los productos/servicios actuales.</span>
+        </x-card-warn>
+        <div class="text-center mb-2">
+            <div class="flex justify-center gap-2">
+                <div @click="prod()">
+                    <input wire:model="tipo" type="radio" name="tipo" id="Producto" value="prod" class="peer/producto hidden">
+                    <label for="Producto" class="cursor-pointer bg-gray-300 dark:bg-dark-eval-0 peer-checked/producto:bg-amber-600 hover:bg-amber-500 text-white px-3 py-1 rounded-md transition duration-300">
+                        Producto
+                    </label>
+                </div>
+                <div @click="serv()">
+                    <input wire:model="tipo" type="radio" name="tipo" id="Servicio" value="serv" class=" peer/producto hidden">
+                    <label for="Servicio" class="cursor-pointer bg-gray-300 dark:bg-dark-eval-0 peer-checked/producto:bg-amber-600 hover:bg-amber-500 text-white px-3 py-1 rounded-md transition duration-300">
+                        Servicio
+                    </label>
+                </div>
             </div>
-            @if ($tipo=='prod')    
+            <x-input-error for="tipo"></x-input-error>
+        </div>
+        <script wire:ignore>
+            const list={!!json_encode($productos)!!};
+            const serv={!!json_encode($servicios)!!};
+        </script>
+            <template x-if="showProd">
                 <div class="flex flex-col gap-2">
-                    <script>
-                        const list={!!json_encode($productos)!!};
-                    </script>
-                    <h2 class="font-bold text-lg border-b border-gray-400 w-full mb-2">Productos</h2>
                     <div class="flex flex-wrap gap-2 items-end">
                         <div>
                             <x-label value="{{ __('Categoría de producto') }}" />
-                            <select id="categoria" wire:model="categoria"
+                            <select id="categoria" wire:model="categoria" @change="chargeProd(event)"
                                     class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700  {{ $errors->has('categoria') ? 'is-invalid' : '' }}" 
-                                    name="categoria" required aria-required="true" @change="filter(event)">
-                                <option hidden value="" selected>{{ __('Seleccionar categoria') }}</option>
+                                    name="categoria" required aria-required="true">
+                                <option hidden value="" selected>{{ __('Seleccionar categoría') }}</option>
                                 @foreach ($categorias as $categoria)
                                     <option value="{{$categoria->id}}">{{$categoria->name}}</option>
                                 @endforeach
                             </select>
                             <x-input-error for="categoria"></x-input-error>
                         </div>
-                        @if ($productos)
-                            <div>
-                                <x-input wire:model="search" type="search" name="search" @change="search(event)"
-                                    id="search" placeholder="Buscar..." required autofocus autocomplete="search" class="w-full"/>
-                            </div>
-                        @endif
+                        <div>
+                            <x-input type="search" name="search" x-show="showSearch" x-cloak x-model="filtro"
+                                id="search" placeholder="Buscar..." required autofocus autocomplete="search" class="w-full"/>
+                        </div>
                     </div>
-                    <x-input-error for="newCarrito"></x-input-error>
-                    <x-input-error for="newCarrito.*.cantidad"></x-input-error>
-                    <div>
-                        @if ($productos)
+                    <template x-if="showSearch">
+                        <div>
                             <div class="py-1 border-b-2 mb-2">
                                 <h2>Seleccione sus productos</h2>
                             </div>
-                            <div class="flex flex-wrap gap-2 justify-center max-h-80 overflow-auto">
-                                <template x-for="pr in productos" :key="pr.id">
-                                    <div class="flex flex-row items-center gap-0.5 relative">
-                                        <input type="checkbox" {{-- wire:model.defer="newCarrito.{{$key}}.id" --}} :value="pr.id" name="newCarrito[]" :id="pr.name" class="absolute top-2 right-2">
-                                        <label :for="pr.name" class="break-all text-start w-full border-2 py-1 px-2 rounded-md cursor-pointer" :class="pr.selected?'border-blue-600':'border-gray-300 '" @click="pr.selected=!pr.selected">
-                                            <div class="flex justify-center items-center">
-                                                <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                    <img :src="`/storage/${pr.archivo_path}`" alt="" class="w-full">
-                                                </figure>
-                                            </div>
-                                            <div x-text="pr.name" class="text-center"></div>
-                                            <div>
-                                                <label :for="`ct${pr.id}`" > {{ __('Cantidad') }}</label>
-                                                <input type="number" name="ct" x-model="pr.cantidad"
-                                                        :id="`ct${pr.id}`" required autofocus autocomplete="ct" 
-                                                        value="0" min="0"  placeholder=" "  class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1">
-                                                {{-- <x-input-error for="newCarrito.{{$key}}.cantidad"></x-input-error> --}}
-                                            </div>
-                                        </label>
+                            <div class="flex flex-wrap gap-3 justify-center max-h-80 overflow-auto" wire:ignore>
+                                <template x-for="pr in filterProd()">
+                                    <div x-data="{toggle:false}" class="h-fit felx flex-col justify-center items-center gap-1 max-w-[15rem] text-center border-2 py-2 px-3 rounded-md" :class="pr.selected?'border-blue-600 bg-blue-900 text-white':'border-gray-300 bg-gray-300 dark:bg-dark-eval-3 dark:border-dark-eval-3'">
+                                        <div class="flex flex-row items-center gap-0.5 relative w-full">
+                                            <input type="checkbox" :value="`${pr.id}`" name="carrito[]" :id="`${pr.name}`" class="hidden">
+                                            <div class="w-full" @click="toggle=!toggle">
+                                                <label :for="`${pr.name}`" class="break-all w-full cursor-pointer" @click="pr.selected=!pr.selected">
+                                                    <div class="flex justify-center items-center">
+                                                        <figure class="w-[5rem] h-[5rem] overflow-hidden rounded-full flex justify-center items-center">
+                                                            <img :src="`/storage/${pr.product_photo_path}`" alt="" class="w-full">
+                                                        </figure>
+                                                    </div>
+                                                    <p x-text="pr.name"></p>
+                                                </label>
+                                            </div>    
+                                        </div>
+                                        <div class="w-full" x-show="pr.selected" x-cloak x-collapse>
+                                            <label :for="`${pr.name}ct`">{{ __('Cantidad') }}</label>
+                                            <input type="number" :name="`${pr.name}ct`" min=0
+                                            :id="`${pr.name}ct`" required autofocus x-model="pr.cantidad"
+                                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1 text-black w-full">
+                                        </div>
                                     </div>
                                 </template>
-                                {{-- @foreach ($productos as $key => $pr)
-                                    <div class="flex flex-row items-center gap-0.5 relative">
-                                        <input type="checkbox" wire:model.defer="newCarrito.{{$key}}.id" value="{{$pr->id }}" name="newCarrito[]" id="{{$pr->name}}" class="peer absolute top-2 right-2">
-                                        <label for="{{$pr->name}}" class="break-all text-start w-full border-2 py-1 px-2 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
-                                            <div class="flex justify-center items-center">
-                                                <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                    <img src="{{ asset('storage/' . $pr->product_photo_path) }}" alt="" class="w-full">
-                                                </figure>
-                                            </div>
-                                            {{$pr->name}}
-                                            <div class="col-12 p-0">
-                                                <x-label value="{{ __('Prioridad') }}" />
-                                                <select wire:model.defer="newCarrito.{{$key}}.prioridad"
-                                                        class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700 " 
-                                                        name="newCarrito.{{$key}}.prioridad" required aria-required="true">
-                                                        <option hidden value="" selected>{{ __('Seleccionar Prioridad') }}</option>
-                                                        <option value="Bajo">{{ __('Bajo') }}</option>
-                                                        <option value="Medio">{{ __('Medio') }}</option>
-                                                        <option value="Alto">{{ __('Alto') }}</option>
-                                                        <option value="Alto crítico">{{ __('Alto crítico') }}</option>
-                                                </select>
-                                                <x-input-error for="newCarrito.{{$key}}.prioridad"></x-input-error>
-                                            </div>
-                                            <div>
-                                                <x-label value="{{ __('Cantidad') }}" for="newCarrito.{{$key}}.cantidad" />
-                                                <x-input wire:model.defer="newCarrito.{{$key}}.cantidad" type="number" name="newCarrito.{{$key}}.cantidad" min
-                                                    id="newCarrito.{{$key}}.cantidad" required autofocus autocomplete="newCarrito.{{$key}}.cantidad" class="w-full"/>
-                                                <x-input-error for="newCarrito.{{$key}}.cantidad"></x-input-error>
-                                            </div>
-                                        </label>
-                                        
-                                    </div>
-                                @endforeach --}}
                             </div>    
-                        @endif
-                    </div>
+                        </div>
+                    </template>
                 </div>
-            @else
-            <script>
-                const serv={!!json_encode($servicios)!!};
-                console.log(serv);
-            </script>
-                <div class="flex flex-col gap-2">
-                    <h2 class="font-bold text-lg border-b border-gray-400 w-full mb-2">Servicios</h2>
+            </template>
+            <template x-if="showServ">
+                <div>
                     <div>
-                        <x-input wire:model.debounce.200ms="searchService" type="search" name="searchService"  @change="search(event)"
+                        <x-input  type="search" name="searchService" x-model="filtro"
                             id="searchService" placeholder="Buscar..." required autofocus autocomplete="searchService" class="w-full"/>
                     </div>
-                    <x-input-error for="newCarrito"></x-input-error>
                     <div>
-                        @if ($servicios)
-                            <div class="py-1 border-b-2 mb-2">
-                                <h2>Seleccione los servicios que requiere</h2>
-                            </div>
-                            <div class="flex flex-wrap gap-2 justify-center max-h-80 overflow-auto">
-                                <template x-for="servicio in servicios" :key="servicio.id">
-                                    <div class="flex flex-row items-center gap-0.5">
-                                        <input type="checkbox" {{-- wire:model.defer="newCarrito.{{$key}}.id" --}} :value="servicio.id" name="newCarrito[]" :id="servicio.name" class="peer hidden">
-                                        <label :for="servicio.name" class="break-all text-start w-full border-2 py-1 px-2 rounded-md cursor-pointer " :class="servicio.selected?'border-blue-600':'border-gray-300 '" @click="servicio.selected=!servicio.selected">
-                                            <div x-text="servicio.name"></div>
-                                            <div>
-                                                <label :for="`cant${servicio.id}`">{{ __('Cantidad') }}</label>
-                                                <input type="number" name="ct" x-model="servicio.cantidad"
-                                                        :id="`cant${servicio.id}`" required autofocus autocomplete="ct" 
-                                                        value="0" min="0"  placeholder=" "  
-                                                        class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1">
-                                            </div>
-                                        </label>
+                        <div class="py-1 border-b-2 mb-2">
+                            <h2>Seleccione los servicios que requiere</h2>
+                        </div>
+                        <div class="flex flex-wrap gap-3 justify-evenly max-h-80 overflow-auto" wire:ignore>
+                            <template x-for="serv in filterServ()" :key="serv.id">
+                                <div x-data="{toggle:false}" class="h-fit felx flex-col justify-center items-center gap-1 max-w-[15rem] text-center border-2 py-2 px-3 rounded-md" :class="serv.selected?'border-blue-600 bg-blue-900 text-white':'border-gray-300 bg-gray-300 dark:bg-dark-eval-3 dark:border-dark-eval-3'">
+                                    {{-- <p x-text="serv.id"></p> --}}
+                                    <div class="flex flex-row items-center gap-0.5 relative w-full">
+                                        <input type="checkbox" :value="`${serv.id}`" name="carrito[]" :id="`${serv.name}`" class="hidden">
+                                        <div class="w-full" @click="toggle=!toggle">
+                                            <label :for="`${serv.name}`" class="break-all w-full cursor-pointer" @click="serv.selected=!serv.selected">
+                                                <p x-text="serv.name"></p>
+                                            </label>
+                                        </div>    
                                     </div>
-                                </template>
-                                {{-- @foreach ($servicios as $key => $pr)
-                                    <div class="flex flex-row items-center gap-0.5">
-                                        <input type="checkbox" wire:model.defer="newCarrito.{{$key}}.id" value="{{$pr->id }}" name="newCarrito[]" id="{{$pr->name}}" class="peer hidden">
-                                        <label for="{{$pr->name}}" class="break-all text-start w-full border-2 py-1 px-2 rounded-md border-gray-300 cursor-pointer peer-checked:border-blue-600">
-                                            {{$pr->name}}
-                                            <div class="col-12 p-0">
-                                                <x-label value="{{ __('Prioridad') }}" />
-                                                <select wire:model.defer="newCarrito.{{$key}}.prioridad"
-                                                        class="select-estaciones form-select form-control border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700 " 
-                                                        name="newCarrito.{{$key}}.prioridad" required aria-required="true">
-                                                        <option hidden value="" selected>{{ __('Seleccionar Prioridad') }}</option>
-                                                        <option value="Bajo">{{ __('Bajo') }}</option>
-                                                        <option value="Medio">{{ __('Medio') }}</option>
-                                                        <option value="Alto">{{ __('Alto') }}</option>
-                                                        <option value="Alto crítico">{{ __('Alto crítico') }}</option>
-                                                </select>
-                                                <x-input-error for="newCarrito.{{$key}}.prioridad"></x-input-error>
-                                            </div>
-                                            <div>
-                                                <x-label value="{{ __('Cantidad') }}" for="newCarrito.{{$key}}.cantidad" />
-                                                <x-input wire:model.defer="newCarrito.{{$key}}.cantidad" type="number" name="newCarrito.{{$key}}.cantidad" min
-                                                    id="newCarrito.{{$key}}.cantidad" required autofocus autocomplete="newCarrito.{{$key}}.cantidad" class="w-full"/>
-                                                <x-input-error for="newCarrito.{{$key}}.cantidad"></x-input-error>
-                                            </div>
-                                        </label>
-                                        
+                                    <div class="w-full" x-show="serv.selected" x-cloak x-collapse>
+                                        <label :for="`${serv.name}ct`">{{ __('Cantidad') }}</label>
+                                        <input type="number" :name="`${serv.name}ct`" min=0
+                                        :id="`${serv.name}ct`" required autofocus x-model="serv.cantidad"
+                                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
+                                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1 text-black w-full">
                                     </div>
-                                @endforeach --}}
-                            </div>    
-                        @endif
+                                </div>
+                            </template>
+                           {{--  @foreach ($servicios as $key => $pr)
+                                <div class="flex flex-row items-center gap-0.5 relative ">
+                                    <input type="checkbox" wire:model="carrito.{{$key}}.id" value="{{$pr->id }}" name="carrito[]" id="{{$pr->name}}" class="hidden">
+                                    <label for="{{$pr->name}}" class="break-all w-full text-center border-2 py-2 px-3 rounded-md cursor-pointer ">
+                                        {{$pr->name}}               
+                                    </label>
+                                </div>
+                            @endforeach --}}
+                        </div>    
                     </div>
                 </div>
-            @endif
+            </template>
         <div class="flex flex-wrap gap-3 justify-center">
             <button  type="button" {{-- wire:click="updateCompra" --}}  @click="save()" class="rounded-md  flex gap-1 items-center px-3 py-1 bg-green-700 text-white hover:bg-green-800 transition duration-300">
                 <div role="status" wire:loading wire:target="updateCompra">

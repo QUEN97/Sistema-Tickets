@@ -45,7 +45,7 @@
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 class="inline-block w-full max-w-xl p-6 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl dark:bg-dark-eval-1">
                 <div class="flex items-center justify-between space-x-4 mb-3">
-                    <div class="text-xl font-bold text-blue-800">{{ __('Requisiciones') }}</div>
+                    <div class="text-xl font-bold text-blue-800 dark:text-gray-400">{{ __('Requisiciones') }}</div>
                     <div>
                         <a href="{{ route('tck.compra', $ticketID) }}"
                             class="px-3 py-2 rounded-md bg-gray-400 text-white hover:bg-gray-800 transition duration-300">
@@ -64,7 +64,7 @@
                                             <div @click="open = !open"
                                                 class='relative flex items-center w-full overflow-auto mx-auto cursor-pointer bg-gray-100 dark:bg-slate-700 dark:text-gray-300 rounded-md'>
                                                 <div class=' px-2 transform transition duration-300 ease-in-out'
-                                                    :class="{ 'rotate-90': open, 'text-blue-800': open }">
+                                                    :class="{ 'rotate-90': open, 'text-blue-800 dark:text-gray-400': open }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
                                                         fill="currentColor" viewBox="0 0 512 512">
                                                         <path
@@ -101,12 +101,12 @@
                                                     </div>
                                                     <div class="flex justify-center items-center space-x-4 mb-2">
                                                         <div class="flex gap-2">
-                                                            <h2 class="font-bold text-blue-800">Agente:</h2>
+                                                            <h2 class="font-bold text-blue-800 dark:text-gray-400">Agente:</h2>
                                                             <div class="text-lg font-bold">
                                                                 {{ $compra->ticket->agente->name }}</div>
                                                         </div>
                                                         <div class="flex gap-2">
-                                                            <h2 class="font-bold text-blue-800">Cliente:</h2>
+                                                            <h2 class="font-bold text-blue-800 dark:text-gray-400">Cliente:</h2>
                                                             <div class="text-lg font-bold">
                                                                 {{ $compra->ticket->cliente->name }}
                                                             </div>
@@ -182,17 +182,17 @@
                                                     </div>
                                                     <div class="flex flex-col gap-2 max-h-72 overflow-auto mb-3">
                                                         <div class="text-start">
-                                                            <h2 class="font-bold text-blue-800">Problema detectado:
+                                                            <h2 class="font-bold text-blue-800 dark:text-gray-400">Problema detectado:
                                                             </h2>
                                                             <p>{{ $compra->problema }}</p>
                                                         </div>
                                                         <div class="text-start">
-                                                            <h2 class="font-bold text-blue-800">Solución:</h2>
+                                                            <h2 class="font-bold text-blue-800 dark:text-gray-400">Solución:</h2>
                                                             <p>{{ $compra->solucion }}</p>
                                                         </div>
                                                         @if (isset($compra->mensaje_opcion))
                                                             <div class="text-start">
-                                                                <h2 class="font-bold text-blue-800">Nota:</h2>
+                                                                <h2 class="font-bold text-blue-800 dark:text-gray-400">Nota:</h2>
                                                                 <p>{{ $compra->mensaje_opcion }}</p>
                                                             </div>
                                                         @endif

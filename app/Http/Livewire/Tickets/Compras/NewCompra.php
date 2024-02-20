@@ -107,7 +107,7 @@ class NewCompra extends Component
     //     }],['categoria_id',$this->categoria]])->get();
     // }
     public function addCompra(){
-        //dd($this->carrito);
+        //dd($this->evidencias);
         //eliminamos elementos cuando el id sea falso,no exista el id,la prioridad o la cantidad
         // $this->carrito=array_filter($this->carrito,function($element){
         //         if(count($element)==3 && $element['id']!=false){
@@ -115,13 +115,12 @@ class NewCompra extends Component
         //         }
         // });
         $Admins = User::where('permiso_id',1)->get();
-        
         //dd($this->tipo);
         $this->validate([
             'titulo' => ['required'],
             'problema' => ['required'],
             'solucion' => ['required'],
-            'evidencias.*' => 'required|file|max:50000', // 50000 KB (50 MB)
+            'evidencias' => ['required'],
             'tipo' => ['required'],
             'carrito' => ['required'],
            /*  'carrito.*.prioridad' => ['required'], */
@@ -155,8 +154,7 @@ class NewCompra extends Component
         $compra->solucion=$this->solucion;
         $compra->titulo_correo=$this->titulo;
         $compra->status='Solicitado';
-        $clienter = $compra->ticket->cliente->zonas->first()->id;
-        //dd($clienter);
+		$clienter = $compra->ticket->cliente->zonas->first()->id;
         $compra->save();
         //guardamos evidencias
         foreach ($this->evidencias as $lue) {
@@ -166,13 +164,11 @@ class NewCompra extends Component
             $archivo->nombre_archivo=$lue->getClientOriginalName();
             $archivo->mime_type=$lue->getMimeType();
             $archivo->archivo_path=$this->urlArchi;
-            //dd($archivo);
             $archivo->save();
         }
-        $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
+		$Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
             $zonas->where('zona_id',$clienter);
         })->get();
-        //dd($Compras,$clienter);
         //guardamos productos de la compra de acuerdo al tipo
         if($this->tipo=="Producto"){
             foreach($this->carrito as $p){

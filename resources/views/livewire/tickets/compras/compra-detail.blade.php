@@ -28,7 +28,7 @@
             >
             
                 <div class="flex items-center justify-between mb-1 border-b py-2">
-                    <h1 class="text-xl font-bold text-blue-800">Requisición # {{$compraID}}</h1>
+                    <h1 class="text-xl font-bold text-blue-800 dark:text-gray-400">Requisición # {{$compraID}}</h1>
                     <button @click="modelOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="w-6 h-6 text-gray-400 hover:text-red-800 transition duration-300" viewBox="0 0 320 512" >
                             <path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/>
@@ -38,22 +38,22 @@
                 <div class="flex flex-col gap-1 mt-1">
                     <div class=" flex flex-wrap justify-evenly gap-1 pb-2">
                         <div>
-                            <h2 class="font-bold text-blue-800">Agente solicitante:</h2>
+                            <h2 class="font-bold text-blue-800 dark:text-gray-400">Agente solicitante:</h2>
                             <div class="font-bold">{{$compra->ticket->agente->name}}</div>
                         </div>
                         <div>
                             <div>
-                                <h2 class="font-bold text-blue-800">Cliente:</h2>
+                                <h2 class="font-bold text-blue-800 dark:text-gray-400">Cliente:</h2>
                                 <div class="font-bold">{{$compra->ticket->cliente->name}}</div>
                             </div>
                         </div>
                         <div>
                             <div class=" text-center">
                                 @if ($compra->productos->count() > 0)
-                                    <h2 class="font-bold text-blue-800">Cantidad de productos:</h2>
+                                    <h2 class="font-bold text-blue-800 dark:text-gray-400">Cantidad de productos:</h2>
                                     <div class="font-bold">{{$compra->productos->count()}}</div>
                                 @else
-                                    <h2 class="font-bold text-blue-800">Cantidad de servicios:</h2>
+                                    <h2 class="font-bold text-blue-800 dark:text-gray-400">Cantidad de servicios:</h2>
                                     <div class="font-bold">{{$compra->servicios->count()}}</div>
                                 @endif
                             </div>
@@ -69,16 +69,16 @@
                     </div>
                     <div class="flex flex-col gap-2 max-h-72 overflow-auto">
                         <div class="text-start">
-                            <h2 class="font-bold text-blue-800">Problema detectado:</h2>
+                            <h2 class="font-bold text-blue-800 dark:text-gray-400">Problema detectado:</h2>
                             <p>{{$compra->problema}}</p>
                         </div>
                         <div class="text-start">
-                            <h2 class="font-bold text-blue-800">Solución:</h2>
+                            <h2 class="font-bold text-blue-800 dark:text-gray-400">Solución:</h2>
                             <p>{{$compra->solucion}}</p>
                         </div>
                         @if (isset($compra->mensaje_opcion))
                         <div class="text-start">
-                            <h2 class="font-bold text-blue-800">Nota:</h2>
+                            <h2 class="font-bold text-blue-800 dark:text-gray-400">Nota:</h2>
                             <p>{{$compra->mensaje_opcion}}</p>
                         </div>
                         @endif
@@ -176,7 +176,7 @@
                                                             <th  class="w-full font-medium text-sm lg:w-auto p-3 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
                                                                 <div class="flex justify-center items-center">
                                                                     <figure class="w-[4rem] h-[4rem] overflow-hidden rounded-full flex justify-center items-center">
-                                                                        <img src="{{ asset('storage/' . $producto->producto->archivo_path) }}" alt="" class="w-full">
+                                                                        <img src="{{ asset('storage/' . $producto->producto->product_photo_path) }}" alt="" class="w-full">
                                                                     </figure>
                                                                 </div>
                                                             </th>
@@ -243,11 +243,11 @@
                                                             <p class="break-all">{{ $antigArch->nombre_archivo }}</p>
                                                         </figure>
                                                     </a>
-                                                    @elseif ($antigArch->mime_type == 'video/mp4')
+												@elseif ($antigArch->mime_type == 'video/mp4' || $antigArch->mime_type == 'application/octet-stream')
                                                     <a href="{{ asset('storage/'.$antigArch->archivo_path) }}" target="_blank"
                                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="text-xs">
                                                         <figure class="d-inline-block max-w-[90px]" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Presione para descargar" data-bs-placement="top">
-                                                            <img class="w-100" src="{{ asset('img/icons/pdf.png') }}">
+                                                            <img class="w-100" src="{{ asset('img/icons/videos_video_media_cinema_1725.png') }}">
                                                             <p class="break-all"> {{ $antigArch->nombre_archivo }} </p>
                                                         </figure>
                                                     </a>

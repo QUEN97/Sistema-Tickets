@@ -11,7 +11,6 @@ use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\TckServicio;
 use App\Models\User;
-use App\Models\UserZona;
 use App\Notifications\EditCompraProductNotification;
 use App\Notifications\EditCompraServicioNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -21,7 +20,6 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use PhpOffice\PhpSpreadsheet\Reader\Xls\Color\BIFF5;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CompraEdit extends Component
@@ -74,7 +72,7 @@ class CompraEdit extends Component
         Storage::disk('public')->delete($archivo->archivo_path);
         $archivo->delete();
     }
-    public function deleteCarrito(CompraDetalle $id)
+    public function deleteCarrito($id)
     {
         $this->tipo == 'prod'
             ? $pr = CompraDetalle::find($id)
@@ -89,7 +87,6 @@ class CompraEdit extends Component
     public function updateCompra()
     {
         $Admins = User::where('permiso_id', 1)->get();
-        
 
         //dd($this->carrito);
         $compra = Compra::find($this->compraID);
@@ -148,12 +145,13 @@ class CompraEdit extends Component
                 $this->carrito = [];
             }
         }
-
-        $clienter = $compra->ticket->cliente->zonas->first()->id;
+		
+		$clienter = $compra->ticket->cliente->zonas->first()->id;
         $Compras = User::where([['permiso_id',4],['status','Activo']])->whereHas('zonas',function(Builder $zonas) use ($clienter){
             $zonas->where('zona_id',$clienter);
         })->get(); //Compras
         //dd($Compras);
+
         //actualizamos los productos actuales de la requisicion
         //dd($this->carrito);
         if (count($this->carrito) > 0) {
