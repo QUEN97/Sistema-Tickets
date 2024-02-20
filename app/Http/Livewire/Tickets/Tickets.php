@@ -79,14 +79,24 @@ class Tickets extends Component
     //Obtener los datos y paginación
     public function getTicketsProperty()
     {
-        return  $this->ticketsQuery->paginate($this->perPage);
+        return  $this->getTicketsQueryProperty()->orderBy('created_at', 'desc')->paginate($this->perPage);
     }
 
     public function getTicketsQueryProperty()
     {
         $user = Auth::user();
 
-        return Ticket::search($this->search)
+        $query = Ticket::query();
+
+        if ($this->search) {
+            // Si se realiza una búsqueda, no aplicamos restricciones adicionales en el estado
+            $query->search($this->search);
+        } else {
+            // Si no se realiza una búsqueda, excluimos los tickets cerrados
+            $query->where('status', '!=', 'Cerrado');
+        }
+
+        return $query
             ->when($user->permiso_id == 1 || $user->permiso_id == 8, function ($query) {
                 // Si el usuario es Administrador, no aplicamos restricciones
                 return $query;
@@ -96,22 +106,27 @@ class Tickets extends Component
                     $gerentes = Estacion::where('supervisor_id', $user->id)->pluck('user_id')->push($user->id)->toArray();
                     //dd($gerentes);
                     $tck = Ticket::whereIn('solicitante_id', $gerentes)->pluck('id');
-            
+
                     $query->whereIn('solicitante_id', $gerentes);
                 } elseif ($user->permiso_id == 4) {
                     // ISi el usuario es Compras solo ve sus tickets y el de sus estaciones por zonas asignadas
-                    $minions=UserZona::whereNotIn('zona_id',[1])->whereIn('zona_id',$user->zonas->pluck('id'))->pluck('user_id');
+                    $minions = UserZona::/*whereNotIn('zona_id',[1])->*/whereIn('zona_id', $user->zonas->pluck('id'))->pluck('user_id');
                     //dd($minions);
                     $tck = Ticket::whereIn('solicitante_id', $minions)->pluck('id');
-                    $query->whereIn('solicitante_id', $minions)->orWhereIn('user_id',$minions);
+                    $query->whereIn('solicitante_id', $minions)->orWhereIn('user_id', $minions);
                 } elseif ($user->permiso_id == 7) {
                     //Si el usuario es Jefe de Área solo ve sus tickets y el de su personal a cargo
                     $personal = UserArea::whereIn('area_id', $user->areas->pluck('id'))->pluck('user_id');
                     $tck = Ticket::whereIn('solicitante_id', $personal)->pluck('id');
-                    $query->whereIn('solicitante_id', $personal)->orWhereIn('user_id',$personal);
+                    $query->whereIn('solicitante_id', $personal)->orWhereIn('user_id', $personal);
                 } else {
                     //Si el usuario es Gerente o Agente ve sus respectivos tickets
-                    $query->where('solicitante_id', $user->id)->orWhere('user_id',$user->id);
+                    $query->where(function ($query) use ($user) {
+                        $query->where('user_id', $user->id)
+                            ->orWhere('solicitante_id', $user->id);
+                    });
+                    return $query;
+                    //$query->where('solicitante_id', $user->id)->orWhere('user_id',$user->id);
                 }
             })
             ->when($this->sortField, function ($query) {

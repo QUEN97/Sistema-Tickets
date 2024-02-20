@@ -85,7 +85,7 @@
                     <x-heading sortable wire:click="sortBy('created_at')" :direction="$sortField === 'created_at' ? $sortDirection : null">FECHA REGISTRO</x-heading>
                     <x-heading sortable wire:click="sortBy('updated_at')" :direction="$sortField === 'updated_at' ? $sortDirection : null">FECHA
                         ACTUALIZACIÓN</x-heading>
-                    <x-heading>OPCIONES</x-heading>
+                    <x-heading sortable>OPCIONES</x-heading>
                 </x-slot>
                 <x-slot name="body">
                     @forelse($tareas as $tarea)

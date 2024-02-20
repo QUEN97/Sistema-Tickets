@@ -27,10 +27,10 @@
                 <x-slot name="head">
                     {{-- Componente Heading  --}}
                     <x-heading sortable wire:click="sortBy('folio')" :direction="$sortField === 'folio' ? $sortDirection : null">FOLIO</x-heading>
-                    <x-heading >VECES UTILIZADO</x-heading>
-                    <x-heading >CANT. USUARIOS</x-heading>
+                    <x-heading  sortable>VECES UTILIZADO</x-heading>
+                    <x-heading  sortable>CANT. USUARIOS</x-heading>
                     <x-heading sortable wire:click="sortBy('updated_at')" :direction="$sortField === 'updated_at' ? $sortDirection : null">FECHA ACTUALIZACIÓN</x-heading>
-                    <x-heading>OPCIONES</x-heading>
+                    <x-heading sortable>OPCIONES</x-heading>
                 </x-slot>
                 <x-slot name="body">
                     @forelse($folios as $folio)

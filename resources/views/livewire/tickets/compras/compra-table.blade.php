@@ -77,12 +77,12 @@
                     <x-heading><x-input type="checkbox" wire:model="selectPage" /></x-heading>
                     <x-heading sortable wire:click="sortBy('id')" :direction="$sortField === 'id' ? $sortDirection : null">ID</x-heading>
                     <x-heading sortable wire:click="sortBy('ticket_id')" :direction="$sortField === 'ticket_id' ? $sortDirection : null">TICKET</x-heading>
-                    <x-heading >AGENTE</x-heading>
-                    <x-heading >CLIENTE</x-heading>
+                    <x-heading sortable>AGENTE</x-heading>
+                    <x-heading sortable>CLIENTE</x-heading>
                     <x-heading sortable wire:click="sortBy('status')" :direction="$sortField === 'status' ? $sortDirection : null">ESTADO</x-heading>
                     <x-heading sortable wire:click="sortBy('created_at')" :direction="$sortField === 'created_at' ? $sortDirection : null">FECHA REGISTRO</x-heading>
                     <x-heading sortable wire:click="sortBy('updated_at')" :direction="$sortField === 'updated_at' ? $sortDirection : null">FECHA ACTUALIZACIÓN</x-heading>
-                    <x-heading>OPCIONES</x-heading>
+                    <x-heading sortable>OPCIONES</x-heading>
                 </x-slot>
                 <x-slot name="body">
                     @forelse($compras as $compra)

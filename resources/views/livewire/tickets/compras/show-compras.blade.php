@@ -2,7 +2,7 @@
     <button @click="modelOpen =!modelOpen" wire:loading.attr="disabled" aria-label="reasignar-usuario" class="tooltip ">
         @if ($comprasCount)
             <div class="relative">
-                <svg class="w-6 h-6" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-6 h-6 text-black hover:text-gray-600 dark:text-gray-400" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="13.33" cy="29.75" r="2.25" fill="currentColor"
                         class="clr-i-outline clr-i-outline-path-1" />
                     <circle cx="27" cy="29.75" r="2.25" fill="currentColor"
@@ -15,7 +15,7 @@
                 <span class="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"> </span>
             </div>
         @else
-            <svg class="w-6 h-6" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-6 h-6 text-black hover:text-gray-600 dark:text-gray-400 font-bold" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="13.33" cy="29.75" r="2.25" fill="currentColor"
                     class="clr-i-outline clr-i-outline-path-1" />
                 <circle cx="27" cy="29.75" r="2.25" fill="currentColor"
