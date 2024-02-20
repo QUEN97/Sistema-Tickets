@@ -50,7 +50,7 @@
                             <x-cell><span class="font-bold">#{{ $ticket->id }}</span></x-cell>
                             <x-cell>
                                 <div
-                                    @if ($ticket->status != 'Cerrado' && $ticket->vencido != 1) class="rounded bg-{{ $ticket->status_color }}-200 py-1 px-3 text-center text-xs text-{{ $ticket->status_color }}-500 font-bold" @elseif($ticket->status == 'Cerrado' && $ticket->vencido == 1)  class="rounded bg-red-200 py-1 px-3 text-xs text-center text-red-500 font-bold" @else class="rounded bg-gray-200 py-1 px-3 text-xs text-center text-gray-500 font-bold" @endif>
+                                    @if ($ticket->status != 'Cerrado' && $ticket->vencido != 1) class="rounded bg-{{ $ticket->status_color }}-200 py-1 px-3 text-center text-xs text-{{ $ticket->status_color }}-500 font-bold" @elseif($ticket->status != 'Cerrado' && $ticket->vencido == 1)  class="rounded bg-red-200 py-1 px-3 text-xs text-center text-red-500 font-bold" @else class="rounded bg-gray-200 py-1 px-3 text-xs text-center text-gray-500 font-bold" @endif>
                                     {{ $ticket->status }}
                                 </div>
                             </x-cell>
