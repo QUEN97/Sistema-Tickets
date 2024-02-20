@@ -198,7 +198,7 @@
                 <div class="flex space-x-4 items-center mb3">
                     <x-label class="text-sm font-medium text-gray-600">Mostrar</x-label>
                     <select wire:model.live="perPage"
-                        class="bg-gray-50 dark:bg-slate-800 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-indigo-500">
+                        class="bg-gray-100 dark:bg-slate-800 border border-gray-400 text-gray-500 text-sm rounded-lg focus:ring-indigo-500">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="20">20</option>
