@@ -113,7 +113,12 @@ class Tickets extends Component
                     $minions = UserZona::/*whereNotIn('zona_id',[1])->*/whereIn('zona_id', $user->zonas->pluck('id'))->pluck('user_id');
                     //dd($minions);
                     $tck = Ticket::whereIn('solicitante_id', $minions)->pluck('id');
-                    $query->whereIn('solicitante_id', $minions)->orWhereIn('user_id', $minions);
+                    $query->where(function($query) use ($minions) {
+                        $query->whereIn('user_id', $minions)
+                           ->orWhereIn('solicitante_id', $minions);
+                        });
+                         return $query;
+                    //$query->whereIn('solicitante_id', $minions)->orWhereIn('user_id', $minions);
                 } elseif ($user->permiso_id == 7) {
                     //Si el usuario es Jefe de Área solo ve sus tickets y el de su personal a cargo
                     $personal = UserArea::whereIn('area_id', $user->areas->pluck('id'))->pluck('user_id');

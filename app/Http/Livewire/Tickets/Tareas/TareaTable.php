@@ -93,7 +93,11 @@ class TareaTable extends Component
                 } elseif ($user->permiso_id == 4) {
                     //Compras
                     $userId = Auth::user()->id;
-                    $query->whereIn('user_asignado', $userId);
+                    $query->where(function($query) use ($userId) {
+                        $query->where('user_id', $userId)
+                           ->orWhere('user_asignado', $userId);
+                        });
+                         return $query;
                 } elseif ($user->permiso_id == 7) {
                     // Si el usuario es jefe de área, aplicamos restricciones específicas
                     $userId = Auth::user()->id;
