@@ -92,8 +92,8 @@ class Tickets extends Component
             // Si se realiza una búsqueda, no aplicamos restricciones adicionales en el estado
             $query->search($this->search);
         } else {
-            // Si no se realiza una búsqueda, excluimos los tickets cerrados
-            $query->where('status', '!=', 'Cerrado');
+            // Si no se realiza una búsqueda, excluimos los tickets cerrados y pendientes
+            $query->whereNotIn('status',[ 'Cerrado','Por abrir']);
         }
 
         return $query
