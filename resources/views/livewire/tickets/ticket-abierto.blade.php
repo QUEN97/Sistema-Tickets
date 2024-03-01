@@ -2,46 +2,35 @@
     <div class="py-4 space-y-4">
         {{-- Filtros --}}
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-           
             <!--Tickets por Estado-->
             <div>
                 <div x-data="{ isOpen: false }" class="relative mr-3 w-full md:w-auto">
                     <!-- Botón para abrir/cerrar el menú -->
                     <button @click="isOpen = !isOpen" class="focus:outline-none flex">
                         <!-- Icono de flecha hacia abajo cuando está cerrado, hacia arriba cuando está abierto -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" :class="{ 'transform rotate-180': isOpen }"
-                            viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                            :class="{ 'transform rotate-180': isOpen }" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M10 12a.75.75 0 0 0 .53-.22l3.25-3.25a.75.75 0 0 0-1.06-1.06L10 10.94 7.28 8.22a.75.75 0 1 0-1.06 1.06l3.75 3.75a.75.75 0 0 0 .53.22z"
                                 clip-rule="evenodd" />
                         </svg>
                         <span class="font-bold">Tickets por Estado</span>
                     </button>
-    
+
                     <!-- Menú desplegable -->
                     <div x-show="isOpen" @click.away="isOpen = false"
                         class="absolute z-10 w-48 bg-gray-200 dark:bg-slate-800 rounded-md overflow-hidden shadow-xl">
                         <!-- Opciones del menú -->
                         <div class="flex flex-col justify-center items-center">
                             <a class="inline-flex items-center px-2 py-1 text-sm  text-center   font-bold"
-                                href="{{ route('tickets.open') }}">
-                                ABIERTOS
-                                @if ($abiertos>0)
-                                  <span
-                                    class="inline-flex items-center justify-center w-6 h-6 ml-2 text-xs font-semibold text-black bg-gray-100 rounded-full">
-                                    {{ $abiertos }}
-                                </span>  
-                                @endif
-                            </a>
-                            <a class="inline-flex items-center px-2 py-1 text-sm  text-center   font-bold"
                                 href="{{ route('tickets.process') }}">
                                 EN PROCESO
-                                @if ($enproceso>0)
-                                <span
-                                  class="inline-flex items-center justify-center w-6 h-6 ml-2 text-xs font-semibold text-black bg-gray-100 rounded-full">
-                                  {{ $enproceso }}
-                              </span>  
-                              @endif
+                                @if ($enproceso > 0)
+                                    <span
+                                        class="inline-flex items-center justify-center w-6 h-6 ml-2 text-xs font-semibold text-black bg-gray-100 rounded-full">
+                                        {{ $enproceso }}
+                                    </span>
+                                @endif
                             </a>
                             <a class="inline-flex items-center px-2 py-1 text-sm  text-center   font-bold"
                                 href="{{ route('tickets.closed') }}">
@@ -51,7 +40,7 @@
                     </div>
                 </div>
             </div>
-           
+            
             {{-- Barra de Busqueda --}}
             <div>
                 <x-input wire:model="search" type="text" class="w-full md:w-auto" placeholder="Buscar tickets..." />
@@ -143,7 +132,7 @@
 
                                     <!-- Menú desplegable -->
                                     <div x-show="isOpen" @click.away="isOpen = false"
-                                        class="absolute z-10 w-48 bg-gray-200 dark:bg-slate-800 rounded-md overflow-hidden shadow-xl"
+                                        class="absolute z-10 w-48 bg-gray-200 rounded-md overflow-hidden shadow-xl"
                                         style="top: calc(-100% - 0.5rem); right: 2rem;">
                                         <!-- Opciones del menú -->
                                         <div class="flex flex-col justify-center items-center">
@@ -159,12 +148,12 @@
                                                                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                                             </svg>
                                                         </a>
-                                                        <span class="font-bold ">Editar</span>
+                                                        <span class="font-bold text-base text-black">Editar</span>
                                                     </div>
 
                                                     <div class="flex gap-1">
                                                         @livewire('tickets.reasignar', ['ticketID' => $ticket->id], key('reasignar' . $ticket->id))
-                                                        <span class="font-bold ">Reasignar</span>
+                                                        <span class="font-bold text-base text-black">Reasignar</span>
                                                     </div>
                                                 @endif
                                                 <div class="flex gap-1">
@@ -177,13 +166,13 @@
                                                                 d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z" />
                                                         </svg>
                                                     </a>
-                                                    <span class="font-bold ">Ver Más</span>
+                                                    <span class="font-bold text-base text-black">Ver Más</span>
                                                 </div>
                                                 @if (!in_array(Auth::user()->permiso_id, [2, 3, 6]))
                                                     <div class="flex gap-1">
                                                         @livewire('tickets.compras.show-compras', ['ticketID' => $ticket->id], key('compra' . $ticket->id))
                                                         <span
-                                                            class="font-bold ">Requisiciones</span>
+                                                            class="font-bold text-base text-black">Requisiciones</span>
                                                     </div>
                                                     <div class="flex gap-1">
                                                         <a href="{{ route('tck.tarea', $ticket->id) }}">
@@ -212,19 +201,19 @@
                                                                 </svg>
                                                             @endif
                                                         </a>
-                                                        <span class="font-bold ">Tareas</span>
+                                                        <span class="font-bold text-base text-black">Tareas</span>
                                                     </div>
                                                 @endif
                                             @else
                                                 <div class="flex gap-1">
                                                     @livewire('tickets.details-tck', ['ticketID' => $ticket->id], key('cerrado' . $ticket->id))
-                                                    <span class="font-bold ">Ver más</span>
+                                                    <span class="font-bold text-base text-black">Ver más</span>
                                                 </div>
                                             @endif
                                             @if (Auth::user()->permiso_id == 1 && $ticket->status == 'Cerrado')
                                                 <div class="flex gap-1">
                                                     @livewire('tickets.unlock-ticket', ['ticketID' => $ticket->id], key('unlock' . $ticket->id))
-                                                    <span class="font-bold ">Abrir</span>
+                                                    <span class="font-bold text-base text-black">Abrir</span>
                                                 </div>
                                             @endif
                                         </div>

@@ -39,7 +39,7 @@ class RechazoCompraNotification extends Notification
         $user = Auth::user();
 
         return [
-            'url' => route('requisiciones'),
+            'url' => route('tck.ver', $this->compra->ticket_id),
             'userid' => $user,
             'user' => "El " .  Auth::user()->permiso->titulo_permiso . " " . Auth::user()->name,
             'message' => "no autorizó la requisición #{$this->compra->id}, 

@@ -27,6 +27,21 @@ class TicketController extends Controller
         $pendientes = Ticket::where('status', 'Por abrir')->count();
         return view('modules.tickets.index', compact('pendientes', 'valid'));
     }
+    public function open()
+    {
+        $valid = Auth::user()->permiso->panels->where('id', 2)->first();
+        return view('modules.tickets.open', compact('valid'));
+    }
+    public function process()
+    {
+        $valid = Auth::user()->permiso->panels->where('id', 2)->first();
+        return view('modules.tickets.process', compact('valid'));
+    }
+    public function closed()
+    {
+        $valid = Auth::user()->permiso->panels->where('id', 2)->first();
+        return view('modules.tickets.closed', compact('valid'));
+    }
 
     //vista tickets pendientes
     public function pendientes()

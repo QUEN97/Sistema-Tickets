@@ -74,7 +74,7 @@ class UserTable extends Component
      //Obtener los datos y paginación
      public function getUsuariosProperty()
      {
-         return  $this->usuariosQuery->paginate($this->perPage);
+         return  $this->getUsuariosQueryProperty()->orderBy('created_at','desc')->where('id','!=',1)->paginate($this->perPage);
      }
  
      public function getUsuariosQueryProperty()

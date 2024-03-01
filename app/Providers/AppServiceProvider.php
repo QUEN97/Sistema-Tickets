@@ -72,14 +72,13 @@ class AppServiceProvider extends ServiceProvider
                                 ->orWhere('solicitante_id', $mePertenece->id);
                         });
                     }
-                })
+                })->whereHas('comentarios', function ($query) use ($now) {
+                    $query->orderBy('created_at', 'desc')->take(1)->where('created_at', '<', $now->subDay(3));
+                }) // Filtrar tickets con un comentario que se hizo hace más de 3 días
                 ->whereDoesntHave('comentarios', function ($query) use ($now) {
                     $query->where('created_at', '>=', $now->subDay(3));
-                })
-                ->orWhereHas('comentarios', function ($query) use ($now) {
-                    $query->orderBy('created_at', 'desc')->take(1)->where('created_at', '<', $now->subDay(3));
-                })
-                ->get();
+                }) // Excluir tickets con comentarios en los últimos 3 días
+                ->get(); // Obtener los resultados
 
             if (($comparador->greaterThanOrEqualTo(Carbon::create($vecesToast['inicio'][0])) && $comparador->lessThanOrEqualTo(Carbon::create($vecesToast['inicio'][1]))) || ($comparador->greaterThanOrEqualTo(Carbon::create($vecesToast['mitad'][0])) && $comparador->lessThanOrEqualTo(Carbon::create($vecesToast['mitad'][1]))) || ($comparador->greaterThanOrEqualTo(Carbon::create($vecesToast['fin'][0])) && $comparador->lessThanOrEqualTo(Carbon::create($vecesToast['fin'][1])))) {
                 $cantidadTicketsProximosVencer = $ticketsProximosVencer->count();

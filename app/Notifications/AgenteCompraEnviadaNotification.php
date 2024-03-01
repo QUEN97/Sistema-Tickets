@@ -37,7 +37,7 @@ class AgenteCompraEnviadaNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'url' => route('requisiciones'),
+            'url' => route('tck.ver', $this->compra->ticket_id),
             'message' => "La  requisición #{$this->compra->id}, 
             con el ticket #{$this->compra->ticket_id}, '{$this->compra->titulo_correo}' ha sido enviada al área de compras "  
         ];

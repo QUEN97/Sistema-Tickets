@@ -38,10 +38,10 @@
                 <td>{{$tck->falla->prioridad->tiempo}}</td>
                 <td>{{number_format($tck->tiempo_total,2)}}</td>
                 <td>{{$tck->tiempo_tarea}}</td>
-                <td>{{$tck->tiempo_efectivo}}</td>
-                <td>{{$tck->status}}</td>
+                <td>{{$tck->status=='Cerrado'?$tck->tiempo_efectivo:0}}</td>
+                <td>{{$tck->status=='Vencido'?'En proceso':$tck->status}}</td>
                 <td>{{$tck->falla->prioridad->name}}</td>
-                <td>{{$tck->nivel_servicio}}</td>
+                <td>{{$tck->status=='Cerrado'?$tck->nivel_servicio:''}}</td>
                 <td>{{$tck->oficina}}</td>
                 <td>{{$tck->falla->prioridad->clase->name}}</td>
             </tr>

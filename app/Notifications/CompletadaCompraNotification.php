@@ -38,7 +38,7 @@ class CompletadaCompraNotification extends Notification
     {
         $user = Auth::user();
         return [
-            'url' => route('requisiciones'),
+            'url' => route('tck.ver', $this->compra->ticket_id),
             'userid' => $user,
             'user' => Auth::user()->name,
             'message' =>  ", ha establecido como COMPLETADA la requisición #{$this->compra->id}, 

@@ -38,7 +38,7 @@ class TareaReasignada extends Notification
     {
         $user = Auth::user();
         return [
-            'url' => route('tareas'),
+            'url' => route('tck.ver', $this->tarea->ticket->id),
             'userid' =>$user,
             'user' => "El " .  Auth::user()->permiso->titulo_permiso . " " . Auth::user()->name,
             'message' => " te ha reasignado la tarea #{$this->tarea->id}, en el ticket #{$this->tarea->ticket_id}."

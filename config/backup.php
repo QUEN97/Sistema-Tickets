@@ -2,6 +2,8 @@
 
 return [
 
+    'command' => env('BACKUP_COMMAND', 'backup:run'),
+
     'backup' => [
 
         /*

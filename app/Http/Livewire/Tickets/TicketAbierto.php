@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
-class Tickets extends Component
+class TicketAbierto extends Component
 {
     use WithPagination;
 
@@ -29,20 +29,12 @@ class Tickets extends Component
     public $checked = [];
     public $selectPage = false;
     public $selectAll = false;
-    public $comprasCount, $tareasCount, $abiertos, $enproceso;
+    public $enproceso;
 
     public function mount()
     {
         $user = Auth::user();
         if ($user->permiso_id !== 1) {
-            $this->abiertos = Ticket::where(function ($query) use ($user) {
-                $query->where('status', 'Abierto')
-                    ->where(function ($query) use ($user) {
-                        $query->where('user_id', $user->id)
-                            ->orWhere('solicitante_id', $user->id);
-                    });
-            })->count();
-
             $this->enproceso = Ticket::where(function ($query) use ($user) {
                 $query->where('status', 'En proceso')
                     ->where(function ($query) use ($user) {
@@ -52,17 +44,17 @@ class Tickets extends Component
             })->count();
         } else {
             // If user is an admin, count all tickets
-            $this->abiertos = Ticket::where('status', 'Abierto')->count();
             $this->enproceso = Ticket::where('status', 'En proceso')->count();
         }
     }
     public function render()
     {
         $this->valid = Auth::user()->permiso->panels->where('id', 2)->first();
-        return view('livewire.tickets.tickets', [
+        return view('livewire.tickets.ticket-abierto', [
             'tickets' => $this->tickets,
         ]);
     }
+
     //Cycle Hooks
     public function updatedSelectPage($value)
     {
@@ -110,16 +102,9 @@ class Tickets extends Component
         $user = Auth::user();
 
         $query = Ticket::query();
-        //si se requiere eliminar las vistas por estado, descomentamos este código para en una sola vista ver todos los status del ticket
-        //if ($this->search) {
-        // Si se realiza una búsqueda, no aplicamos restricciones adicionales en el estado
-        //$query->search($this->search);
-        //} else {
-        // Si no se realiza una búsqueda, excluimos los tickets cerrados y pendientes
-        //$query->whereNotIn('status', ['Cerrado', 'Por abrir']);
-        //}
-        // Excluir los tickets cerrados y pendientes  en todos los casos
-        $query->whereNotIn('status', ['Cerrado', 'Por abrir']);
+
+        // Excluir los tickets cerrados, pendientes y abiertos en todos los casos
+        $query->whereNotIn('status', ['Cerrado', 'Por abrir', 'En proceso']);
 
         if ($this->search) {
             // Aplicar la búsqueda después de excluir los tickets cerrados, pendientes y abiertos

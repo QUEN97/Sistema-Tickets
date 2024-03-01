@@ -39,12 +39,12 @@ class TicketsPeriodo implements FromView,ShouldAutoSize,WithTitle,WithEvents
     public function view(): View
     {
         $rango=[$this->ini->startOfDay()->toDateTimeString(),$this->end->endOfDay()->toDateTimeString()];
-        $tcks=Ticket::whereNotIn('status',['Por abrir','Abierto'])->whereBetween('created_at',$rango)->get();
+        $tcks=Ticket::whereNotIn('status',['Por abrir'])->whereBetween('created_at',$rango)->get();
         //realizamos operaciones para obtener los valores faltantes y las asignamos a nuevas propiedades de cada registro
         foreach($tcks as $tck){
             $creacion=Carbon::create($tck->created_at);
             $vencimiento=Carbon::create($tck->fecha_cierre);
-            $cierre=Carbon::create($tck->updated_at);
+            $cierre=Carbon::create($tck->cerrado);
 
             //validamos si el ticket fue creado dentro del horario de oficina L-V 9-18:30 S 9-13:00
             if($creacion->dayOfWeek > 0){ //0=domingo
@@ -62,9 +62,9 @@ class TicketsPeriodo implements FromView,ShouldAutoSize,WithTitle,WithEvents
             
             $tck->tiempo_total=$creacion->floatDiffInHours($cierre);
             $tck->tiempo_tarea=$this->tiempoTareas($tck->tareas->where('status','Cerrado'));
-            $tck->tiempo_efectivo=number_format(($tck->tiempo_total - $tck->tiempo_tarea),2);
+            $tck->tiempo_efectivo=number_format(($tck->tiempo_total - floatval($tck->tiempo_tarea)),2);
 
-            $tck->falla->prioridad->tiempo < $tck->tiempo_efectivo
+            $tck->falla->prioridad->tiempo >= $tck->tiempo_efectivo
             ?$tck->nivel_servicio='DENTRO'
             :$tck->nivel_servicio='FUERA';
 
@@ -84,7 +84,7 @@ class TicketsPeriodo implements FromView,ShouldAutoSize,WithTitle,WithEvents
                     ],
                     'fill' => [
                         'fillType' => Fill::FILL_SOLID,
-                        'color' => ['argb' => Color::COLOR_DARKRED],
+                        'color' => ['argb' => Color::COLOR_RED],
                     ]
                 ]);
                 $event->sheet->getDelegate()->getStyle($cells)->applyFromArray([

@@ -150,8 +150,9 @@
 
         <!-- Modal -->
         <div id="miModalV"
-            class="hidden fixed inset-0 items-center justify-center z-50 overflow-auto bg-black bg-opacity-50">
-            <div class="bg-white p-8 rounded-lg">
+            class="hidden fixed inset-0 flex items-center justify-center z-50 overflow-auto bg-black bg-opacity-50">
+            <div
+                class="bg-white rounded-lg w-full p-2 max-w-3xl overflow-hidden mx-4 sm:mx-auto sm:w-full md:max-w-4xl lg:max-w-6xl">
                 <div class="modal-header flex justify-between items-center mb-4">
                     <h5 class="modal-title text-lg font-semibold">Tickets <strong>PRÓXIMOS A VENCER</strong> </h5>
                     <div class="text-xs">* Tickets cuya <strong>FECHA DE VENCIMIENTO</strong> se da dentro de 5 horas.
@@ -159,102 +160,66 @@
                 </div>
                 <div class="modal-body">
                     <div class=" max-h-72 overflow-auto">
-                        <table class="w-full text-center rounded-b-md">
-                            <thead>
-                                <tr>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ID
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ESTADO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ASUNTO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        CLIENTE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        AGENTE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        CREADO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        VENCE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        PRIORIDAD
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        OPCIÓN
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($ticketsProximosVencer as $item)
-                                    <tr>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->id }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            <div>
+                        <x-table>
+                            <x-slot name="head">
+                                {{-- Componente Heading  --}}
+                                <x-heading sortable>ID</x-heading>
+                                <x-heading sortable>ESTADO</x-heading>
+                                <x-heading sortable>FALLA</x-heading>
+                                <x-heading sortable>CLIENTE</x-heading>
+                                <x-heading sortable>AGENTE</x-heading>
+                                <x-heading sortable>CREADO</x-heading>
+                                <x-heading sortable>VENCE</x-heading>
+                                <x-heading sortable>PRIORIDAD</x-heading>
+                                <x-heading></x-heading>
+                            </x-slot>
+                            <x-slot name="body">
+                                @forelse($ticketsProximosVencer as $item)
+                                    {{-- Componente Row --}}
+                                    <x-row wire:loading.class.delay="opacity-75">
+                                        {{-- Componente Column --}}
+                                        <x-cell>{{ $item->id }} </x-cell>
+                                        <x-cell>
+                                            <div
+                                                class="rounded bg-{{ $item->status_color }}-200 py-1 px-3 text-xs text-{{ $item->status_color }}-500 font-bold">
                                                 {{ $item->status }}
                                             </div>
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->falla->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->cliente->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->agente->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->created_at }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->fecha_cierre }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->falla->prioridad->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
-                                                href="{{ route('tck.ver', $item->id) }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
-                                                    fill="currentColor"
-                                                    class="w-6 h-6 text-black hover:text-gray-600 dark:text-white"
-                                                    viewBox="0 0 576 512">
-                                                    <path
-                                                        d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z" />
-                                                </svg>
-                                                <span class="tooltiptext">Ver Más</span>
-                                            </a>
-                                        </th>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        </x-cell>
+                                        <x-cell class="font-bold">{{ $item->falla->name }} </x-cell>
+                                        <x-cell> {{ $item->cliente->name }}</x-cell>
+                                        <x-cell> {{ $item->agente->name }}</x-cell>
+                                        <x-cell> {{ $item->created_at }}</x-cell>
+                                        <x-cell> {{ $item->fecha_cierre }}</x-cell>
+                                        <x-cell> {{ $item->falla->prioridad->name }}</x-cell>
+                                        <x-cell>
+                                            <div class="flex gap-2 justify-center items-center">
+                                                <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
+                                                    href="{{ route('tck.ver', $item->id) }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15"
+                                                        height="15" fill="currentColor"
+                                                        class="w-6 h-6 text-black hover:text-gray-600 dark:text-white"
+                                                        viewBox="0 0 576 512">
+                                                        <path
+                                                            d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z" />
+                                                    </svg>
+                                                    <span class="tooltiptext">Ver Más</span>
+                                                </a>
+                                            </div>
+                                        </x-cell>
+                                    </x-row>
+                                @empty
+                                    <x-row>
+                                        <x-cell colspan="6">
+                                            <div class="flex justify-center items-center space-x-2">
+                                                <x-icons.inbox class="w-8 h-8 text-gray-300" />
+                                                <span class="py-8 font-medium text-gray-400 text-xl">No se encontraron
+                                                    resultados...</span>
+                                            </div>
+                                        </x-cell>
+                                    </x-row>
+                                @endforelse
+                            </x-slot>
+                        </x-table>
                     </div>
                 </div>
                 <div class="modal-footer mt-4">
@@ -294,8 +259,9 @@
 
         <!-- Modal -->
         <div id="miModalA"
-            class="hidden fixed inset-0 items-center justify-center z-50 overflow-auto bg-black bg-opacity-50">
-            <div class="bg-white p-8 rounded-lg">
+            class="hidden fixed inset-0 flex items-center justify-center z-50 overflow-auto bg-black bg-opacity-50">
+            <div
+                class="bg-white rounded-lg w-full p-2 max-w-3xl overflow-hidden mx-4 sm:mx-auto sm:w-full md:max-w-4xl lg:max-w-8xl">
                 <div class="modal-header flex justify-between items-center mb-4">
                     <h5 class="modal-title text-lg font-semibold">Tickets <strong>POR ATENDER</strong> </h5>
                     <div class="text-xs">* Tickets con estado <strong>ABIERTO</strong> con más de 30 minutos sin atender
@@ -303,102 +269,66 @@
                 </div>
                 <div class="modal-body">
                     <div class=" max-h-72 overflow-auto">
-                        <table class="w-full text-center rounded-b-md">
-                            <thead>
-                                <tr>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ID
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ESTADO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ASUNTO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        CLIENTE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        AGENTE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        CREADO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        VENCE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        PRIORIDAD
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        OPCIÓN
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($ticketsPorAtender as $item)
-                                    <tr>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->id }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            <div>
+                        <x-table>
+                            <x-slot name="head">
+                                {{-- Componente Heading  --}}
+                                <x-heading sortable>ID</x-heading>
+                                <x-heading sortable>ESTADO</x-heading>
+                                <x-heading sortable>FALLA</x-heading>
+                                <x-heading sortable>CLIENTE</x-heading>
+                                <x-heading sortable>AGENTE</x-heading>
+                                <x-heading sortable>CREADO</x-heading>
+                                <x-heading sortable>VENCE</x-heading>
+                                <x-heading sortable>PRIORIDAD</x-heading>
+                                <x-heading></x-heading>
+                            </x-slot>
+                            <x-slot name="body">
+                                @forelse($ticketsPorAtender as $item)
+                                    {{-- Componente Row --}}
+                                    <x-row wire:loading.class.delay="opacity-75">
+                                        {{-- Componente Column --}}
+                                        <x-cell>{{ $item->id }} </x-cell>
+                                        <x-cell>
+                                            <div
+                                                class="rounded bg-{{ $item->status_color }}-200 py-1 px-3 text-xs text-{{ $item->status_color }}-500 font-bold">
                                                 {{ $item->status }}
                                             </div>
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->falla->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->cliente->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->agente->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->created_at }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->fecha_cierre }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->falla->prioridad->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
-                                                href="{{ route('tck.ver', $item->id) }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
-                                                    fill="currentColor"
-                                                    class="w-6 h-6 text-black hover:text-gray-600 dark:text-white"
-                                                    viewBox="0 0 576 512">
-                                                    <path
-                                                        d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z" />
-                                                </svg>
-                                                <span class="tooltiptext">Ver Más</span>
-                                            </a>
-                                        </th>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        </x-cell>
+                                        <x-cell class="font-bold">{{ $item->falla->name }} </x-cell>
+                                        <x-cell> {{ $item->cliente->name }}</x-cell>
+                                        <x-cell> {{ $item->agente->name }}</x-cell>
+                                        <x-cell> {{ $item->created_at }}</x-cell>
+                                        <x-cell> {{ $item->fecha_cierre }}</x-cell>
+                                        <x-cell> {{ $item->falla->prioridad->name }}</x-cell>
+                                        <x-cell>
+                                            <div class="flex gap-2 justify-center items-center">
+                                                <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
+                                                    href="{{ route('tck.ver', $item->id) }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15"
+                                                        height="15" fill="currentColor"
+                                                        class="w-6 h-6 text-black hover:text-gray-600 dark:text-white"
+                                                        viewBox="0 0 576 512">
+                                                        <path
+                                                            d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z" />
+                                                    </svg>
+                                                    <span class="tooltiptext">Ver Más</span>
+                                                </a>
+                                            </div>
+                                        </x-cell>
+                                    </x-row>
+                                @empty
+                                    <x-row>
+                                        <x-cell colspan="6">
+                                            <div class="flex justify-center items-center space-x-2">
+                                                <x-icons.inbox class="w-8 h-8 text-gray-300" />
+                                                <span class="py-8 font-medium text-gray-400 text-xl">No se encontraron
+                                                    resultados...</span>
+                                            </div>
+                                        </x-cell>
+                                    </x-row>
+                                @endforelse
+                            </x-slot>
+                        </x-table>
                     </div>
                 </div>
                 <div class="modal-footer mt-4">
@@ -437,110 +367,75 @@
 
         <!-- Modal -->
         <div id="miModalC"
-            class="hidden fixed inset-0 items-center justify-center z-50 overflow-auto bg-black bg-opacity-50">
-            <div class="bg-white p-8 rounded-lg">
+            class="hidden fixed inset-0 flex items-center justify-center z-50 overflow-auto bg-black bg-opacity-50">
+            <div
+                class="bg-white rounded-lg w-full p-2 max-w-3xl overflow-hidden mx-4 sm:mx-auto sm:w-full md:max-w-4xl lg:max-w-6xl">
                 <div class="modal-header flex justify-between items-center mb-4">
                     <h5 class="modal-title text-lg font-semibold">Tickets <strong>SIN ATENCIÓN</strong> </h5>
                     <div class="text-xs">* Tickets con más de <strong>3 DÍAS</strong> sin actualizar.</div>
                 </div>
                 <div class="modal-body">
                     <div class=" max-h-72 overflow-auto">
-                        <table class="w-full text-center rounded-b-md">
-                            <thead>
-                                <tr>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ID
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ESTADO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        ASUNTO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        CLIENTE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        AGENTE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        CREADO
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        VENCE
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        PRIORIDAD
-                                    </th>
-                                    <th
-                                        class="p-2 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 lg:table-cell dark:bg-slate-700 dark:text-gray-300 dark:border-gray-700">
-                                        OPCIÓN
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($ticketsEnProcesoSinComentarios as $item)
-                                    <tr>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->id }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            <div>
+                        <x-table>
+                            <x-slot name="head">
+                                {{-- Componente Heading  --}}
+                                <x-heading sortable>ID</x-heading>
+                                <x-heading sortable>ESTADO</x-heading>
+                                <x-heading sortable>FALLA</x-heading>
+                                <x-heading sortable>CLIENTE</x-heading>
+                                <x-heading sortable>AGENTE</x-heading>
+                                <x-heading sortable>CREADO</x-heading>
+                                <x-heading sortable>VENCE</x-heading>
+                                <x-heading sortable>PRIORIDAD</x-heading>
+                                <x-heading></x-heading>
+                            </x-slot>
+                            <x-slot name="body">
+                                @forelse($ticketsEnProcesoSinComentarios as $item)
+                                    {{-- Componente Row --}}
+                                    <x-row wire:loading.class.delay="opacity-75">
+                                        {{-- Componente Column --}}
+                                        <x-cell>{{ $item->id }} </x-cell>
+                                        <x-cell>
+                                            <div
+                                                class="rounded bg-{{ $item->status_color }}-200 py-1 px-3 text-xs text-{{ $item->status_color }}-500 font-bold">
                                                 {{ $item->status }}
                                             </div>
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->falla->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->cliente->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->agente->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->created_at }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->fecha_cierre }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            {{ $item->falla->prioridad->name }}
-                                        </th>
-                                        <th
-                                            class="w-full font-medium text-sm lg:w-auto p-2 text-gray-800 text-center border border-b dark:text-gray-400  dark:border-gray-700">
-                                            <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
-                                                href="{{ route('tck.ver', $item->id) }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
-                                                    fill="currentColor"
-                                                    class="w-6 h-6 text-black hover:text-gray-600 dark:text-white"
-                                                    viewBox="0 0 576 512">
-                                                    <path
-                                                        d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z" />
-                                                </svg>
-                                                <span class="tooltiptext">Ver Más</span>
-                                            </a>
-                                        </th>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        </x-cell>
+                                        <x-cell class="font-bold">{{ $item->falla->name }} </x-cell>
+                                        <x-cell> {{ $item->cliente->name }}</x-cell>
+                                        <x-cell> {{ $item->agente->name }}</x-cell>
+                                        <x-cell> {{ $item->created_at }}</x-cell>
+                                        <x-cell> {{ $item->fecha_cierre }}</x-cell>
+                                        <x-cell> {{ $item->falla->prioridad->name }}</x-cell>
+                                        <x-cell>
+                                            <div class="flex gap-2 justify-center items-center">
+                                                <a class="bg-white dark:bg-dark-eval-3 p-1 rounded-md tooltip"
+                                                    href="{{ route('tck.ver', $item->id) }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15"
+                                                        height="15" fill="currentColor"
+                                                        class="w-6 h-6 text-black hover:text-gray-600 dark:text-white"
+                                                        viewBox="0 0 576 512">
+                                                        <path
+                                                            d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z" />
+                                                    </svg>
+                                                    <span class="tooltiptext">Ver Más</span>
+                                                </a>
+                                            </div>
+                                        </x-cell>
+                                    </x-row>
+                                @empty
+                                    <x-row>
+                                        <x-cell colspan="6">
+                                            <div class="flex justify-center items-center space-x-2">
+                                                <x-icons.inbox class="w-8 h-8 text-gray-300" />
+                                                <span class="py-8 font-medium text-gray-400 text-xl">No se encontraron
+                                                    resultados...</span>
+                                            </div>
+                                        </x-cell>
+                                    </x-row>
+                                @endforelse
+                            </x-slot>
+                        </x-table>
                     </div>
                 </div>
                 <div class="modal-footer mt-4">

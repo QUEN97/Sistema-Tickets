@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
-class Tickets extends Component
+class TicketCerrado extends Component
 {
     use WithPagination;
 
@@ -29,7 +29,7 @@ class Tickets extends Component
     public $checked = [];
     public $selectPage = false;
     public $selectAll = false;
-    public $comprasCount, $tareasCount, $abiertos, $enproceso;
+    public $abiertos,$enproceso;
 
     public function mount()
     {
@@ -56,13 +56,15 @@ class Tickets extends Component
             $this->enproceso = Ticket::where('status', 'En proceso')->count();
         }
     }
+
     public function render()
     {
         $this->valid = Auth::user()->permiso->panels->where('id', 2)->first();
-        return view('livewire.tickets.tickets', [
+        return view('livewire.tickets.ticket-cerrado', [
             'tickets' => $this->tickets,
         ]);
     }
+
     //Cycle Hooks
     public function updatedSelectPage($value)
     {
@@ -110,21 +112,14 @@ class Tickets extends Component
         $user = Auth::user();
 
         $query = Ticket::query();
-        //si se requiere eliminar las vistas por estado, descomentamos este código para en una sola vista ver todos los status del ticket
-        //if ($this->search) {
-        // Si se realiza una búsqueda, no aplicamos restricciones adicionales en el estado
-        //$query->search($this->search);
-        //} else {
-        // Si no se realiza una búsqueda, excluimos los tickets cerrados y pendientes
-        //$query->whereNotIn('status', ['Cerrado', 'Por abrir']);
-        //}
-        // Excluir los tickets cerrados y pendientes  en todos los casos
-        $query->whereNotIn('status', ['Cerrado', 'Por abrir']);
 
-        if ($this->search) {
-            // Aplicar la búsqueda después de excluir los tickets cerrados, pendientes y abiertos
-            $query->search($this->search);
-        }
+        // Excluir los tickets en proceso, pendientes y abiertos en todos los casos
+    $query->whereNotIn('status', ['En proceso', 'Por abrir', 'Abierto']);
+
+    if ($this->search) {
+        // Aplicar la búsqueda después de excluir los tickets en proceso, pendientes y abiertos
+        $query->search($this->search);
+    }
 
         return $query
             ->when($user->permiso_id == 1 || $user->permiso_id == 8, function ($query) {
@@ -143,11 +138,11 @@ class Tickets extends Component
                     $minions = UserZona::/*whereNotIn('zona_id',[1])->*/whereIn('zona_id', $user->zonas->pluck('id'))->pluck('user_id');
                     //dd($minions);
                     $tck = Ticket::whereIn('solicitante_id', $minions)->pluck('id');
-                    $query->where(function ($query) use ($minions) {
+                    $query->where(function($query) use ($minions) {
                         $query->whereIn('user_id', $minions)
-                            ->orWhereIn('solicitante_id', $minions);
-                    });
-                    return $query;
+                           ->orWhereIn('solicitante_id', $minions);
+                        });
+                         return $query;
                     //$query->whereIn('solicitante_id', $minions)->orWhereIn('user_id', $minions);
                 } elseif ($user->permiso_id == 7) {
                     //Si el usuario es Jefe de Área solo ve sus tickets y el de su personal a cargo

@@ -40,7 +40,7 @@ class TareaRequisicionNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'url' => route('tareas'),
+            'url' => route('tck.ver', $this->tarea->ticket->id),
             'message' => "Hola {$this->tarea->user->name}, se ha aprobado la requisición # {$this->compraID}, con el ticket #{$this->tarea->ticket->id}, por lo que se te ha creado una tarea
              para llevar un debido seguimiento de la misma"
         ];
