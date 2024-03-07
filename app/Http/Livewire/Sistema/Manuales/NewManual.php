@@ -17,48 +17,52 @@ class NewManual extends Component
 {
     use WithFileUploads;
 
-    public $newgManual, $manual, $panel;
+    public $newgManual, $manual, $categoria,$subcat,$urlArchi,$permisos;
     public $permis = [];
 
     public function resetFilters()
     {
-        $this->reset(['manual', 'panel', 'permis']);
+        $this->reset(['manual', 'categoria','subcat','permis']);
     }
 
     public function mount()
     {
+        $this->permisos = Permiso::all();
         $this->resetFilters();
-
         $this->newgManual = false;
     }
 
     public function showModalFormManual()
     {
         $this->resetFilters();
-
         $this->newgManual=true;
     }
 
     public function addManual()
     {
         $this->validate( [
-            'panel' => ['required', 'not_in:0'],
             'permis' => ['required'],
-            'manual' => 'required|max:5120',
+            'categoria' => ['required'],
+            'subcat' => ['required'],
+            'manual' => 'required|max:5120|mimes:pdf',
         ],
         [
-            'panel.required' => 'El campo Panel es obligatorio',
             'permis.required' => 'Debes elegir un permiso',
+            'categoria.required' => 'Ingresa la categoría del manual',
+            'subcat.required' => 'Ingresa la subcategoría del manual',
             'manual.max' => 'El archivo no debe ser mayor a 5 MB',
             'manual.required' => 'El campo Manual es obligatorio',
+            'manual.mimes' => 'El archivo debe ser un PDF',
         ]);
 
         $this->urlArchi = $this->manual->storeAs('manuales', $this->manual->getClientOriginalName(), 'public');
 
         DB::transaction(function () {
             return tap(Manual::create([
-                'panel_id' => $this->panel,
+                'user_id' => Auth::user()->id,
                 'titulo_manual' => $this->manual->getClientOriginalName(),
+                'categoria'=>$this->categoria,
+                'sub_categoria'=>$this->subcat,
                 'manual_path' => $this->urlArchi,
                 'mime_type' => $this->manual->getMimeType(),
                 'size' => $this->manual->getSize(),
@@ -85,10 +89,6 @@ class NewManual extends Component
 
     public function render()
     {
-        $this->paneles = Auth::user()->permiso->panels;
-
-        $this->permisos = Permiso::all();
-
         return view('livewire.sistema.manuales.new-manual');
     }
 }

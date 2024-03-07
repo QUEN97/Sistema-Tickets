@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('manuals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('panel_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('titulo_manual', 250);
+            $table->string('categoria', 250);
+            $table->string('sub_categoria', 250);
             $table->string('manual_path', 5120);
             $table->string('mime_type', 255); // Changed the length to 255
             $table->bigInteger('size'); // Removed the length specification
             $table->boolean('flag_trash')->default(0);
             $table->timestamps();
     
-            $table->foreign('panel_id')->references('id')->on('panels')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });  
     }
 

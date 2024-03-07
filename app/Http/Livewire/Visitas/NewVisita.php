@@ -5,12 +5,14 @@ namespace App\Http\Livewire\Visitas;
 use App\Models\Estacion;
 use App\Models\Falla;
 use App\Models\User;
+use App\Models\UserZona;
 use App\Models\Visita;
 use App\Notifications\NotifiNewVisita;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
+use Illuminate\Database\Eloquent\Builder;
 
 class NewVisita extends Component
 {
@@ -24,13 +26,17 @@ class NewVisita extends Component
         // $this->users = User::where('status','Activo')->whereNotIn('permiso_id',[3,6])->get();
         $this->estacions = Estacion::where('status', 'Activo')->orderBy('name')->get();
         $this->superEsta = Estacion::where('status', 'Activo')->where('supervisor_id', Auth::user()->id)->get();
-        $this->fallas = Falla::where('status','Activo')->where('servicio_id', 23)->get();
+        $this->fallas = Falla::where('status', 'Activo')->where('servicio_id', 23)->get();
     }
 
     public function programarVisita()
     {
         if (Auth::user()->permiso_id != 2 && Auth::user()->permiso_id != 3) {
-            $usCompras = User::where('permiso_id', 4)->get();
+            $agente = User::where('permiso_id', 5)->pluck('id');
+            $Agents = User::where('status', 'Activo')->whereHas('tickets', function ($query) use ($agente) {
+                $query->whereNotIn('status', ['Por abrir', 'Cerrado'])
+                    ->whereIn('user_id', $agente);
+            })->get();
             $this->validate(
                 [
                     'estacion' => ['required'],
@@ -51,7 +57,14 @@ class NewVisita extends Component
                 'fecha_programada' => $this->fecha,
             ]));
             $visita->fallas()->sync($this->fallasList);
+
+            Notification::send($Agents, new NotifiNewVisita($visita));
         } elseif (Auth::user()->permiso_id == 3) {
+            $agente = User::where('permiso_id', 5)->pluck('id');
+            $Agents = User::where('status', 'Activo')->whereHas('tickets', function ($query) use ($agente) {
+                $query->whereNotIn('status', ['Por abrir', 'Cerrado'])
+                    ->whereIn('user_id', $agente);
+            })->get();
             $this->estas = Estacion::where('user_id', auth()->user()->id)->first()->id; //Obtenemos el ID de la estacion perteneciente al usuario "Gerente"
             //dd($this->estas);
             $this->validate(
@@ -72,9 +85,14 @@ class NewVisita extends Component
                 'fecha_programada' => $this->fecha,
             ]));
             $visita->fallas()->sync($this->fallasList);
+
+            Notification::send($Agents, new NotifiNewVisita($visita));
         } elseif (Auth::user()->permiso_id == 2) {
-            //$this->estas = Estacion::where('supervisor_id',auth()->user()->id)->first()->id;//Obtenemos el ID de la estacion perteneciente al usuario "Supervisor"
-            //dd($this->estas);
+            $agente = User::where('permiso_id', 5)->pluck('id');
+            $Agents = User::where('status', 'Activo')->whereHas('tickets', function ($query) use ($agente) {
+                $query->whereNotIn('status', ['Por abrir', 'Cerrado'])
+                    ->whereIn('user_id', $agente);
+            })->get();
             $this->validate(
                 [
                     'estacion' => ['required'],
@@ -95,18 +113,9 @@ class NewVisita extends Component
                 'fecha_programada' => $this->fecha,
             ]));
             $visita->fallas()->sync($this->fallasList);
+            Notification::send($Agents, new NotifiNewVisita($visita));
         }
 
-        $Admins = User::where('permiso_id',1)->where('status','Activo')->get();
-        $Agents = User::where('permiso_id',5)->where('status','Activo')->get();
-        $Estas = Estacion::where('supervisor_id',auth()->user()->id)->first()->id;
-
-        if (Auth::user()->permiso_id == 1) {
-            Notification::send($Agents, new NotifiNewVisita($visita));
-        }// } elseif (Auth::user()->permiso_id == 4) {
-        //     Notification::send($Admins, new ComprasRequiNotification($compra));
-        //     Notification::send($Agente, new AgenteCompraEnviadaNotification($compra));
-        // }
 
         session()->flash('flash.banner', 'Nueva Visita, la visita  ha sido registrada en el sistema.');
         session()->flash('flash.bannerStyle', 'success');

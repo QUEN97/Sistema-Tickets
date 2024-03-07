@@ -17,9 +17,25 @@ class Manual extends Model
      * @var string[]
      */
     protected $fillable = [
-        'panel_id', 'titulo_manual', 'manual_path', 'size', 'flag_trash','mime_type'
+        'user_id','categoria','sub_categoria', 'titulo_manual', 'manual_path', 'size', 'flag_trash','mime_type'
     ];
 
+    public function scopeSearch($query, $value)
+    {
+        $query->where(function ($query) use ($value) {
+            $query->where('id', 'like', "%{$value}%")
+                ->orWhere('titulo_manual', 'like', "%{$value}%")
+                ->orWhere('categoria', 'like', "%{$value}%")
+                ->orWhere('sub_categoria', 'like', "%{$value}%")
+                ->orWhere('created_at', 'like', "%{$value}%");
+        })->orWhere(function ($query) use ($value) {
+            $query->whereIn('user_id', function ($subquery) use ($value) {
+                $subquery->select('id')
+                    ->from('users')
+                    ->where('id', 'LIKE', "%{$value}%");
+            });
+        });
+    }
     public function getCreatedFormatAttribute()
     {
         return $this->created_at->format('d-m-Y H:i:s');
@@ -32,6 +48,10 @@ class Manual extends Model
     public function panel()
     {
         return $this->belongsTo(Panel::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function permisos()
