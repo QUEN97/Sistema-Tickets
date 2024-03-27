@@ -294,7 +294,7 @@
                                                                             <strong>SOLUCIÓN:
                                                                             </strong>{{ $mailDataU['solucion'] }}
                                                                         </p>
-                                                                        @if (isset($mailDataU['mensaje']))
+                                                                        @if (isset($mailDataU['mensaje_opcion']))
                                                                             <p
                                                                                 style="margin: 0; mso-line-height-alt: 18px; letter-spacing: normal;">
                                                                                 <strong>NOTA:

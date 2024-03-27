@@ -79,24 +79,23 @@
             </x-slot>
 
             <x-slot name="content">
-                {{ __('Antes de proceder con la creación del horario, favor de validar si este ya se encuentra registrado,
-                                                                                                                                                                                 de lo contrario puede proceder con la creación del horario.') }}
+                {{ __('Antes de proceder con la creación del horario, favor de validar si este ya se encuentra registrado, de lo contrario puede proceder con la creación del horario.') }}
 
-                <div class="flex gap-2 mt-4">
+                <div class="flex flex-col md:flex-row gap-2 mt-4">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-2">
                         <x-label for="inicio" value="{{ __('Hora Inicio') }}" />
                         <x-input wire:model.defer="inicio"
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('inicio') ? 'is-invalid' : '' }}"
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('inicio') ? 'is-invalid' : '' }}"
                             id="inicio" type="time" required />
                         <x-input-error for="inicio"></x-input-error>
                     </div>
-
+                
                     <div class="md:w-1/2 px-3 mb-6 md:mb-2">
                         <x-label for="fin" value="{{ __('Hora Final') }}" />
                         <x-input wire:model.defer="fin"
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm1 dark:border-gray-600 dark:bg-dark-eval-1
-                        dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('fin') ? 'is-invalid' : '' }}"
+                            dark:text-gray-300 dark:focus:ring-offset-dark-eval-1{{ $errors->has('fin') ? 'is-invalid' : '' }}"
                             id="fin" type="time" required />
                         <x-input-error for="fin"></x-input-error>
                     </div>

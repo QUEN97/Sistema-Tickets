@@ -79,10 +79,9 @@
             </x-slot>
 
             <x-slot name="content">
-                {{ __('Antes de proceder con la asignación del horario, favor de validar si este ya se encuentra registrado,
-                                                                de lo contrario puede proceder con la asignación del horario.') }}
+                {{ __('Antes de proceder con la asignación del horario, favor de validar si este ya se encuentra registrado, de lo contrario puede proceder con la asignación del horario.') }}
 
-                <div class="flex gap-2 mt-2">
+                <div class="flex flex-col md:flex-row gap-2 mt-4">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-2">
                         <x-label for="selectedMealSchedule" value="{{ __('Seleccionar Horario') }}" />
                         <select id="selectedMealSchedule"

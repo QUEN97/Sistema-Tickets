@@ -256,6 +256,17 @@
             {{ $compra->problema }}
         </div>
     </div>
+    <br>
+    @if (isset($compra->mensaje_opcion))
+    <div>
+        <label for="motivo" class="motiv">Nota:
+        </label>
+        <div class="motivo">
+            {{ $compra->mensaje_opcion }}
+        </div>
+    </div>
+    @endif
+    
 </body>
 
 </html>
