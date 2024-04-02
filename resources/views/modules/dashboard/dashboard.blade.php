@@ -39,4 +39,5 @@
         <div>
             @livewire('backup-manager')
         </div>
+    </div>
 </x-app-layout>

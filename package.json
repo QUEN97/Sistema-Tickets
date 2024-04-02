@@ -23,6 +23,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "leaflet": "^1.9.4",
+        "leaflet-ajax": "^2.1.0",
         "vue": "^3.2.36",
         "vue-loader": "^17.0.1"
     }

@@ -44,13 +44,12 @@ class NewManual extends Component
             'permis' => ['required'],
             'categoria' => ['required'],
             'subcat' => ['required'],
-            'manual' => 'required|max:5120|mimes:pdf',
+            'manual' => 'required|mimes:pdf,mp4,mov,avi,tvs',
         ],
         [
             'permis.required' => 'Debes elegir un permiso',
             'categoria.required' => 'Ingresa la categoría del manual',
             'subcat.required' => 'Ingresa la subcategoría del manual',
-            'manual.max' => 'El archivo no debe ser mayor a 5 MB',
             'manual.required' => 'El campo Manual es obligatorio',
             'manual.mimes' => 'El archivo debe ser un PDF',
         ]);

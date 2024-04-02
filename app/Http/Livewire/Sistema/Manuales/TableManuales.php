@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Sistema\Manuales;
 
 use App\Models\Manual;
-use App\Models\ManualPermiso;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +31,7 @@ class TableManuales extends Component
         return view('livewire.sistema.manuales.table-manuales', [
             'manuals' => $this->manuals,
         ]);
-    } 
+    }
 
     //Cycle Hooks
     public function updatedSelectPage($value)
@@ -78,7 +77,20 @@ class TableManuales extends Component
 
     public function getManualsQueryProperty()
     {
+        $user = Auth::user();
         return Manual::search($this->search)
+            ->when($user->permiso_id == 1 || $user->permiso_id == 8, function ($query) {
+                // Si el usuario es un administrador, no aplicamos restricciones
+                return $query;
+            }, function ($query) {
+                // Si el usuario es un agente, filtramos por sus tareas asignadas
+                $userId = Auth::user()->permiso_id;
+                return $query->where(function ($query) use ($userId) {
+                    $query->whereHas('permisos', function ($q) use ($userId) {
+                        $q->where('permiso_id', $userId);
+                    });
+                });
+            })
             ->when($this->sortField, function ($query) {
                 return $query->orderBy($this->sortField, $this->sortDirection);
             })
