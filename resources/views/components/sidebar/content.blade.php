@@ -308,6 +308,11 @@
                     <x-sidebar.sublink title="Guardias" href="{{ route('guardias.home') }}" :active="request()->routeIs('guardias.home')" />
                 @endif
             @endforeach
+            @foreach ($valid as $item)
+                @if ($item->pivot->panel_id == 25 && $item->pivot->re == 1)
+                    <x-sidebar.sublink title="Respaldo" href="{{ route('backup') }}" :active="request()->routeIs('backup')" />
+                @endif
+            @endforeach
             
             <x-sidebar.dropdown title="Estadísticas" :active="Str::startsWith(
                 request()

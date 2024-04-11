@@ -23,4 +23,12 @@ class Comentario extends Model
     public function tickets():HasMany{
         return $this->hasMany(Comentario::class,'ticket_id');
     }
+
+    public function likes(){
+        return $this->hasMany(Like::class);
+    }
+
+    public function isLikeByLoggedInUser(){ //Logica para determinar si el usuario ha dado clic
+        return $this->likes->where('user_id',auth()->user()->id)->isEmpty() ? false : true ;
+    }
 }

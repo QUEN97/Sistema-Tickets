@@ -128,7 +128,8 @@
                     @if (
                         !(Auth::id() == $ticketOwner && $tck->status == 'Abierto') ||
                             Auth::id() == $tck->user_id ||
-                            (Auth::id() != $ticketOwner && Auth::id() != $tck->solicitante_id) || $ticketOwner == $tck->user_id)
+                            (Auth::id() != $ticketOwner && Auth::id() != $tck->solicitante_id) ||
+                            $ticketOwner == $tck->user_id)
                         @livewire('tickets.comentarios', ['ticketID' => $tck->id])
                     @endif
                 @endif
@@ -139,7 +140,7 @@
                 @foreach ($comentarios as $comentario)
                     <li>
                         <a
-                            class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
+                            class="flex  px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
                             @if ($comentario->usuario->profile_photo_path)
                                 <div
                                     onclick="window.location.href='{{ asset('/storage/' . $comentario->usuario->profile_photo_path) }}'">
@@ -193,14 +194,22 @@
                                         </div>
                                     @endif
                                 </div>
+                                @auth
+                                    <div class="comsacs flex gap-1 mt-1 float-right cursor-pointer" id="{{ $comentario->id }}">
+                                        <span
+                                            class="{{ $comentario->likes->contains('user_id', auth()->id()) ? 'text-blue-500' : 'text-gray-400' }}"
+                                            id="liked{{ $comentario->id }}"><x-icons.like class="w-5 h-5" /></span>
+                                        <p id="count{{ $comentario->id }}">{{ $comentario->likes->count() }}</p>
+                                    </div>
+                                @endauth
                             </div>
                             @if (Auth::user()->id == $comentario->usuario->id || Auth::user()->permiso_id == 1)
                                 <form action="{{ route('com.destroy', ['id' => $comentario->id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="p-2 text-gray-500 hover:text-red-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                            class="w-5 h-5 text-red-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                            fill="currentColor" class="w-5 h-5 text-red-500">
                                             <path fill-rule="evenodd"
                                                 d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
                                                 clip-rule="evenodd" />
@@ -209,7 +218,6 @@
                                 </form>
                             @endif
                         </a>
-
                     </li>
                 @endforeach
             </ul>
@@ -406,4 +414,37 @@
             @endif
         </div>
     @endif
+
+    <script>
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        let comsacs = document.querySelectorAll(".comsacs")
+
+
+        comsacs.forEach(com => {
+            document.getElementById(com.id).addEventListener("click", e => {
+                fetch("/like", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    method: 'post',
+                    body: JSON.stringify({
+                        id: com.id
+                    })
+                }).then(response => {
+                    response.json().then(data => {
+                        let count = document.getElementById("count" + com.id)
+                        count.innerHTML = "" + data.count
+
+                        let liked = document.getElementById("liked" + com.id)
+                        liked.className = ""
+                        liked.classList.add(data.color)
+                    })
+                }).catch(error => {
+                    console.log(error)
+                })
+            })
+        })
+    </script>
 </x-app-layout>

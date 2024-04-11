@@ -33,11 +33,8 @@
                 </div>
             </div>
         </div>
-        {{-- <div>
-            @livewire('dashboard.dashboard-charts')
-        </div> --}}
         <div>
-            @livewire('backup-manager')
-        </div>
+            @livewire('dashboard.dashboard-charts')
+        </div> 
     </div>
 </x-app-layout>

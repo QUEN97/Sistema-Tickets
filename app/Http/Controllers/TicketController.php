@@ -8,9 +8,13 @@ use App\Models\ArchivosTicket;
 use App\Models\Areas;
 use App\Models\Comentario;
 use App\Models\Falla;
+use App\Models\Like;
 use App\Models\Servicio;
 use App\Models\Tarea;
 use App\Models\Ticket;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\DisLikeNotification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -135,11 +139,39 @@ class TicketController extends Controller
         return view('modules.productos.almacen.cis', compact('valid'));
     }
 
-    public function exportTickets()
+    public function backup()
     {
-        // Retrieve the tickets data as needed
-        $tickets = Ticket::all();
+        $valid = Auth::user()->permiso->panels->where('id', 25)->first();
+        if (Auth::user()->permiso->id == 1) {
+            return view('modules.sistema.backups.index', ['valid' => $valid]);
+        } elseif ($valid->pivot->re == 1) {
+            return view('modules.sistema.backups.index', ['valid' => $valid]);
+        } else {
+            return redirect()->route('dashboard');
+        }
+    }
 
-        return Excel::download(new TicketsExport($tickets), 'TICKETS.xlsx');
+    public function like():JsonResponse{
+        $com = Comentario::find(request()->id);
+        if($com->isLikeByLoggedInUser()){
+            //dislike
+            $result = Like::where([
+                'user_id'=> auth()->user()->id,
+                'comentario_id'=> request()->id,
+            ])->delete();
+            return response()->json([
+                'count' => Comentario::find(request()->id)->likes->count(),
+            ],200);
+        }else{
+            //like
+            $like = new Like();
+            $like->user_id = auth()->user()->id;
+            $like->comentario_id = request()->id;
+            $like->save();
+            return response()->json([
+                'count' => Comentario::find(request()->id)->likes->count(),
+                'color' =>'text-blue-500'
+            ],200);
+        }
     }
 }

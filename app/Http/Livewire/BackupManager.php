@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BackupManager extends Component
 {
@@ -20,23 +22,26 @@ class BackupManager extends Component
     }
     public function createBackup()
     {
-        // Ejecutar el comando de backup
-        Artisan::call('backup:run --only-db');
+     // Cambiar el directorio de trabajo actual al directorio raíz de la aplicación Laravel
+     chdir(base_path());
 
-        // Manejo de errores
-        $output = Artisan::output();
-        dd($output);
-        if (strpos($output, 'Backup failed') !== false) {
-            // Manejar la falla del backup
-            session()->flash('flash.banner', 'BACKUP NO SE HA PODIDO REALIZAR.');
-            session()->flash('flash.bannerStyle', 'danger');
-        } else {
-            // Backup realizado
-            session()->flash('flash.banner', 'BACKUP COMPLETADO CON ÉXITO.');
-            session()->flash('flash.bannerStyle', 'success');
-        }
-        // Recargar la lista de backups después de crear uno nuevo
-        $this->mount();
+     // Ejecutar el comando de backup utilizando exec()
+     exec('php artisan backup:run --only-db', $output, $returnVar);
+ 
+     // Verificar si ocurrió un error durante la ejecución
+     if ($returnVar !== 0) {
+        // Manejar el error
+        return redirect(request()->header('Referer'))->with([
+            'flash.banner' => 'BACKUP NO SE HA PODIDO REALIZAR.',
+            'flash.bannerStyle' => 'danger'
+        ]);
+    } else {
+        // Backup realizado con éxito
+        return redirect(request()->header('Referer'))->with([
+            'flash.banner' => 'BACKUP COMPLETADO CON ÉXITO.',
+            'flash.bannerStyle' => 'success'
+        ]);
+    }
     }
 
     public function downloadBackup($fileName)
@@ -50,8 +55,10 @@ class BackupManager extends Component
         // Eliminar el archivo de backup
         Storage::delete("Laravel/{$fileName}");
 
-        // Recargar la lista de backups después de eliminar uno
-        $this->mount();
+        return redirect(request()->header('Referer'))->with([
+            'flash.banner' => "BACKUP {$fileName} HA SIDO ELIMINADO.",
+            'flash.bannerStyle' => 'danger'
+        ]);
     }
 
     public function render()
