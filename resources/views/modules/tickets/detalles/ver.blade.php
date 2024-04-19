@@ -195,11 +195,8 @@
                                     @endif
                                 </div>
                                 @auth
-                                    <div class="comsacs flex gap-1 mt-1 float-right cursor-pointer" id="{{ $comentario->id }}">
-                                        <span
-                                            class="{{ $comentario->likes->contains('user_id', auth()->id()) ? 'text-blue-500' : 'text-gray-400' }}"
-                                            id="liked{{ $comentario->id }}"><x-icons.like class="w-5 h-5" /></span>
-                                        <p id="count{{ $comentario->id }}">{{ $comentario->likes->count() }}</p>
+                                    <div class="flex gap-1 mt-1 float-right">
+                                        @livewire('tickets.like-dislike', ['comentario' => $comentario], key($comentario->id))
                                     </div>
                                 @endauth
                             </div>
@@ -415,36 +412,4 @@
         </div>
     @endif
 
-    <script>
-        const token = document.querySelector('meta[name="csrf-token"]').content;
-        let comsacs = document.querySelectorAll(".comsacs")
-
-
-        comsacs.forEach(com => {
-            document.getElementById(com.id).addEventListener("click", e => {
-                fetch("/like", {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token
-                    },
-                    method: 'post',
-                    body: JSON.stringify({
-                        id: com.id
-                    })
-                }).then(response => {
-                    response.json().then(data => {
-                        let count = document.getElementById("count" + com.id)
-                        count.innerHTML = "" + data.count
-
-                        let liked = document.getElementById("liked" + com.id)
-                        liked.className = ""
-                        liked.classList.add(data.color)
-                    })
-                }).catch(error => {
-                    console.log(error)
-                })
-            })
-        })
-    </script>
 </x-app-layout>

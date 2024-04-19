@@ -10,7 +10,11 @@ class Like extends Model
 {
     use HasFactory;
 
-    public function comentario(){
+    protected $table = 'like_dislike';
+    protected $fillable = ['comentario_id','user_id','type'];
+
+    public function comentario(): BelongsTo
+    {
         return $this->belongsTo(Comentario::class);
     }
     

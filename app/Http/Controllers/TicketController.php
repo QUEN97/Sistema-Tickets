@@ -150,28 +150,5 @@ class TicketController extends Controller
             return redirect()->route('dashboard');
         }
     }
-
-    public function like():JsonResponse{
-        $com = Comentario::find(request()->id);
-        if($com->isLikeByLoggedInUser()){
-            //dislike
-            $result = Like::where([
-                'user_id'=> auth()->user()->id,
-                'comentario_id'=> request()->id,
-            ])->delete();
-            return response()->json([
-                'count' => Comentario::find(request()->id)->likes->count(),
-            ],200);
-        }else{
-            //like
-            $like = new Like();
-            $like->user_id = auth()->user()->id;
-            $like->comentario_id = request()->id;
-            $like->save();
-            return response()->json([
-                'count' => Comentario::find(request()->id)->likes->count(),
-                'color' =>'text-blue-500'
-            ],200);
-        }
-    }
+    
 }

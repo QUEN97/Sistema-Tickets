@@ -14,21 +14,35 @@ class Comentario extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    public function usuario():BelongsTo{
-        return $this->belongsTo(User::class,'user_id');
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
-    public function archivos():HasMany {
+    public function archivos(): HasMany
+    {
         return $this->hasMany(ArchivosComentario::class);
     }
-    public function tickets():HasMany{
-        return $this->hasMany(Comentario::class,'ticket_id');
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Comentario::class, 'ticket_id');
+    }
+    public function ticket(): BelongsTo
+    {
+        return $this->belongsTo(Ticket::class, 'ticket_id');
     }
 
-    public function likes(){
-        return $this->hasMany(Like::class);
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class, 'comentario_id');
     }
 
-    public function isLikeByLoggedInUser(){ //Logica para determinar si el usuario ha dado clic
-        return $this->likes->where('user_id',auth()->user()->id)->isEmpty() ? false : true ;
+    public function isLikeByLoggedInUser()
+    {
+        return $this->likes->where('user_id', auth()->user()->id)->where('type', 'like')->isNotEmpty();
+    }
+
+    public function isDislikeByLoggedInUser()
+    {
+        return $this->likes->where('user_id', auth()->user()->id)->where('type', 'dislike')->isNotEmpty();
     }
 }

@@ -164,7 +164,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/tickets/pendientes','pendientes')->name('tck.abierto');
         Route::get('/tickets/almacenCIS','almacenCIS')->name('almacenCIS');
         Route::get('/backup/db', 'backup')->name('backup');
-        Route::post('/like','like')->name('com.like');
     });
 
     Route::controller(TareaController::class)->group(function(){

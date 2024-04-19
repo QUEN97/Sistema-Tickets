@@ -10,19 +10,19 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class DisLikeNotification extends Notification
+class LikeNotification extends Notification
 {
     use Queueable;
-    public $dislike;
+    public $like;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Like $dislike)
+    public function __construct(Like $like)
     {
-        $this->dislike = $dislike;
+        $this->like = $like;
     }
 
     /**
@@ -40,10 +40,10 @@ class DisLikeNotification extends Notification
     {
         $user = Auth::user();
         return [
-            'url' => route('tck.ver', $this->dislike->comentario->ticket->id),
+            'url' => route('tck.ver', $this->like->comentario->ticket->id),
             'userid' =>  $user,
             'user' => Auth::user()->name,
-            'message' => ", ha reaccionado con No Me Gusta al comentario en el ticket #{$this->dislike->comentario->ticket->id}: {$this->dislike->comentario->comentario}"
+            'message' => ", ha reaccionado con Me Gusta al comentario en el ticket #{$this->like->comentario->ticket->id}: {$this->like->comentario->comentario}"
         ];
     }
 

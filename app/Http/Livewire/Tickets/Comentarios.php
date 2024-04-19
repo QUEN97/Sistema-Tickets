@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tickets;
 
 use App\Models\ArchivosComentario;
 use App\Models\Comentario;
+use App\Http\Livewire\LikeDislike;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\AdminAgenteComent;
@@ -21,12 +22,15 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class Comentarios extends Component
 {
+    protected $listeners = ['toggleLike' => 'toggleLike'];
+    
     use WithFileUploads;
     public $ticketID, $status, $mensaje, $urlArchi, $evidencias = [], $statustck, $modal = false;
     public function mount()
     {
         $tck = Ticket::find($this->ticketID);
         $this->status = $tck->status;
+        $this->emit('commentLiked');
     }
     public function addCom(Ticket $tck)
     {
@@ -90,7 +94,7 @@ class Comentarios extends Component
             $currentUserId = Auth::user()->id;
             $currentUser = Auth::user();
 
-            $Admins = User::where('permiso_id',1)->get();
+            $Admins = User::where('permiso_id', 1)->get();
 
             //Cliente comenta notifica a agente asignado
             if ($currentUserId === $ticketOwner->id) {
@@ -133,6 +137,6 @@ class Comentarios extends Component
         $tck = Ticket::find($this->ticketID);
         $ticketOwner = $tck->solicitante_id; //para evitar que quien cree el ticket pueda cambiar su status
         $agente = $tck->user_id;
-        return view('livewire.tickets.comentarios', compact('tck','ticketOwner','agente'));
+        return view('livewire.tickets.comentarios', compact('tck', 'ticketOwner', 'agente'));
     }
 }
